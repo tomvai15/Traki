@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  inventory.api:
+    image: ${DOCKER_REGISTRY-}inventoryapi
+    build:
+      context: .
+      dockerfile: src/Inventory.API/Dockerfile
