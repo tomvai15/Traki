@@ -10,3 +10,10 @@ services:
       - "443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  sqldata:
+    container_name: sqldata
+    environment:
+        SA_PASSWORD: "My!P@ssw0rd1"
+        ACCEPT_EULA: "Y"
+    ports:
+        - "1433:1433"

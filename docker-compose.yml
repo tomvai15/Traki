@@ -6,3 +6,5 @@ services:
     build:
       context: .
       dockerfile: src/Inventory.API/Dockerfile
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest
