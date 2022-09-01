@@ -1,4 +1,5 @@
 ﻿using Inventory.Domain.Parts;
+using Inventory.Domain.UserAuthentication;
 
 namespace Inventory.Api.Bootstratp
 {
@@ -6,7 +7,9 @@ namespace Inventory.Api.Bootstratp
     {
         public static IServiceCollection AddHandlers(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IPartsHandler, PartsHandler>();
+            services
+                .AddTransient<IPartsHandler, PartsHandler>()
+                .AddTransient<IUserAuthHandler, UserAuthHandler>();
             return services;
         }
     }

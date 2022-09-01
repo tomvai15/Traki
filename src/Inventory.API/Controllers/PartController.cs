@@ -1,5 +1,6 @@
 ﻿using Inventory.Domain.Parts;
 using Microsoft;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace Inventory.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Part>>> GetParts()
         {
             return await partsHandler.GetParts();

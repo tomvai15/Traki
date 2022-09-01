@@ -12,6 +12,7 @@ namespace Inventory.Api
             services.AddHandlers(configuration)
                 .AddRepositories(configuration)
                 .AddInventoryDbContext(configuration, "InventoryDbContext");
+            services.AddServiceAuth(configuration);
 
             return services;
         }
