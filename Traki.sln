@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Domain", "src\Inventory.Domain\Inventory.Domain.csproj", "{E8887946-77E3-49B6-8796-1CEBE1F6775A}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Web.Portal", "src\Web.Portal\Web.Portal\Web.Portal.esproj", "{FCADE7CD-318B-4EAD-B3B3-56718EEAE347}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Web.Portal", "src\Web.Portal\Web.Portal.esproj", "{FCADE7CD-318B-4EAD-B3B3-56718EEAE347}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
