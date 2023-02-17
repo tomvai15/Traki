@@ -1,11 +1,21 @@
+using Serilog;
+using Traki.Api;
+using Traki.Api.Bootstrapping;
+using Traki.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+IServiceCollection services = builder.Services;
+IConfiguration configuration = builder.Configuration;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddControllers();
+services.AddEndpointsApiExplorer()
+        .AddSwaggerGen();
+
+// Custom services registration
+Startup.ConfigureServices(services, configuration);
+
+builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
 
 var app = builder.Build();
 
@@ -14,6 +24,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.AddInitialData();
 }
 
 app.UseHttpsRedirection();
