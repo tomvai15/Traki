@@ -1,21 +1,21 @@
 using Serilog;
+using Traki.Api;
 using Traki.Api.Bootstrapping;
+using Traki.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 IServiceCollection services = builder.Services;
-IConfiguration config = builder.Configuration;
+IConfiguration configuration = builder.Configuration;
 
 services.AddControllers();
 services.AddEndpointsApiExplorer()
         .AddSwaggerGen();
 
-services.AddMappingProfiles()
-        .AddTrakiDbContext(config)
-        .AddAuthorisationServices(config);
+// Custom services registration
+Startup.ConfigureServices(services, configuration);
 
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
-
 
 var app = builder.Build();
 
@@ -24,6 +24,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.AddInitialData();
 }
 
 app.UseHttpsRedirection();

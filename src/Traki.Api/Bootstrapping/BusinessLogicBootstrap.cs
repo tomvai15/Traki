@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Traki.Api.Cryptography;
+using Traki.Api.Handlers;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -8,9 +9,8 @@ namespace Traki.Api.Bootstrapping
     {
         public static IServiceCollection AddHandlers(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IHasherAdapter, HasherAdapter>()
-    .AddTransient<IJwtTokenGenerator, JwtTokenGenerator>()
-    .AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>(); ;
+            services.AddTransient<IUserAuthHandler, UserAuthHandler>()
+                .AddTransient<IUsersHandler, UsersHandler>();
 
             return services;
         }
@@ -19,7 +19,7 @@ namespace Traki.Api.Bootstrapping
         {
             services.AddTransient<IHasherAdapter, HasherAdapter>()
                 .AddTransient<IJwtTokenGenerator, JwtTokenGenerator>()
-                .AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>(); ;
+                .AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>();
 
             return services;
         }

@@ -16,9 +16,9 @@ namespace Traki.Api.Handlers
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IUsersHandler usersHandler;
         private readonly IMapper mapper;
-        private readonly HasherAdapter hasherAdapter;
+        private readonly IHasherAdapter hasherAdapter;
 
-        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler, IMapper mapper, HasherAdapter hasherAdapter)
+        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler, IMapper mapper, IHasherAdapter hasherAdapter)
         {
             this.jwtTokenGenerator = jwtTokenGenerator;
             this.usersHandler = usersHandler;
