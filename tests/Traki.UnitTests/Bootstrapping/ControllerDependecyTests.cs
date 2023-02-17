@@ -30,6 +30,8 @@ namespace Traki.UnitTests.Bootstrapping
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
+            Assert.Fail("tests");
+
             // Act
             using var scope = serviceProvider.CreateScope();
             var controller = scope.ServiceProvider.GetService(type);
