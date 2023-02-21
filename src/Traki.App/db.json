@@ -1,0 +1,16 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "name": "Gappy"
+        },
+        {
+            "id": 2,
+            "name": "Josuke"
+        },
+        {
+            "id": 3,
+            "name": "Jotaro"
+        }
+    ]
+}
