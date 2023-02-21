@@ -5,11 +5,11 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{397157AE-7435-47EB-8BD9-A250F2E87362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traki.Api", "src\Traki.Api\Traki.Api.csproj", "{660FAF97-1EF0-419F-8D24-08CA562D7B03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traki.Api", "src\Traki.Api\Traki.Api.csproj", "{660FAF97-1EF0-419F-8D24-08CA562D7B03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B9135A10-137C-4C88-A57F-780281823483}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traki.UnitTests", "tests\Traki.UnitTests\Traki.UnitTests.csproj", "{EE408F2F-052B-44FE-88B7-682F0A3AB571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traki.UnitTests", "tests\Traki.UnitTests\Traki.UnitTests.csproj", "{EE408F2F-052B-44FE-88B7-682F0A3AB571}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
