@@ -10,6 +10,9 @@ namespace Traki.Api.Mapping
         {
             CreateMap<Project, GetProjectResponse>()
                 .ForMember(p => p.Project, opt => opt.MapFrom(p => p));
+
+            CreateMap<IEnumerable<Project>, GetProjectsResponse>()
+                .ForMember(p => p.Projects, opt => opt.MapFrom(p => p));
             CreateMap<Project, ProjectDto>();
         }
     }

@@ -7,6 +7,7 @@ namespace Traki.Api.Handlers
     public interface IProjectsHandler
     {
         Task<Project> GetProject(int projectId);
+        Task<IEnumerable<Project>> GetProjects();
     }
 
     public class ProjectsHandler : IProjectsHandler
@@ -20,6 +21,11 @@ namespace Traki.Api.Handlers
         public async Task<Project> GetProject(int projectId)
         {
             return await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+        }
+
+        public async Task<IEnumerable<Project>> GetProjects()
+        {
+            return await _context.Projects.ToListAsync();
         }
     }
 }

@@ -30,5 +30,14 @@ namespace Traki.Api.Controllers
 
             return _mapper.Map<GetProjectResponse>(project);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<GetProjectsResponse>> GetProjects()
+        {
+            var projects = await _projectsHandler.GetProjects();
+
+
+            return _mapper.Map<GetProjectsResponse>(projects);
+        }
     }
 }

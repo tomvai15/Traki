@@ -24,17 +24,7 @@ namespace Traki.Api.Data
 
         public static TrakiDbContext AddProjects(this TrakiDbContext dbContext)
         {
-           Project[] projects = new[]
-           {
-                 new Project {
-                    Name = $"Test-Project-A"
-                 },
-                 new Project {
-                    Name = $"Test-Project-B"
-                 }
-            };
-
-            dbContext.Projects.AddRange(projects);
+            dbContext.Projects.AddRange(ExampleData.Projects);
             dbContext.SaveChanges();
 
             return dbContext;
