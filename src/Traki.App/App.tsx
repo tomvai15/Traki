@@ -1,35 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import projectService from './src/services/project-service';
-import { GetProjectResponse } from './src/contracts/GetProjectsReponse';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './src/screens/HomeScreen';
+import DetailsScreen from './src/screens/DetailsScreen';
+import { RootStackParamList } from './src/screens/RootStackPatamList';
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [count, setCount] = useState<number>(0);
-  const [projects, setProjects] = useState<Array<GetProjectResponse>>([]);
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-  
-  async function fetchProjects() {
-    const projects = await projectService.get();
-    setProjects(projects);
-  }
-
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Text>{count}</Text>
-      <Button title='e' onPress={()=> {setCount(count+1); fetchProjects();}}/>
-      { projects.length > 0 ?
-						projects.map((project: GetProjectResponse) => (
-              <Text key={project.id}>{project.id}-{project.name}</Text>    
-						))
-						:
-            <Text>No projects</Text>    
-					}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
