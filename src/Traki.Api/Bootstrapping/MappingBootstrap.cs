@@ -10,6 +10,7 @@ namespace Traki.Api.Bootstrapping
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new UserModelsMappingProfile());
+                cfg.AddProfile(new ProjectModelsMappingProfile());
             });
 
             services.AddSingleton(config.CreateMapper());
