@@ -3,5 +3,6 @@
   "compilerOptions": {
     "strict": true
   },
-  "checkjs": true
+  "checkjs": true,
+  "typeRoots": ["./src/types"]
 }

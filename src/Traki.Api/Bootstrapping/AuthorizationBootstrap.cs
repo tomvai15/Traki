@@ -43,5 +43,21 @@ namespace Traki.Api.Bootstrapping
 
             return services;
         }
+
+        public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(Policy.DevelopmentCors, builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .SetIsOriginAllowed((_) => true);
+                });
+            });
+
+            return services;
+        }
     }
 }

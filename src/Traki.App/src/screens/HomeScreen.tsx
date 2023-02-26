@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { RootStackParamList } from './RootStackPatamList';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -10,8 +10,8 @@ export  default function HomeScreen({ navigation }: Props) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home Screen</Text>
       <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details', {id: 1, info: 'lol' })}
+        title="Go to projects"
+        onPress={() => navigation.navigate('Projects', {})}
       />
     </View>
   );

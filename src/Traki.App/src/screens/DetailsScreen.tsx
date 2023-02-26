@@ -15,10 +15,6 @@ export default function DetailsScreen({ route, navigation }: Props) {
         title="Go to Details"
         onPress={() => navigation.push('Feed')}
       />
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.goBack()}
-      />
     </View>
   );
 }
