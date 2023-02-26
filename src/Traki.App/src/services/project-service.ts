@@ -1,7 +1,6 @@
 import { GetProjectsResponse } from '../contracts/projects/GetProjectsResponse';
 import { GetProjectResponse } from '../contracts/projects/GetProjectResponse';
 import axios from 'axios';
-import { API_BASE } from '@env';
 import { CreateProjectRequest } from '../contracts/projects/CreateProjectRequest';
 
 // TODO: use https
