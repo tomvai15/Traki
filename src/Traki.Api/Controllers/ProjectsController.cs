@@ -5,7 +5,7 @@ using Traki.Api.Handlers;
 
 namespace Traki.Api.Controllers
 {
-    [Route("api/projects")]
+    [Route("projects")]
     [ApiController]
     public class ProjectsController: ControllerBase
     {

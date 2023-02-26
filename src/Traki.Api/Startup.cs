@@ -10,7 +10,8 @@ namespace Traki.Api
                 .AddTrakiDbContext(configuration)
                 .AddAuthorisationServices(configuration)
                 .AddHandlers(configuration)
-                .AddCryptographyServices();
+                .AddCryptographyServices()
+                .AddCorsPolicy();
 
             return services;
         }

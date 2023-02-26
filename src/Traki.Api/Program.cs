@@ -1,6 +1,7 @@
 using Serilog;
 using Traki.Api;
 using Traki.Api.Bootstrapping;
+using Traki.Api.Constants;
 using Traki.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,10 @@ if (app.Environment.IsDevelopment())
     app.AddInitialData();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(Policy.DevelopmentCors);
+
+// TODO: temporary fix for emulator. Need to figure out how to make https work on emulator
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
