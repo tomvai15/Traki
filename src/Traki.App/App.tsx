@@ -6,18 +6,30 @@ import HomeScreen from './src/screens/HomeScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
 import { RootStackParamList } from './src/screens/RootStackPatamList';
 import ProjectsScreens from './src/screens/ProjectsScreen';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import CreateProjectScreen from './src/screens/CreateProjectScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const theme = {
+  ...DefaultTheme,
+  roundness: 1,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#e4ae3f',
+    accent: '#9ab1c0',
+  },
+};
+
 export default function App() {
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="Projects" component={ProjectsScreens} />
+          <Stack.Screen name="CreateProject" component={CreateProjectScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
