@@ -53,7 +53,7 @@ namespace Traki.Api.Bootstrapping
                     builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .SetIsOriginAllowed((x) => true);
+                           .SetIsOriginAllowed((_) => true);
                 });
             });
 
