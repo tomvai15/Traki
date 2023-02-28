@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Traki.Api.Data;
-using Traki.Api.Models.Project;
+using Traki.Api.Models;
 
 namespace Traki.Api.Handlers
 {
@@ -31,8 +31,8 @@ namespace Traki.Api.Handlers
 
         public async Task<Project> CreateProject(Project project)
         {
-           var createdProject = _context.Projects.Add(project);
-           await _context.SaveChangesAsync();
+            var createdProject = _context.Projects.Add(project);
+            await _context.SaveChangesAsync();
 
             return createdProject.Entity;
         }

@@ -1,4 +1,4 @@
-﻿using Traki.Api.Models.Project;
+﻿using Traki.Api.Models;
 
 namespace Traki.Api.Data
 {

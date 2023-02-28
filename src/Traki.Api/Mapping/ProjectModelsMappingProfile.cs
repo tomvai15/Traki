@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Traki.Api.Contracts.Project;
-using Traki.Api.Models.Project;
+using Traki.Api.Models;
 
 namespace Traki.Api.Mapping
 {

@@ -1,4 +1,4 @@
-﻿namespace Traki.Api.Models.Project
+﻿namespace Traki.Api.Models
 {
     public class Project
     {

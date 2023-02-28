@@ -6,23 +6,23 @@ using Traki.Api.Models;
 
 namespace Traki.Api.Controllers
 {
-    [Route("projects")]
+    [Route("products")]
     [ApiController]
-    public class ProjectsController: ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IProjectsHandler _projectsHandler;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectsHandler projectsHandler, IMapper mapper)
+        public ProductsController(IProjectsHandler projectsHandler, IMapper mapper)
         {
             _projectsHandler = projectsHandler;
             _mapper = mapper;
         }
 
-        [HttpGet(("{projectId}"))]
-        public async Task<ActionResult<GetProjectResponse>> GetProject(int projectId)
+        [HttpGet(("{productId}"))]
+        public async Task<ActionResult<GetProjectResponse>> GetProduct(int productId)
         {
-            var project = await _projectsHandler.GetProject(projectId);
+            var project = await _projectsHandler.GetProject(productId);
 
             if (project == null)
             {
@@ -33,7 +33,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<GetProjectsResponse>> GetProjects()
+        public async Task<ActionResult<GetProjectsResponse>> GetProducts()
         {
             var projects = await _projectsHandler.GetProjects();
 
@@ -41,13 +41,13 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetProjectResponse>> PostProject(CreateProjectRequest createProjectRequest)
+        public async Task<ActionResult<GetProjectResponse>> PostProduct(CreateProjectRequest createProjectRequest)
         {
             var project = _mapper.Map<Project>(createProjectRequest);
 
             var createdProject = await _projectsHandler.CreateProject(project);
 
-            return CreatedAtAction("GetProject", new { projectId = createdProject.Id }, createdProject);
+            return CreatedAtAction("GetProduct", new { projectId = createdProject.Id }, createdProject);
         }
     }
 }
