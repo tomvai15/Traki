@@ -30,7 +30,7 @@ export default function CreateProjectScreen() {
         value={name}
         onChangeText={text => setName(text)}
       />
-      <Button mode="contained" disabled={name==''} onPress={() => void createProject()}>
+      <Button style={{ width: 200, alignSelf: 'center', marginTop: 10}} mode="contained" disabled={name==''} onPress={() => void createProject()}>
         Sukurti
       </Button>
       <Text>{responseMessage}</Text>
