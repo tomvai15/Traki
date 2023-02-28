@@ -3,4 +3,5 @@ export type RootStackParamList = {
   Details: { id: number, info: string };
   Feed: { sort: 'latest' | 'top' } | undefined;
   Projects: undefined;
+  CreateProject: undefined;
 };
