@@ -1,8 +1,8 @@
 import  React, { useState } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button, Text  } from 'react-native-paper';
-import projectService from '../services/project-service';
-import { CreateProjectRequest } from '../contracts/projects/CreateProjectRequest';
+import projectService from '../../services/project-service';
+import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 
 export default function CreateProjectScreen() {
   const [name, setName] = useState('');

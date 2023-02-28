@@ -1,7 +1,7 @@
 import  React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import projectService from '../services/project-service';
-import { Project } from '../contracts/projects/Project';
+import projectService from '../../services/project-service';
+import { Project } from '../../contracts/projects/Project';
 import { List, Button } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './RootStackPatamList';
