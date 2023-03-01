@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Traki.Api.Data;
+using Traki.Api.Entities;
 using Traki.Api.Models;
 
 namespace Traki.Api.Handlers
@@ -14,27 +16,33 @@ namespace Traki.Api.Handlers
     public class ProductsHandler : IProductsHandler
     {
         private readonly TrakiDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductsHandler(TrakiDbContext context)
+        public ProductsHandler(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public async Task<Product> GetProduct(int productId)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
+            return _mapper.Map<Product>(product);
         }
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _context.Products.ToListAsync();
+            return _mapper.Map<IEnumerable<Product>>(products);
         }
 
         public async Task<Product> CreateProduct(Product product)
         {
-            var createdProject = _context.Products.Add(product);
+            var productToAdd = _mapper.Map<ProductEntity>(product);
+            var createdProduct = _context.Products.Add(productToAdd);
             await _context.SaveChangesAsync();
 
-            return createdProject.Entity;
+            return _mapper.Map<Product>(createdProduct.Entity);
         }
     }
 }

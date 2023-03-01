@@ -1,16 +1,32 @@
-﻿using Traki.Api.Models;
+﻿using Traki.Api.Entities;
 
 namespace Traki.Api.Data
 {
     public static class ExampleData
     {
-        public static IEnumerable<Project> Projects => new[]
+        public static IEnumerable<ProjectEntity> Projects => new[]
         {
-            new Project {
-            Name = $"Test-Project-A"
+            new ProjectEntity
+            {
+                Name = $"Test-Project-A"
             },
-            new Project {
-            Name = $"Test-Project-B"
+            new ProjectEntity
+            {
+                Name = $"Test-Project-B"
+            }
+        };
+
+        public static IEnumerable<ProductEntity> Products => new[]
+        {
+            new ProductEntity
+            {
+                Name = $"Test-Product-A",
+                ProjectId = 1
+            },
+            new ProductEntity
+            {
+                Name = $"Test-Product-B",
+                ProjectId = 2
             }
         };
     }

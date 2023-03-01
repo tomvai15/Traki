@@ -1,53 +1,54 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
 using Traki.Api.Handlers;
 using Traki.Api.Models;
 
 namespace Traki.Api.Controllers
 {
-    [Route("products")]
+    [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProjectsHandler _projectsHandler;
+        private readonly IProductsHandler _productsHandler;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProjectsHandler projectsHandler, IMapper mapper)
+        public ProductsController(IProductsHandler productsHandler, IMapper mapper)
         {
-            _projectsHandler = projectsHandler;
+            _productsHandler = productsHandler;
             _mapper = mapper;
         }
 
         [HttpGet(("{productId}"))]
-        public async Task<ActionResult<GetProjectResponse>> GetProduct(int productId)
+        public async Task<ActionResult<GetProductResponse>> GetProduct(int productId)
         {
-            var project = await _projectsHandler.GetProject(productId);
+            var product = await _productsHandler.GetProduct(productId);
 
-            if (project == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<GetProjectResponse>(project);
+            return _mapper.Map<GetProductResponse>(product);
         }
 
         [HttpGet]
-        public async Task<ActionResult<GetProjectsResponse>> GetProducts()
+        public async Task<ActionResult<GetProductsResponse>> GetProducts()
         {
-            var projects = await _projectsHandler.GetProjects();
+            var products = await _productsHandler.GetProducts();
 
-            return _mapper.Map<GetProjectsResponse>(projects);
+            return _mapper.Map<GetProductsResponse>(products);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetProjectResponse>> PostProduct(CreateProjectRequest createProjectRequest)
+        public async Task<ActionResult<GetProductResponse>> PostProduct(CreateProductRequest createProjectRequest)
         {
-            var project = _mapper.Map<Project>(createProjectRequest);
+            var product = _mapper.Map<Product>(createProjectRequest);
 
-            var createdProject = await _projectsHandler.CreateProject(project);
+            var createdProduct = await _productsHandler.CreateProduct(product);
 
-            return CreatedAtAction("GetProduct", new { projectId = createdProject.Id }, createdProject);
+            return CreatedAtAction("GetProduct", new { productId = createdProduct.Id }, createdProduct);
         }
     }
 }

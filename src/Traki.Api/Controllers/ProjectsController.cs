@@ -6,7 +6,7 @@ using Traki.Api.Models;
 
 namespace Traki.Api.Controllers
 {
-    [Route("projects")]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectsController: ControllerBase
     {
@@ -23,11 +23,6 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult<GetProjectResponse>> GetProject(int projectId)
         {
             var project = await _projectsHandler.GetProject(projectId);
-
-            if (project == null)
-            {
-                return NotFound();
-            }
 
             return _mapper.Map<GetProjectResponse>(project);
         }
