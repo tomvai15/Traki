@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { DefaultTheme, List, Provider as PaperProvider } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProjectTab from './src/tabs/ProjectTab';
+import ProductTab from './src/tabs/ProductTab';
 
 const theme = {
   ...DefaultTheme,
@@ -31,7 +32,7 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator screenOptions={{ headerShown: false }}>
           <Tab.Screen options={{ tabBarIcon: () => <List.Icon icon='folder' />, tabBarBadge: 1 }} name="Projektai" component={ProjectTab} />
-          <Tab.Screen options={{ tabBarIcon: () => <List.Icon icon='group' />, tabBarBadge: 1 }} name="Produktai" component={TempScreen} />
+          <Tab.Screen options={{ tabBarIcon: () => <List.Icon icon='group' />, tabBarBadge: 1 }} name="Produktai" component={ProductTab} />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>

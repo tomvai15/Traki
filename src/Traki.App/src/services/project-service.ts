@@ -4,7 +4,7 @@ import axios from 'axios';
 import { CreateProjectRequest } from '../contracts/projects/CreateProjectRequest';
 
 // TODO: use https
-const url = 'http://10.0.2.2:5219/projects';
+const url = 'http://10.0.2.2:5219/api/projects';
 
 class ProjectService {
   async getProjects(): Promise<GetProjectsResponse> {
