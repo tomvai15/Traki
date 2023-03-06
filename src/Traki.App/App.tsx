@@ -1,7 +1,9 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { DefaultTheme, List, Provider as PaperProvider } from 'react-native-paper';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProjectTab from './src/tabs/ProjectTab';
 import ProductTab from './src/tabs/ProductTab';
@@ -24,17 +26,20 @@ function TempScreen() {
   );
 }
 
+
+
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen options={{ tabBarIcon: () => <List.Icon icon='folder' />, tabBarBadge: 1 }} name="Projektai" component={ProjectTab} />
-          <Tab.Screen options={{ tabBarIcon: () => <List.Icon icon='group' />, tabBarBadge: 1 }} name="Produktai" component={ProductTab} />
-        </Tab.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name="Projektai" component={ProjectTab} />
+        <Drawer.Screen name="Produktai" component={ProductTab} />
+      </Drawer.Navigator>
+    </NavigationContainer>
     </PaperProvider>
   );
 }

@@ -8,7 +8,7 @@ const ProductStack = createNativeStackNavigator<ProductStackParamList>();
 
 export  default function ProductTab() {
   return (
-  <ProductStack.Navigator>
+  <ProductStack.Navigator screenOptions={{ header: ()=> <></>}}>
     <ProductStack.Screen name="Products" options={{title: 'Visi produktai',}} component={ProductsScreen} />
     <ProductStack.Screen name="Product" options={{title: '',}} component={ProductScreen} />
   </ProductStack.Navigator>
