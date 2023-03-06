@@ -26,7 +26,6 @@ export default function ProjectsScreens({ navigation }: Props) {
       return;
     }
     setProjects(getProjectsResposne.projects);
-    console.log(getProjectsResposne.projects);
   }
 
   return (
