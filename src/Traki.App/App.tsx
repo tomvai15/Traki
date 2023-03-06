@@ -1,15 +1,12 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/HomeScreen';
-import DetailsScreen from './src/screens/DetailsScreen';
-import { RootStackParamList } from './src/screens/RootStackPatamList';
-import ProjectsScreens from './src/screens/ProjectsScreen';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import CreateProjectScreen from './src/screens/CreateProjectScreen';
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import { DefaultTheme, List, Provider as PaperProvider } from 'react-native-paper';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ProjectTab from './src/tabs/ProjectTab';
+import ProductTab from './src/tabs/ProductTab';
 
 const theme = {
   ...DefaultTheme,
@@ -21,17 +18,28 @@ const theme = {
   },
 };
 
+function TempScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Temp screen!</Text>
+    </View>
+  );
+}
+
+
+
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
 export default function App() {
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-          <Stack.Screen name="Projects" component={ProjectsScreens} />
-          <Stack.Screen name="CreateProject" component={CreateProjectScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name="Projektai" component={ProjectTab} />
+        <Drawer.Screen name="Produktai" component={ProductTab} />
+      </Drawer.Navigator>
+    </NavigationContainer>
     </PaperProvider>
   );
 }

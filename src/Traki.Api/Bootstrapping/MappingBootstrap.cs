@@ -11,6 +11,8 @@ namespace Traki.Api.Bootstrapping
             {
                 cfg.AddProfile(new UserModelsMappingProfile());
                 cfg.AddProfile(new ProjectModelsMappingProfile());
+                cfg.AddProfile(new ProductModelsMappingProfile());
+                cfg.AddProfile(new EntityToDomainModelMappingProfile());
             });
 
             services.AddSingleton(config.CreateMapper());

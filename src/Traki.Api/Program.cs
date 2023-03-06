@@ -1,6 +1,6 @@
+using Hellang.Middleware.ProblemDetails;
 using Serilog;
 using Traki.Api;
-using Traki.Api.Bootstrapping;
 using Traki.Api.Constants;
 using Traki.Api.Data;
 
@@ -33,6 +33,8 @@ app.UseCors(Policy.DevelopmentCors);
 // TODO: temporary fix for emulator. Need to figure out how to make https work on emulator
 //app.UseHttpsRedirection();
 
+
+app.UseProblemDetails();
 app.UseAuthorization();
 
 app.MapControllers();

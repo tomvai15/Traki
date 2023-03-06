@@ -1,8 +1,8 @@
 import  React, { useState } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button, Text  } from 'react-native-paper';
-import projectService from '../services/project-service';
-import { CreateProjectRequest } from '../contracts/projects/CreateProjectRequest';
+import projectService from '../../services/project-service';
+import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 
 export default function CreateProjectScreen() {
   const [name, setName] = useState('');
@@ -30,7 +30,7 @@ export default function CreateProjectScreen() {
         value={name}
         onChangeText={text => setName(text)}
       />
-      <Button mode="contained" disabled={name==''} onPress={() => void createProject()}>
+      <Button style={{ width: 200, alignSelf: 'center', marginTop: 10}} mode="contained" disabled={name==''} onPress={() => void createProject()}>
         Sukurti
       </Button>
       <Text>{responseMessage}</Text>

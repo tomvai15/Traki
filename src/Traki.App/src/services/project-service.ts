@@ -1,24 +1,24 @@
+import axios from 'axios';
 import { GetProjectsResponse } from '../contracts/projects/GetProjectsResponse';
 import { GetProjectResponse } from '../contracts/projects/GetProjectResponse';
-import axios from 'axios';
 import { CreateProjectRequest } from '../contracts/projects/CreateProjectRequest';
+import { url } from './endpoints';
 
-// TODO: use https
-const url = 'http://10.0.2.2:5219/projects';
+const route = url + 'projects'
 
 class ProjectService {
   async getProjects(): Promise<GetProjectsResponse> {
-    const response = await axios.get<GetProjectsResponse>(url, { headers: {} });
+    const response = await axios.get<GetProjectsResponse>(route, { headers: {} });
     return Object.create(response.data) as GetProjectsResponse;
   }
 
   async getProject(id: number): Promise<GetProjectResponse> {
-    const response = await axios.get<GetProjectResponse>(`${url}/${id}`, { headers: {} });
+    const response = await axios.get<GetProjectResponse>(`${route}/${id}`, { headers: {} });
     return response.data;
   }
 
   async createProject(createProjectRequest: CreateProjectRequest): Promise<boolean> {
-    await axios.post(url, createProjectRequest, { headers: {} });
+    await axios.post(route, createProjectRequest, { headers: {} });
     return true;
   }
 }

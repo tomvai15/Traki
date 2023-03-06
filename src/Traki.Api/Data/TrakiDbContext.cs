@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Traki.Api.Entities;
 using Traki.Api.Models;
-using Traki.Api.Models.Project;
 
 namespace Traki.Api.Data
 {
@@ -10,8 +10,15 @@ namespace Traki.Api.Data
            : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProjectEntity>()
+                .HasMany(p => p.Products)
+                .WithOne(p => p.Project);
+        }
 
-        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<ProductEntity> Products { get; set; }
+        public virtual DbSet<ProjectEntity> Projects { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

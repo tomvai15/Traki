@@ -1,6 +1,4 @@
-﻿using Traki.Api.Models.Project;
-
-namespace Traki.Api.Data
+﻿namespace Traki.Api.Data
 {
     public static class DataSeeder
     {
@@ -20,11 +18,20 @@ namespace Traki.Api.Data
             bool wasCreated = dbContext.Database.EnsureCreated();
 
             dbContext.AddProjects();
+            dbContext.AddProducts();
         }
 
         public static TrakiDbContext AddProjects(this TrakiDbContext dbContext)
         {
             dbContext.Projects.AddRange(ExampleData.Projects);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddProducts(this TrakiDbContext dbContext)
+        {
+            dbContext.Products.AddRange(ExampleData.Products);
             dbContext.SaveChanges();
 
             return dbContext;

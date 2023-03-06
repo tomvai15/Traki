@@ -2,22 +2,24 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
 using Traki.Api.Data;
 
 namespace Traki.IntegrationTests
 {
-    public class ProjectsControllerTests : IClassFixture<WebApplicationFactory<Program>>
+    [Collection("Sequential")]
+    public class ProductsControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly WebApplicationFactory<Program> _factory;
 
-        public ProjectsControllerTests(WebApplicationFactory<Program> factory)
+        public ProductsControllerTests(WebApplicationFactory<Program> factory)
         {
             _factory = factory;
         }
 
         [Theory]
-        [InlineData("/api/projects/1")]
+        [InlineData("/api/products/1")]
         public async Task Get_ExistingProject_ReturnSuccess(string url)
         {
             // Arrange
@@ -29,17 +31,17 @@ namespace Traki.IntegrationTests
             // Assert
             response.IsSuccessStatusCode.Should().BeTrue();
 
-            var expectedResponse = ExampleData.Projects.First();
+            var expectedResponse = ExampleData.Products.First();
 
             string body = await response.Content.ReadAsStringAsync();
-            GetProjectResponse getProjectResponse = JsonConvert.DeserializeObject<GetProjectResponse>(body);
-            getProjectResponse.Project.Should().BeEquivalentTo(expectedResponse, 
-                options => options.Excluding(x => x.Products).Excluding(x=> x.Id));
+            GetProductResponse getProductResponse = JsonConvert.DeserializeObject<GetProductResponse>(body);
+            getProductResponse.Product.Should().BeEquivalentTo(expectedResponse, 
+                options => options.Excluding(x => x.Project).Excluding(x=> x.Id));
         }
 
         [Theory]
-        [InlineData("/api/projects/1")]
-        [InlineData("/api/projects")]
+        [InlineData("/api/products/1")]
+        [InlineData("/api/products")]
         public async Task Get_ReturnSuccess(string url)
         {
             // Arrange
@@ -53,7 +55,7 @@ namespace Traki.IntegrationTests
         }
 
         [Theory]
-        [InlineData("/api/projects/10001")]
+        [InlineData("/api/products/10001")]
         public async Task Get_NotExistingProject_Return404Response(string url)
         {
             // Arrange
