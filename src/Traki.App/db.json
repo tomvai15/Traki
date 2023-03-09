@@ -1,17 +1,44 @@
 {
   "projects": {
-    "projects":[
+    "project": {
+      "name": "Josuk"
+    }
+  },
+  "templates": {
+    "1": {
+      "id": 1,
+      "name": "Šiluminio mazgo įvertinimas"
+    },
+    "templates": [
       {
         "id": 1,
-        "name": "Gappy"
+        "name": "General Check-up Before & DURING welding",
+        "standard": "[ISO 13480-5]"
       },
       {
         "id": 2,
-        "name": "Josuke"
+        "name": "General Check-up AFTER welding",
+        "standard": "[ISO 13480-5]"
+      }
+    ]
+  },
+  "questions": {
+    "questions": [
+      {
+        "id": 1,
+        "name": "Ar siųlės šaknis pilnai privirinta?",
+        "explanation": "Paaiškinimas"
+      },
+      {
+        "id": 2,
+        "name": "Josuke",
+        "explanation": "Paaiškinimas"
       },
       {
         "id": 3,
-        "name": "Josuke2"
-      }]
-    }
+        "name": "Josuke2",
+        "explanation": "Paaiškinimas"
+      }
+    ]
+  }
 }

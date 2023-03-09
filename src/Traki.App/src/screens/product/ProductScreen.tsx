@@ -3,7 +3,9 @@ import { ScrollView, View } from 'react-native';
 import { Avatar, Button, Card, List, Text } from 'react-native-paper';
 import { image } from './test';
 
-const LeftContent = props => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="folder" />
+
+const LeftContent = props => <Text variant="titleLarge">10/14</Text>
+const Wrench = props => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="wrench" />
 
 export default function ProductScreen() {
 
@@ -17,30 +19,26 @@ export default function ProductScreen() {
   return (
     <ScrollView>
       <Card>
-        <Card.Content>
-          <Text variant="titleLarge">Card title</Text>
-          <Text variant="bodyMedium">Card content</Text>
+        <Card.Content >
+          <Text variant="titleLarge">Šiluminis mazgas</Text>
+          <Text variant="bodyMedium">Busena: gaminamas</Text>
         </Card.Content>
         <Card.Cover style={{height:300}} source={{ uri: image }} />
         <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
+          <Button>Redaguoti</Button>
+          <Button>Keisti Būseną</Button>
         </Card.Actions>
       </Card>
 
       <Card style={{marginTop:10}}>
-        <Card.Title title="Card Title" subtitle="Card Subtitle" right={LeftContent} />
+        <Card.Title title="Peržiūrėti inspekcijas" subtitle="Card Subtitle" right={LeftContent} />
         <Card.Actions>
           <Button>Cancel</Button>
           <Button>Ok</Button>
         </Card.Actions>
       </Card>
       <Card style={{marginTop:10}}>
-        <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent} />
-        <Card.Content>
-          <Text variant="titleLarge">Card title</Text>
-          <Text variant="bodyMedium">Card content</Text>
-        </Card.Content>
+        <Card.Title title="Pridėti defektą" subtitle="Card Subtitle" left={Wrench} />
         <Card.Actions>
           <Button>Cancel</Button>
           <Button>Ok</Button>
