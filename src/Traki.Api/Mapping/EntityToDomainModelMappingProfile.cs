@@ -10,6 +10,8 @@ namespace Traki.Api.Mapping
         {
             CreateMap<Project, ProjectEntity>().ReverseMap();
             CreateMap<Product, ProductEntity>().ReverseMap();
+            CreateMap<Template, TemplateEntity>().ReverseMap();
+            CreateMap<Question, QuestionEntity>().ReverseMap();
         }
     }
 }
