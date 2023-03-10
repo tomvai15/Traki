@@ -31,36 +31,16 @@ export default function ProductScreen() {
       </Card>
 
       <Card style={{marginTop:10}}>
-        <Card.Title title="Peržiūrėti inspekcijas" subtitle="Card Subtitle" right={LeftContent} />
-        <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
-        </Card.Actions>
-      </Card>
-      <Card style={{marginTop:10}}>
         <Card.Title title="Pridėti defektą" subtitle="Card Subtitle" left={Wrench} />
-        <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
-        </Card.Actions>
       </Card>
 
-      <List.Section title="Accordions">
-        <List.Accordion
-          title="Uncontrolled Accordion"
-          left={props => <List.Icon {...props} color='red' icon="folder" />}>
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
-        </List.Accordion>
-
-        <List.Accordion
-          title="Controlled Accordion"
-          left={props => <List.Icon {...props} icon="folder" />}
-          expanded={expanded}
-          onPress={handlePress}>
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
-        </List.Accordion>
+      <List.Section title="Inspekcijos">
+        <Card style={{marginTop:10}}>
+          <Card.Title title="Peržiūrėti inspekcijas" subtitle="Card Subtitle" right={LeftContent} />
+        </Card>
+        <Card style={{marginTop:10}}>
+          <Card.Title title="Peržiūrėti inspekcijas" subtitle="Card Subtitle" right={LeftContent} />
+        </Card>
       </List.Section>
     </ScrollView>
   );
