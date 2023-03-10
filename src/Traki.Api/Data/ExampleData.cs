@@ -52,6 +52,28 @@ namespace Traki.Api.Data
             }
         };
 
+        public static IEnumerable<ChecklistEntity> Checklists => new[]
+        {
+            new ChecklistEntity
+            {
+                Name = "Test-Checklist-A",
+                Standard="ISO-BBD",
+                ProductId = 1
+            },
+            new ChecklistEntity
+            {
+                Name = "Test-Checklist-B",
+                Standard="ISO-BBD",
+                ProductId = 1
+            },
+            new ChecklistEntity
+            {
+                Name = "Test-Checklist-C",
+                Standard="ISO-BBD",
+                ProductId = 2
+            }
+        };
+
         public static IEnumerable<QuestionEntity> Questions => new[]
         {
             new QuestionEntity

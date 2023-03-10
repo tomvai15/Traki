@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Entities
 {
-    public class CheckListQuestion
+    public class CheckListQuestionEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }
