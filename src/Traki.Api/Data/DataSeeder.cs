@@ -19,6 +19,8 @@
 
             dbContext.AddProjects();
             dbContext.AddProducts();
+            dbContext.AddTemplates();
+            dbContext.AddQuestions();
         }
 
         public static TrakiDbContext AddProjects(this TrakiDbContext dbContext)
@@ -32,6 +34,22 @@
         public static TrakiDbContext AddProducts(this TrakiDbContext dbContext)
         {
             dbContext.Products.AddRange(ExampleData.Products);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddTemplates(this TrakiDbContext dbContext)
+        {
+            dbContext.Templates.AddRange(ExampleData.Templates);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddQuestions(this TrakiDbContext dbContext)
+        {
+            dbContext.Questions.AddRange(ExampleData.Questions);
             dbContext.SaveChanges();
 
             return dbContext;

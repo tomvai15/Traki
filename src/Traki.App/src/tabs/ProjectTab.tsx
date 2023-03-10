@@ -10,7 +10,7 @@ const ProjectStack = createNativeStackNavigator<RootStackParamList>();
 
 export  default function ProjectTab() {
   return (
-  <ProjectStack.Navigator screenOptions={{ header: ()=> <></>}}>
+  <ProjectStack.Navigator screenOptions={{ animation:'slide_from_right', header: ()=> <></>}}>
     <ProjectStack.Screen name="Home" component={HomeScreen} />
     <ProjectStack.Screen name="Details" component={DetailsScreen} />
     <ProjectStack.Screen name="Projects" component={ProjectsScreens} />
