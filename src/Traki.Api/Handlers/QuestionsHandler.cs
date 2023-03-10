@@ -30,7 +30,7 @@ namespace Traki.Api.Handlers
         {
             var question = _context.Questions.Where(x => x.Id == questionId).FirstOrDefault();
 
-            question.RequiresNotNullEnity();
+            question.RequiresToBeNotNullEnity();
 
             return _mapper.Map<Question>(question);
         }
@@ -42,7 +42,7 @@ namespace Traki.Api.Handlers
                 .Include(x => x.Questions)
                 .FirstOrDefaultAsync();
 
-            template.RequiresNotNullEnity();
+            template.RequiresToBeNotNullEnity();
 
 
             var questions = template.Questions.ToList();

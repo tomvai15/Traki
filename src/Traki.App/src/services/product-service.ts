@@ -1,24 +1,30 @@
-import axios from 'axios';
 import { GetProductsResponse } from '../contracts/product/GetProductsResponse';
 import { GetProductResponse } from '../contracts/product/GetProductResponse';
 import { CreateProductRequest } from '../contracts/product/CreateProductRequest';
-import { url } from './endpoints';
+import axiosApiInstance from './axios-instance';
+import { store } from '../store/store';
 
-const route = url + 'products'
+const route = 'projects/{projectId}/products/{productId}'
 
 class ProductService {
   async getProducts(): Promise<GetProductsResponse> {
-    const response = await axios.get<GetProductsResponse>(route, { headers: {} });
+    const projectId = store.getState().project.id;
+    const fullRoute = route.format({ projectId: projectId.toString(), productId: ''}) 
+    const response = await axiosApiInstance.get<GetProductsResponse>(fullRoute, { headers: {} });
     return response.data;
   }
 
   async getProduct(id: number): Promise<GetProductResponse> {
-    const response = await axios.get<GetProductResponse>(`${route}/${id}`, { headers: {} });
+    const projectId = store.getState().project.id;
+    const fullRoute = route.format({projectId: projectId.toString(), productId: id.toString()}) 
+    const response = await axiosApiInstance.get<GetProductResponse>(fullRoute, { headers: {} });
     return response.data;
   }
 
   async createProduct(createProductRequest: CreateProductRequest): Promise<boolean> {
-    await axios.post(route, createProductRequest, { headers: {} });
+    const projectId = store.getState().project.id;
+    const fullRoute = route.format({ projectId: projectId.toString(), productId: ''}) 
+    await axiosApiInstance.post(fullRoute, createProductRequest, { headers: {} });
     return true;
   }
 }

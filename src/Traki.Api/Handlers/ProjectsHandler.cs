@@ -48,7 +48,7 @@ namespace Traki.Api.Handlers
             var createdProject = _context.Projects.Add(projectToAdd);
             await _context.SaveChangesAsync();
 
-            var addedProject = _mapper.Map<Project>(createdProject);
+            var addedProject = _mapper.Map<Project>(createdProject.Entity);
             return addedProject;
         }
     }

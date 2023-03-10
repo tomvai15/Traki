@@ -28,7 +28,7 @@ namespace Traki.Api.Handlers
         {
             var template = _context.Templates.Where(x => x.Id == templateId).FirstOrDefault();
 
-            template.RequiresNotNullEnity();
+            template.RequiresToBeNotNullEnity();
 
             return _mapper.Map<Template>(template);
         }
@@ -40,7 +40,7 @@ namespace Traki.Api.Handlers
                 .Include(x=> x.Templates)
                 .FirstOrDefaultAsync();
 
-            project.RequiresNotNullEnity();
+            project.RequiresToBeNotNullEnity();
 
             var templates = project.Templates.ToList();
             return _mapper.Map<IEnumerable<Template>>(templates);

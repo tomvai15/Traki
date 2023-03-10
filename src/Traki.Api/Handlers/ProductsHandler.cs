@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Traki.Api.Data;
 using Traki.Api.Entities;
+using Traki.Api.Extensions;
 using Traki.Api.Models;
 
 namespace Traki.Api.Handlers
@@ -9,7 +10,7 @@ namespace Traki.Api.Handlers
     public interface IProductsHandler
     {
         Task<Product> GetProduct(int productId);
-        Task<IEnumerable<Product>> GetProducts();
+        Task<IEnumerable<Product>> GetProducts(int projectId);
         Task<Product> CreateProduct(Product product);
     }
 
@@ -30,9 +31,16 @@ namespace Traki.Api.Handlers
             return _mapper.Map<Product>(product);
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<Product>> GetProducts(int projectId)
         {
-            var products = await _context.Products.ToListAsync();
+            var project = await _context.Projects
+               .Where(x => x.Id == projectId)
+               .Include(x => x.Products)
+               .FirstOrDefaultAsync();
+
+            project.RequiresToBeNotNullEnity();
+
+            var products = project.Products.ToList();
             return _mapper.Map<IEnumerable<Product>>(products);
         }
 

@@ -7,7 +7,7 @@ using Traki.Api.Models;
 
 namespace Traki.Api.Controllers
 {
-    [Route("api/products")]
+    [Route("api/projects/{projectId}/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet(("{productId}"))]
-        public async Task<ActionResult<GetProductResponse>> GetProduct(int productId)
+        public async Task<ActionResult<GetProductResponse>> GetProduct(int projectId, int productId)
         {
             var product = await _productsHandler.GetProduct(productId);
 
@@ -34,15 +34,15 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<GetProductsResponse>> GetProducts()
+        public async Task<ActionResult<GetProductsResponse>> GetProducts(int projectId)
         {
-            var products = await _productsHandler.GetProducts();
+            var products = await _productsHandler.GetProducts(projectId);
 
             return _mapper.Map<GetProductsResponse>(products);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetProductResponse>> PostProduct(CreateProductRequest createProjectRequest)
+        public async Task<ActionResult<GetProductResponse>> PostProduct(int projectId, CreateProductRequest createProjectRequest)
         {
             var product = _mapper.Map<Product>(createProjectRequest);
 
