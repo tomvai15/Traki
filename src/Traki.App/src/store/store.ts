@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import messageReducer from './message-slice';
+import projectReducer from './project-slice';
 
 export const store = configureStore({
   reducer: {
-    message: messageReducer
+    project: projectReducer
   }
 });
 

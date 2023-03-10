@@ -10,6 +10,7 @@ import ProductTab from './src/tabs/ProductTab';
 import TemplateTab from './src/tabs/TemplateTab';
 import { Provider, useSelector } from 'react-redux';
 import { RootState, store } from './src/store/store';
+import './src/extensions/string.extensions';
 
 const theme = {
   ...DefaultTheme,
@@ -23,7 +24,7 @@ const theme = {
 };
 
 function TempScreen() {
-  const { message } = useSelector((state: RootState) => state.message);
+  const id = useSelector((state: RootState) => state.project.id);
   
   return (
     <NavigationContainer>
@@ -31,7 +32,7 @@ function TempScreen() {
       <Drawer.Screen name="Produktai" component={ProductTab} />
       <Drawer.Screen name="Šablonai" component={TemplateTab} />
       <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name={"Projektai"} component={ProjectTab} />
-      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='human' />, headerTitle: '' }} name={message} component={TemplateTab} />
+      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='human' />, headerTitle: '' }} name={id.toString()} component={TemplateTab} />
     </Drawer.Navigator>
   </NavigationContainer>
   );

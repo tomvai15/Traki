@@ -4,7 +4,7 @@ import { TextInput, Button, Text  } from 'react-native-paper';
 import projectService from '../../services/project-service';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CreateQuestionScreenParams, TemplateStackParamList } from './TemplateStackParamList';
+import { TemplateStackParamList } from './TemplateStackParamList';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'CreateTemplate'>;
 

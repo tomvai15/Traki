@@ -1,4 +1,4 @@
-import { Question } from "./Question"
+import { Question } from "../question/Question"
 
 export type Template = {
   id: number,

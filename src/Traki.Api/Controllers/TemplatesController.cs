@@ -24,5 +24,13 @@ namespace Traki.Api.Controllers
 
             return _mapper.Map<GetTemplatesResponse>(templates);
         }
+
+        [HttpGet("{templateId}")]
+        public async Task<ActionResult<GetTemplateResponse>> GetTemplate(int projectId, int templateId)
+        {
+            var template = await _templatesHandler.GetTemplate(projectId, templateId);
+
+            return _mapper.Map<GetTemplateResponse>(template);
+        }
     }
 }

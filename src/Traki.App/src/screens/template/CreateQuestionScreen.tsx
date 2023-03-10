@@ -5,6 +5,7 @@ import projectService from '../../services/project-service';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateQuestionScreenParams, TemplateStackParamList } from './TemplateStackParamList';
+import { notEmptyOrNull } from '../../extensions/helpers';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'CreateQuestion'>;
 
@@ -29,10 +30,6 @@ export default function CreateQuestionScreen({ route, navigation }: Props) {
     } else {
       setResponseMessage('Projekto nepavyko sukurti');
     }
-  }
-
-  function notEmptyOrNull( params: string[]): boolean {
-    return params.some(x=> x == null || x == '');
   }
 
   function canCreate() {

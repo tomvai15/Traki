@@ -9,6 +9,7 @@ namespace Traki.Api.Handlers
 {
     public interface ITemplatesHandler
     {
+        Task<Template> GetTemplate(int projectId, int templateId);
         Task<IEnumerable<Template>> GetTemplates(int projectId);
     }
 
@@ -21,6 +22,15 @@ namespace Traki.Api.Handlers
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<Template> GetTemplate(int projectId, int templateId)
+        {
+            var template = _context.Templates.Where(x => x.Id == templateId).FirstOrDefault();
+
+            template.RequiresNotNullEnity();
+
+            return _mapper.Map<Template>(template);
         }
 
         public async Task<IEnumerable<Template>> GetTemplates(int projectId)

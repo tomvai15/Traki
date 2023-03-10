@@ -11,9 +11,10 @@ export type TemplateScreenParams = {
 }
 
 export type EditQuestionScreenParams = {
-  id: number,
-  name: string,
-  explanation: string
+  templateId: number,
+  questionId: number,
+  title: string,
+  description: string
 }
 
 export type CreateQuestionScreenParams = {

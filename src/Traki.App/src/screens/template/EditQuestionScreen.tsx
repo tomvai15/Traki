@@ -5,57 +5,59 @@ import projectService from '../../services/project-service';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { EditQuestionScreenParams, TemplateStackParamList } from './TemplateStackParamList';
+import { UpdateQuestionRequest } from '../../contracts/question/UpdateQuestionRequest';
+import questionService from '../../services/question-service';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'EditQuestion'>;
 
 export default function EditQuestionScreen({ route, navigation }: Props) {
 
-  const initialData: EditQuestionScreenParams = route.params;
+  let initialData: EditQuestionScreenParams = route.params;
 
-  const [name, setName] = useState('');
-  const [explanation, setExplanation] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
-    setName(initialData.name);
-    setExplanation(initialData.explanation);
+    setTitle(initialData.title);
+    setDescription(initialData.description);
   }, []);
 
-  async function createProject() {
-    const createProjectRequest: CreateProjectRequest = {
-      project:{
-        name: name
-      }
+  async function updateQuestion() {
+    const updateQuestionRequest: UpdateQuestionRequest = {
+      title: title,
+      description: description
     };
-    const wasCreated = await projectService.createProject(createProjectRequest);
-
-    if (wasCreated) {
-      setResponseMessage('Projektas sukurtas');
-    } else {
-      setResponseMessage('Projekto nepavyko sukurti');
+    try {
+      await questionService.updateQuestion(initialData.templateId, initialData.questionId, updateQuestionRequest);
+      setResponseMessage('Informacija atnaujinta');
+      setTitle(initialData.title);
+      setDescription(initialData.description);
+    } catch (err) {
+      setResponseMessage('Nepavyko atnaujinti');
     }
   }
 
   function canUpdate() {
-    return !(initialData.explanation != explanation || initialData.name != name);
+    return !(initialData.description != description || initialData.title != title);
   }
 
   return (
     <View style={{ flex: 1}}>
       <TextInput
         label="Klausimas"
-        value={name}
-        onChangeText={text => setName(text)}
+        value={title}
+        onChangeText={text => setTitle(text)}
       />
       <TextInput
         label="Aprašymas"
-        value={explanation}
-        onChangeText={value => setExplanation(value)}
+        value={description}
+        onChangeText={value => setDescription(value)}
       />
       <Button disabled={canUpdate()} 
               style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
               mode="contained" 
-              onPress={() => console.log('Question updated')}>
+              onPress={() => updateQuestion()}>
         Atnaujinti informaciją
       </Button>
       <Text>{responseMessage}</Text>

@@ -41,6 +41,8 @@ namespace Traki.Api.Mapping
 
             CreateMap<CreateQuestionRequest, Question>()
                 .IncludeMembers(x => x.Question);
+
+            CreateMap<UpdateQuestionRequest, Question>();
         }
     }
 }
