@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Traki.Api.Contracts.Checklist;
+using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Contracts.Question;
 using Traki.Api.Contracts.Template;
 using Traki.Api.Models;
@@ -13,6 +14,8 @@ namespace Traki.Api.Mapping
             AddTemplateMappings();
             AddQuestionMappings();
             AddChecklistMappings();
+            AddChecklistQuestionMappings();
+            AddChecklistQuestionMappings();
         }
 
         public void AddTemplateMappings()
@@ -54,6 +57,17 @@ namespace Traki.Api.Mapping
                 .ForMember(x => x.Checklists, opt => opt.MapFrom(x => x));
 
             CreateMap<CheckList, ChecklistDto>().ReverseMap();
+        }
+
+        public void AddChecklistQuestionMappings()
+        {
+            CreateMap<ChecklistQuestion, GetChecklistQuestionResponse>()
+                .ForMember(x => x.ChecklistQuestion, opt => opt.MapFrom(x => x));
+
+            CreateMap<IEnumerable<ChecklistQuestion>, GetChecklistQuestionsResponse>()
+                .ForMember(x => x.ChecklistQuestions, opt => opt.MapFrom(x => x));
+
+            CreateMap<ChecklistQuestion, ChecklistQuestionDto>().ReverseMap();
         }
     }
 }

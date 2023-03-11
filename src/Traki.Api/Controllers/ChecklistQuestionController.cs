@@ -1,36 +1,28 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Traki.Api.Contracts.Checklist;
+using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Handlers;
 
 namespace Traki.Api.Controllers
 {
-    [Route("api/products/{productId}/checklists")]
+    [Route("api/checklists/{checklistId}/checklistquestions")]
     public class ChecklistQuestionController : ControllerBase
     {
-        private readonly IChecklistHandler _checklistHandler;
+        private readonly IChecklistQuestionHandler _checklistQuestionHandler;
         private readonly IMapper _mapper;
 
-        public ChecklistQuestionController(IChecklistHandler checklistHandler, IMapper mapper)
+        public ChecklistQuestionController(IChecklistQuestionHandler checklistQuestionHandler, IMapper mapper)
         {
-            _checklistHandler = checklistHandler;
+            _checklistQuestionHandler = checklistQuestionHandler;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<GetChecklistsResponse>> GetChecklistQuestions(int checklistId)
+        public async Task<ActionResult<GetChecklistQuestionsResponse>> GetChecklistQuestions(int checklistId)
         {
-            var checkLists = await _checklistHandler.GetChecklists(checklistId);
+            var checkListQuestions = await _checklistQuestionHandler.GetChecklistQuestions(checklistId);
 
-            return _mapper.Map<GetChecklistsResponse>(checkLists);
-        }
-
-        [HttpGet("{checklistQuestionId}")]
-        public async Task<ActionResult<GetChecklistResponse>> GetChecklistQuestion(int checklistId, int checklistQuestionId)
-        {
-            var checkList = await _checklistHandler.GetChecklist(checklistId);
-
-            return _mapper.Map<GetChecklistResponse>(checkList);
+            return _mapper.Map<GetChecklistQuestionsResponse>(checkListQuestions);
         }
     }
 }

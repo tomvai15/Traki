@@ -95,5 +95,27 @@ namespace Traki.Api.Data
                 TemplateId = 2
             }
         };
+
+        public static IEnumerable<ChecklistQuestionEntity> CheckListQuestions => new[]
+{
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-A",
+                Description="Test-Description-A",
+                ChecklistId = 1
+            },
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-B",
+                Description="Test-Description-B",
+                ChecklistId = 1
+            },
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-C",
+                Description="Test-Description-C",
+                ChecklistId = 2
+            }
+        };
     }
 }

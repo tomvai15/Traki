@@ -7,6 +7,6 @@
         public string Standard { get; set; }
         public int ProductId { get; set; }
         public ProductEntity Product { get; set; }
-        public ICollection<CheckListQuestionEntity> CheckListQuestions { get; set; }
+        public ICollection<ChecklistQuestionEntity> ChecklistQuestions { get; set; }
     }
 }
