@@ -70,7 +70,7 @@ namespace Traki.Api.Data
             {
                 Name = "Test-Checklist-C",
                 Standard="ISO-BBD",
-                ProductId = 2
+                ProductId = 1
             }
         };
 
