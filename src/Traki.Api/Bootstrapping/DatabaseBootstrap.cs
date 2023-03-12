@@ -7,7 +7,7 @@ namespace Traki.Api.Bootstrapping
     {
         public static IServiceCollection AddTrakiDbContext(this IServiceCollection services, IConfiguration config)
         {
-            const string connectionStringSectionName = "TrakiDbContext";
+            const string connectionStringSectionName = "TrakiDbContextCloud";
             services.AddDbContext<TrakiDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString(connectionStringSectionName)));
 

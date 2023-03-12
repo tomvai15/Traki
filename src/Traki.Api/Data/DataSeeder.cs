@@ -8,10 +8,9 @@
 
             var dbContext = scope.ServiceProvider.GetRequiredService<TrakiDbContext>();
 
-            dbContext.Database.EnsureDeleted();
-
             if (app.Environment.IsDevelopment())
             {
+                // this can be done only locally (already deleted database in cloud once)
                 dbContext.Database.EnsureDeleted();
             }
 

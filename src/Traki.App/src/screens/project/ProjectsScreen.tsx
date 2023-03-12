@@ -71,7 +71,7 @@ export default function ProjectsScreens({ navigation }: Props) {
             (props => <List.Icon {...props} icon='check' />) :
             (() => <></>)}
         />}
-        keyExtractor={item => item.name}
+        keyExtractor={item => item.id.toString()}
       />
       <Button style={{ width: 200, alignSelf: 'center', marginBottom: 10}} mode="contained" onPress={() => navigation.navigate('CreateProject')}>
         Naujas projektas
