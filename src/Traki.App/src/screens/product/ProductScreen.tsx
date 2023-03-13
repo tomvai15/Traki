@@ -10,7 +10,7 @@ import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Product'>;
 
-const LeftContent = props => <Text variant="titleLarge">10/14</Text>
+const LeftContent = props => <List.Icon icon="chevron-right" />
 const Wrench = props => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="wrench" />
 
 export default function ProductScreen({route, navigation}: Props) {

@@ -35,8 +35,8 @@ function TempScreen() {
   return (
     <NavigationContainer>
     <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Produktai" component={ProductTab} />
-      <Drawer.Screen name="Šablonai" component={TemplateTab} />
+      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Produktai' }} name="Produktai" component={ProductTab} />
+      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: '' }} name="Šablonai" component={TemplateTab} />
       <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name={"Projektai"} component={ProjectTab} />
     </Drawer.Navigator>
   </NavigationContainer>
