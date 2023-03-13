@@ -8,10 +8,9 @@
 
             var dbContext = scope.ServiceProvider.GetRequiredService<TrakiDbContext>();
 
-            dbContext.Database.EnsureDeleted();
-
             if (app.Environment.IsDevelopment())
             {
+                // this can be done only locally (already deleted database in cloud once)
                 dbContext.Database.EnsureDeleted();
             }
 
@@ -21,6 +20,8 @@
             dbContext.AddProducts();
             dbContext.AddTemplates();
             dbContext.AddQuestions();
+            dbContext.AddChecklists();
+            dbContext.AddChecklistQuestions();
         }
 
         public static TrakiDbContext AddProjects(this TrakiDbContext dbContext)
@@ -50,6 +51,22 @@
         public static TrakiDbContext AddQuestions(this TrakiDbContext dbContext)
         {
             dbContext.Questions.AddRange(ExampleData.Questions);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddChecklists(this TrakiDbContext dbContext)
+        {
+            dbContext.Checklists.AddRange(ExampleData.Checklists);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddChecklistQuestions(this TrakiDbContext dbContext)
+        {
+            dbContext.CheckListQuestions.AddRange(ExampleData.CheckListQuestions);
             dbContext.SaveChanges();
 
             return dbContext;

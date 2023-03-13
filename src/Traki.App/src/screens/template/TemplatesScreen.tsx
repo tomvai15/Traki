@@ -1,17 +1,14 @@
 import  React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import { Button, List, Searchbar, Text } from 'react-native-paper';
+import { Button, List, Searchbar } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
 import { Template } from '../../contracts/template/Template';
 import templateService from '../../services/template-service';
-import { useDispatch } from 'react-redux';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'Templates'>;
 
 export default function TemplatesScreen({ navigation }: Props) {
-
-  const dispatch = useDispatch();
 
   const [templates, setTemplates] = useState<Template[]>([]);
 

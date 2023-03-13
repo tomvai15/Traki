@@ -63,7 +63,7 @@ export default function TemplateScreen({ route, navigation }: Props) {
             title={item.title}
             left={props => <List.Icon {...props} icon="text" />}>
             <List.Section style={{marginLeft: 0, paddingLeft: 0 }}>
-              <Text style={{ paddingLeft: 20, fontWeight: 'bold' }}>Paaiškinimas</Text>
+              <Text style={{ paddingLeft: 20, fontWeight: 'bold' }}>Paaiškinimas {item.id}</Text>
               <Text style={{ paddingLeft: 20 }}>{item.description}</Text>
               <View  style={{ flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20 }} >
                 <Button mode="contained" buttonColor={colors.error} style={{ width: 150, paddingRight: 0, marginRight: 0}}
@@ -71,7 +71,7 @@ export default function TemplateScreen({ route, navigation }: Props) {
                   Šalinti
                 </Button>
                 <Button mode="contained" style={{ width: 150, paddingRight: 0, marginRight: 0}}
-                  onPress={() => navigation.navigate('EditQuestion', { questionId: id, templateId: item.id, title: item.title, description: item.description })}>
+                  onPress={() => navigation.navigate('EditQuestion', { templateId: id, questionId: item.id, title: item.title, description: item.description })}>
                   Redaguoti
                 </Button>
               </View>

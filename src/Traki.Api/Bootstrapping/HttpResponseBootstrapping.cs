@@ -10,7 +10,8 @@ namespace Traki.Api.Bootstrapping
         public static IServiceCollection AddHttpResponseMappings(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddProblemDetails(options => options.IncludeExceptionDetails = (_, _) => configuration.IsDevelopment());
+          //  services.AddProblemDetails(options => options.IncludeExceptionDetails = (_, _) => configuration.IsDevelopment());
+            services.AddProblemDetails(options => options.IncludeExceptionDetails = (_, _) => true);
 
             services.AddProblemsMapping<EntityNotFoundException>(HttpStatusCode.NotFound, e => e.Message);
 

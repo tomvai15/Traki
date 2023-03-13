@@ -4,7 +4,7 @@ namespace Traki.Api.Extensions
 {
     public static class ValidationExtensions
     {
-        public static void RequiresNotNullEnity(this object entity)
+        public static void RequiresToBeNotNullEnity(this object entity)
         {
             if (entity == null)
             {

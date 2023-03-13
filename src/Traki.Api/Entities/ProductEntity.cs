@@ -1,6 +1,4 @@
-﻿using Traki.Api.Models;
-
-namespace Traki.Api.Entities
+﻿namespace Traki.Api.Entities
 {
     public class ProductEntity
     {
@@ -8,5 +6,7 @@ namespace Traki.Api.Entities
         public string Name { get; set; }
         public int ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
+
+        public ICollection<ChecklistEntity> CheckLists { get; set; }
     }
 }

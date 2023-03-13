@@ -10,6 +10,7 @@ namespace Traki.Api.Data
            : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProjectEntity>()
@@ -18,14 +19,23 @@ namespace Traki.Api.Data
 
             modelBuilder.Entity<ProjectEntity>()
                 .HasMany(p => p.Templates)
-                .WithOne(navigationExpression: p => p.Project);
+                .WithOne(p => p.Project);
+
+            modelBuilder.Entity<ProductEntity>()
+                .HasMany(p => p.CheckLists)
+                .WithOne(p => p.Product);
 
             modelBuilder.Entity<TemplateEntity>()
                 .HasMany(p => p.Questions)
                 .WithOne(p => p.Template);
+
+            modelBuilder.Entity<ChecklistEntity>()
+                .HasMany(p => p.ChecklistQuestions)
+                .WithOne(p => p.Checklist);
         }
 
-
+        public virtual DbSet<ChecklistEntity> Checklists { get; set; }
+        public virtual DbSet<ChecklistQuestionEntity> CheckListQuestions { get; set; }
         public virtual DbSet<ProductEntity> Products { get; set; }
         public virtual DbSet<ProjectEntity> Projects { get; set; }
         public virtual DbSet<TemplateEntity> Templates { get; set; }

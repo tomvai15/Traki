@@ -1,10 +1,8 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { DefaultTheme, List, Provider as PaperProvider } from 'react-native-paper';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProjectTab from './src/tabs/ProjectTab';
 import ProductTab from './src/tabs/ProductTab';
 import TemplateTab from './src/tabs/TemplateTab';
@@ -18,10 +16,18 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#e4ae3f',
+    secondaryContainer: '#ffd47d',
+    onSecondaryContainer: '#F14444',
+    background: 'white',
+    surface: '#f7f5f2',
+    surfaceVariant: '#ffeecc', // TextInput
+    outline: '#9ab1c0',
     accent: '#9ab1c0',
-    error: '#F14444'
+    error: '#F14444',
   },
 };
+
+const Drawer = createDrawerNavigator();
 
 function TempScreen() {
   const id = useSelector((state: RootState) => state.project.id);
@@ -29,17 +35,13 @@ function TempScreen() {
   return (
     <NavigationContainer>
     <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Produktai" component={ProductTab} />
-      <Drawer.Screen name="Šablonai" component={TemplateTab} />
+      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Produktai' }} name="Produktai" component={ProductTab} />
+      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: '' }} name="Šablonai" component={TemplateTab} />
       <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name={"Projektai"} component={ProjectTab} />
-      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='human' />, headerTitle: '' }} name={id.toString()} component={TemplateTab} />
     </Drawer.Navigator>
   </NavigationContainer>
   );
 }
-
-const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
 
 export default function App() {
   
@@ -51,12 +53,3 @@ export default function App() {
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

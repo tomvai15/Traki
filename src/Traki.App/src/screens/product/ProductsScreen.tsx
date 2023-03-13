@@ -42,6 +42,7 @@ export default function ProductsScreen({ navigation }: Props) {
       <FlatList
         data={products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={({item}) => <List.Item
+          onPress={() => navigation.navigate('Product', { productId: item.id })}
           title={item.name}
           description='Item description'
           left={props => <List.Icon {...props} icon='folder' />}
@@ -49,7 +50,7 @@ export default function ProductsScreen({ navigation }: Props) {
         keyExtractor={item => item.id.toString()}
       />
 
-      <Button onPress={() => navigation.navigate('Product')}>Product</Button>
+      <Button>Product</Button>
     </View>
   );
 }
