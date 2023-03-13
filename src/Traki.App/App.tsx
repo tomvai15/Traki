@@ -16,8 +16,14 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#e4ae3f',
+    secondaryContainer: '#ffd47d',
+    onSecondaryContainer: '#F14444',
+    background: 'white',
+    surface: '#f7f5f2',
+    surfaceVariant: '#ffeecc', // TextInput
+    outline: '#9ab1c0',
     accent: '#9ab1c0',
-    error: '#F14444'
+    error: '#F14444',
   },
 };
 

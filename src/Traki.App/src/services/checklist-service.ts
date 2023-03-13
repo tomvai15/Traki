@@ -2,6 +2,7 @@ import axiosApiInstance from './axios-instance';
 import { store } from '../store/store';
 import { GetChecklistsResponse } from '../contracts/checklist/GetChecklistsResponse';
 import { GetChecklistResponse } from '../contracts/checklist/GetChecklistResponse';
+import { UpdateChecklistQuestionsRequest } from '../contracts/checklistQuestion/UpdateChecklistQuestionsRequest';
 
 const route = 'products/{productId}/checklists/{checklistId}'
 

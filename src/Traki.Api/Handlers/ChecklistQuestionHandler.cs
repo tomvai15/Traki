@@ -9,6 +9,7 @@ namespace Traki.Api.Handlers
     public interface IChecklistQuestionHandler
     {
         Task<IEnumerable<ChecklistQuestion>> GetChecklistQuestions(int checklistId);
+        Task UpdateChecklistQuestions(IEnumerable<ChecklistQuestion> checklistQuestions);
     }
 
     public class ChecklistQuestionHandler : IChecklistQuestionHandler
@@ -33,6 +34,21 @@ namespace Traki.Api.Handlers
 
             var checklistQuestions = checklist.ChecklistQuestions.ToList();
             return _mapper.Map<IEnumerable<ChecklistQuestion>>(checklistQuestions);
+        }
+
+        public async Task UpdateChecklistQuestions(IEnumerable<ChecklistQuestion> checklistQuestions)
+        {
+            foreach (var checklistQuestion in checklistQuestions)
+            {
+                var checklistQuestionUpdate = await _context.CheckListQuestions
+                    .FirstOrDefaultAsync(x => x.Id == checklistQuestion.Id);
+
+                checklistQuestionUpdate.RequiresToBeNotNullEnity();
+
+                checklistQuestionUpdate.Comment = checklistQuestion.Comment;
+                checklistQuestionUpdate.Evaluation = checklistQuestion.Evaluation;
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

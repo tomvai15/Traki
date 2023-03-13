@@ -12,8 +12,7 @@ type Props = NativeStackScreenProps<TemplateStackParamList, 'EditQuestion'>;
 
 export default function EditQuestionScreen({ route, navigation }: Props) {
 
-  let initialData: EditQuestionScreenParams = route.params;
-
+  const [initialData, setInitialData] = useState<EditQuestionScreenParams>(route.params);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
@@ -31,8 +30,10 @@ export default function EditQuestionScreen({ route, navigation }: Props) {
     try {
       await questionService.updateQuestion(initialData.templateId, initialData.questionId, updateQuestionRequest);
       setResponseMessage('Informacija atnaujinta');
-      setTitle(initialData.title);
-      setDescription(initialData.description);
+      initialData.title = title;
+      initialData.description = description;
+
+      setInitialData({templateId: initialData.templateId, questionId: initialData.questionId, title: title, description: description});
     } catch (err) {
       setResponseMessage('Nepavyko atnaujinti');
     }
