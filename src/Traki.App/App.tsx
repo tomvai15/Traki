@@ -21,7 +21,7 @@ const theme = {
     background: 'white',
     surface: '#f7f5f2',
     surfaceVariant: '#ffeecc', // TextInput
-    outline: '#9ab1c0',
+    outline: '#c7cfd4',
     accent: '#9ab1c0',
     error: '#F14444',
   },

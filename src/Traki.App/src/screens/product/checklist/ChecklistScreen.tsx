@@ -1,6 +1,6 @@
 import  React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { Button, Card, Paragraph, Text, Title, TextInput, Divider, Avatar, SegmentedButtons } from 'react-native-paper';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Card, Paragraph, Text, Title, TextInput, Divider, Avatar, SegmentedButtons, ActivityIndicator } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProductStackParamList } from '../ProductStackParamList';
 import { Checklist } from '../../../contracts/checklist/Checklist';
@@ -14,7 +14,7 @@ type Props = NativeStackScreenProps<ProductStackParamList, 'Checklist'>;
 export default function ChecklistScreen({ route, navigation }: Props) {
 
   const [initialChecklist, setInitialChecklist] = useState<ChecklistQuestion[]>([]);
-  const [value, setValue] = React.useState('');
+  const [isLoading, setLoading] = React.useState(false);
   const {productId, checklistId} = route.params;
 
   const [checklist, setChecklist] = useState<Checklist>();
@@ -28,11 +28,13 @@ export default function ChecklistScreen({ route, navigation }: Props) {
   }, [navigation]);
 
   async function fetchData() { 
+    setLoading(true);
     const getChecklistResposne = await checklistService.getChecklist(productId, checklistId).catch(err =>console.log(err));
     const getChecklistQuestionsResposne = await checklistQuestionService.getChecklistQuestions(checklistId).catch(err =>console.log(err));
     if (!getChecklistResposne || !getChecklistQuestionsResposne) {
       return;
     }
+    setLoading(false);
     setChecklistQuestions(getChecklistQuestionsResposne.checklistQuestions);
     setInitialChecklist(getChecklistQuestionsResposne.checklistQuestions.map(x=>Object.assign({},x)));
     setChecklist(getChecklistResposne.checklist);
@@ -55,39 +57,63 @@ export default function ChecklistScreen({ route, navigation }: Props) {
   }
 
   return (
-    <ScrollView>
-      <Button style={{margin: 5, padding: 0 ,width: 120, alignSelf: 'flex-end'}} disabled={areEquivalent()} onPress={() => submitChanges()} mode='contained'>Atnaujinti</Button>
-      {checklistQuestions.map((checklistQuestion) => 
-        (<Card
-        mode='outlined'
-          key={checklistQuestion.id} 
-          style={{ borderWidth:0, marginHorizontal:5, marginVertical:10 }}>
-          <Card.Content>
-            <Title>{checklistQuestion.title}</Title>
-            <Paragraph>{checklistQuestion.description}</Paragraph>
-            <Divider style={{ height: 2 }} />
-            <Paragraph style={{fontSize: 15}}>Reikalavimai išpildyti?</Paragraph>
-            <SegmentedButtons
-              value={checklistQuestion.evaluation.toString()}
-              onValueChange={(value) => 
-                setChecklistQuestions(checklistQuestions.map(x=> x.id == checklistQuestion.id ? Object.assign(x, {evaluation: Number(value)}) : x ))}
-              buttons={[
-                {
-                  value: '0', label: 'Ne',
-                },
-                {
-                  value: '1',label: 'Taip',
-                },
-                { value: '2', label: 'Neaktualu' },
-              ]}
-            />
-            <Paragraph>Įvertinimo komentaras</Paragraph>
-            <TextInput value={checklistQuestion.comment} 
-              onChangeText={(value)=> 
-                setChecklistQuestions(checklistQuestions.map(x=> x.id == checklistQuestion.id ? Object.assign(x, {comment: value}) : x ))}
-              multiline={true}></TextInput>
+    <View  style={[styles.container,{flexDirection: 'column'}]}>
+      <View>
+        <Button style={{margin: 5, padding: 0 ,width: 120, alignSelf: 'flex-end'}} 
+          disabled={areEquivalent()} 
+          onPress={() => submitChanges()} 
+          mode='contained'>
+            Atnaujinti
+        </Button>
+      </View>
+      { isLoading ?
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator animating={isLoading}/>
+      </View> :
+      <View style={{flex: 1}}>
+        <FlatList data={checklistQuestions} 
+        keyExtractor={item => item.id.toString()}
+        renderItem={ ({item}) => 
+        <Card
+            mode='outlined'
+            key={item.id} 
+            style={{ borderWidth:0, marginHorizontal:5, marginVertical:10 }}>
+            <Card.Content>
+              <Title>{item.title}</Title>
+              <Paragraph>{item.description}</Paragraph>
+              <Divider style={{ height: 2 }} />
+              <Paragraph style={{fontSize: 15}}>Reikalavimai išpildyti?</Paragraph>
+              <SegmentedButtons
+                value={item.evaluation.toString()}
+                onValueChange={(value) => 
+                  setChecklistQuestions(checklistQuestions.map(x=> x.id == item.id ? Object.assign(x, {evaluation: Number(value)}) : x ))}
+                buttons={[
+                  {
+                    value: '0', label: 'Ne',
+                  },
+                  {
+                    value: '1',label: 'Taip',
+                  },
+                  { value: '2', label: 'Neaktualu' },
+                ]}
+              />
+              <Paragraph>Įvertinimo komentaras</Paragraph>
+              <TextInput value={item.comment} 
+                onChangeText={(value)=> 
+                  setChecklistQuestions(checklistQuestions.map(x=> x.id == item.id ? Object.assign(x, {comment: value}) : x ))}
+                multiline={true}></TextInput>
           </Card.Content>
-        </Card>))}
-    </ScrollView>
+        </Card>
+        
+        }>
+        </FlatList>
+      </View>}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+});

@@ -11,9 +11,9 @@ type Props = NativeStackScreenProps<ProductStackParamList, 'Products'>;
 export default function ProductsScreen({ navigation }: Props) {
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   useEffect(() => {
-
     const focusHandler = navigation.addListener('focus', () => {
       void fetchProjects();
     });
@@ -27,8 +27,6 @@ export default function ProductsScreen({ navigation }: Props) {
     }
     setProducts(getProductsResposne.products);
   }
-
-  const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
