@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Template;
-using Traki.Api.Handlers;
+using Traki.Api.Repositories;
 
 namespace Traki.Api.Controllers
 {
@@ -28,7 +28,7 @@ namespace Traki.Api.Controllers
         [HttpGet("{templateId}")]
         public async Task<ActionResult<GetTemplateResponse>> GetTemplate(int projectId, int templateId)
         {
-            var template = await _templatesHandler.GetTemplate(projectId, templateId);
+            var template = await _templatesHandler.GetTemplate(templateId);
 
             return _mapper.Map<GetTemplateResponse>(template);
         }

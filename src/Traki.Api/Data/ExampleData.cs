@@ -64,13 +64,13 @@ namespace Traki.Api.Data
             {
                 Name = "Test-Checklist-B",
                 Standard="ISO-BBD",
-                ProductId = 1
+                ProductId = 2
             },
             new ChecklistEntity
             {
                 Name = "Test-Checklist-C",
                 Standard="ISO-BBD",
-                ProductId = 1
+                ProductId = 2
             }
         };
 
@@ -93,11 +93,22 @@ namespace Traki.Api.Data
                 Title = "Test-Question-C",
                 Description="Test-Description-C",
                 TemplateId = 2
-            }
+            },            new QuestionEntity
+            {
+                Title = "Test-Question-D",
+                Description="Test-Description-D",
+                TemplateId = 1
+            },
+            new QuestionEntity
+            {
+                Title = "Test-Question-E",
+                Description="Test-Description-E",
+                TemplateId = 1
+            },
         };
 
         public static IEnumerable<ChecklistQuestionEntity> CheckListQuestions => new[]
-{
+        {
             new ChecklistQuestionEntity
             {
                 Title = "Test-ChecklistQuestion-A",
@@ -115,7 +126,19 @@ namespace Traki.Api.Data
                 Title = "Test-ChecklistQuestion-C",
                 Description="Test-Description-C",
                 ChecklistId = 2
-            }
+            },
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-D",
+                Description="Test-Description-D",
+                ChecklistId = 1
+            },
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-E",
+                Description="Test-Description-E",
+                ChecklistId = 1
+            },
         };
     }
 }

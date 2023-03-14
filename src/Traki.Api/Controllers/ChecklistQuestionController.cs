@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.ChecklistQuestion;
-using Traki.Api.Handlers;
+using Traki.Api.Repositories;
 using Traki.Api.Models;
 
 namespace Traki.Api.Controllers

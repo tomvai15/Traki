@@ -5,7 +5,7 @@ using Traki.Api.Entities;
 using Traki.Api.Exceptions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Handlers
+namespace Traki.Api.Repositories
 {
     public interface IProjectsHandler
     {

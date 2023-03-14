@@ -58,6 +58,16 @@ export default function ProductScreen({route, navigation}: Props) {
     setTemplates(getTemplatesResponse.templates);
   }
 
+  async function createChecklist() {
+    try {
+      await checklistService.createChecklist(productId, {templateId: templateToAdd});
+      await fetchProduct();
+      hideDialog();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <ScrollView>
       <Portal>
@@ -83,7 +93,12 @@ export default function ProductScreen({route, navigation}: Props) {
           </Dialog.Content>
           <Dialog.Actions style={{justifyContent: 'space-evenly'}}>
             <Button style={{ width:80 }} mode='outlined' onPress={hideDialog}>Uždaryti</Button>
-            <Button disabled={templateToAdd==-1} style={{ width:80 }} mode='contained' onPress={()=> console.log('')}>Pridėti</Button>
+            <Button disabled={templateToAdd==-1} 
+              style={{ width:80 }} 
+              mode='contained' 
+              onPress={createChecklist}>
+                Pridėti
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

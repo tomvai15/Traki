@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using Traki.Api.Cryptography;
 using Traki.Api.Handlers;
+using Traki.Api.Repositories;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -15,8 +16,9 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IProductsHandler, ProductsHandler>()
                 .AddTransient<IQuestionsHandler, QuestionsHandler>()
                 .AddTransient<ITemplatesHandler, TemplatesHandler>()
-                .AddTransient<IChecklistHandler, ChecklistHandler>()
-                .AddTransient<IChecklistQuestionHandler, ChecklistQuestionHandler>();
+                .AddTransient<IChecklistRepository, ChecklistRepository>()
+                .AddTransient<IChecklistQuestionHandler, ChecklistQuestionHandler>()
+                .AddTransient<IChecklistHandler, ChecklistHandler>();
 
             return services;
         }

@@ -4,7 +4,7 @@ using Traki.Api.Contracts;
 using Traki.Api.Cryptography;
 using Traki.Api.Models;
 
-namespace Traki.Api.Handlers
+namespace Traki.Api.Repositories
 {
     public interface IUserAuthHandler
     {
