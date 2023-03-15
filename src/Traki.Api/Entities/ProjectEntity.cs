@@ -1,4 +1,6 @@
-﻿namespace Traki.Api.Data.Entities
+﻿using Traki.Api.Models;
+
+namespace Traki.Api.Entities
 {
     public class ProjectEntity
     {

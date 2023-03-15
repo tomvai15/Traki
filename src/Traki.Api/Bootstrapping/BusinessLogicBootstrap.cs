@@ -1,8 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Traki.Api.Cryptography;
-using Traki.Api.Data.Repositories;
 using Traki.Api.Handlers;
+using Traki.Api.Repositories;
 
 namespace Traki.Api.Bootstrapping
 {
