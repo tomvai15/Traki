@@ -9,10 +9,10 @@ namespace Traki.Api.Controllers
     [Route("api/checklists/{checklistId}/checklistquestions")]
     public class ChecklistQuestionController : ControllerBase
     {
-        private readonly IChecklistQuestionHandler _checklistQuestionHandler;
+        private readonly IChecklistQuestionRepository _checklistQuestionHandler;
         private readonly IMapper _mapper;
 
-        public ChecklistQuestionController(IChecklistQuestionHandler checklistQuestionHandler, IMapper mapper)
+        public ChecklistQuestionController(IChecklistQuestionRepository checklistQuestionHandler, IMapper mapper)
         {
             _checklistQuestionHandler = checklistQuestionHandler;
             _mapper = mapper;

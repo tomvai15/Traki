@@ -1,24 +1,23 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 using Traki.Api.Data;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
 namespace Traki.Api.Repositories
 {
-    public interface ITemplatesHandler
+    public interface ITemplatesRepository
     {
         Task<Template> GetTemplate(int templateId);
         Task<IEnumerable<Template>> GetTemplates(int projectId);
     }
 
-    public class TemplatesHandler : ITemplatesHandler
+    public class TemplatesRepository : ITemplatesRepository
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public TemplatesHandler(TrakiDbContext context, IMapper mapper)
+        public TemplatesRepository(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

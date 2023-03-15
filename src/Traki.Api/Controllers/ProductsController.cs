@@ -11,10 +11,10 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductsHandler _productsHandler;
+        private readonly IProductsRepository _productsHandler;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductsHandler productsHandler, IMapper mapper)
+        public ProductsController(IProductsRepository productsHandler, IMapper mapper)
         {
             _productsHandler = productsHandler;
             _mapper = mapper;

@@ -8,19 +8,19 @@ using Traki.Api.Models;
 
 namespace Traki.Api.Repositories
 {
-    public interface IQuestionsHandler
+    public interface IQuestionsRepository
     {
         Task<Question> GetQuestion(int templateId, int questionId);
         Task<IEnumerable<Question>> GetQuestions(int templateId);
         Task UpdateQuestion(int questionId, Question questionUpdate);
     }
 
-    public class QuestionsHandler : IQuestionsHandler
+    public class QuestionsRepository : IQuestionsRepository
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public QuestionsHandler(TrakiDbContext context, IMapper mapper)
+        public QuestionsRepository(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

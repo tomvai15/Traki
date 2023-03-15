@@ -10,10 +10,10 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class ProjectsController: ControllerBase
     {
-        private readonly IProjectsHandler _projectsHandler;
+        private readonly IProjectsRepository _projectsHandler;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectsHandler projectsHandler, IMapper mapper)
+        public ProjectsController(IProjectsRepository projectsHandler, IMapper mapper)
         {
             _projectsHandler = projectsHandler;
             _mapper = mapper;
