@@ -8,17 +8,17 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserAuthHandler _userAuthHandler;
+        private readonly IUserAuthHandler _userAuthRepository;
 
-        public UsersController(IUserAuthHandler userAuthHandler)
+        public UsersController(IUserAuthHandler userAuthRepository)
         {
-            _userAuthHandler = userAuthHandler;
+            _userAuthRepository = userAuthRepository;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser(CreateUserRequest createUserRequest)
         {
-            bool isUserAdded = await _userAuthHandler.TryCreateUser(createUserRequest);
+            bool isUserAdded = await _userAuthRepository.TryCreateUser(createUserRequest);
 
             if (!isUserAdded)
             {
@@ -32,7 +32,7 @@ namespace Traki.Api.Controllers
         {
             try
             {
-                LoginResponse loginResponse = await _userAuthHandler.LoginUser(loginRequest);
+                LoginResponse loginResponse = await _userAuthRepository.LoginUser(loginRequest);
 
                 if (loginResponse == null)
                 {

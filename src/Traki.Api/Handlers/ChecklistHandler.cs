@@ -13,12 +13,12 @@ namespace Traki.Api.Handlers
         private readonly IChecklistRepository _checklistRepository;
         private readonly IChecklistQuestionRepository _checklistQuestionHandler;
         private readonly IQuestionsRepository _questionsHandler;
-        private readonly ITemplatesHandler _templatesHandler;
+        private readonly ITemplatesRepository _templatesHandler;
 
         public ChecklistHandler(IChecklistRepository checklistRepository,
             IChecklistQuestionRepository checklistQuestionHandler,
             IQuestionsRepository questionsHandler,
-            ITemplatesHandler templatesHandler)
+            ITemplatesRepository templatesHandler)
         {
             _checklistRepository = checklistRepository;
             _checklistQuestionHandler = checklistQuestionHandler;

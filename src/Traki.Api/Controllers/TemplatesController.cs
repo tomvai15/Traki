@@ -8,19 +8,19 @@ namespace Traki.Api.Controllers
     [Route("api/projects/{projectId}/templates")]
     public class TemplatesController : ControllerBase
     {
-        private readonly ITemplatesHandler _templatesHandler;
+        private readonly ITemplatesRepository _templatesRepository;
         private readonly IMapper _mapper;
 
-        public TemplatesController(ITemplatesHandler templatesHandler, IMapper mapper)
+        public TemplatesController(ITemplatesRepository templatesRepository, IMapper mapper)
         {
-            _templatesHandler = templatesHandler;
+            _templatesRepository = templatesRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<GetTemplatesResponse>> GetTemplates(int projectId)
         {
-            var templates = await _templatesHandler.GetTemplates(projectId);
+            var templates = await _templatesRepository.GetTemplates(projectId);
 
             return _mapper.Map<GetTemplatesResponse>(templates);
         }
@@ -28,7 +28,7 @@ namespace Traki.Api.Controllers
         [HttpGet("{templateId}")]
         public async Task<ActionResult<GetTemplateResponse>> GetTemplate(int projectId, int templateId)
         {
-            var template = await _templatesHandler.GetTemplate(templateId);
+            var template = await _templatesRepository.GetTemplate(templateId);
 
             return _mapper.Map<GetTemplateResponse>(template);
         }
