@@ -1,6 +1,6 @@
 ﻿using Traki.Api.Models;
 
-namespace Traki.Api.Entities
+namespace Traki.Api.Data.Entities
 {
     public class ProjectEntity
     {

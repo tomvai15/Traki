@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Traki.Api.Data;
-using Traki.Api.Entities;
+using Traki.Api.Data.Entities;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Data.Repositories
 {
     public interface IChecklistRepository
     {
@@ -27,7 +27,7 @@ namespace Traki.Api.Repositories
 
         public async Task<CheckList> AddChecklist(CheckList checkList)
         {
-            var checkListEntity = _mapper.Map<ChecklistEntity>(checkList);    
+            var checkListEntity = _mapper.Map<ChecklistEntity>(checkList);
             var addedChecklist = await _context.Checklists.AddAsync(checkListEntity);
 
             await _context.SaveChangesAsync();
