@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Traki.Api.Data;
 using Traki.Api.Models;
 
 namespace Traki.Api.Data.Repositories

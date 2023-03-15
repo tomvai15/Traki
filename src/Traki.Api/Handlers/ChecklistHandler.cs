@@ -1,5 +1,4 @@
-﻿using System.Net.WebSockets;
-using Traki.Api.Data.Repositories;
+﻿using Traki.Api.Data.Repositories;
 using Traki.Api.Models;
 
 namespace Traki.Api.Handlers
