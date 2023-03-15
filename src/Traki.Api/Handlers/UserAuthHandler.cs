@@ -3,8 +3,9 @@ using Traki.Api.Constants;
 using Traki.Api.Contracts;
 using Traki.Api.Cryptography;
 using Traki.Api.Models;
+using Traki.Api.Repositories;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Handlers
 {
     public interface IUserAuthHandler
     {
