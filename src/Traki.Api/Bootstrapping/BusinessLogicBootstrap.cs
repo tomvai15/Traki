@@ -1,8 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Traki.Api.Cryptography;
-using Traki.Api.Data.Repositories;
 using Traki.Api.Handlers;
+using Traki.Api.Repositories;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -12,12 +12,12 @@ namespace Traki.Api.Bootstrapping
         {
             services.AddTransient<IUserAuthHandler, UserAuthHandler>()
                 .AddTransient<IUsersHandler, UsersHandler>()
-                .AddTransient<IProjectsRepository, ProjectsRepository>()
-                .AddTransient<IProductsRepository, ProductsRepository>()
-                .AddTransient<IQuestionsRepository, QuestionsRepository>()
-                .AddTransient<ITemplatesHandler, TemplatesRepository>()
+                .AddTransient<IProjectsHandler, ProjectsHandler>()
+                .AddTransient<IProductsHandler, ProductsHandler>()
+                .AddTransient<IQuestionsHandler, QuestionsHandler>()
+                .AddTransient<ITemplatesHandler, TemplatesHandler>()
                 .AddTransient<IChecklistRepository, ChecklistRepository>()
-                .AddTransient<IChecklistQuestionRepository, ChecklistQuestionRepository>()
+                .AddTransient<IChecklistQuestionHandler, ChecklistQuestionHandler>()
                 .AddTransient<IChecklistHandler, ChecklistHandler>();
 
             return services;

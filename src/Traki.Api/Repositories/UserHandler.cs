@@ -2,7 +2,7 @@
 using Traki.Api.Data;
 using Traki.Api.Models;
 
-namespace Traki.Api.Data.Repositories
+namespace Traki.Api.Repositories
 {
     public interface IUsersHandler
     {

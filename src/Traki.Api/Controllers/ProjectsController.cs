@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Project;
+using Traki.Api.Repositories;
 using Traki.Api.Models;
-using Traki.Api.Data.Repositories;
 
 namespace Traki.Api.Controllers
 {
@@ -10,10 +10,10 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class ProjectsController: ControllerBase
     {
-        private readonly IProjectsRepository _projectsHandler;
+        private readonly IProjectsHandler _projectsHandler;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectsRepository projectsHandler, IMapper mapper)
+        public ProjectsController(IProjectsHandler projectsHandler, IMapper mapper)
         {
             _projectsHandler = projectsHandler;
             _mapper = mapper;

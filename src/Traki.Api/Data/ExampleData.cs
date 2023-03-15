@@ -1,4 +1,4 @@
-﻿using Traki.Api.Data.Entities;
+﻿using Traki.Api.Entities;
 
 namespace Traki.Api.Data
 {
