@@ -9,6 +9,8 @@ import { Checklist } from '../../contracts/checklist/Checklist';
 import { Template } from '../../contracts/template/Template';
 import templateService from '../../services/template-service';
 import { FlatList } from 'react-native-gesture-handler';
+import { Product } from '../../contracts/product/Product';
+import productService from '../../services/product-service';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Product'>;
 
@@ -22,6 +24,7 @@ export default function ProductScreen({route, navigation}: Props) {
   const [visible, setVisible] = React.useState(false);
   const [checklists, setChecklists] = useState<Checklist[]>([]);
   const [templates, setTemplates] = useState<Template[]>([]);
+  const [product, setProduct] = useState<Product>();
   const [templateToAdd, setTemplateToAdd] = useState<number>(-1);
   const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -44,9 +47,11 @@ export default function ProductScreen({route, navigation}: Props) {
 
   async function fetchProduct() {
     const getChecklistsResposne = await checklistService.getChecklists(productId).catch(err =>console.log(err));
-    if (!getChecklistsResposne) {
+    const getProductResposne = await productService.getProduct(productId).catch(err =>console.log(err));
+    if (!getChecklistsResposne || !getProductResposne) {
       return;
     }
+    setProduct(getProductResposne.product);
     setChecklists(getChecklistsResposne.checklists);
   }
 
@@ -105,7 +110,7 @@ export default function ProductScreen({route, navigation}: Props) {
 
       <Card mode='outlined'>
         <Card.Content >
-          <Text variant="titleLarge">Šiluminis mazgas</Text>
+          <Text variant="titleLarge">{product?.name}</Text>
           <Text variant="bodyMedium">Busena: gaminamas</Text>
         </Card.Content>
         <Card.Cover style={{height:300}} source={{ uri: image }} />
