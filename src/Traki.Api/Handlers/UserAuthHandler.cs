@@ -2,9 +2,10 @@
 using Traki.Api.Constants;
 using Traki.Api.Contracts;
 using Traki.Api.Cryptography;
+using Traki.Api.Data.Repositories;
 using Traki.Api.Models;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Handlers
 {
     public interface IUserAuthHandler
     {
@@ -14,11 +15,11 @@ namespace Traki.Api.Repositories
     public class UserAuthHandler : IUserAuthHandler
     {
         private readonly IJwtTokenGenerator jwtTokenGenerator;
-        private readonly IUsersHandler usersHandler;
+        private readonly IUsersRepository usersHandler;
         private readonly IMapper mapper;
         private readonly IHasherAdapter hasherAdapter;
 
-        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler, IMapper mapper, IHasherAdapter hasherAdapter)
+        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersRepository usersHandler, IMapper mapper, IHasherAdapter hasherAdapter)
         {
             this.jwtTokenGenerator = jwtTokenGenerator;
             this.usersHandler = usersHandler;

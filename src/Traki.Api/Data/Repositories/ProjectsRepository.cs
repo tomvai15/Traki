@@ -1,25 +1,24 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Traki.Api.Data;
-using Traki.Api.Entities;
+using Traki.Api.Data.Entities;
 using Traki.Api.Exceptions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Data.Repositories
 {
-    public interface IProjectsHandler
+    public interface IProjectsRepository
     {
         Task<Project> GetProject(int projectId);
         Task<IEnumerable<Project>> GetProjects();
         Task<Project> CreateProject(Project project);
     }
 
-    public class ProjectsHandler : IProjectsHandler
+    public class ProjectsRepository : IProjectsRepository
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public ProjectsHandler(TrakiDbContext context, IMapper mapper)
+        public ProjectsRepository(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

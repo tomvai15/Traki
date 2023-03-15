@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Traki.Api.Data;
 using Traki.Api.Models;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Data.Repositories
 {
-    public interface IUsersHandler
+    public interface IUsersRepository
     {
         Task<User> GetUserByEmail(string email);
         Task<User> AddNewUser(User userToAdd);
     }
 
-    public class UsersHandler : IUsersHandler
+    public class UsersHandler : IUsersRepository
     {
         private readonly TrakiDbContext context;
 

@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Template;
-using Traki.Api.Repositories;
+using Traki.Api.Data.Repositories;
 
 namespace Traki.Api.Controllers
 {
     [Route("api/projects/{projectId}/templates")]
     public class TemplatesController : ControllerBase
     {
-        private readonly ITemplatesHandler _templatesHandler;
+        private readonly ITemplatesRepository _templatesHandler;
         private readonly IMapper _mapper;
 
-        public TemplatesController(ITemplatesHandler templatesHandler, IMapper mapper)
+        public TemplatesController(ITemplatesRepository templatesHandler, IMapper mapper)
         {
             _templatesHandler = templatesHandler;
             _mapper = mapper;
