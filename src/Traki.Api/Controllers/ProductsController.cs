@@ -10,19 +10,19 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductsRepository _productsHandler;
+        private readonly IProductsRepository _productsRepository;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductsRepository productsHandler, IMapper mapper)
+        public ProductsController(IProductsRepository productsRepository, IMapper mapper)
         {
-            _productsHandler = productsHandler;
+            _productsRepository = productsRepository;
             _mapper = mapper;
         }
 
         [HttpGet(("{productId}"))]
         public async Task<ActionResult<GetProductResponse>> GetProduct(int projectId, int productId)
         {
-            var product = await _productsHandler.GetProduct(productId);
+            var product = await _productsRepository.GetProduct(productId);
 
             if (product == null)
             {
@@ -35,7 +35,7 @@ namespace Traki.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<GetProductsResponse>> GetProducts(int projectId)
         {
-            var products = await _productsHandler.GetProducts(projectId);
+            var products = await _productsRepository.GetProducts(projectId);
 
             return _mapper.Map<GetProductsResponse>(products);
         }
@@ -45,7 +45,7 @@ namespace Traki.Api.Controllers
         {
             var product = _mapper.Map<Product>(createProjectRequest);
 
-            var createdProduct = await _productsHandler.CreateProduct(product);
+            var createdProduct = await _productsRepository.CreateProduct(product);
 
             return CreatedAtAction("GetProduct", new { productId = createdProduct.Id }, createdProduct);
         }

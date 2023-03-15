@@ -9,19 +9,19 @@ namespace Traki.Api.Controllers
     [Route("api/checklists/{checklistId}/checklistquestions")]
     public class ChecklistQuestionController : ControllerBase
     {
-        private readonly IChecklistQuestionRepository _checklistQuestionHandler;
+        private readonly IChecklistQuestionRepository _checklistQuestionRepository;
         private readonly IMapper _mapper;
 
-        public ChecklistQuestionController(IChecklistQuestionRepository checklistQuestionHandler, IMapper mapper)
+        public ChecklistQuestionController(IChecklistQuestionRepository checklistQuestionRepository, IMapper mapper)
         {
-            _checklistQuestionHandler = checklistQuestionHandler;
+            _checklistQuestionRepository = checklistQuestionRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<GetChecklistQuestionsResponse>> GetChecklistQuestions(int checklistId)
         {
-            var checkListQuestions = await _checklistQuestionHandler.GetChecklistQuestions(checklistId);
+            var checkListQuestions = await _checklistQuestionRepository.GetChecklistQuestions(checklistId);
 
             return _mapper.Map<GetChecklistQuestionsResponse>(checkListQuestions);
         }
@@ -31,7 +31,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult<GetChecklistQuestionsResponse>> UpdateChecklistQuestions([FromBody] UpdateChecklistQuestionsRequest updateChecklistQuestionsRequest)
         {
             var checkListQuestions = _mapper.Map<IEnumerable<ChecklistQuestion>>(updateChecklistQuestionsRequest.ChecklistQuestions);
-            await _checklistQuestionHandler.UpdateChecklistQuestions(checkListQuestions);
+            await _checklistQuestionRepository.UpdateChecklistQuestions(checkListQuestions);
 
             return Ok();
         }

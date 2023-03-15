@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts;
-using Traki.Api.Data.Repositories;
+using Traki.Api.Handlers;
 
 namespace Traki.Api.Controllers
 {

@@ -10,19 +10,19 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class ProjectsController: ControllerBase
     {
-        private readonly IProjectsRepository _projectsHandler;
+        private readonly IProjectsRepository _projectsRepository;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectsRepository projectsHandler, IMapper mapper)
+        public ProjectsController(IProjectsRepository projectsRepository, IMapper mapper)
         {
-            _projectsHandler = projectsHandler;
+            _projectsRepository = projectsRepository;
             _mapper = mapper;
         }
 
         [HttpGet(("{projectId}"))]
         public async Task<ActionResult<GetProjectResponse>> GetProject(int projectId)
         {
-            var project = await _projectsHandler.GetProject(projectId);
+            var project = await _projectsRepository.GetProject(projectId);
 
             return _mapper.Map<GetProjectResponse>(project);
         }
@@ -30,7 +30,7 @@ namespace Traki.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<GetProjectsResponse>> GetProjects()
         {
-            var projects = await _projectsHandler.GetProjects();
+            var projects = await _projectsRepository.GetProjects();
 
             return _mapper.Map<GetProjectsResponse>(projects);
         }
@@ -40,7 +40,7 @@ namespace Traki.Api.Controllers
         {
             var project = _mapper.Map<Project>(createProjectRequest);
 
-            var createdProject = await _projectsHandler.CreateProject(project);
+            var createdProject = await _projectsRepository.CreateProject(project);
 
             return CreatedAtAction("GetProject", new { projectId = createdProject.Id }, createdProject);
         }
