@@ -1,24 +1,26 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Traki.Api.Contracts.Template;
 using Traki.Api.Data;
+using Traki.Api.Entities;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Data.Repositories
+namespace Traki.Api.Repositories
 {
-    public interface IQuestionsRepository
+    public interface IQuestionsHandler
     {
         Task<Question> GetQuestion(int templateId, int questionId);
         Task<IEnumerable<Question>> GetQuestions(int templateId);
         Task UpdateQuestion(int questionId, Question questionUpdate);
     }
 
-    public class QuestionsRepository : IQuestionsRepository
+    public class QuestionsHandler : IQuestionsHandler
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public QuestionsRepository(TrakiDbContext context, IMapper mapper)
+        public QuestionsHandler(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

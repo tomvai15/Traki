@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 using Traki.Api.Data;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Data.Repositories
+namespace Traki.Api.Repositories
 {
     public interface ITemplatesHandler
     {
@@ -34,9 +35,9 @@ namespace Traki.Api.Data.Repositories
 
         public async Task<IEnumerable<Template>> GetTemplates(int projectId)
         {
-            var project = await _context.Projects
-                .Where(x => x.Id == projectId)
-                .Include(x => x.Templates)
+            var project =  await _context.Projects
+                .Where(x=> x.Id == projectId)
+                .Include(x=> x.Templates)
                 .FirstOrDefaultAsync();
 
             project.RequiresToBeNotNullEnity();

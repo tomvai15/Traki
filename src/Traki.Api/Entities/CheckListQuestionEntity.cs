@@ -1,6 +1,6 @@
 ﻿using Traki.Api.Models;
 
-namespace Traki.Api.Data.Entities
+namespace Traki.Api.Entities
 {
     public class ChecklistQuestionEntity
     {

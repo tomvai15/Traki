@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
 using Traki.Api.Contracts.Product;
+using Traki.Api.Contracts.Project;
 using Traki.Api.Data;
 
 namespace Traki.IntegrationTests

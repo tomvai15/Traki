@@ -1,4 +1,4 @@
-﻿namespace Traki.Api.Data.Entities
+﻿namespace Traki.Api.Entities
 {
     public class ChecklistEntity
     {
