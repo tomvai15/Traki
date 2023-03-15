@@ -1,47 +1,51 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Traki.Api.Data;
-using Traki.Api.Extensions;
+﻿using System.Net.WebSockets;
 using Traki.Api.Models;
+using Traki.Api.Repositories;
 
 namespace Traki.Api.Handlers
 {
     public interface IChecklistHandler
     {
-        Task<IEnumerable<CheckList>> GetChecklists(int productId);
-        Task<CheckList> GetChecklist(int checklistId);
+        Task CreateChecklistFromTemplate(int productId, int templateId);
     }
 
     public class ChecklistHandler : IChecklistHandler
     {
-        private readonly TrakiDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IChecklistRepository _checklistRepository;
+        private readonly IChecklistQuestionHandler _checklistQuestionHandler;
+        private readonly IQuestionsHandler _questionsHandler;
+        private readonly ITemplatesHandler _templatesHandler;
 
-        public ChecklistHandler(TrakiDbContext context, IMapper mapper)
+        public ChecklistHandler(IChecklistRepository checklistRepository,
+            IChecklistQuestionHandler checklistQuestionHandler,
+            IQuestionsHandler questionsHandler,
+            ITemplatesHandler templatesHandler)
         {
-            _context = context;
-            _mapper = mapper;
+            _checklistRepository = checklistRepository;
+            _checklistQuestionHandler = checklistQuestionHandler;
+            _questionsHandler = questionsHandler;
+            _templatesHandler = templatesHandler;
         }
 
-        public async Task<CheckList> GetChecklist(int checklistId)
+        public async Task CreateChecklistFromTemplate(int productId, int templateId)
         {
-            var checklist = await _context.Checklists.FirstOrDefaultAsync(x => x.Id == checklistId);
+            var questions = await _questionsHandler.GetQuestions(templateId);
+            var template = await _templatesHandler.GetTemplate(templateId);
 
-            checklist.RequiresToBeNotNullEnity();
-            return _mapper.Map<CheckList>(checklist);
-        }
+            var checklist = new CheckList { ProductId = productId, Name = template.Name, Standard = template.Standard };
 
-        public async Task<IEnumerable<CheckList>> GetChecklists(int productId)
-        {
-            var product = await _context.Products
-                .Where(x => x.Id == productId)
-                .Include(x => x.CheckLists)
-                .FirstOrDefaultAsync();
+            var addedChecklist = await _checklistRepository.AddChecklist(checklist);
 
-            product.RequiresToBeNotNullEnity();
+            var checklistQuestions = questions.Select(x => new ChecklistQuestion
+            {
+                ChecklistId = addedChecklist.Id,
+                Title = x.Title,
+                Description = x.Description,
+                Comment = string.Empty,
+                Evaluation = Evaluation.No
+            });
 
-            var checklists = product.CheckLists.ToList();
-            return _mapper.Map<IEnumerable<CheckList>>(checklists);
+            await _checklistQuestionHandler.AddChecklistQuestions(checklistQuestions);
         }
     }
 }

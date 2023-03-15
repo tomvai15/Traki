@@ -5,11 +5,11 @@ using Traki.Api.Data;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Handlers
+namespace Traki.Api.Repositories
 {
     public interface ITemplatesHandler
     {
-        Task<Template> GetTemplate(int projectId, int templateId);
+        Task<Template> GetTemplate(int templateId);
         Task<IEnumerable<Template>> GetTemplates(int projectId);
     }
 
@@ -24,7 +24,7 @@ namespace Traki.Api.Handlers
             _mapper = mapper;
         }
 
-        public async Task<Template> GetTemplate(int projectId, int templateId)
+        public async Task<Template> GetTemplate(int templateId)
         {
             var template = _context.Templates.Where(x => x.Id == templateId).FirstOrDefault();
 

@@ -21,7 +21,7 @@ const theme = {
     background: 'white',
     surface: '#f7f5f2',
     surfaceVariant: '#ffeecc', // TextInput
-    outline: '#9ab1c0',
+    outline: '#c7cfd4',
     accent: '#9ab1c0',
     error: '#F14444',
   },
@@ -35,9 +35,9 @@ function TempScreen() {
   return (
     <NavigationContainer>
     <Drawer.Navigator initialRouteName="Home">
+    <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name={"Projektai"} component={ProjectTab} />
       <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Produktai' }} name="Produktai" component={ProductTab} />
       <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: '' }} name="Šablonai" component={TemplateTab} />
-      <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name={"Projektai"} component={ProjectTab} />
     </Drawer.Navigator>
   </NavigationContainer>
   );

@@ -12,15 +12,14 @@ export default function TemplatesScreen({ navigation }: Props) {
 
   const [templates, setTemplates] = useState<Template[]>([]);
 
-
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
-      void fetchProjects();
+      void fetchTemplates();
     });
     return focusHandler;
   }, [navigation]);
 
-  async function fetchProjects() {
+  async function fetchTemplates() {
     const getTemplatesResponse = await templateService.getTemplates().catch(err =>console.log(err));
     if (!getTemplatesResponse) {
       return;

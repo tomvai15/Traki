@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Checklist;
 using Traki.Api.Contracts.Template;
 using Traki.Api.Handlers;
+using Traki.Api.Repositories;
 
 namespace Traki.Api.Controllers
 {
@@ -10,18 +11,20 @@ namespace Traki.Api.Controllers
     public class ChecklistController : ControllerBase
     {
         private readonly IChecklistHandler _checklistHandler;
+        private readonly IChecklistRepository _checklistRepository;
         private readonly IMapper _mapper;
 
-        public ChecklistController(IChecklistHandler checklistHandler, IMapper mapper)
+        public ChecklistController(IChecklistHandler checklistHandler, IChecklistRepository checklistRepository, IMapper mapper)
         {
             _checklistHandler = checklistHandler;
+            _checklistRepository = checklistRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<GetChecklistsResponse>> GetChecklists(int productId)
         {
-            var checkLists = await _checklistHandler.GetChecklists(productId);
+            var checkLists = await _checklistRepository.GetChecklists(productId);
 
             return _mapper.Map<GetChecklistsResponse>(checkLists);
         }
@@ -29,9 +32,18 @@ namespace Traki.Api.Controllers
         [HttpGet("{checklistId}")]
         public async Task<ActionResult<GetChecklistResponse>> GetChecklist(int productId, int checklistId)
         {
-            var checkList = await _checklistHandler.GetChecklist(checklistId);
+            var checkList = await _checklistRepository.GetChecklist(checklistId);
 
             return _mapper.Map<GetChecklistResponse>(checkList);
+        }
+
+
+        [HttpPost("create")]
+        public async Task<ActionResult> CreateFromTemplate(int productId, [FromBody] CreateChecklistRequest createChecklistRequest)
+        {
+            await _checklistHandler.CreateChecklistFromTemplate(productId, createChecklistRequest.templateId);
+
+            return Ok();
         }
     }
 }

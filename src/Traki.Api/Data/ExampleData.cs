@@ -8,11 +8,11 @@ namespace Traki.Api.Data
         {
             new ProjectEntity
             {
-                Name = $"Test-Project-A"
+                Name = $"Sample Project"
             },
             new ProjectEntity
             {
-                Name = $"Test-Project-B"
+                Name = $"Other Project"
             }
         };
 
@@ -20,12 +20,12 @@ namespace Traki.Api.Data
         {
             new ProductEntity
             {
-                Name = $"Test-Product-A",
+                Name = $"SH.1 / 01.2.21.1.0016",
                 ProjectId = 1
             },
             new ProductEntity
             {
-                Name = $"Test-Product-B",
+                Name = $"SH.2 / 01.2.21.1.0016 GT",
                 ProjectId = 2
             }
         };
@@ -34,20 +34,26 @@ namespace Traki.Api.Data
         {
             new TemplateEntity
             {
-                Name = "Test-Templatet-A",
-                Standard="ISO-BBD",
+                Name = "General",
+                Standard="General prefab requirements",
                 ProjectId = 1
             },
             new TemplateEntity
             {
-                Name = "Test-Templatet-B",
-                Standard="ISO-BBD",
+                Name = "Piping",
+                Standard="General piping requirements",
                 ProjectId = 1
             },
             new TemplateEntity
             {
-                Name = "Test-Templatet-C",
-                Standard="ISO-BBD",
+                Name = "Components and Equipment",
+                Standard="General components and equipment requirements",
+                ProjectId = 1
+            },
+            new TemplateEntity
+            {
+                Name = "General Check-up Before & During Welding",
+                Standard="ISO 13480-5 standard",
                 ProjectId = 2
             }
         };
@@ -56,21 +62,21 @@ namespace Traki.Api.Data
         {
             new ChecklistEntity
             {
-                Name = "Test-Checklist-A",
-                Standard="ISO-BBD",
+                Name = "Components and Equipment",
+                Standard="General components and equipment requirements",
                 ProductId = 1
             },
             new ChecklistEntity
             {
                 Name = "Test-Checklist-B",
                 Standard="ISO-BBD",
-                ProductId = 1
+                ProductId = 2
             },
             new ChecklistEntity
             {
                 Name = "Test-Checklist-C",
                 Standard="ISO-BBD",
-                ProductId = 1
+                ProductId = 2
             }
         };
 
@@ -93,11 +99,22 @@ namespace Traki.Api.Data
                 Title = "Test-Question-C",
                 Description="Test-Description-C",
                 TemplateId = 2
-            }
+            },            new QuestionEntity
+            {
+                Title = "Test-Question-D",
+                Description="Test-Description-D",
+                TemplateId = 1
+            },
+            new QuestionEntity
+            {
+                Title = "Test-Question-E",
+                Description="Test-Description-E",
+                TemplateId = 1
+            },
         };
 
         public static IEnumerable<ChecklistQuestionEntity> CheckListQuestions => new[]
-{
+        {
             new ChecklistQuestionEntity
             {
                 Title = "Test-ChecklistQuestion-A",
@@ -115,7 +132,19 @@ namespace Traki.Api.Data
                 Title = "Test-ChecklistQuestion-C",
                 Description="Test-Description-C",
                 ChecklistId = 2
-            }
+            },
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-D",
+                Description="Test-Description-D",
+                ChecklistId = 1
+            },
+            new ChecklistQuestionEntity
+            {
+                Title = "Test-ChecklistQuestion-E",
+                Description="Test-Description-E",
+                ChecklistId = 1
+            },
         };
     }
 }

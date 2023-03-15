@@ -7,5 +7,7 @@
         public string Description { get; set; }
         public string Comment { get; set; }
         public Evaluation Evaluation { get; set; }
+
+        public int ChecklistId { get; set; }
     }
 }

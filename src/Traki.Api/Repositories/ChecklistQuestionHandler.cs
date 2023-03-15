@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Traki.Api.Data;
+using Traki.Api.Entities;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Handlers
+namespace Traki.Api.Repositories
 {
     public interface IChecklistQuestionHandler
     {
+        Task AddChecklistQuestions(IEnumerable<ChecklistQuestion> checklistQuestions);
         Task<IEnumerable<ChecklistQuestion>> GetChecklistQuestions(int checklistId);
         Task UpdateChecklistQuestions(IEnumerable<ChecklistQuestion> checklistQuestions);
     }
@@ -21,6 +23,13 @@ namespace Traki.Api.Handlers
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task AddChecklistQuestions(IEnumerable<ChecklistQuestion> checklistQuestions)
+        {
+            var checkListQuestionEntities = _mapper.Map<IEnumerable<ChecklistQuestionEntity>>(checklistQuestions);
+            await _context.CheckListQuestions.AddRangeAsync(checkListQuestionEntities);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ChecklistQuestion>> GetChecklistQuestions(int checklistId)
