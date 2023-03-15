@@ -2,8 +2,8 @@
 using Traki.Api.Constants;
 using Traki.Api.Contracts;
 using Traki.Api.Cryptography;
+using Traki.Api.Data.Repositories;
 using Traki.Api.Models;
-using Traki.Api.Repositories;
 
 namespace Traki.Api.Handlers
 {

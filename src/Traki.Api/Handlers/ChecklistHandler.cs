@@ -1,5 +1,5 @@
-﻿using Traki.Api.Models;
-using Traki.Api.Repositories;
+﻿using Traki.Api.Data.Repositories;
+using Traki.Api.Models;
 
 namespace Traki.Api.Handlers
 {

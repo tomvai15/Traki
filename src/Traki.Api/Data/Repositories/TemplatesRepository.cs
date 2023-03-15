@@ -4,7 +4,7 @@ using Traki.Api.Data;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Data.Repositories
 {
     public interface ITemplatesHandler
     {
@@ -34,9 +34,9 @@ namespace Traki.Api.Repositories
 
         public async Task<IEnumerable<Template>> GetTemplates(int projectId)
         {
-            var project =  await _context.Projects
-                .Where(x=> x.Id == projectId)
-                .Include(x=> x.Templates)
+            var project = await _context.Projects
+                .Where(x => x.Id == projectId)
+                .Include(x => x.Templates)
                 .FirstOrDefaultAsync();
 
             project.RequiresToBeNotNullEnity();
