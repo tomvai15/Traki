@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 using Traki.Api.Data;
 using Traki.Api.Extensions;
 using Traki.Api.Models;

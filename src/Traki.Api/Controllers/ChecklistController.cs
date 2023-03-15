@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Checklist;
-using Traki.Api.Contracts.Template;
 using Traki.Api.Handlers;
 using Traki.Api.Repositories;
 
