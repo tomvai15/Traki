@@ -1,6 +1,5 @@
-﻿using System.Net.WebSockets;
+﻿using Traki.Api.Data.Repositories;
 using Traki.Api.Models;
-using Traki.Api.Repositories;
 
 namespace Traki.Api.Handlers
 {
@@ -12,13 +11,13 @@ namespace Traki.Api.Handlers
     public class ChecklistHandler : IChecklistHandler
     {
         private readonly IChecklistRepository _checklistRepository;
-        private readonly IChecklistQuestionHandler _checklistQuestionHandler;
-        private readonly IQuestionsHandler _questionsHandler;
+        private readonly IChecklistQuestionRepository _checklistQuestionHandler;
+        private readonly IQuestionsRepository _questionsHandler;
         private readonly ITemplatesHandler _templatesHandler;
 
         public ChecklistHandler(IChecklistRepository checklistRepository,
-            IChecklistQuestionHandler checklistQuestionHandler,
-            IQuestionsHandler questionsHandler,
+            IChecklistQuestionRepository checklistQuestionHandler,
+            IQuestionsRepository questionsHandler,
             ITemplatesHandler templatesHandler)
         {
             _checklistRepository = checklistRepository;

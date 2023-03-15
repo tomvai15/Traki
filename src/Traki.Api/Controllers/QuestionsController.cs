@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Question;
-using Traki.Api.Repositories;
 using Traki.Api.Models;
+using Traki.Api.Data.Repositories;
 
 namespace Traki.Api.Controllers
 {
     [Route("api/templates/{templateId}/questions")]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionsHandler _questionsHandler;
+        private readonly IQuestionsRepository _questionsHandler;
         private readonly IMapper _mapper;
 
-        public QuestionsController(IQuestionsHandler questionsHandler, IMapper mapper)
+        public QuestionsController(IQuestionsRepository questionsHandler, IMapper mapper)
         {
             _questionsHandler = questionsHandler;
             _mapper = mapper;

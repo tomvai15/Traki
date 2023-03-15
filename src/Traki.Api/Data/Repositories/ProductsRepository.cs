@@ -1,25 +1,25 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Traki.Api.Data;
-using Traki.Api.Entities;
+using Traki.Api.Data.Entities;
 using Traki.Api.Extensions;
 using Traki.Api.Models;
 
-namespace Traki.Api.Repositories
+namespace Traki.Api.Data.Repositories
 {
-    public interface IProductsHandler
+    public interface IProductsRepository
     {
         Task<Product> GetProduct(int productId);
         Task<IEnumerable<Product>> GetProducts(int projectId);
         Task<Product> CreateProduct(Product product);
     }
 
-    public class ProductsHandler : IProductsHandler
+    public class ProductsRepository : IProductsRepository
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public ProductsHandler(TrakiDbContext context, IMapper mapper)
+        public ProductsRepository(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
