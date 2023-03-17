@@ -12,18 +12,6 @@ namespace Traki.Api.Bootstrapping
         {
             WebSettings webSettings  = configuration.GetSection(nameof(WebSettings)).Get<WebSettings>();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(Policy.DevelopmentCors, builder =>
-                {
-                    builder.WithOrigins(webSettings.Url)
-                           .AllowAnyHeader()
-                           .AllowAnyMethod()
-                           .SetIsOriginAllowed((x) => true)
-                           .AllowCredentials();
-                });
-            });
-
             var securitySettingsSection = configuration.GetSection(nameof(SecuritySettings));
 
             services.Configure<SecuritySettings>(securitySettingsSection);
@@ -50,7 +38,7 @@ namespace Traki.Api.Bootstrapping
             {
                 options.AddPolicy(Policy.DevelopmentCors, builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("http://localhost:3000/")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .SetIsOriginAllowed((_) => true);
