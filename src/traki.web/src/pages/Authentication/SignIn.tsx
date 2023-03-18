@@ -13,12 +13,13 @@ import authService from '../../services/auth-service';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
 import { Axios, AxiosError } from 'axios';
 import { Card } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../state/user-state';
 
 export default function SignIn() {
-  /*
-	const location = useLocation();
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();*/
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -31,16 +32,19 @@ export default function SignIn() {
     };
     try {
       const response = await authService.login(loginUserRequest);
-
       if (response.status == 200) {
-        setError('mldc');
+        loginUser();
       } else {
         setError('El.paštas arba slaptažodis yra netesingas');
       }
     } catch (err) {
       setError('Svetainė šiuo metu nepasiekiama');
     }
+  }
 
+  function loginUser() {
+    setUserInfo({id: 1});
+    navigate('/');
   }
   return (
     <Box component="main" style={{height: '100vh', width: '100vw', backgroundImage: `url("/img/image.svg")`, paddingTop: 100 }}>

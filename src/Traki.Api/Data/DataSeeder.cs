@@ -22,6 +22,7 @@
             dbContext.AddQuestions();
             dbContext.AddChecklists();
             dbContext.AddChecklistQuestions();
+            dbContext.AddUsers();
         }
 
         public static TrakiDbContext AddProjects(this TrakiDbContext dbContext)
@@ -67,6 +68,14 @@
         public static TrakiDbContext AddChecklistQuestions(this TrakiDbContext dbContext)
         {
             dbContext.CheckListQuestions.AddRange(ExampleData.CheckListQuestions);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext)
+        {
+            dbContext.Users.AddRange(ExampleData.Users);
             dbContext.SaveChanges();
 
             return dbContext;
