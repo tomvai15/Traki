@@ -35,6 +35,7 @@ app.UseCors(Policy.DevelopmentCors);
 
 
 app.UseProblemDetails();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

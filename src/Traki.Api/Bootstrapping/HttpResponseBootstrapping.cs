@@ -13,6 +13,7 @@ namespace Traki.Api.Bootstrapping
             services.AddProblemDetails(options => options.IncludeExceptionDetails = (_, _) => true);
 
             services.AddProblemsMapping<EntityNotFoundException>(HttpStatusCode.NotFound, e => e.Message);
+            services.AddProblemsMapping<UnauthorizedException>(HttpStatusCode.Unauthorized, e => e.Message);
 
             return services;
         }

@@ -1,9 +1,20 @@
 ﻿using Traki.Api.Data.Entities;
+using Traki.Api.Models;
 
 namespace Traki.Api.Data
 {
     public static class ExampleData
     {
+        public static IEnumerable<User> Users => new[]
+{
+            new User
+            {
+                Email = "vainoristomas@gmail.com",
+                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
+                Role = "admin"
+            }
+        };
+
         public static IEnumerable<ProjectEntity> Projects => new[]
         {
             new ProjectEntity
