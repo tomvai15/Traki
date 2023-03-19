@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -12,43 +13,50 @@ namespace Traki.Api.Bootstrapping
     {
         public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
         {
-            WebSettings webSettings  = configuration.GetSection(nameof(WebSettings)).Get<WebSettings>();
+            WebSettings webSettings = configuration.GetSection(nameof(WebSettings)).Get<WebSettings>();
 
             var securitySettingsSection = configuration.GetSection(nameof(SecuritySettings));
 
             services.Configure<SecuritySettings>(securitySettingsSection);
             var securitySettings = securitySettingsSection.Get<SecuritySettings>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
-                    options.Cookie.SameSite = SameSiteMode.None;
-                    options.Events.OnRedirectToLogin = (context) =>
+            services.AddAuthentication(options =>
                     {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        return Task.CompletedTask;
-                    };
-                    options.Events.OnRedirectToAccessDenied = (context) =>
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                    .AddJwtBearer(options =>
                     {
-                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        return Task.CompletedTask;
-                    };
-                });
-            /*
-               services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
-                   .AddJwtBearer(options =>
-                   {
-                       options.TokenValidationParameters = new TokenValidationParameters
-                       {
-                           ValidateIssuerSigningKey = true,
-                           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
-                           ValidateIssuer = false, 
-                           ValidateAudience = false
-                       };
-               });*/
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    })
+                    .AddCookie(options =>
+                    {
+                        options.Cookie.SameSite = SameSiteMode.None;
+                        options.Events.OnRedirectToLogin = (context) =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            return Task.CompletedTask;
+                        };
+                        options.Events.OnRedirectToAccessDenied = (context) =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                            return Task.CompletedTask;
+                        };
+                    });
 
-            services.AddAuthorization(options => {
-                options.AddPolicy("admin", policy => policy.RequireRole("admin"));
-                }
+            var multiSchemePolicy = new AuthorizationPolicyBuilder(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                JwtBearerDefaults.AuthenticationScheme)
+              .RequireAuthenticatedUser()
+              .Build();
+
+            services.AddAuthorization(options => options.DefaultPolicy = multiSchemePolicy
             );
 
             return services;
