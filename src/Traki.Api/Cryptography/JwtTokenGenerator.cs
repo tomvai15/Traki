@@ -2,15 +2,13 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-using Traki.Api.Constants;
-using Traki.Api.Models;
 using Traki.Api.Settings;
 
 namespace Traki.Api.Cryptography
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(User user);
+        string GenerateJWTToken(IEnumerable<Claim> claims);
     }
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
@@ -23,16 +21,13 @@ namespace Traki.Api.Cryptography
             _securityTokenHandler = securityTokenHandler;
         }
 
-        public string GenerateToken(User user)
+        public string GenerateJWTToken(IEnumerable<Claim> claims)
         {
             var key = Encoding.ASCII.GetBytes(_securitySettings.Secret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] {
-                    new Claim(Claims.UserId, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

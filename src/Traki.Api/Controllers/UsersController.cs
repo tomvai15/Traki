@@ -27,6 +27,8 @@ namespace Traki.Api.Controllers
             return NoContent();
         }
 
+
+        /*
         [HttpPost("token")]
         public async Task<ActionResult<LoginResponse>> GetCredentials(LoginRequest loginRequest)
         {
@@ -45,6 +47,6 @@ namespace Traki.Api.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
+        }*/
     }
 }

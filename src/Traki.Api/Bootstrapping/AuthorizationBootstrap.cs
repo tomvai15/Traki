@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Traki.Api.Constants;
@@ -8,26 +11,53 @@ namespace Traki.Api.Bootstrapping
 {
     public static class AuthorizationBootstrap
     {
-        public static IServiceCollection AddAuthorisationServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
         {
-            WebSettings webSettings  = configuration.GetSection(nameof(WebSettings)).Get<WebSettings>();
+            WebSettings webSettings = configuration.GetSection(nameof(WebSettings)).Get<WebSettings>();
 
             var securitySettingsSection = configuration.GetSection(nameof(SecuritySettings));
 
             services.Configure<SecuritySettings>(securitySettingsSection);
             var securitySettings = securitySettingsSection.Get<SecuritySettings>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(options =>
                     {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
-                        ValidateIssuer = false, 
-                        ValidateAudience = false
-                    };
-                });
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    })
+                    .AddCookie(options =>
+                    {
+                        options.Cookie.SameSite = SameSiteMode.None;
+                        options.Events.OnRedirectToLogin = (context) =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            return Task.CompletedTask;
+                        };
+                        options.Events.OnRedirectToAccessDenied = (context) =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                            return Task.CompletedTask;
+                        };
+                    });
+
+            var multiSchemePolicy = new AuthorizationPolicyBuilder(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                JwtBearerDefaults.AuthenticationScheme)
+              .RequireAuthenticatedUser()
+              .Build();
+
+            services.AddAuthorization(options => options.DefaultPolicy = multiSchemePolicy
+            );
 
             return services;
         }
@@ -41,6 +71,7 @@ namespace Traki.Api.Bootstrapping
                     builder.WithOrigins("http://localhost:3000/")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
+                           .AllowCredentials()
                            .SetIsOriginAllowed((_) => true);
                 });
             });

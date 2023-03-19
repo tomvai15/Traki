@@ -8,7 +8,7 @@ namespace Traki.Api
         {
             services.AddMappingProfiles()
                 .AddTrakiDbContext(configuration)
-                .AddAuthorisationServices(configuration)
+                .AddAuthServices(configuration)
                 .AddHandlers(configuration)
                 .AddHttpResponseMappings(configuration)
                 .AddCryptographyServices()
