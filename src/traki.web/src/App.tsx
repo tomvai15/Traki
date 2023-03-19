@@ -9,6 +9,7 @@ import { RecoilRoot, atom, useRecoilState } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import { Card } from '@mui/material';
 import ProtectedRoute from './components/ProtectedRoute';
+import { DrawerAndHeader } from './layout/DrawerAndHeader';
 
 const mdTheme = createTheme({ 
   palette: {
@@ -36,7 +37,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='' element={<ProtectedRoute/>}>
-              <Route index element={<Dashboard/>}/>
+              <Route path='' element={<DrawerAndHeader/>}>
+                <Route index element={<Dashboard/>}/>
+              </Route>
             </Route>
             <Route path='/login' element={<SignIn/>}/>
             <Route path='*' element={<Navigate to='/login'/>} />

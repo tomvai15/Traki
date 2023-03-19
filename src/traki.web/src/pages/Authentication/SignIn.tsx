@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,7 +25,25 @@ export default function SignIn() {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
 
+
+  useEffect(() => {
+    const listener = (event: { code: string; preventDefault: () => void; }) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [email, password]);
+
   async function handleSubmit () {
+    if (canSubmit()) {
+      return;
+    }
     const loginUserRequest: LoginRequest = {
       email: email,
       password: password,
@@ -40,6 +58,10 @@ export default function SignIn() {
     } catch (err) {
       setError('Svetainė šiuo metu nepasiekiama');
     }
+  }
+
+  function canSubmit() {
+    return !(email && password);
   }
 
   function loginUser() {
@@ -89,23 +111,13 @@ export default function SignIn() {
             {error}
           </Typography>
           <Button onClick={handleSubmit}
-            disabled={!(email && password)}
+            disabled={canSubmit()}
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
             Prisijungti
-          </Button>
-
-          <Button onClick={ async ()=> console.log(await authService.getUserInfo())}
-            disabled={!(email && password)}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            TEst
           </Button>
           <Grid container>
             <Grid item xs>
