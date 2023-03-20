@@ -80,8 +80,6 @@ namespace Traki.Api.Controllers
 
             _memoryCache.Set(userId, oauthResponse.AccessToken);
 
-            var userInfo = await _docuSignService.GetUserInformation(oauthResponse.AccessToken);
-
             // create new cookie?
             return Ok();
         }

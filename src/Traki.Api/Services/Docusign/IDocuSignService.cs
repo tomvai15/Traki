@@ -6,5 +6,17 @@ namespace Traki.Api.Services.Docusign
     {
         Task<OAuthResponse> GetAccessToken(string code);
         Task<DocuSignUserInfo> GetUserInformation(string accessToken);
+
+        // TODO: refactor
+        (string, string) SendEnvelopeForEmbeddedSigning(
+            string signerEmail,
+            string signerName,
+            string signerClientId,
+            string accessToken,
+            string basePath,
+            string accountId,
+            string docPdf,
+            string returnUrl,
+            string pingUrl = null);
     }
 }

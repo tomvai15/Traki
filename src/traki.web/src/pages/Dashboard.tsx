@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import reportService from '../services/report-service';
+import { Button } from '@mui/material';
 
 function DashboardContent() {
 
@@ -12,6 +13,12 @@ function DashboardContent() {
   useEffect(() => {
     reportService.getReport().then((value) => {setPdf(value);});
   }, []);
+
+  async function signDocument() {
+    const res = await reportService.signReport();
+    console.log(res);
+    window.location.replace(res);
+  }
 
   return (
     <Box
@@ -23,14 +30,14 @@ function DashboardContent() {
             : theme.palette.grey[900],
         flexGrow: 1,
         height: '100vh',
-        overflow: 'auto',
       }}
     >
       <Toolbar />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4}}>
         <Document  file={`data:application/pdf;base64,${pdf}`} >
           <Page height={600} pageNumber={1}></Page>
         </Document>
+        <Button onClick={signDocument} variant='contained'>Sign</Button>
       </Container>
     </Box>
   );
