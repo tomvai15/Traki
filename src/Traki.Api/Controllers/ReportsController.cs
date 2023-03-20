@@ -1,10 +1,8 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Traki.Api.Constants;
 using Traki.Api.Handlers;
-using Traki.Api.Services;
 using Traki.Api.Services.Docusign;
 
 namespace Traki.Api.Controllers

@@ -67,8 +67,18 @@ namespace Traki.Api.Controllers
         {
             int userId = GetUserId();
 
-            var response = new GetUserResponse { User = new UserDto { Id = userId } };
+            bool exists = _memoryCache.TryGetValue<string>(GetUserId(), out string accessToken);
+
+            var response = new GetUserResponse { User = new UserDto { Id = userId }, LoggedInDocuSign = exists };
             return Ok(response);
+        }
+
+        [HttpGet("code")]
+        [Authorize]
+        public async Task<ActionResult> GetAuthorisationCodeRequestUrl()
+        {
+            var url = await _docuSignService.GetAuthorisationCodeRequest();
+            return Ok(url);
         }
 
         [HttpPost("docusign")]

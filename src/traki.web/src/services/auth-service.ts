@@ -25,5 +25,11 @@ class AuthService {
     const fullRoute = route + '/docusign';
     await axiosApiInstance.post(fullRoute, loginOAuthRequest, { headers: {} });
   }
+
+  async getAuthorisationCodeUrl(): Promise<string> {
+    const fullRoute = route + '/code';
+    const response = await axiosApiInstance.get<string>(fullRoute, { headers: {} });
+    return response.data;
+  }
 }
 export default new AuthService ();

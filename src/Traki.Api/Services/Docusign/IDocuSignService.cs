@@ -4,6 +4,7 @@ namespace Traki.Api.Services.Docusign
 {
     public interface IDocuSignService
     {
+        Task<string> GetAuthorisationCodeRequest();
         Task<OAuthResponse> GetAccessToken(string code);
         Task<DocuSignUserInfo> GetUserInformation(string accessToken);
 

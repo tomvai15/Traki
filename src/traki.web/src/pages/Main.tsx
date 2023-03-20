@@ -20,10 +20,10 @@ export function Main() {
   async function fetchUser() {
     try {
       const getUserResponse = await authService.getUserInfo();
-      setUserInfo({ id: getUserResponse.user.id });
+      setUserInfo({ id: getUserResponse.user.id, loggedInDocuSign: getUserResponse.loggedInDocuSign });
       console.log('ok');
     } catch {
-      setUserInfo({ id: -1 });
+      setUserInfo({ id: -1, loggedInDocuSign: false });
       console.log('ne ok');
     }
   }

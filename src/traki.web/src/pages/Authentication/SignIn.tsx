@@ -69,7 +69,7 @@ export default function SignIn() {
   }
 
   function loginUser() {
-    setUserInfo({id: 1});
+    setUserInfo({id: 1, loggedInDocuSign: false});
     navigate('/');
   }
   return (

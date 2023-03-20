@@ -1,5 +1,6 @@
 import { User } from "./User";
 
 export type GetUserResponse = {
-  user: User
+  user: User,
+  loggedInDocuSign: boolean
 }

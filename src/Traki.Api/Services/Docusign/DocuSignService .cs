@@ -224,5 +224,11 @@ namespace Traki.Api.Services.Docusign
 
             return envelopeDefinition;
         }
+
+        public async Task<string> GetAuthorisationCodeRequest()
+        {
+            const string redirectUrl = "http://localhost:3000/checkoauth";
+            return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}";
+        }
     }
 }
