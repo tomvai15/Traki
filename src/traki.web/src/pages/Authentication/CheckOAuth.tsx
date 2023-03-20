@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { CircularProgress, Container, LinearProgress } from '@mui/material';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import authService from '../../services/auth-service';
 import { LoginOAuthRequest } from '../../contracts/auth/LoginOAuthRequest';
 
@@ -15,6 +15,7 @@ function useQuery() {
 
 export default function CheckOAuth() {
 
+  const navigate = useNavigate();
   const [loadinig, setLoading] = useState(true);
   let query = useQuery();
 
@@ -35,6 +36,7 @@ export default function CheckOAuth() {
     setLoading(true);
     await authService.loginDocusign(docusignRequest);
     setLoading(false);
+    navigate('/')
   }
 
   return (

@@ -10,7 +10,8 @@ namespace Traki.Api.Bootstrapping
     {
         public static IServiceCollection AddHandlers(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IUserAuthHandler, UserAuthHandler>()
+            services
+                .AddTransient<IUserAuthHandler, UserAuthHandler>()
                 .AddTransient<IUsersRepository, UsersHandler>()
                 .AddTransient<IProjectsRepository, ProjectsRepository>()
                 .AddTransient<IProductsRepository, ProductsRepository>()

@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 using Traki.Api.Constants;
 using Traki.Api.Contracts.Auth;
 using Traki.Api.Cryptography;
 using Traki.Api.Handlers;
+using Traki.Api.Services.Docusign;
 
 namespace Traki.Api.Controllers
 {
@@ -15,11 +17,15 @@ namespace Traki.Api.Controllers
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserAuthHandler _authHandler;
+        private readonly IDocuSignService _docuSignService;
+        private readonly IMemoryCache _memoryCache;
 
-        public AuthController(IJwtTokenGenerator jwtTokenGenerator, IUserAuthHandler authHandler)
+        public AuthController(IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IMemoryCache memoryCache, IUserAuthHandler authHandler)
         {
-            _jwtTokenGenerator = jwtTokenGenerator;
             _authHandler = authHandler;
+            _docuSignService = docuSignService;
+            _jwtTokenGenerator = jwtTokenGenerator;
+            _memoryCache = memoryCache;
         }
 
         [HttpPost("login")]
@@ -59,7 +65,7 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult<GetUserResponse>> GetUserInfo()
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == Claims.UserId).Value);
+            int userId = GetUserId();
 
             var response = new GetUserResponse { User = new UserDto { Id = userId } };
             return Ok(response);
@@ -69,8 +75,20 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult> LoginToDocuSign([FromBody] LoginOAuthRequest loginOAuthRequest)
         {
+            var oauthResponse = await _docuSignService.GetAccessToken(loginOAuthRequest.Code);
+            int userId = GetUserId();
+
+            _memoryCache.Set(userId, oauthResponse.AccessToken);
+
+            var userInfo = await _docuSignService.GetUserInformation(oauthResponse.AccessToken);
+
             // create new cookie?
             return Ok();
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(User.Claims.FirstOrDefault(x => x.Type == Claims.UserId).Value);
         }
     }
 }

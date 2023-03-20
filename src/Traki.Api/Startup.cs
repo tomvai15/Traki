@@ -6,11 +6,14 @@ namespace Traki.Api
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMappingProfiles()
+            services
+                .AddMemoryCache()
+                .AddMappingProfiles()
                 .AddTrakiDbContext(configuration)
                 .AddAuthServices(configuration)
                 .AddHandlers(configuration)
                 .AddHttpResponseMappings(configuration)
+                .AddDocusignServices(configuration)
                 .AddCryptographyServices()
                 .AddCorsPolicy();
 
