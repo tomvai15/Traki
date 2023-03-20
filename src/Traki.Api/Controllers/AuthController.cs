@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Traki.Api.Constants;
-using Traki.Api.Contracts;
+using Traki.Api.Contracts.Auth;
 using Traki.Api.Cryptography;
 using Traki.Api.Handlers;
 
@@ -57,10 +57,20 @@ namespace Traki.Api.Controllers
 
         [HttpGet("userinfo")]
         [Authorize]
-        public async Task<ActionResult> GetUserInfo()
+        public async Task<ActionResult<GetUserResponse>> GetUserInfo()
         {
-            string name = User.Claims.FirstOrDefault(x => x.Type == Claims.UserId).Value;
-            return Ok(new { name = name });
+            int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == Claims.UserId).Value);
+
+            var response = new GetUserResponse { User = new UserDto { Id = userId } };
+            return Ok(response);
+        }
+
+        [HttpPost("docusign")]
+        [Authorize]
+        public async Task<ActionResult> LoginToDocuSign([FromBody] LoginOAuthRequest loginOAuthRequest)
+        {
+            // create new cookie?
+            return Ok();
         }
     }
 }

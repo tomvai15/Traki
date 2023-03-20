@@ -1,6 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { LoginRequest } from '../contracts/auth/LoginRequest';
 import axiosApiInstance from './axios-instance';
+import { GetUserResponse } from '../contracts/auth/GetUserResponse';
+import { LoginOAuthRequest } from '../contracts/auth/LoginOAuthRequest';
 
 const route = 'auth';
 
@@ -12,10 +14,16 @@ class AuthService {
     return response;
   }
 
-  async getUserInfo(): Promise<string> {
+  async getUserInfo(): Promise<GetUserResponse> {
     const fullRoute = route + '/userinfo';
-    const response = await axiosApiInstance.get<string>(fullRoute, { headers: {} });
+    const response = await axiosApiInstance.get<GetUserResponse>(fullRoute, { headers: {} });
     return response.data;
+  }
+
+  async loginDocusign(loginOAuthRequest: LoginOAuthRequest): Promise<void> {
+    console.log(loginOAuthRequest);
+    const fullRoute = route + '/docusign';
+    await axiosApiInstance.post(fullRoute, loginOAuthRequest, { headers: {} });
   }
 }
 export default new AuthService ();

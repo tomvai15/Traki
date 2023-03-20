@@ -6,7 +6,7 @@ import { userState } from '../state/user-state';
 const ProtectedRoute = () => {
   const [userInfo] = useRecoilState(userState);
   
-  return userInfo.id >= 0 ? <Outlet/> : <Navigate to="/login"/>;
+  return userInfo && userInfo.id >= 0 ? <Outlet/> : <Navigate to="/login"/>;
 };
 
 export default ProtectedRoute;

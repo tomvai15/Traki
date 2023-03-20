@@ -10,10 +10,8 @@ function DashboardContent() {
   const [pdf, setPdf] = React.useState<string>('');
 
   useEffect(() => {
-    console.log('?');
     reportService.getReport().then((value) => {setPdf(value);});
   }, []);
-  
 
   return (
     <Box

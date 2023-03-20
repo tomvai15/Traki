@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Traki.Api.Contracts;
+using Traki.Api.Contracts.Auth;
 using Traki.Api.Handlers;
 
 namespace Traki.Api.Controllers

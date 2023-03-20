@@ -1,4 +1,4 @@
-﻿namespace Traki.Api.Contracts
+﻿namespace Traki.Api.Contracts.Auth
 {
     public class LoginResponse
     {

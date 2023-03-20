@@ -1,6 +1,6 @@
-﻿namespace Traki.Api.Contracts
+﻿namespace Traki.Api.Contracts.Auth
 {
-    public class LoginRequest
+    public class CreateUserRequest
     {
         public string Email { get; set; }
         public string Password { get; set; }

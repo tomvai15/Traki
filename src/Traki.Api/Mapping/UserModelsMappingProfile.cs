@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Traki.Api.Contracts;
+using Traki.Api.Contracts.Auth;
 using Traki.Api.Models;
 
 namespace Traki.Api.Mapping
