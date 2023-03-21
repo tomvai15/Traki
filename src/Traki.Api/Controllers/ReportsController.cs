@@ -46,7 +46,7 @@ namespace Traki.Api.Controllers
             var userInfo = await _docuSignService.GetUserInformation(accessToken);
 
             // refactor....
-            var result = _docuSignService.SendEnvelopeForEmbeddedSigning(userInfo.Email, $"{userInfo.Name} {userInfo.FamilName}", signerClientId.ToString(),
+            var result = _docuSignService.SendEnvelopeForEmbeddedSigning(userInfo.Email, userInfo.Name, signerClientId.ToString(),
                 accessToken, userInfo.Accounts.First().BaseUri + "/restapi", userInfo.Accounts.First().AccountId, report, "http://localhost:3000");
 
             return Ok(result.Item2);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
@@ -12,16 +12,18 @@ import authService from '../services/auth-service';
 
 function DashboardContent() {
 
-  const [pdf, setPdf] = React.useState<string>('');
+  const [pdf, setPdf] = useState<string>('');
   const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [loadingSignIn, setLoadingSignIn] = useState(false);
 
   useEffect(() => {
     reportService.getReport().then((value) => {setPdf(value);});
   }, []);
 
   async function signDocument() {
+    setLoadingSignIn(true);
     const res = await reportService.signReport();
-    console.log(res);
+    setLoadingSignIn(false);
     window.location.replace(res);
   }
 
@@ -58,7 +60,7 @@ function DashboardContent() {
           </Box>
           <Box sx={{flex: 1, padding: 3, display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
             <Card sx={{flex: 1, padding: 5}}>{userInfo.loggedInDocuSign ?
-              <Button onClick={signDocument} variant="contained" endIcon={<CreateIcon />}>
+              <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
                 Sign document with DocuSign
               </Button> :
               <Button onClick={getCodeUrl} variant="contained" endIcon={<CreateIcon />}>

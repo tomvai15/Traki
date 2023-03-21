@@ -6,6 +6,8 @@ import { CircularProgress, Container, LinearProgress } from '@mui/material';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import authService from '../../services/auth-service';
 import { LoginOAuthRequest } from '../../contracts/auth/LoginOAuthRequest';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../state/user-state';
 
 function useQuery() {
   const { search } = useLocation();
@@ -17,6 +19,7 @@ export default function CheckOAuth() {
 
   const navigate = useNavigate();
   const [loadinig, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
   let query = useQuery();
 
   useEffect(() => {
@@ -35,6 +38,7 @@ export default function CheckOAuth() {
     }
     setLoading(true);
     await authService.loginDocusign(docusignRequest);
+    setUserInfo({ id: userInfo.id, loggedInDocuSign: true })
     setLoading(false);
     navigate('/')
   }
