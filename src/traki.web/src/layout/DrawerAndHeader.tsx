@@ -90,7 +90,7 @@ export function DrawerAndHeader() {
 
   function logOut() {
     navigate('/signin');
-    setUserInfo({id:-1});
+    setUserInfo({id:-1, loggedInDocuSign: false});
   }
 
   return (

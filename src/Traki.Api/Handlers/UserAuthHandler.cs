@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Security.Claims;
 using Traki.Api.Constants;
-using Traki.Api.Contracts;
+using Traki.Api.Contracts.Auth;
 using Traki.Api.Cryptography;
 using Traki.Api.Data.Repositories;
 using Traki.Api.Exceptions;

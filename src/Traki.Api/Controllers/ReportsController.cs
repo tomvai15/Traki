@@ -1,42 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Traki.Api.Constants;
+using Traki.Api.Handlers;
+using Traki.Api.Services.Docusign;
 
 namespace Traki.Api.Controllers
 {
     [Route("api/reports")]
-    public class ReportsController: ControllerBase
+    public class ReportsController : ControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<string>> GetTemplates()
+        private readonly IReportHandler _reportsHandler;
+        private readonly IDocuSignService _docuSignService;
+        private readonly IMemoryCache _memoryCache;
+
+        public ReportsController(IDocuSignService docuSignService, IMemoryCache memoryCache, IReportHandler reportsHandler)
         {
-            // TODO: Move to seperate component
-            // Create a new PDF document
-            PdfDocument document = new PdfDocument();
-            document.Info.Title = "Created with PDFsharp";
+            _docuSignService = docuSignService;
+            _reportsHandler = reportsHandler;
+            _memoryCache = memoryCache;
+        }
 
-            // Create an empty page
-            PdfPage page = document.AddPage();
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<string>> GenerateReport()
+        {
+            return _reportsHandler.GenerateReport();
+        }
 
-            // Get an XGraphics object for drawing
-            XGraphics gfx = XGraphics.FromPdfPage(page);
+        [HttpPost("sign")]
+        [Authorize]
+        public async Task<ActionResult<string>> SignDocument()
+        {
+            string report = _reportsHandler.GenerateReport();
 
-            // Create a font
-            XFont font = new XFont("Verdana", 20, XFontStyle.BoldItalic);
+            bool exists = _memoryCache.TryGetValue<string>(GetUserId(), out string accessToken);
 
-            // Draw the text
-            gfx.DrawString($"Ataskaita {DateTime.Now.ToString("f")}", font, XBrushes.Black,
-              new XRect(0, 0, page.Width, page.Height),
-              XStringFormats.Center);
+            if (!exists)
+            {
+                return BadRequest();
+            }
 
+            int signerClientId = 1000;
 
-            using MemoryStream stream = new MemoryStream();
-            
-            document.Save(stream, closeStream: false);
+            var userInfo = await _docuSignService.GetUserInformation(accessToken);
 
-            return Convert.ToBase64String(stream.ToArray());
+            // refactor....
+            var result = _docuSignService.SendEnvelopeForEmbeddedSigning(userInfo.Email, userInfo.Name, signerClientId.ToString(),
+                accessToken, userInfo.Accounts.First().BaseUri + "/restapi", userInfo.Accounts.First().AccountId, report, "http://localhost:3000");
+
+            return Ok(result.Item2);
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(User.Claims.FirstOrDefault(x => x.Type == Claims.UserId).Value);
         }
     }
 }
