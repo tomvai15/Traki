@@ -120,7 +120,6 @@ export function DrawerAndHeader() {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
           </Typography>
           <IconButton onClick={handleOpenUserMenu} color="inherit">
             <Badge badgeContent={4} color="secondary">
