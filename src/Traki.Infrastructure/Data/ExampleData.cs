@@ -4,6 +4,18 @@ namespace Traki.Infrastructure.Data
 {
     public static class ExampleData
     {
+        public static IEnumerable<CompanyEntity> Companies => new[]
+        {
+            new CompanyEntity
+            {
+                Name = "Preftek",
+                Address = "Vydūno alėja",
+                CreationDate = DateTime.UtcNow,
+                ModifiedDate = DateTime.UtcNow,
+                ImageName = "Test"
+            }
+        };
+
         public static IEnumerable<UserEntity> Users => new[]
         {
             new UserEntity

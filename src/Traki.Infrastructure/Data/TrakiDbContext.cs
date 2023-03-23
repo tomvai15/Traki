@@ -33,6 +33,7 @@ namespace Traki.Infrastructure.Data
                 .WithOne(p => p.Checklist);
         }
 
+        public virtual DbSet<CompanyEntity> Companies { get; set; }
         public virtual DbSet<ChecklistEntity> Checklists { get; set; }
         public virtual DbSet<ChecklistQuestionEntity> CheckListQuestions { get; set; }
         public virtual DbSet<ProductEntity> Products { get; set; }
