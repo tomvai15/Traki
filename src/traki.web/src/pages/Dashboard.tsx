@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import reportService from '../services/report-service';
-import { Button, Card, CircularProgress, IconButton, Typography } from '@mui/material';
+import { Button, Card, CircularProgress, Typography } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { useRecoilState } from 'recoil';
 import { userState } from '../state/user-state';

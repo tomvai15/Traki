@@ -1,12 +1,14 @@
 import React from 'react';
-import {Navigate, Outlet} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { userState } from '../state/user-state';
 
-const ProtectedRoute = () => {
-  const [userInfo] = useRecoilState(userState);
-  
-  return userInfo && userInfo.id >= 0 ? <Outlet/> : <Navigate to="/login"/>;
+type Props = {
+  children?: React.ReactNode
 };
 
-export default ProtectedRoute;
+export const ProtectedRoute: React.FC<Props> = ({children}) => {
+  const [userInfo] = useRecoilState(userState);
+  
+  return userInfo && userInfo.id >= 0 ? <>{children}</> : <Navigate to="/login"/>;
+};
