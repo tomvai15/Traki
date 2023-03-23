@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 
 namespace Traki.Api.Services.BlobStorage
 {
-    // Todo: refactor to use stream. Memory leak is possible here
     public class BlobStorageService : IStorageService
     {
         private readonly BlobStorageSettings _blobStorageSettings;
@@ -18,8 +17,6 @@ namespace Traki.Api.Services.BlobStorage
         {
             BlobContainerClient blobContainerClient = new BlobContainerClient(_blobStorageSettings.ConnectionString, containerName); 
             blobContainerClient.CreateIfNotExists();
-
-            BlobUploadOptions options = new BlobUploadOptions();
 
             var blobHttpHeader = new BlobHttpHeaders { ContentType = contentType };
 

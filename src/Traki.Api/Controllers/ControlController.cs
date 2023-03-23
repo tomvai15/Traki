@@ -39,16 +39,6 @@ namespace Traki.Api.Controllers
             var formCollection = await Request.ReadFormAsync();
             IFormFile file = formCollection.Files.First();
 
-            /*
-            MemoryStream stream = new MemoryStream();
-
-             await file.CopyToAsync(stream);
-
-            file.OpenReadStream
-
-            BinaryData binaryData = new BinaryData(stream.ToArray());
-            */
-
             string fileName = file.FileName;
             await _storageService.AddFile("product1", fileName, file.ContentType, file.OpenReadStream());
 
@@ -61,8 +51,6 @@ namespace Traki.Api.Controllers
             var file = await _storageService.GetFile("product1", fileName);
 
             var bytes = file.Content.ToStream();
-
-           // var bytes = file.Content.ToArray();
 
             return File(bytes, file.Details.ContentType);
         }
