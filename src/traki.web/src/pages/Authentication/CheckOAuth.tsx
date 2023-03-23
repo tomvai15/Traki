@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { CircularProgress, Container, LinearProgress } from '@mui/material';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { CircularProgress, Container } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 import authService from '../../services/auth-service';
 import { LoginOAuthRequest } from '../../contracts/auth/LoginOAuthRequest';
 import { useRecoilState } from 'recoil';
@@ -11,7 +11,6 @@ import { userState } from '../../state/user-state';
 
 function useQuery() {
   const { search } = useLocation();
-
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 

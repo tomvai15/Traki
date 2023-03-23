@@ -16,6 +16,6 @@ const { persistAtom } = recoilPersist();
 
 export const userState: RecoilState<UserInfo> = atom({
   key: 'textState',
-  default: null,
+  default: initialState,
   effects_UNSTABLE: [persistAtom],
 });

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,10 +7,8 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LoginIcon from '@mui/icons-material/Login';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import authService from '../../services/auth-service';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
-import { Axios, AxiosError } from 'axios';
 import { Card } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';

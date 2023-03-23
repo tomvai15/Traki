@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -14,7 +14,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import DrawerItems from './DrawerItems';
-import reportService from '../services/report-service';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Menu, MenuItem } from '@mui/material';
 import { useRecoilState } from 'recoil';

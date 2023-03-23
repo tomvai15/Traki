@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import reportService from '../../services/report-service';
-import { Button, Card, CardContent, CircularProgress, Divider, IconButton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
-import CreateIcon from '@mui/icons-material/Create';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../state/user-state';
-import authService from '../../services/auth-service';
+import { Card, CardContent, Divider, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 
 type Project = {
@@ -26,27 +18,6 @@ const data: Project[] = [{id: 1, name: "Sample project 1"}, {id: 2, name: "Sampl
 const productData: Product[] = [{id: 1, name: "Sample product 1"}, {id: 2, name: "Sample product 2"}];
 
 export function Projects() {
-
-  const [pdf, setPdf] = useState<string>('');
-  const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [loadingSignIn, setLoadingSignIn] = useState(false);
-
-  useEffect(() => {
-    reportService.getReport().then((value) => {setPdf(value);});
-  }, []);
-
-  async function signDocument() {
-    setLoadingSignIn(true);
-    const res = await reportService.signReport();
-    setLoadingSignIn(false);
-    window.location.replace(res);
-  }
-
-  async function getCodeUrl() {
-    const res = await authService.getAuthorisationCodeUrl();
-    window.location.replace(res);
-  }
-
   return (
     <Box component="main" sx={{
       flexGrow: 1,
