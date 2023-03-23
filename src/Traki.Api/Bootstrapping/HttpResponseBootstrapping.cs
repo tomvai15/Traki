@@ -1,6 +1,6 @@
 ﻿using Hellang.Middleware.ProblemDetails;
 using System.Net;
-using Traki.Api.Exceptions;
+using Traki.Domain.Exceptions;
 
 namespace Traki.Api.Bootstrapping
 {

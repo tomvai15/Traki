@@ -1,4 +1,4 @@
-﻿using Traki.Api.Models;
+﻿using Traki.Domain.Models;
 
 namespace Traki.Api.Contracts.ChecklistQuestion
 {

@@ -12,6 +12,7 @@ namespace Traki.Api
                 .AddTrakiDbContext(configuration)
                 .AddAuthServices(configuration)
                 .AddHandlers(configuration)
+                .AddRepositories(configuration)
                 .AddHttpResponseMappings(configuration)
                 .AddDocusignServices(configuration)
                 .AddBlobStorageServices(configuration)

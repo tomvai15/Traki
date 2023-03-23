@@ -1,5 +1,5 @@
-﻿using Traki.Api.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Traki.Infrastructure.Data;
 
 namespace Traki.Api.Bootstrapping
 {

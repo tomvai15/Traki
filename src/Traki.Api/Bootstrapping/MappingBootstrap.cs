@@ -9,9 +9,6 @@ namespace Traki.Api.Bootstrapping
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new UserModelsMappingProfile());
-                cfg.AddProfile(new ProjectModelsMappingProfile());
-                cfg.AddProfile(new ProductModelsMappingProfile());
                 cfg.AddProfile(new EntityToDomainModelMappingProfile());
                 cfg.AddProfile(new DomainToContractMappingProfile());
             });

@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
 using Traki.Api.Contracts.Project;
-using Traki.Api.Data;
+using Traki.Infrastructure.Data;
 
 namespace Traki.IntegrationTests
 {
+    [Collection("Sequential")]
     public class ProjectsControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly WebApplicationFactory<Program> _factory;
@@ -34,7 +35,9 @@ namespace Traki.IntegrationTests
             string body = await response.Content.ReadAsStringAsync();
             GetProjectResponse getProjectResponse = JsonConvert.DeserializeObject<GetProjectResponse>(body);
             getProjectResponse.Project.Should().BeEquivalentTo(expectedResponse, 
-                options => options.Excluding(x => x.Products).Excluding(x=> x.Id));
+                options => options.Excluding(x => x.Products)
+                .Excluding(x => x.Templates)
+                .Excluding(x=> x.Id));
         }
 
         [Theory]

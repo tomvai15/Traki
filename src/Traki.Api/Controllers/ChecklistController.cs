@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Checklist;
-using Traki.Api.Data.Repositories;
-using Traki.Api.Handlers;
+using Traki.Domain.Repositories;
+using Traki.Domain.Handlers;
 
 namespace Traki.Api.Controllers
 {

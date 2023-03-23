@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
 using Traki.Api.Contracts.Product;
-using Traki.Api.Data;
+using Traki.Infrastructure.Data;
 
 namespace Traki.IntegrationTests
 {
@@ -18,7 +18,7 @@ namespace Traki.IntegrationTests
         }
 
         [Theory]
-        [InlineData("/api/products/1")]
+        [InlineData("/api/projects/1/products/1")]
         public async Task Get_ExistingProject_ReturnSuccess(string url)
         {
             // Arrange
@@ -34,13 +34,15 @@ namespace Traki.IntegrationTests
 
             string body = await response.Content.ReadAsStringAsync();
             GetProductResponse getProductResponse = JsonConvert.DeserializeObject<GetProductResponse>(body);
-            getProductResponse.Product.Should().BeEquivalentTo(expectedResponse, 
-                options => options.Excluding(x => x.Project).Excluding(x=> x.Id));
+            getProductResponse.Product.Should().BeEquivalentTo(expectedResponse, options => 
+                                                                                    options.Excluding(x => x.Project)
+                                                                                           .Excluding(x => x.CheckLists)
+                                                                                           .Excluding(x=> x.Id));
         }
 
         [Theory]
-        [InlineData("/api/products/1")]
-        [InlineData("/api/products")]
+        [InlineData("/api/projects/1/products/1")]
+        [InlineData("/api/projects/1/products")]
         public async Task Get_ReturnSuccess(string url)
         {
             // Arrange
@@ -54,7 +56,7 @@ namespace Traki.IntegrationTests
         }
 
         [Theory]
-        [InlineData("/api/products/10001")]
+        [InlineData("/api/projects/1/products/1000000")]
         public async Task Get_NotExistingProject_Return404Response(string url)
         {
             // Arrange
