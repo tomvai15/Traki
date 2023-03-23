@@ -13,7 +13,7 @@ import Badge from '@mui/material/Badge';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from '../components/mainListItems';
+import DrawerItems from './DrawerItems';
 import reportService from '../services/report-service';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Menu, MenuItem } from '@mui/material';
@@ -165,9 +165,7 @@ export function DrawerAndHeader() {
         </Toolbar>
         <Divider />
         <List component="nav">
-          {mainListItems}
-          <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
+          <DrawerItems/>
         </List>
       </Drawer>
       <Outlet></Outlet>

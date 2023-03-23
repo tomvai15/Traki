@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 import { userState } from '../state/user-state';
 import authService from '../services/auth-service';
 import CheckOAuth from './Authentication/CheckOAuth';
+import { Projects } from './projects/Projects';
 
 export function Main() {
 
@@ -33,7 +34,9 @@ export function Main() {
       <Routes>
         <Route path='' element={<ProtectedRoute/>}>
           <Route path='' element={<DrawerAndHeader/>}>
-            <Route index element={<Dashboard/>}/>
+            <Route index element={<Navigate to='/projects'/>}/>
+            <Route path='projects' element={<Projects/>}/>
+            <Route path='report' element={<Dashboard/>}/>
             <Route path='checkoauth' element={<CheckOAuth/>}/>
           </Route>
         </Route>
