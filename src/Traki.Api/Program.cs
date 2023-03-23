@@ -1,8 +1,8 @@
 using Hellang.Middleware.ProblemDetails;
 using Serilog;
 using Traki.Api;
-using Traki.Api.Constants;
-using Traki.Api.Data;
+using Traki.Domain.Constants;
+using Traki.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.AddInitialData();
+    var serviceProvider = app.Services.CreateScope().ServiceProvider;
+    serviceProvider.AddInitialData(true);
 }
 
 app.UseCors(Policy.DevelopmentCors);

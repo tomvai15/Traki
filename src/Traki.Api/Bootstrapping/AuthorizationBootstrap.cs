@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Traki.Api.Constants;
-using Traki.Api.Settings;
+using Traki.Domain.Constants;
+using Traki.Domain.Settings;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -13,8 +12,6 @@ namespace Traki.Api.Bootstrapping
     {
         public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
         {
-            WebSettings webSettings = configuration.GetSection(nameof(WebSettings)).Get<WebSettings>();
-
             var securitySettingsSection = configuration.GetSection(nameof(SecuritySettings));
 
             services.Configure<SecuritySettings>(securitySettingsSection);

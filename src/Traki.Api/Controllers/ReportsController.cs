@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Traki.Api.Constants;
-using Traki.Api.Handlers;
-using Traki.Api.Services.Docusign;
+using Traki.Domain.Constants;
+using Traki.Domain.Handlers;
+using Traki.Domain.Services.Docusign;
 
 namespace Traki.Api.Controllers
 {

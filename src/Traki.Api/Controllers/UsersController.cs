@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Auth;
-using Traki.Api.Handlers;
+using Traki.Domain.Handlers;
 
 namespace Traki.Api.Controllers
 {
@@ -18,7 +18,7 @@ namespace Traki.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateUser(CreateUserRequest createUserRequest)
         {
-            bool isUserAdded = await _userAuthHandler.TryCreateUser(createUserRequest);
+            bool isUserAdded = await _userAuthHandler.TryCreateUser(createUserRequest.Email, createUserRequest.Password);
 
             if (!isUserAdded)
             {

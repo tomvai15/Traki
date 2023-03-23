@@ -1,8 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Traki.Api.Cryptography;
-using Traki.Api.Data.Repositories;
-using Traki.Api.Handlers;
+using Traki.Domain.Cryptography;
+using Traki.Infrastructure.Repositories;
+using Traki.Domain.Handlers;
+using Traki.Domain.Repositories;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -13,14 +14,22 @@ namespace Traki.Api.Bootstrapping
             services
                 .AddTransient<IUserAuthHandler, UserAuthHandler>()
                 .AddTransient<IUsersRepository, UsersHandler>()
+                .AddTransient<IChecklistHandler, ChecklistHandler>()
+                .AddTransient<IReportHandler, ReportHandler>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .AddTransient<IUsersRepository, UsersHandler>()
                 .AddTransient<IProjectsRepository, ProjectsRepository>()
                 .AddTransient<IProductsRepository, ProductsRepository>()
                 .AddTransient<IQuestionsRepository, QuestionsRepository>()
                 .AddTransient<ITemplatesRepository, TemplatesRepository>()
                 .AddTransient<IChecklistRepository, ChecklistRepository>()
-                .AddTransient<IChecklistQuestionRepository, ChecklistQuestionRepository>()
-                .AddTransient<IChecklistHandler, ChecklistHandler>()
-                .AddTransient<IReportHandler, ReportHandler>();
+                .AddTransient<IChecklistQuestionRepository, ChecklistQuestionRepository>();
 
             return services;
         }

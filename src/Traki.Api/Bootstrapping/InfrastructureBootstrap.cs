@@ -1,9 +1,7 @@
-﻿using Hellang.Middleware.ProblemDetails;
-using System.Net;
-using Traki.Api.Exceptions;
-using Traki.Api.Services.BlobStorage;
-using Traki.Api.Services.Docusign;
-using Traki.Api.Settings;
+﻿using Traki.Domain.Services.BlobStorage;
+using Traki.Domain.Services.Docusign;
+using Traki.Infrastructure.Services.BlobStorage;
+using Traki.Infrastructure.Services.Docusign;
 
 namespace Traki.Api.Bootstrapping
 {

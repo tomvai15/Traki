@@ -11,7 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B9135A10
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traki.UnitTests", "tests\Traki.UnitTests\Traki.UnitTests.csproj", "{EE408F2F-052B-44FE-88B7-682F0A3AB571}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traki.IntegrationTests", "tests\Traki.IntegrationTests\Traki.IntegrationTests.csproj", "{45EA23C7-7B20-4D04-9533-54335A12FFAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traki.IntegrationTests", "tests\Traki.IntegrationTests\Traki.IntegrationTests.csproj", "{45EA23C7-7B20-4D04-9533-54335A12FFAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traki.Domain", "src\Traki.Domain\Traki.Domain.csproj", "{F325CFC8-799E-4636-9867-0A8BC18D92E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traki.Infrastructure", "src\Traki.Infrastructure\Traki.Infrastructure.csproj", "{B72D8187-8E26-4D98-947E-36C19194417B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,14 @@ Global
 		{45EA23C7-7B20-4D04-9533-54335A12FFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45EA23C7-7B20-4D04-9533-54335A12FFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45EA23C7-7B20-4D04-9533-54335A12FFAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F325CFC8-799E-4636-9867-0A8BC18D92E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F325CFC8-799E-4636-9867-0A8BC18D92E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F325CFC8-799E-4636-9867-0A8BC18D92E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F325CFC8-799E-4636-9867-0A8BC18D92E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B72D8187-8E26-4D98-947E-36C19194417B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B72D8187-8E26-4D98-947E-36C19194417B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B72D8187-8E26-4D98-947E-36C19194417B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B72D8187-8E26-4D98-947E-36C19194417B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +51,8 @@ Global
 		{660FAF97-1EF0-419F-8D24-08CA562D7B03} = {397157AE-7435-47EB-8BD9-A250F2E87362}
 		{EE408F2F-052B-44FE-88B7-682F0A3AB571} = {B9135A10-137C-4C88-A57F-780281823483}
 		{45EA23C7-7B20-4D04-9533-54335A12FFAA} = {B9135A10-137C-4C88-A57F-780281823483}
+		{F325CFC8-799E-4636-9867-0A8BC18D92E8} = {397157AE-7435-47EB-8BD9-A250F2E87362}
+		{B72D8187-8E26-4D98-947E-36C19194417B} = {397157AE-7435-47EB-8BD9-A250F2E87362}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF03DBD6-161F-4BDD-A466-E0600159339C}

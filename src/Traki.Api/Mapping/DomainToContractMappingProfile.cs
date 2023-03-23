@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.Checklist;
 using Traki.Api.Contracts.ChecklistQuestion;
+using Traki.Api.Contracts.Product;
+using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Question;
 using Traki.Api.Contracts.Template;
-using Traki.Api.Models;
+using Traki.Domain.Models;
 
 namespace Traki.Api.Mapping
 {
@@ -11,11 +14,47 @@ namespace Traki.Api.Mapping
     {
         public DomainToContractMappingProfile()
         {
+            AddProductMappings();
+            AddProjectMappings();
+            AddUserMappings();
             AddTemplateMappings();
             AddQuestionMappings();
             AddChecklistMappings();
             AddChecklistQuestionMappings();
             AddChecklistQuestionMappings();
+        }
+
+        public void AddProductMappings()
+        {
+            CreateMap<Product, GetProductResponse>()
+             .ForMember(p => p.Product, opt => opt.MapFrom(p => p));
+
+            CreateMap<IEnumerable<Product>, GetProductsResponse>()
+                .ForMember(p => p.Products, opt => opt.MapFrom(p => p));
+
+            CreateMap<Product, ProductDto>().ReverseMap();
+
+            CreateMap<CreateProductRequest, Product>()
+                .IncludeMembers(p => p.Product);
+        }
+
+        public void AddProjectMappings()
+        {
+            CreateMap<Project, GetProjectResponse>()
+                .ForMember(p => p.Project, opt => opt.MapFrom(p => p));
+
+            CreateMap<IEnumerable<Project>, GetProjectsResponse>()
+                .ForMember(p => p.Projects, opt => opt.MapFrom(p => p));
+
+            CreateMap<Project, ProjectDto>().ReverseMap();
+
+            CreateMap<CreateProjectRequest, Project>()
+                .IncludeMembers(p => p.Project);
+        }
+
+        public void AddUserMappings()
+        {
+            CreateMap<CreateUserRequest, User>();
         }
 
         public void AddTemplateMappings()

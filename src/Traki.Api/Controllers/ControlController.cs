@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Traki.Api.Data;
-using Traki.Api.Services.BlobStorage;
+using Traki.Domain.Services.BlobStorage;
+using Traki.Infrastructure.Data;
 
 namespace Traki.Api.Controllers
 {

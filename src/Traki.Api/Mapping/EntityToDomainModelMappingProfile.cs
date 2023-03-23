@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Traki.Api.Data.Entities;
-using Traki.Api.Models;
+using Traki.Domain.Models;
+using Traki.Infrastructure.Entities;
 
 namespace Traki.Api.Mapping
 {
@@ -8,6 +8,7 @@ namespace Traki.Api.Mapping
     {
         public EntityToDomainModelMappingProfile()
         {
+            CreateMap<User, UserEntity>().ReverseMap();
             CreateMap<Project, ProjectEntity>().ReverseMap();
             CreateMap<Product, ProductEntity>().ReverseMap();
             CreateMap<Template, TemplateEntity>().ReverseMap();
