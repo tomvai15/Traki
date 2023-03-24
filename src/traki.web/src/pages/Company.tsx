@@ -5,6 +5,11 @@ import companyService from '../services/company-service';
 import { Company } from '../contracts/company/Company';
 import { UpdateCompanyRequest } from '../contracts/company/UpdateCompanyRequest';
 import pictureService from '../services/picture-service';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import PeopleIcon from '@mui/icons-material/People';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
+// TODO: allow only specific resolution
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -13,10 +18,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function CompanyPage() {
-
+  const [previewImage, setPreviewImage] = useState<string>();
   const [company, setCompany] = useState<Company>();
   const [canEdit, setCanEdit] = useState<boolean>(false);
 
+  const [file, setFile] = useState<File>();
   const [image, setImage] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
@@ -25,6 +31,13 @@ export function CompanyPage() {
   useEffect(() => {
     fetchCompany();
   }, []);
+  
+  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+    setFile(selectedFiles?.[0]);
+    setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
+  };
 
   async function fetchCompany() {
     const getCompanyResponse = await companyService.getCompany();
@@ -57,6 +70,17 @@ export function CompanyPage() {
     setCanEdit(false);
   }
 
+  async function updateLogo() {
+    if (!company || !file) {
+      return;
+    }
+    await pictureService.uploadPicture('company', company.imageName, file);
+    setFile(undefined);
+    setPreviewImage(undefined);
+    await fetchCompany();
+  }
+
+
   return (
     <Box component="main" sx={{
       flexGrow: 1,
@@ -66,7 +90,6 @@ export function CompanyPage() {
     }}>
       <Box sx={{height: 60,  backgroundColor: 'red'}}/>
       <Box sx={{flex: 1, padding: 5,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'column'}}>
-        
         <Grid container spacing={2}>
           <Grid item xs={6} md={4} >
             <Card title='Sample Project'>
@@ -115,30 +138,48 @@ export function CompanyPage() {
             </Card>
           </Grid>
           <Grid item xs={6} md={8}>
-            <Card title='Sample Project' sx={{height: "100%"}}>
+            <Card sx={{height: "100%", padding: 5, paddingBottom: 0}}>
               <CardContent sx={{ height: "100%"}}>
                 { image.length == 0 ? 
                   <Box sx={{backgroundColor: '#ededed', height: "100%"}} ></Box> :
                   <CardMedia
-                    height='200'
                     component="img"
-                    sx={{
-                      16:9
-                    }}
-                    image={image}
+                    image={previewImage ? previewImage : image}
                     alt="random"
                   />}
-              </CardContent>      
+                <Button component="label" variant='contained' startIcon={<FileUploadIcon/>} size="small" sx={{marginRight: 1}}>
+                  Change Logo
+                  <input onChange={selectFile}
+                    type="file"
+                    hidden
+                  />
+                </Button>
+                <Button disabled={!previewImage} onClick={updateLogo} component="label" variant='contained' startIcon={<FileUploadIcon/>} size="small">
+                  Upload
+                </Button>
+              </CardContent>    
             </Card>
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12} md={6}>
             <Card sx={{padding: 5}}>
               <Grid container spacing={2}>
                 <Grid item xs={6} md={4}>
-                  <Item>xs=6 md=4</Item>
+                  <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center'}}>
+                    <PeopleIcon/>
+                    <Typography>12 Employees</Typography>
+                  </Box>
                 </Grid>
                 <Grid item xs={6} md={4}>
-                  <Item>xs=6 md=4</Item>
+                  <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center'}}>
+                    <PeopleIcon/>
+                    <Typography>8 Projects</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={6} md={4}>
+                  <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center'}}>
+                    <AssignmentIcon />
+                    <Typography>12 Templates</Typography>
+                  </Box>
                 </Grid>
               </Grid>
             </Card>

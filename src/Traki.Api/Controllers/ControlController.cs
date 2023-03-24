@@ -33,13 +33,12 @@ namespace Traki.Api.Controllers
             return Ok("Added data");
         }
 
-        [HttpPost("folders/{folderName}/files")]
-        public async Task<ActionResult> UploadFile(string folderName)
+        [HttpPut("folders/{folderName}/files/{fileName}")]
+        public async Task<ActionResult> UpdateFile(string folderName, string fileName)
         {
             var formCollection = await Request.ReadFormAsync();
             IFormFile file = formCollection.Files.First();
 
-            string fileName = file.FileName;
             await _storageService.AddFile(folderName, fileName, file.ContentType, file.OpenReadStream());
 
             return Ok();
