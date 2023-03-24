@@ -12,6 +12,8 @@ import { ProtectedRoute } from '../components/ProtectedRoute';
 import { CompanyPage } from './company/Company';
 import { Templates } from './templates/Templates';
 import { TemplatePage } from './templates/TemplatePage';
+import { EditCheckpoint } from './templates/EditCheckpoint';
+import { SectionPage } from './SectionPage';
 
 export function Main() {
 
@@ -40,10 +42,13 @@ export function Main() {
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
           <Route path='projects' element={<Projects/>}/>
-          <Route path='report' element={<Dashboard/>}/>
+          <Route path='report' element={<SectionPage/>}/>
           <Route path='templates' element={<Outlet/>}>
             <Route index element={<Templates/>}/>
-            <Route path=':templateId' element={<TemplatePage/>}/>
+            <Route path=':templateId' element={<Outlet/>}>
+              <Route index element={<TemplatePage/>}/>
+              <Route path='checkpoints/:checkpointId' element={<EditCheckpoint/>}/>
+            </Route>
           </Route>
         </Route>
         <Route path='/login' element={<SignIn/>}/>

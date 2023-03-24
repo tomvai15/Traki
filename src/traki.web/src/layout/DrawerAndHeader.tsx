@@ -168,12 +168,11 @@ export function DrawerAndHeader() {
       </Drawer>
       <Box component="main" sx={{
         flexGrow: 1,
-        height: '100vh',
-        display: 'flex', 
+        height: '100vh', 
         flexDirection: 'column'
       }}>
         <Box sx={{height: 60,  backgroundColor: 'red'}}/>
-        <Box sx={{flex: 1, padding: 5,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'column'}}>
+        <Box sx={{padding: 5}}>
           <Outlet></Outlet>
         </Box>
       </Box>

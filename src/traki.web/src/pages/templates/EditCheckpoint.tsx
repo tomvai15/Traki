@@ -30,7 +30,28 @@ type Props = {
   setItems: (items: Question[]) => void
 }
 
-export function Checkpoint ({items, setItems} : Props) {
+export function EditCheckpoint() {
+
+  const [items, setItems] = useState(itemsFromBackend);
+
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Card title='Sample Project'>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+            <Typography variant="h5">Template Name</Typography>
+            <Typography variant="h6" fontSize={15} >Checklist</Typography>
+            <Typography variant="h6" fontSize={15} >Last time modified in 2023-03-03 by Tomas Vainoris</Typography>
+          </CardContent>  
+          <Checkpoint items={items} setItems={setItems}></Checkpoint>
+        </Card>
+      </Grid>
+    </Grid>
+  );
+}
+
+
+function Checkpoint ({items, setItems} : Props) {
 
   const droppableId: string= uuid();
 
@@ -57,6 +78,11 @@ export function Checkpoint ({items, setItems} : Props) {
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
+                  style={{
+                    background: snapshot.isDraggingOver
+                      ? "lightblue"
+                      : "lightgrey"
+                  }}
                 >
                   {items.map((item, index) => {
                     return (
@@ -100,87 +126,6 @@ export function Checkpoint ({items, setItems} : Props) {
         </AccordionDetails>
       </Accordion>
     </DragDropContext>
-  );
-}
-
-
-export function TemplatePage() {
-
-  const [items, setItems] = useState(itemsFromBackend);
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={12} >
-        <Card title='Sample Project'>
-          <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-            <Typography variant="h5">Template Name</Typography>
-            <Typography variant="h6" fontSize={15} >Checklist</Typography>
-            <Typography variant="h6" fontSize={15} >Last time modified in 2023-03-03 by Tomas Vainoris</Typography>
-          </CardContent>  
-          <Divider/>  
-          <Box>
-            <DragDropContext onDragEnd={result => console.log('ere')}>
-              <Droppable droppableId={'asdasd'} >
-                {(provided, snapshot) => {
-                  return (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      style={{
-                        background: snapshot.isDraggingOver
-                          ? "lightblue"
-                          : "lightgrey"
-                      }}
-                    >
-                      {items.map((item, index) => {
-                        return (
-                          <Draggable
-                            key={item.id}
-                            draggableId={item.id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => {
-                              return (
-                                <Card
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  style={{
-                                    userSelect: "none",
-                                    padding: 16,
-                                    margin: "0 0 8px 0",
-                                    minHeight: "50px",
-                                    backgroundColor: snapshot.isDragging
-                                      ? "#263B4A"
-                                      : "#456C86",
-                                    color: "white",
-                                    ...provided.draggableProps.style
-                                  }}
-                                >
-                                  {index+1} {item.content}
-                                </Card>
-                              );
-                            }}
-                          </Draggable>
-                        );
-                      })}
-                      {provided.placeholder}
-                    </div>
-                  );
-                }}
-              </Droppable>
-              <Button variant='contained'>Edit</Button>
-              <Button variant='contained'>Delete</Button>
-            </DragDropContext>
-          </Box>
-          <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-            <Typography variant="h6" fontSize={15} >Checkpoints</Typography>
-            <Checkpoint items={items} setItems={setItems}></Checkpoint>
-            <Checkpoint items={items} setItems={setItems}></Checkpoint>
-          </CardContent>  
-        </Card>
-      </Grid>
-    </Grid>
   );
 }
 
