@@ -31,16 +31,8 @@ function DashboardContent() {
   }
 
   return (
-    <Box component="main" sx={{
-      flexGrow: 1,
-      height: '100vh',
-      display: 'flex', 
-      flexDirection: 'column'
-    }}>
-      <Box sx={{height: 60,  backgroundColor: 'red'}}>
-        <Typography>Handling oauth</Typography>
-      </Box>
-      <Box sx={{flex: 1, padding: 2,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
+    <Box>
+      <Box sx={{flex: 1,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
         <Box sx={{flex: 1, padding: 5, justifyContent: 'center', display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
           <Box sx={{backgroundColor: (theme) => theme.palette.grey[100]}}>
             <Card sx={{ padding: 10}}>
