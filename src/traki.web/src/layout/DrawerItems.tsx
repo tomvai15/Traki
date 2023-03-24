@@ -6,6 +6,8 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import BusinessIcon from '@mui/icons-material/Business';
+import { Divider } from '@mui/material';
 
 export default function DrawerItems() {
 
@@ -30,6 +32,13 @@ export default function DrawerItems() {
           <AssignmentIcon />
         </ListItemIcon>
         <ListItemText primary="Templates" />
+      </ListItemButton>
+      <Divider/>
+      <ListItemButton onClick={() => navigate('company')}>
+        <ListItemIcon>
+          <BusinessIcon />
+        </ListItemIcon>
+        <ListItemText primary="Company" />
       </ListItemButton>
     </React.Fragment>
   );

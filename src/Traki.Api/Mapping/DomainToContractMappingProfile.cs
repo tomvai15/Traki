@@ -2,6 +2,7 @@
 using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.Checklist;
 using Traki.Api.Contracts.ChecklistQuestion;
+using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Question;
@@ -14,6 +15,7 @@ namespace Traki.Api.Mapping
     {
         public DomainToContractMappingProfile()
         {
+            AddCompanyMappings();
             AddProductMappings();
             AddProjectMappings();
             AddUserMappings();
@@ -22,6 +24,14 @@ namespace Traki.Api.Mapping
             AddChecklistMappings();
             AddChecklistQuestionMappings();
             AddChecklistQuestionMappings();
+        }
+
+        public void AddCompanyMappings()
+        {
+            CreateMap<Company, GetCompanyResponse>()
+                .ForMember(p => p.Company, opt => opt.MapFrom(p => p));
+
+            CreateMap<Company, CompanyDto>().ReverseMap();
         }
 
         public void AddProductMappings()

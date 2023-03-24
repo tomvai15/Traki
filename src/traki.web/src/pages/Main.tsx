@@ -9,6 +9,7 @@ import authService from '../services/auth-service';
 import CheckOAuth from './Authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
+import { CompanyPage } from './Company';
 
 export function Main() {
 
@@ -36,6 +37,7 @@ export function Main() {
           <Route index element={<Navigate to='/projects'/>}/>
           <Route path='projects' element={<Projects/>}/>
           <Route path='report' element={<Dashboard/>}/>
+          <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
         </Route>
         <Route path='/login' element={<SignIn/>}/>
