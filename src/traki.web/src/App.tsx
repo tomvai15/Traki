@@ -1,4 +1,5 @@
 import React from 'react';
+import './utils/string.extensions';
 import './App.css';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';

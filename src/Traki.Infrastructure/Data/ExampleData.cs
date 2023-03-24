@@ -12,7 +12,7 @@ namespace Traki.Infrastructure.Data
                 Address = "Vydūno alėja",
                 CreationDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow,
-                ImageName = "Test"
+                ImageName = "Preftek-full-logo.png"
             }
         };
 
