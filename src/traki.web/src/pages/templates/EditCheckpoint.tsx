@@ -10,8 +10,6 @@ import { v4 as uuid } from 'uuid';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { type } from 'os';
 
-
-
 type Question = {
   id: string,
   content: string
@@ -49,7 +47,6 @@ export function EditCheckpoint() {
     </Grid>
   );
 }
-
 
 function Checkpoint ({items, setItems} : Props) {
 
