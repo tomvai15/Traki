@@ -5,110 +5,108 @@ import companyService from '../../services/company-service';
 import { Company } from '../../contracts/company/Company';
 import { UpdateCompanyRequest } from '../../contracts/company/UpdateCompanyRequest';
 import pictureService from '../../services/picture-service';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import PeopleIcon from '@mui/icons-material/People';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautiful-dnd";
+import { v4 as uuid } from 'uuid';
 
-// TODO: allow only specific resolution
+const itemsFromBackend = [
+  { id: '1', content: "First task" },
+  { id: '2', content: "Second task" },
+  { id: '3', content: "Third task" },
+  { id: '4', content: "Fourth task" },
+  { id: '5', content: "Fifth task" }
+];
 
 export function TemplatePage() {
-  const [previewImage, setPreviewImage] = useState<string>();
-  const [company, setCompany] = useState<Company>();
-  const [canEdit, setCanEdit] = useState<boolean>(false);
 
-  const [file, setFile] = useState<File>();
-  const [image, setImage] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
+  const [items, setItems] = useState(itemsFromBackend);
 
-  useEffect(() => {
-    fetchCompany();
-  }, []);
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
   
-  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = event.target;
-    const selectedFiles = files as FileList;
-    setFile(selectedFiles?.[0]);
-    setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
+    const copiedItems = [...items];
+    const [removed] = copiedItems.splice(source.index, 1);
+    copiedItems.splice(destination.index, 0, removed);
+    setItems(copiedItems);
   };
-
-  async function fetchCompany() {
-    const getCompanyResponse = await companyService.getCompany();
-    setCompany(getCompanyResponse.company);
-
-    setName(getCompanyResponse.company.name);
-    setAddress(getCompanyResponse.company.address);
-    setPhone(getCompanyResponse.company.phoneNumber);
-
-    const image = await pictureService.getPicture('company', getCompanyResponse.company.imageName);
-    setImage(image);
-  }
-
-  async function updateCompany() {
-    setCanEdit(false);
-    
-    if (!company) {
-      return;
-    }
-
-    const updateCompanyRequest: UpdateCompanyRequest = {
-      company: company
-    };
-
-    updateCompanyRequest.company.name = name;
-    updateCompanyRequest.company.address = address;
-    updateCompanyRequest.company.phoneNumber = phone;
-    
-    await companyService.updateCompany(updateCompanyRequest);
-    setCanEdit(false);
-  }
-
-  async function updateLogo() {
-    if (!company || !file) {
-      return;
-    }
-    await pictureService.uploadPicture('company', company.imageName, file);
-    setFile(undefined);
-    setPreviewImage(undefined);
-    await fetchCompany();
-  }
-
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12} >
-        <Card title='Sample Project'>
-          <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-            <Typography variant="h5">Template Name</Typography>
-            <Typography variant="h6" fontSize={15} >Checklist</Typography>
-          </CardContent>  
-          <Divider/>  
-          <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-            <Typography variant="h6" fontSize={15} >Checkpoints</Typography>
-            <Card title='Sample Project' sx={{marginBottom: 1}}>
-              <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-                <Typography variant="h5">1 Checkpoint Name</Typography>
-                <Divider/>  
-                <Card title='Sample Project'>
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant="h5">1 Question Name</Typography>
-                  </CardContent> 
+      <DragDropContext onDragEnd={result => onDragEnd(result)}>
+        <Grid item xs={12} md={12} >
+          <Card title='Sample Project'>
+            <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+              <Typography variant="h5">Template Name</Typography>
+              <Typography variant="h6" fontSize={15} >Checklist</Typography>
+            </CardContent>  
+            <Divider/>  
+            <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+              <Typography variant="h6" fontSize={15} >Checkpoints</Typography>
+              <Card title='Sample Project' sx={{marginBottom: 1}}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+                  <Typography variant="h5">1 Checkpoint Name</Typography>
                   <Divider/> 
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant="h5">2 Question Name</Typography>
-                  </CardContent>  
-                </Card>
-              </CardContent>  
-            </Card>
-            <Card title='Sample Project'>
-              <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-                <Typography variant="h5">2 Checkpoint Name</Typography>
-              </CardContent>  
-            </Card>
-          </CardContent>  
-        </Card>
-      </Grid>
+                  <Droppable droppableId='1' >
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver
+                              ? "lightblue"
+                              : "lightgrey"
+                          }}
+                        >
+                          {items.map((item, index) => {
+                            return (
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id}
+                                index={index}
+                              >
+                                {(provided, snapshot) => {
+                                  return (
+                                    <Card
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: "none",
+                                        padding: 16,
+                                        margin: "0 0 8px 0",
+                                        minHeight: "50px",
+                                        backgroundColor: snapshot.isDragging
+                                          ? "#263B4A"
+                                          : "#456C86",
+                                        color: "white",
+                                        ...provided.draggableProps.style
+                                      }}
+                                    >
+                                      {item.content}
+                                    </Card>
+                                  );
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      );
+                    }}
+                  </Droppable>
+                </CardContent>  
+              </Card>
+              <Card title='Sample Project'>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+                  <Typography variant="h5">2 Checkpoint Name</Typography>
+                </CardContent>  
+              </Card>
+            </CardContent>  
+          </Card>
+        </Grid>
+      </DragDropContext>
     </Grid>
   );
 }
+
