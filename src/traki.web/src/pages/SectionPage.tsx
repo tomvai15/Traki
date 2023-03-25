@@ -1,4 +1,4 @@
-import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Section } from '../contracts/protocol/Section';
 import { Checklist } from '../contracts/protocol/Checklist';
@@ -20,6 +20,23 @@ const question: Question = {
   answer: AnswerType.No
 };
 
+
+const defaultQuestion: Question = {
+  id: 1, 
+  comment: '',
+  answer: AnswerType.No
+};
+
+const defaultTextInput: TextInput = {
+  id: 1, 
+  value: ''
+};
+
+const defaultMultipleChoice: MultipleChoice = {
+  id: 1, 
+  values: [{id: 1, name: 'Option A'}, {id: 2, name: 'Option B'}],
+};
+
 const textInput: TextInput = {
   id: 1, 
   value: '',
@@ -27,12 +44,12 @@ const textInput: TextInput = {
 
 const value1: Value = {
   id: 1, 
-  name: 'Mechanic',
+  name: 'Option A',
 };
 
 const value2: Value = {
   id: 2, 
-  name: 'Electronic',
+  name: 'Option B',
 };
 
 const defaultItem: Item ={
@@ -86,13 +103,52 @@ const initialSection: Section = {
   table: undefined
 };
 
-
 type TemplateItemProps = {
   item: Item
+  deleteItem: (id: number) => void
+  updateItem: (item: Item) => void
 }
 
+function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
-function TemplateItem ({item}: TemplateItemProps) {
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  function changeToQuestion(item: Item) {
+    item.textInput = undefined;
+    item.multipleChoice = undefined;
+    item.question = {...defaultQuestion};
+    updateItem(item);
+  }
+
+  function changeToTextInput(item: Item) {
+    item.multipleChoice = undefined;
+    item.question = undefined;
+    item.textInput = {...defaultTextInput};
+    updateItem(item);
+  }
+
+  function changeToMultipleChoice(item: Item) {
+    item.textInput = undefined;
+    item.question = undefined;
+    item.multipleChoice = {...defaultMultipleChoice};
+    updateItem(item);
+  }
+
+  function addOption(item: Item) {
+    if (!item.multipleChoice) return;
+
+    // TODO: fix incoming bugs
+    const newValue: Value = {id: item.multipleChoice.values.length, name: 'Option C'};
+    item.multipleChoice.values = [...item.multipleChoice.values, newValue];
+    updateItem(item);
+  }
+
   function checkType() {
     if (item.question) {
       return (
@@ -105,6 +161,7 @@ function TemplateItem ({item}: TemplateItemProps) {
           </Box>
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
+              inputProps={{min: 0, style: { textAlign: 'center' }}}
               disabled
               id="standard-disabled"
               label="Comment"
@@ -117,6 +174,7 @@ function TemplateItem ({item}: TemplateItemProps) {
         <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
+              inputProps={{min: 0, style: { textAlign: 'center' }}}
               disabled
               id="standard-disabled"
               label="Comment"
@@ -132,6 +190,7 @@ function TemplateItem ({item}: TemplateItemProps) {
               <FormControlLabel key={value.id} control={<Checkbox disabled />} label={value.name} labelPlacement="start"/>
             )}
           </Box>
+          <Button onClick={() => addOption(item)}>Add</Button>
         </Box>);
     }
     return <></>;
@@ -140,7 +199,7 @@ function TemplateItem ({item}: TemplateItemProps) {
   return (
     <Card sx={{display: 'flex', margin: 1, padding: 1, flexDirection:'row', justifyItems: 'space'}}>
       <Box sx={{flex: 1}}>
-        <TextField sx={{width: '100%'}}
+        <TextField sx={{width: '90%'}}
           id="standard-disabled"
           label="Question"
           variant="standard"
@@ -149,8 +208,38 @@ function TemplateItem ({item}: TemplateItemProps) {
       </Box>
       {checkType()}
       <Box>
-        <MoreVertIcon/>
-        <DeleteIcon/>
+        <IconButton onClick={handleOpenUserMenu}>
+          <MoreVertIcon/>
+        </IconButton> 
+        <Menu
+          sx={{ mt: '45px' }}
+          id="menu-appbar"
+          anchorEl={anchorElUser}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
+        >
+          <MenuItem onClick={() => {changeToQuestion(item); handleCloseUserMenu();}}>
+            <Typography textAlign="center">Default Question</Typography>
+          </MenuItem>
+          <MenuItem onClick={() => {changeToMultipleChoice(item); handleCloseUserMenu();}}>
+            <Typography textAlign="center">Multiple Choice</Typography>
+          </MenuItem>
+          <MenuItem onClick={() => {changeToTextInput(item); handleCloseUserMenu();}}>
+            <Typography textAlign="center">Text Input</Typography>
+          </MenuItem>
+          <MenuItem onClick={() => {handleCloseUserMenu(); deleteItem(item.id);}}>
+            <Typography color={'red'} textAlign="center">Delete</Typography>
+          </MenuItem>
+        </Menu>
       </Box>
     </Card>
   );
@@ -183,6 +272,31 @@ export function SectionPage() {
     const newId = section.checklist.items.length+1;
     const newItem: Item = {...defaultItem, id: newId, priority: newId.toString()};
     const copiedItems = [...section.checklist.items, newItem];
+    const newChecklist = {...section.checklist, items: copiedItems};
+    setSection({...section, checklist: newChecklist});
+  }
+
+  function updateItem(item: Item) {
+    if (!section.checklist) return;
+
+    const copiedItems = [...section.checklist.items];
+    copiedItems.forEach((element, index) => {
+
+      copiedItems[index] = element.id==item.id ? item : copiedItems[index];
+    });
+
+    const newChecklist = {...section.checklist, items: copiedItems};
+    setSection({...section, checklist: newChecklist});
+  }
+
+  function deleteItem(id: number) {
+    if (!section.checklist) return;
+
+    const copiedItems = [...section.checklist.items.filter(x=> x.id != id)];
+
+    copiedItems.forEach((element, index) => {
+      copiedItems[index] = {...element, id:index, priority: (index+1).toString()};
+    });
     const newChecklist = {...section.checklist, items: copiedItems};
     setSection({...section, checklist: newChecklist});
   }
@@ -221,7 +335,7 @@ export function SectionPage() {
                                 ...provided.draggableProps.style
                               }}
                             >
-                              <TemplateItem item={item}></TemplateItem>
+                              <TemplateItem item={item} deleteItem={deleteItem} updateItem={updateItem}></TemplateItem>
                             </Box>
                           );
                         }}
