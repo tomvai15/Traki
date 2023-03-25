@@ -1,6 +1,6 @@
 ﻿namespace Traki.Infrastructure.Entities
 {
-    public class QuestionEntity
+    public class OldQuestionEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }

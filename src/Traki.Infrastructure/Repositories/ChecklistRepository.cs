@@ -5,6 +5,7 @@ using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
 using Traki.Domain.Extensions;
+using Traki.Domain.Models.Section;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -21,16 +22,26 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<CheckList> AddChecklist(CheckList checkList)
         {
-            var checkListEntity = _mapper.Map<ChecklistEntity>(checkList);
-            var addedChecklist = await _context.Checklists.AddAsync(checkListEntity);
+            var checkListEntity = _mapper.Map<OldChecklistEntity>(checkList);
+            var addedChecklist = await _context.OldChecklists.AddAsync(checkListEntity);
 
             await _context.SaveChangesAsync();
             return _mapper.Map<CheckList>(addedChecklist.Entity);
         }
 
+        public Task<Checklist> CreateChecklist(Checklist checkList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteChecklist(int checklistId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<CheckList> GetChecklist(int checklistId)
         {
-            var checklist = await _context.Checklists.FirstOrDefaultAsync(x => x.Id == checklistId);
+            var checklist = await _context.OldChecklists.FirstOrDefaultAsync(x => x.Id == checklistId);
 
             checklist.RequiresToBeNotNullEnity();
             return _mapper.Map<CheckList>(checklist);

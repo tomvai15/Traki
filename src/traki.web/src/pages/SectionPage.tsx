@@ -215,29 +215,26 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
       return (
         <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
-            { item.multipleChoice.options.map((value) => 
-              <>
-                <FormControlLabel 
-                  key={value.id} 
-                  control={<Checkbox disabled />} 
-                  label={
-                    <>
-                      <IconButton onClick={() => removeOption(item, value.id)}>
-                        <ClearIcon color={'error'}/>
-                      </IconButton> 
-                      <TextField
-                        size='small'
-                        id="standard-disabled"
-                        label={null}
-                        variant="standard"
-                        defaultValue={value.name}
-                        value={value.name}
-                        onChange={(e) => updateOption(item, value.id, e.target.value)}
-                      />
-                    </>
-                  } 
-                  labelPlacement="start"/>
-              </>
+            { item.multipleChoice.options.map((value, index) => 
+              <FormControlLabel 
+                key={index} 
+                control={<Checkbox disabled />} 
+                label={
+                  <>
+                    <IconButton onClick={() => removeOption(item, value.id)}>
+                      <ClearIcon color={'error'}/>
+                    </IconButton> 
+                    <TextField
+                      size='small'
+                      id="standard-disabled"
+                      label={null}
+                      variant="standard"
+                      value={value.name}
+                      onChange={(e) => updateOption(item, value.id, e.target.value)}
+                    />
+                  </>
+                } 
+                labelPlacement="start"/>
             )}
           </Box>
           <Button onClick={() => addOption(item)}>Add</Button>
@@ -253,7 +250,6 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
           id="standard-disabled"
           label="Question"
           variant="standard"
-          defaultValue={item.name}
           value={item.name}
           onChange={(e) => updateName(item, e.target.value)}
         />
@@ -379,7 +375,7 @@ export function SectionPage() {
                   {section.checklist?.items.map((item, index) => {
                     return (
                       <Draggable
-                        key={item.id}
+                        key={index}
                         draggableId={item.id.toString()}
                         index={index}
                       >

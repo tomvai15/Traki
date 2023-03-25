@@ -60,7 +60,7 @@ namespace Traki.Infrastructure.Data
 
         public static TrakiDbContext AddQuestions(this TrakiDbContext dbContext)
         {
-            dbContext.Questions.AddRange(ExampleData.Questions);
+           // dbContext.OldQuestions.AddRange(ExampleData.Questions);
             dbContext.SaveChanges();
 
             return dbContext;
@@ -68,7 +68,7 @@ namespace Traki.Infrastructure.Data
 
         public static TrakiDbContext AddChecklists(this TrakiDbContext dbContext)
         {
-            dbContext.Checklists.AddRange(ExampleData.Checklists);
+            dbContext.OldChecklists.AddRange(ExampleData.Checklists);
             dbContext.SaveChanges();
 
             return dbContext;

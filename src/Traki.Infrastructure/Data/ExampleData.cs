@@ -80,21 +80,21 @@ namespace Traki.Infrastructure.Data
             }
         };
 
-        public static IEnumerable<ChecklistEntity> Checklists => new[]
+        public static IEnumerable<OldChecklistEntity> Checklists => new[]
         {
-            new ChecklistEntity
+            new OldChecklistEntity
             {
                 Name = "Components and Equipment",
                 Standard="General components and equipment requirements",
                 ProductId = 1
             },
-            new ChecklistEntity
+            new OldChecklistEntity
             {
                 Name = "Test-Checklist-B",
                 Standard="ISO-BBD",
                 ProductId = 2
             },
-            new ChecklistEntity
+            new OldChecklistEntity
             {
                 Name = "Test-Checklist-C",
                 Standard="ISO-BBD",
@@ -102,32 +102,32 @@ namespace Traki.Infrastructure.Data
             }
         };
 
-        public static IEnumerable<QuestionEntity> Questions => new[]
+        public static IEnumerable<OldQuestionEntity> Questions => new[]
         {
-            new QuestionEntity
+            new OldQuestionEntity
             {
                 Title = "Test-Question-A",
                 Description="Test-Description-A",
                 TemplateId = 1
             },
-            new QuestionEntity
+            new OldQuestionEntity
             {
                 Title = "Test-Question-B",
                 Description="Test-Description-B",
                 TemplateId = 1
             },
-            new QuestionEntity
+            new OldQuestionEntity
             {
                 Title = "Test-Question-C",
                 Description="Test-Description-C",
                 TemplateId = 2
-            },            new QuestionEntity
+            },            new OldQuestionEntity
             {
                 Title = "Test-Question-D",
                 Description="Test-Description-D",
                 TemplateId = 1
             },
-            new QuestionEntity
+            new OldQuestionEntity
             {
                 Title = "Test-Question-E",
                 Description="Test-Description-E",

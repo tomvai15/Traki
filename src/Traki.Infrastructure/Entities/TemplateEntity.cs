@@ -7,6 +7,6 @@
         public string Standard { get; set; }
         public int ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
-        public ICollection<QuestionEntity> Questions { get; set; }
+        public ICollection<OldQuestionEntity> Questions { get; set; }
     }
 }

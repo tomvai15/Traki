@@ -13,8 +13,8 @@ namespace Traki.Api.Mapping
             CreateMap<Project, ProjectEntity>().ReverseMap();
             CreateMap<Product, ProductEntity>().ReverseMap();
             CreateMap<Template, TemplateEntity>().ReverseMap();
-            CreateMap<Question, QuestionEntity>().ReverseMap();
-            CreateMap<CheckList, ChecklistEntity>().ReverseMap();
+            CreateMap<Question, OldQuestionEntity>().ReverseMap();
+            CreateMap<CheckList, OldChecklistEntity>().ReverseMap();
             CreateMap<ChecklistQuestion, ChecklistQuestionEntity>().ReverseMap();
         }
     }

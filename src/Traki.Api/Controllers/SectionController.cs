@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Section;
+using Traki.Domain.Handlers;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 
@@ -10,12 +11,12 @@ namespace Traki.Api.Controllers
     [ApiController]
     public class SectionController : ControllerBase
     {
-        private readonly IProjectsRepository _projectsRepository;
+        private readonly ISectionHandler _sectionHandler;
         private readonly IMapper _mapper;
 
-        public SectionController(IProjectsRepository projectsRepository, IMapper mapper)
+        public SectionController(ISectionHandler sectionHandler, IMapper mapper)
         {
-            _projectsRepository = projectsRepository;
+            _sectionHandler = sectionHandler;
             _mapper = mapper;
         }
 
@@ -24,6 +25,9 @@ namespace Traki.Api.Controllers
         {
 
             var section = _mapper.Map<Section>(updateSectionRequest.section);
+
+            _sectionHandler.AddOrUpdateSection(section); ;
+
             return Ok();
         }
     }

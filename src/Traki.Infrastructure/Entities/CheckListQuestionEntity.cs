@@ -10,6 +10,6 @@ namespace Traki.Infrastructure.Entities
         public string Comment { get; set; } = string.Empty;
         public Evaluation Evaluation { get; set; } = Evaluation.No;
         public int ChecklistId { get; set; }
-        public ChecklistEntity Checklist { get; set; }
+        public OldChecklistEntity Checklist { get; set; }
     }
 }

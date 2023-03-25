@@ -8,6 +8,7 @@ using Traki.Domain.Extensions;
 
 namespace Traki.Infrastructure.Repositories
 {
+    
     public class QuestionsRepository : IQuestionsRepository
     {
         private readonly TrakiDbContext _context;
@@ -19,9 +20,25 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
+        public Task<Question> GetQuestion(int templateId, int questionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Question>> GetQuestions(int templateId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateQuestion(int questionId, Question questionUpdate)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*
         public async Task<Question> GetQuestion(int templateId, int questionId)
         {
-            var question = _context.Questions.Where(x => x.Id == questionId).FirstOrDefault();
+            var question = _context.OldQuestions.Where(x => x.Id == questionId).FirstOrDefault();
 
             question.RequiresToBeNotNullEnity();
 
@@ -44,7 +61,7 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task UpdateQuestion(int questionId, Question questionUpdate)
         {
-            var question = _context.Questions.FirstOrDefault(x => x.Id == questionId);
+            var question = _context.OldQuestions.FirstOrDefault(x => x.Id == questionId);
 
             question.Title = questionUpdate.Title;
             question.Description = questionUpdate.Description;
@@ -55,6 +72,6 @@ namespace Traki.Infrastructure.Repositories
         public void AssignNotNullProperties<T>(T source, T destination) where T : class
         {
             var p = source.GetType().GetProperties();
-        }
+        }*/
     }
 }
