@@ -10,10 +10,10 @@ import CheckOAuth from './Authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { CompanyPage } from './company/Company';
-import { Templates } from './templates/Templates';
 import { TemplatePage } from './templates/TemplatePage';
 import { EditCheckpoint } from './templates/EditCheckpoint';
 import { SectionPage } from './SectionPage';
+import { ProtocolTemplates } from './templates/ProtocolTemplates';
 
 export function Main() {
 
@@ -44,7 +44,7 @@ export function Main() {
           <Route path='projects' element={<Projects/>}/>
           <Route path='report' element={<SectionPage/>}/>
           <Route path='templates' element={<Outlet/>}>
-            <Route index element={<Templates/>}/>
+            <Route index element={<ProtocolTemplates/>}/>
             <Route path=':templateId' element={<Outlet/>}>
               <Route index element={<TemplatePage/>}/>
               <Route path='checkpoints/:checkpointId' element={<EditCheckpoint/>}/>

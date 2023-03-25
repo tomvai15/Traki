@@ -244,52 +244,54 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
   }
 
   return (
-    <Card sx={{display: 'flex', margin: 1, padding: 1, flexDirection:'row', justifyItems: 'space'}}>
-      <Box sx={{flex: 1}}>
-        <TextField sx={{width: '90%'}}
-          id="standard-disabled"
-          label="Question"
-          variant="standard"
-          value={item.name}
-          onChange={(e) => updateName(item, e.target.value)}
-        />
-      </Box>
-      {checkType()}
-      <Box>
-        <IconButton onClick={handleOpenUserMenu}>
-          <MoreVertIcon/>
-        </IconButton> 
-        <Menu
-          sx={{ mt: '45px' }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          <MenuItem onClick={() => {changeToQuestion(item); handleCloseUserMenu();}}>
-            <Typography textAlign="center">Default Question</Typography>
-          </MenuItem>
-          <MenuItem onClick={() => {changeToMultipleChoice(item); handleCloseUserMenu();}}>
-            <Typography textAlign="center">Multiple Choice</Typography>
-          </MenuItem>
-          <MenuItem onClick={() => {changeToTextInput(item); handleCloseUserMenu();}}>
-            <Typography textAlign="center">Text Input</Typography>
-          </MenuItem>
-          <MenuItem onClick={() => {handleCloseUserMenu(); deleteItem(item.id);}}>
-            <Typography color={'red'} textAlign="center">Delete</Typography>
-          </MenuItem>
-        </Menu>
-      </Box>
-    </Card>
+    <Box sx={{padding: 1}}>
+      <Card sx={{display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
+        <Box sx={{flex: 1}}>
+          <TextField sx={{width: '90%'}}
+            id="standard-disabled"
+            label="Question"
+            variant="standard"
+            value={item.name}
+            onChange={(e) => updateName(item, e.target.value)}
+          />
+        </Box>
+        {checkType()}
+        <Box>
+          <IconButton onClick={handleOpenUserMenu}>
+            <MoreVertIcon/>
+          </IconButton> 
+          <Menu
+            sx={{ mt: '45px' }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            <MenuItem onClick={() => {changeToQuestion(item); handleCloseUserMenu();}}>
+              <Typography textAlign="center">Default Question</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => {changeToMultipleChoice(item); handleCloseUserMenu();}}>
+              <Typography textAlign="center">Multiple Choice</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => {changeToTextInput(item); handleCloseUserMenu();}}>
+              <Typography textAlign="center">Text Input</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => {handleCloseUserMenu(); deleteItem(item.id);}}>
+              <Typography color={'red'} textAlign="center">Delete</Typography>
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Card>
+    </Box>
   );
 }
 
