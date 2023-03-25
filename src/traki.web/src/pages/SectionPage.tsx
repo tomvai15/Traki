@@ -376,7 +376,7 @@ export function SectionPage() {
                     return (
                       <Draggable
                         key={index}
-                        draggableId={item.id.toString()}
+                        draggableId={item.priority.toString()}
                         index={index}
                       >
                         {(provided, snapshot) => {

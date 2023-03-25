@@ -80,15 +80,25 @@ namespace Traki.Domain.Handlers
 
         private async Task CreateChecklist(Checklist checklist)
         {
-            checklist = await _checklistRepository.CreateChecklist(checklist);
 
-            // TODO: revisit in the future
-            /*
             foreach (var item in checklist.Items)
             {
-                item.ChecklistId = checklist.Id;
-                await _itemRepository.CreateItem(item);
-            }*/
+                item.Id = Guid.NewGuid().ToString();
+                if (item.Question != null)
+                {
+                    item.Question.Id = Guid.NewGuid().ToString();
+                }
+                if (item.TextInput != null)
+                {
+                    item.TextInput.Id = Guid.NewGuid().ToString();
+                }
+                if (item.MultipleChoice != null)
+                {
+                    item.MultipleChoice.Id = Guid.NewGuid().ToString();
+                }
+            }
+
+            await _checklistRepository.CreateChecklist(checklist);
         }
     }
 }
