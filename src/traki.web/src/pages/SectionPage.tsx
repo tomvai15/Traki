@@ -11,49 +11,51 @@ import { Value } from '../contracts/protocol/items/Value';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { v4 as uuid } from 'uuid';
+import ClearIcon from '@mui/icons-material/Clear';
 
 // TODO: allow only specific resolution
 
 const question: Question = {
-  id: 1, 
+  id: uuid(), 
   comment: '',
   answer: AnswerType.No
 };
 
 
 const defaultQuestion: Question = {
-  id: 1, 
+  id: uuid(), 
   comment: '',
   answer: AnswerType.No
 };
 
 const defaultTextInput: TextInput = {
-  id: 1, 
+  id: uuid(), 
   value: ''
 };
 
 const defaultMultipleChoice: MultipleChoice = {
-  id: 1, 
-  values: [{id: 1, name: 'Option A'}, {id: 2, name: 'Option B'}],
+  id: uuid(), 
+  values: [{id: uuid(), name: 'Option A'}, {id: uuid(), name: 'Option B'}],
 };
 
 const textInput: TextInput = {
-  id: 1, 
+  id: uuid(), 
   value: '',
 };
 
 const value1: Value = {
-  id: 1, 
+  id: uuid(), 
   name: 'Option A',
 };
 
 const value2: Value = {
-  id: 2, 
+  id: uuid(), 
   name: 'Option B',
 };
 
 const defaultItem: Item ={
-  id: 1, 
+  id: uuid(), 
   name: 'Is this Question Item', 
   priority: '1', 
   question: question, 
@@ -62,26 +64,26 @@ const defaultItem: Item ={
 };
 
 const multipleChoice: MultipleChoice = {
-  id: 1, 
+  id: uuid(), 
   values: [value1, value2],
 };
 
 const items: Item[] = [{
-  id: 1, 
+  id: uuid(), 
   name: 'Is this Question Item', 
   priority: '1', 
   question: question, 
   multipleChoice: undefined, 
   textInput: undefined
 }, {
-  id: 2, 
+  id: uuid(), 
   name: 'Serial number:', 
   priority: '2', 
   question: undefined, 
   multipleChoice: undefined, 
   textInput: textInput
 }, {
-  id: 3, 
+  id: uuid(), 
   name: 'Multiple choice question:', 
   priority: '3', 
   question: undefined, 
@@ -105,7 +107,7 @@ const initialSection: Section = {
 
 type TemplateItemProps = {
   item: Item
-  deleteItem: (id: number) => void
+  deleteItem: (id: string) => void
   updateItem: (item: Item) => void
 }
 
@@ -143,9 +145,34 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
   function addOption(item: Item) {
     if (!item.multipleChoice) return;
 
-    // TODO: fix incoming bugs
-    const newValue: Value = {id: item.multipleChoice.values.length, name: 'Option C'};
+    const letter = (item.multipleChoice.values.length + 10).toString(36).toUpperCase();
+
+    const newValue: Value = {id: uuid(), name: 'Option ' + letter};
     item.multipleChoice.values = [...item.multipleChoice.values, newValue];
+    updateItem(item);
+  }
+
+  function removeOption(item: Item, valueId: string) {
+    if (!item.multipleChoice) return;
+
+    item.multipleChoice.values = item.multipleChoice.values.filter(v => v.id!= valueId);
+    updateItem(item);
+  }
+
+  function updateOption(item: Item, valueId: string, updatedName: string) {
+    if (!item.multipleChoice) return;
+
+    const copiedOptions = [...item.multipleChoice.values];
+    copiedOptions.forEach((element, index) => {
+      copiedOptions[index] = element.id == valueId ? {...element, name: updatedName}  : element;
+    });
+
+    item.multipleChoice.values = copiedOptions;
+    updateItem(item);
+  }
+
+  function updateName(item: Item, name: string) {
+    item.name = name;
     updateItem(item);
   }
 
@@ -186,8 +213,29 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
       return (
         <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
-            { item.multipleChoice.values.map((value) =>
-              <FormControlLabel key={value.id} control={<Checkbox disabled />} label={value.name} labelPlacement="start"/>
+            { item.multipleChoice.values.map((value) => 
+              <>
+                <FormControlLabel 
+                  key={value.id} 
+                  control={<Checkbox disabled />} 
+                  label={
+                    <>
+                      <IconButton onClick={() => removeOption(item, value.id)}>
+                        <ClearIcon color={'error'}/>
+                      </IconButton> 
+                      <TextField
+                        size='small'
+                        id="standard-disabled"
+                        label={null}
+                        variant="standard"
+                        defaultValue={value.name}
+                        value={value.name}
+                        onChange={(e) => updateOption(item, value.id, e.target.value)}
+                      />
+                    </>
+                  } 
+                  labelPlacement="start"/>
+              </>
             )}
           </Box>
           <Button onClick={() => addOption(item)}>Add</Button>
@@ -203,7 +251,9 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
           id="standard-disabled"
           label="Question"
           variant="standard"
-          defaultValue={ item.priority + ' ' + item.name}
+          defaultValue={item.name}
+          value={item.name}
+          onChange={(e) => updateName(item, e.target.value)}
         />
       </Box>
       {checkType()}
@@ -269,7 +319,7 @@ export function SectionPage() {
 
   function addItem() {
     if (!section.checklist) return;
-    const newId = section.checklist.items.length+1;
+    const newId = uuid();
     const newItem: Item = {...defaultItem, id: newId, priority: newId.toString()};
     const copiedItems = [...section.checklist.items, newItem];
     const newChecklist = {...section.checklist, items: copiedItems};
@@ -289,13 +339,13 @@ export function SectionPage() {
     setSection({...section, checklist: newChecklist});
   }
 
-  function deleteItem(id: number) {
+  function deleteItem(id: string) {
     if (!section.checklist) return;
 
     const copiedItems = [...section.checklist.items.filter(x=> x.id != id)];
 
     copiedItems.forEach((element, index) => {
-      copiedItems[index] = {...element, id:index, priority: (index+1).toString()};
+      copiedItems[index] = {...element, priority: (index+1).toString()};
     });
     const newChecklist = {...section.checklist, items: copiedItems};
     setSection({...section, checklist: newChecklist});
@@ -349,6 +399,7 @@ export function SectionPage() {
           </Droppable>
         </DragDropContext>
         <Button  onClick={() => addItem()} variant='contained'>Add new question</Button>
+        <Button  onClick={() => console.log(section)} variant='contained'>Submit</Button>
       </Grid>
     </Grid>
   );

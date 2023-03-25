@@ -1,4 +1,4 @@
 export type TextInput = {
-  id: number,
+  id: string,
   value: string
 }

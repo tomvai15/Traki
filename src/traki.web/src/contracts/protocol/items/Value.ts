@@ -1,4 +1,4 @@
 export type Value = {
-  id: number,
+  id: string,
   name: string
 }

@@ -1,7 +1,7 @@
 import { AnswerType } from "./AnswerType";
 
 export type Question = {
-  id: number,
+  id: string,
   comment: string,
   answer: AnswerType
 }

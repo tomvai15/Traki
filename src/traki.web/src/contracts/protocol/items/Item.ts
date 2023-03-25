@@ -3,7 +3,7 @@ import { MultipleChoice } from "./SingleChoice";
 import { TextInput } from "./TextInput";
 
 export type Item = {
-  id: number,
+  id: string,
   name: string,
   priority: string,
   question: Question|undefined,
