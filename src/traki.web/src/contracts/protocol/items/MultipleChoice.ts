@@ -1,6 +1,6 @@
-import { Value } from "./Value";
+import { Option } from "./Option";
 
 export type MultipleChoice = {
   id: string,
-  options: Value[]
+  options: Option[]
 }

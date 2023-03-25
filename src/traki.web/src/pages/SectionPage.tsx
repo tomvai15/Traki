@@ -7,7 +7,7 @@ import { Question } from '../contracts/protocol/items/Question';
 import { AnswerType } from '../contracts/protocol/items/AnswerType';
 import { TextInput } from '../contracts/protocol/items/TextInput';
 import { MultipleChoice } from '../contracts/protocol/items/MultipleChoice';
-import { Value } from '../contracts/protocol/items/Value';
+import { Option } from '../contracts/protocol/items/Option';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -46,12 +46,12 @@ const textInput: TextInput = {
   value: '',
 };
 
-const value1: Value = {
+const value1: Option = {
   id: uuid(), 
   name: 'Option A',
 };
 
-const value2: Value = {
+const value2: Option = {
   id: uuid(), 
   name: 'Option B',
 };
@@ -149,7 +149,7 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
 
     const letter = (item.multipleChoice.options.length + 10).toString(36).toUpperCase();
 
-    const newValue: Value = {id: uuid(), name: 'Option ' + letter};
+    const newValue: Option = {id: uuid(), name: 'Option ' + letter};
     item.multipleChoice.options = [...item.multipleChoice.options, newValue];
     updateItem(item);
   }
