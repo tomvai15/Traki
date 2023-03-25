@@ -38,7 +38,7 @@ const defaultTextInput: TextInput = {
 
 const defaultMultipleChoice: MultipleChoice = {
   id: uuid(), 
-  values: [{id: uuid(), name: 'Option A'}, {id: uuid(), name: 'Option B'}],
+  options: [{id: uuid(), name: 'Option A'}, {id: uuid(), name: 'Option B'}],
 };
 
 const textInput: TextInput = {
@@ -67,7 +67,7 @@ const defaultItem: Item ={
 
 const multipleChoice: MultipleChoice = {
   id: uuid(), 
-  values: [value1, value2],
+  options: [value1, value2],
 };
 
 const items: Item[] = [{
@@ -147,29 +147,29 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
   function addOption(item: Item) {
     if (!item.multipleChoice) return;
 
-    const letter = (item.multipleChoice.values.length + 10).toString(36).toUpperCase();
+    const letter = (item.multipleChoice.options.length + 10).toString(36).toUpperCase();
 
     const newValue: Value = {id: uuid(), name: 'Option ' + letter};
-    item.multipleChoice.values = [...item.multipleChoice.values, newValue];
+    item.multipleChoice.options = [...item.multipleChoice.options, newValue];
     updateItem(item);
   }
 
   function removeOption(item: Item, valueId: string) {
     if (!item.multipleChoice) return;
 
-    item.multipleChoice.values = item.multipleChoice.values.filter(v => v.id!= valueId);
+    item.multipleChoice.options = item.multipleChoice.options.filter(v => v.id!= valueId);
     updateItem(item);
   }
 
   function updateOption(item: Item, valueId: string, updatedName: string) {
     if (!item.multipleChoice) return;
 
-    const copiedOptions = [...item.multipleChoice.values];
+    const copiedOptions = [...item.multipleChoice.options];
     copiedOptions.forEach((element, index) => {
       copiedOptions[index] = element.id == valueId ? {...element, name: updatedName}  : element;
     });
 
-    item.multipleChoice.values = copiedOptions;
+    item.multipleChoice.options = copiedOptions;
     updateItem(item);
   }
 
@@ -215,7 +215,7 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
       return (
         <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
-            { item.multipleChoice.values.map((value) => 
+            { item.multipleChoice.options.map((value) => 
               <>
                 <FormControlLabel 
                   key={value.id} 

@@ -3,6 +3,6 @@
     public class MultipleChoiceDto
     {
         public string Id { get; set; }
-        public IEnumerable<OptionDto> Values { get; set; }
+        public IEnumerable<OptionDto> Options { get; set; }
     }
 }
