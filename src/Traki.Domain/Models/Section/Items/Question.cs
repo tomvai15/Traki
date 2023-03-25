@@ -1,8 +1,6 @@
-﻿using Traki.Domain.Models.Section.Items;
-
-namespace Traki.Api.Contracts.Section.Items
+﻿namespace Traki.Domain.Models.Section.Items
 {
-    public class QuestionDto
+    public class Question
     {
         public string Id { get; set; }
         public string Comment { get; set; }

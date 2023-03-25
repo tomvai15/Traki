@@ -1,4 +1,4 @@
-﻿namespace Traki.Domain.Models.Items
+﻿namespace Traki.Domain.Models.Section.Items
 {
     public enum AnswerType
     {

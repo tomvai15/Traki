@@ -1,6 +1,6 @@
-﻿namespace Traki.Api.Contracts.Section.Items
+﻿namespace Traki.Domain.Models.Section.Items
 {
-    public class OptionDto
+    public class Option
     {
         public string Id { get; set; }
         public string Name { get; set; }
