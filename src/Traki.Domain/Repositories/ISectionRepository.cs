@@ -6,5 +6,6 @@ namespace Traki.Domain.Repositories
     {
         Task<Section> GetSection(int sectionId);
         Task<Section> CreateSection(Section section);
+        Task<Section> UpdateSection(Section section);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Entities.Section.Items;
@@ -34,7 +35,6 @@ namespace Traki.Infrastructure.Data
                 .HasMany(p => p.ChecklistQuestions)
                 .WithOne(p => p.Checklist);
 
-
             modelBuilder.Entity<SectionEntity>()
                 .HasOne(p => p.Checklist).WithOne(p => p.Section)
                 .HasForeignKey<ChecklistEntity>(e => e.SectionId);
@@ -49,7 +49,20 @@ namespace Traki.Infrastructure.Data
 
             modelBuilder.Entity<MultipleChoiceEntity>()
                 .HasMany(p => p.Options)
-                .WithOne(p => p.MultipleChoice);
+                .WithOne(p => p.MultipleChoice)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ItemEntity>()
+                .HasOne(p => p.TextInput).WithOne(p => p.Item)
+                .HasForeignKey<TextInputEntity>(e => e.ItemId);
+
+            modelBuilder.Entity<ItemEntity>()
+                .HasOne(p => p.MultipleChoice).WithOne(p => p.Item)
+                .HasForeignKey<MultipleChoiceEntity>(e => e.ItemId);
+
+            modelBuilder.Entity<ItemEntity>()
+                .HasOne(p => p.Question).WithOne(p => p.Item)
+                .HasForeignKey<QuestionEntity>(e => e.ItemId);
         }
 
         public virtual DbSet<SectionEntity> Sections { get; set; }

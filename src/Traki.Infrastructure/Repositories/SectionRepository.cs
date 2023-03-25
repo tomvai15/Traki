@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Models;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
+using Traki.Infrastructure.Entities.Section;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -23,14 +18,28 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public Task<Section> CreateSection(Section section)
+        public async Task<Section> CreateSection(Section section)
         {
-            throw new NotImplementedException();
+            var sectionEntity = _mapper.Map<SectionEntity>(section);
+            sectionEntity = (await _context.Sections.AddAsync(sectionEntity)).Entity;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Section>(sectionEntity);
+        }
+
+        public async Task<Section> UpdateSection(Section section)
+        {
+            var sectionEntity = await _context.Sections.FirstOrDefaultAsync(p => p.Id == section.Id);
+            sectionEntity.Name = section.Name;
+            sectionEntity.Priority = section.Priority;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Section>(sectionEntity);
         }
 
         public async Task<Section> GetSection(int sectionId)
         {
-            var section = await _context.Sections.FirstOrDefaultAsync(p => p.Id == sectionId);
+            var sections = await _context.Sections.ToListAsync();
+
+            var section = sections.Where(p => p.Id == sectionId).FirstOrDefault();
             if (section == null)
             {
                 return null;

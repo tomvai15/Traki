@@ -5,6 +5,7 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 
+
 namespace Traki.Api.Controllers
 {
     [Route("api/sections")]
@@ -26,9 +27,20 @@ namespace Traki.Api.Controllers
 
             var section = _mapper.Map<Section>(updateSectionRequest.section);
 
-            _sectionHandler.AddOrUpdateSection(section); ;
+            await _sectionHandler.AddOrUpdateSection(section); ;
 
             return Ok();
+        }
+
+        [HttpGet("{sectionId}")]
+        public async Task<ActionResult<GetSectionRequest>> GetSection(int sectionId)
+        {
+
+            var section = await _sectionHandler.GetSection(sectionId);
+
+            var getSectionRequest = new GetSectionRequest { Section = _mapper.Map<SectionDto>(section) };
+
+            return Ok(getSectionRequest);
         }
     }
 }

@@ -14,8 +14,10 @@ namespace Traki.Infrastructure.Data
                 dbContext.Database.EnsureDeleted();
             }
 
+
             bool wasCreated = dbContext.Database.EnsureCreated();
 
+            dbContext.AddSections();
             dbContext.AddCompanies();
             dbContext.AddProjects();
             dbContext.AddProducts();
@@ -24,6 +26,14 @@ namespace Traki.Infrastructure.Data
             dbContext.AddChecklists();
             dbContext.AddChecklistQuestions();
             dbContext.AddUsers();
+        }
+
+        public static TrakiDbContext AddSections(this TrakiDbContext dbContext)
+        {
+            dbContext.Sections.AddRange(ExampleData.Sections);
+            dbContext.SaveChanges();
+
+            return dbContext;
         }
 
         public static TrakiDbContext AddCompanies(this TrakiDbContext dbContext)

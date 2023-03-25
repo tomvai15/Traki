@@ -1,9 +1,19 @@
 ﻿using Traki.Infrastructure.Entities;
+using Traki.Infrastructure.Entities.Section;
 
 namespace Traki.Infrastructure.Data
 {
     public static class ExampleData
     {
+
+        public static IEnumerable<SectionEntity> Sections => new[]
+{
+            new SectionEntity
+            {
+                Name= "test",
+                Priority=1
+            }
+        };
         public static IEnumerable<CompanyEntity> Companies => new[]
         {
             new CompanyEntity

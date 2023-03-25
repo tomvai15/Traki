@@ -6,6 +6,8 @@ using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models.Section;
+using Traki.Infrastructure.Entities.Section;
+using Traki.Infrastructure.Entities.Section.Items;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -29,22 +31,43 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<CheckList>(addedChecklist.Entity);
         }
 
-        public Task<Checklist> CreateChecklist(Checklist checkList)
+        public async Task<Checklist> CreateChecklist(Checklist checkList)
         {
-            throw new NotImplementedException();
+            var checklistEntity = _mapper.Map<ChecklistEntity>(checkList);
+          //  checklistEntity.Items = new ItemEntity[0];
+            checklistEntity.Id = 0;
+            checklistEntity = (await _context.Checklists.AddAsync(checklistEntity)).Entity;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Checklist>(checklistEntity);
         }
 
-        public Task<bool> DeleteChecklist(int checklistId)
+        public async Task<bool> DeleteChecklist(int checklistId)
         {
-            throw new NotImplementedException();
+            var checklist = _context.Checklists.FirstOrDefault(x => x.Id == checklistId);
+            if (checklist == null)
+            {
+                return false;
+            }
+            _context.Checklists.Remove(checklist);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<CheckList> GetChecklist(int checklistId)
+        public async Task<CheckList> GetCheckList(int checklistId)
         {
             var checklist = await _context.OldChecklists.FirstOrDefaultAsync(x => x.Id == checklistId);
 
             checklist.RequiresToBeNotNullEnity();
             return _mapper.Map<CheckList>(checklist);
+        }
+
+        public async Task<Checklist> GetChecklist(int checklistId)
+        {
+            var checklist = await _context.Checklists
+                                            .Where(x => x.Id == checklistId)
+                                            .Include(x => x.Items).FirstOrDefaultAsync();
+
+            return _mapper.Map<Checklist>(checklist);
         }
 
         public async Task<IEnumerable<CheckList>> GetChecklists(int productId)
@@ -58,6 +81,15 @@ namespace Traki.Infrastructure.Repositories
 
             var checklists = product.CheckLists.ToList();
             return _mapper.Map<IEnumerable<CheckList>>(checklists);
+        }
+
+        public async Task<Checklist> GetSectionChecklist(int sectionId)
+        {
+            var checklist = await _context.Checklists
+                                            .Where(x => x.SectionId == sectionId)
+                                            .Include(x => x.Items).FirstOrDefaultAsync();
+
+            return _mapper.Map<Checklist>(checklist);
         }
     }
 }

@@ -6,5 +6,6 @@ namespace Traki.Domain.Models.Section
     {
         public int Id { get; set; }
         public ICollection<Item> Items { get; set; }
+        public int SectionId { get; set; }
     }
 }

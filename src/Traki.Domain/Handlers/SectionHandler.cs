@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Traki.Domain.Models.Section;
+using Traki.Domain.Models.Section.Items;
 using Traki.Domain.Repositories;
 
 namespace Traki.Domain.Handlers
@@ -7,6 +8,7 @@ namespace Traki.Domain.Handlers
     public interface ISectionHandler
     {
         Task AddOrUpdateSection(Section section);
+        Task<Section> GetSection(int sectionId);
     }
 
     public class SectionHandler : ISectionHandler
@@ -14,31 +16,79 @@ namespace Traki.Domain.Handlers
         private readonly IMapper _mapper;
         private readonly ISectionRepository _sectionRepository;
         private readonly IChecklistRepository _checklistRepository;
+        private readonly IItemRepository _itemRepository;
 
-        public SectionHandler(IMapper mapper, ISectionRepository sectionRepository, IChecklistRepository checklistRepository)
+        public SectionHandler(IMapper mapper, ISectionRepository sectionRepository, IChecklistRepository checklistRepository, IItemRepository itemRepository)
         {
             _mapper = mapper;
             _sectionRepository = sectionRepository;
             _checklistRepository = checklistRepository;
+            _itemRepository = itemRepository;
+        }
+
+        public async Task<Section> GetSection(int sectionId)
+        {
+            var section = await _sectionRepository.GetSection(sectionId);
+            var checklist = await _checklistRepository.GetSectionChecklist(section.Id);
+            checklist.Items = (ICollection<Item>)await _itemRepository.GetChecklistItems(checklist.Id);
+
+            section.Checklist = checklist;
+            return section;
         }
 
         public async Task AddOrUpdateSection(Section section)
         {
-            var sectionFromDatabase = _sectionRepository.GetSection(section.Id);
+            var sectionFromDatabase = await _sectionRepository.GetSection(section.Id);
 
-            var createdSection = section;
             if (sectionFromDatabase == null)
             {
-                createdSection = await _sectionRepository.CreateSection(section);
-            } 
+                sectionFromDatabase = await _sectionRepository.CreateSection(section);
+            }
             else
             {
-                await _checklistRepository.DeleteChecklist(section.Checklist.Id);
+                sectionFromDatabase = await _sectionRepository.UpdateSection(section);
             }
 
-            var createdChecklist = await _checklistRepository.CreateChecklist(section.Checklist);
 
+            if (sectionFromDatabase.Checklist != null)
+            {
+                await DeleteChecklist(sectionFromDatabase.Checklist.Id);
+            }
+            var checklist = section.Checklist;
+            if (checklist != null)
+            {
+                checklist.SectionId = sectionFromDatabase.Id;
+                await CreateChecklist(checklist);
+            }
+        }
 
+        private async Task DeleteChecklist(int checklistId)
+        {
+            var checklist = await _checklistRepository.GetChecklist(checklistId);
+            if (checklist == null)
+            {
+                return;
+            }
+
+            foreach (var item in checklist.Items)
+            {
+                await _itemRepository.DeleteItem(item);
+            }
+
+            await _checklistRepository.DeleteChecklist(checklist.Id);
+        }
+
+        private async Task CreateChecklist(Checklist checklist)
+        {
+            checklist = await _checklistRepository.CreateChecklist(checklist);
+
+            // TODO: revisit in the future
+            /*
+            foreach (var item in checklist.Items)
+            {
+                item.ChecklistId = checklist.Id;
+                await _itemRepository.CreateItem(item);
+            }*/
         }
     }
 }
