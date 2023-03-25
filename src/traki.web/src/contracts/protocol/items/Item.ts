@@ -1,5 +1,5 @@
 import { Question } from "./Question";
-import { MultipleChoice } from "./SingleChoice";
+import { MultipleChoice } from "./MultipleChoice";
 import { TextInput } from "./TextInput";
 
 export type Item = {

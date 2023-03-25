@@ -2,6 +2,6 @@
 {
     public class GetChecklistsResponse
     {
-        public IEnumerable<ChecklistDto> Checklists { get; set; }
+        public IEnumerable<OldChecklistDto> Checklists { get; set; }
     }
 }

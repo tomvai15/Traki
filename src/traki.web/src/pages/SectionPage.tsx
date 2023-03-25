@@ -6,13 +6,15 @@ import { Item } from '../contracts/protocol/items/Item';
 import { Question } from '../contracts/protocol/items/Question';
 import { AnswerType } from '../contracts/protocol/items/AnswerType';
 import { TextInput } from '../contracts/protocol/items/TextInput';
-import { MultipleChoice } from '../contracts/protocol/items/SingleChoice';
+import { MultipleChoice } from '../contracts/protocol/items/MultipleChoice';
 import { Value } from '../contracts/protocol/items/Value';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { v4 as uuid } from 'uuid';
 import ClearIcon from '@mui/icons-material/Clear';
+import { UpdateSectionRequest } from '../contracts/protocol/UpdateSectionRequest';
+import sectionService from '../services/section-service';
 
 // TODO: allow only specific resolution
 
@@ -351,6 +353,13 @@ export function SectionPage() {
     setSection({...section, checklist: newChecklist});
   }
 
+  async function updateSection() {
+    const updateSectionRequest: UpdateSectionRequest = {
+      section: section
+    };
+    await sectionService.updateSection(updateSectionRequest);
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={12} >
@@ -399,7 +408,7 @@ export function SectionPage() {
           </Droppable>
         </DragDropContext>
         <Button  onClick={() => addItem()} variant='contained'>Add new question</Button>
-        <Button  onClick={() => console.log(section)} variant='contained'>Submit</Button>
+        <Button  onClick={() => updateSection()} variant='contained'>Submit</Button>
       </Grid>
     </Grid>
   );

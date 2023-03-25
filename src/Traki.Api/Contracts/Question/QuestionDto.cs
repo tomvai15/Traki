@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Contracts.Question
 {
-    public class QuestionDto
+    public class OldQuestionDto
     {
         public int Id { get; set; }
         public string Title { get; set; }

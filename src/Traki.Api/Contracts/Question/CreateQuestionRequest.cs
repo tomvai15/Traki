@@ -2,6 +2,6 @@
 {
     public class CreateQuestionRequest
     {
-        public QuestionDto Question { get; set; }
+        public OldQuestionDto Question { get; set; }
     }
 }
