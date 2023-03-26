@@ -35,9 +35,10 @@ namespace Traki.Domain.Handlers
 
             foreach (var section in sections)
             {
-                section.Id = 0;
-                section.ProtocolId = newProtocol.Id;
-                await _sectionHandler.AddOrUpdateSection(newProtocol.Id, section);
+                var newSection = await _sectionHandler.GetSection(section.Id);
+                newSection.Id = 0;
+                newSection.ProtocolId = newProtocol.Id;
+                await _sectionHandler.AddOrUpdateSection(newProtocol.Id, newSection);
             }
         }
 

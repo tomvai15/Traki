@@ -87,7 +87,6 @@ function AddProtocolDialog(props: SimpleDialogProps) {
   );
 }
 
-
 export function ProductPage() {
   const navigate = useNavigate();
   const { projectId, productId } = useParams();

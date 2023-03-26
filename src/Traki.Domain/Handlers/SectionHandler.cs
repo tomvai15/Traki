@@ -114,6 +114,10 @@ namespace Traki.Domain.Handlers
                 if (item.MultipleChoice != null)
                 {
                     item.MultipleChoice.Id = Guid.NewGuid().ToString();
+                    foreach (var option in item.MultipleChoice.Options)
+                    {
+                        option.Id = Guid.NewGuid().ToString();
+                    }
                 }
             }
 
