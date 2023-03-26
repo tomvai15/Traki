@@ -5,9 +5,14 @@ using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
-using Traki.Api.Contracts.Question;
+using Traki.Api.Contracts.Protocol;
+using Traki.Api.Contracts.Section;
+using Traki.Api.Contracts.Section.Items;
 using Traki.Api.Contracts.Template;
 using Traki.Domain.Models;
+using Traki.Domain.Models.Section;
+using Traki.Domain.Models.Section.Items;
+using Question = Traki.Domain.Models.Section.Items.Question;
 
 namespace Traki.Api.Mapping
 {
@@ -20,7 +25,8 @@ namespace Traki.Api.Mapping
             AddProjectMappings();
             AddUserMappings();
             AddTemplateMappings();
-            AddQuestionMappings();
+            AddSectionMapping();
+           // AddQuestionMappings();
             AddChecklistMappings();
             AddChecklistQuestionMappings();
             AddChecklistQuestionMappings();
@@ -62,6 +68,21 @@ namespace Traki.Api.Mapping
                 .IncludeMembers(p => p.Project);
         }
 
+        public void AddSectionMapping()
+        {
+            CreateMap<Protocol, ProtocolDto>().ReverseMap();
+
+            CreateMap<Item, ItemDto>().ReverseMap();
+            CreateMap<MultipleChoice, MultipleChoiceDto>().ReverseMap();
+            CreateMap<TextInput, TextInputDto>().ReverseMap();
+            CreateMap<Option, OptionDto>().ReverseMap();
+            CreateMap<Question, QuestionDto>().ReverseMap();
+
+            CreateMap<Section, SectionDto>().ReverseMap();
+            CreateMap<Table, TableDto>().ReverseMap();
+            CreateMap<Checklist, ChecklistDto>().ReverseMap();
+        }
+
         public void AddUserMappings()
         {
             CreateMap<CreateUserRequest, User>();
@@ -81,6 +102,7 @@ namespace Traki.Api.Mapping
                 .IncludeMembers(x => x.Template);
         }
 
+        /*
         public void AddQuestionMappings()
         {
             CreateMap<Question, GetQuestionResponse>()
@@ -89,13 +111,13 @@ namespace Traki.Api.Mapping
             CreateMap<IEnumerable<Question>, GetQuestionsResponse>()
                 .ForMember(x => x.Questions, memberOptions: opt => opt.MapFrom(x => x));
 
-            CreateMap<Question, QuestionDto>().ReverseMap();
+            CreateMap<Question, OldQuestionDto>().ReverseMap();
 
             CreateMap<CreateQuestionRequest, Question>()
                 .IncludeMembers(x => x.Question);
 
             CreateMap<UpdateQuestionRequest, Question>();
-        }
+        }*/
 
         public void AddChecklistMappings()
         {
@@ -105,7 +127,7 @@ namespace Traki.Api.Mapping
             CreateMap<IEnumerable<CheckList>, GetChecklistsResponse>()
                 .ForMember(x => x.Checklists, opt => opt.MapFrom(x => x));
 
-            CreateMap<CheckList, ChecklistDto>().ReverseMap();
+            CreateMap<CheckList, OldChecklistDto>().ReverseMap();
         }
 
         public void AddChecklistQuestionMappings()

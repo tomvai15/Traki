@@ -166,7 +166,16 @@ export function DrawerAndHeader() {
           <DrawerItems/>
         </List>
       </Drawer>
-      <Outlet></Outlet>
+      <Box component="main" sx={{
+        flexGrow: 1,
+        height: '100vh', 
+        flexDirection: 'column'
+      }}>
+        <Box sx={{height: 60,  backgroundColor: 'red'}}/>
+        <Box sx={{padding: 5}}>
+          <Outlet></Outlet>
+        </Box>
+      </Box>
     </Box>
   );
 }

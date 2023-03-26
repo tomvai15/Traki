@@ -1,6 +1,6 @@
 ﻿namespace Traki.Infrastructure.Entities
 {
-    public class ChecklistEntity
+    public class OldChecklistEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

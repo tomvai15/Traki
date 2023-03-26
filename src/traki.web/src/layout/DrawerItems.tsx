@@ -27,7 +27,7 @@ export default function DrawerItems() {
         </ListItemIcon>
         <ListItemText primary="Products" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton onClick={() => navigate('/templates/protocols')}>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>

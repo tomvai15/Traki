@@ -28,7 +28,7 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<IEnumerable<ChecklistQuestion>> GetChecklistQuestions(int checklistId)
         {
-            var checklist = await _context.Checklists
+            var checklist = await _context.OldChecklists
                 .Where(x => x.Id == checklistId)
                 .Include(x => x.ChecklistQuestions)
                 .FirstOrDefaultAsync();

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { DrawerAndHeader } from '../layout/DrawerAndHeader';
 import SignIn from './Authentication/SignIn';
 import Dashboard from './Dashboard';
@@ -9,7 +9,14 @@ import authService from '../services/auth-service';
 import CheckOAuth from './Authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
-import { CompanyPage } from './Company';
+import { CompanyPage } from './company/Company';
+import { TemplatePage } from './templates/TemplatePage';
+import { EditCheckpoint } from './templates/EditCheckpoint';
+import { SectionPage } from './SectionPage';
+import { ProtocolPage } from './protocols/ProtocolPage';
+import { TemplateProtocols } from './protocols/TemplateProtocols';
+import { EditSectionPage } from './protocols/sections/EditSectionPage';
+import { CreateSectionPage } from './protocols/sections/CreateSectionPage';
 
 export function Main() {
 
@@ -35,10 +42,24 @@ export function Main() {
       <Routes>
         <Route path='' element={<ProtectedRoute><DrawerAndHeader/></ProtectedRoute>}>
           <Route index element={<Navigate to='/projects'/>}/>
-          <Route path='projects' element={<Projects/>}/>
-          <Route path='report' element={<Dashboard/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
+          <Route path='projects' element={<Projects/>}/>
+          <Route path='report' element={<SectionPage/>}/>
+          <Route path='templates' element={<Outlet/>}>
+            <Route path='protocols' element={<Outlet/>}>
+              <Route index element={<TemplateProtocols/>}/>
+              <Route path=':protocolId' element={<Outlet/>}>
+                <Route index element={<ProtocolPage/>}/>
+                <Route path='sections/:sectionId' element={<EditSectionPage/>}/>
+                <Route path='sections/create' element={<CreateSectionPage/>}/>
+              </Route>
+            </Route>
+            <Route path=':templateId' element={<Outlet/>}>
+              <Route index element={<TemplatePage/>}/>
+              <Route path='checkpoints/:checkpointId' element={<EditCheckpoint/>}/>
+            </Route>
+          </Route>
         </Route>
         <Route path='/login' element={<SignIn/>}/>
         <Route path='*' element={<Navigate to='/'/>} />

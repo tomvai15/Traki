@@ -31,7 +31,7 @@ namespace Traki.Api.Controllers
         [HttpGet("{checklistId}")]
         public async Task<ActionResult<GetChecklistResponse>> GetChecklist(int productId, int checklistId)
         {
-            var checkList = await _checklistRepository.GetChecklist(checklistId);
+            var checkList = await _checklistRepository.GetCheckList(checklistId);
 
             return _mapper.Map<GetChecklistResponse>(checkList);
         }

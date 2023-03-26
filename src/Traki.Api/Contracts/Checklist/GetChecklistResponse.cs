@@ -2,6 +2,6 @@
 {
     public class GetChecklistResponse
     {
-        public ChecklistDto Checklist { get; set; }
+        public OldChecklistDto Checklist { get; set; }
     }
 }

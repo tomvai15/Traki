@@ -14,6 +14,7 @@ namespace Traki.Infrastructure.Data
                 dbContext.Database.EnsureDeleted();
             }
 
+
             bool wasCreated = dbContext.Database.EnsureCreated();
 
             dbContext.AddCompanies();
@@ -23,7 +24,25 @@ namespace Traki.Infrastructure.Data
             dbContext.AddQuestions();
             dbContext.AddChecklists();
             dbContext.AddChecklistQuestions();
+            dbContext.AddProtocols();
+            dbContext.AddSections();
             dbContext.AddUsers();
+        }
+
+        public static TrakiDbContext AddProtocols(this TrakiDbContext dbContext)
+        {
+            dbContext.Protocols.AddRange(ExampleData.Protocols);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddSections(this TrakiDbContext dbContext)
+        {
+            dbContext.Sections.AddRange(ExampleData.Sections);
+            dbContext.SaveChanges();
+
+            return dbContext;
         }
 
         public static TrakiDbContext AddCompanies(this TrakiDbContext dbContext)
@@ -60,7 +79,7 @@ namespace Traki.Infrastructure.Data
 
         public static TrakiDbContext AddQuestions(this TrakiDbContext dbContext)
         {
-            dbContext.Questions.AddRange(ExampleData.Questions);
+           // dbContext.OldQuestions.AddRange(ExampleData.Questions);
             dbContext.SaveChanges();
 
             return dbContext;
@@ -68,7 +87,7 @@ namespace Traki.Infrastructure.Data
 
         public static TrakiDbContext AddChecklists(this TrakiDbContext dbContext)
         {
-            dbContext.Checklists.AddRange(ExampleData.Checklists);
+            dbContext.OldChecklists.AddRange(ExampleData.Checklists);
             dbContext.SaveChanges();
 
             return dbContext;

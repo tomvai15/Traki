@@ -7,6 +7,6 @@
         public int ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
 
-        public ICollection<ChecklistEntity> CheckLists { get; set; }
+        public ICollection<OldChecklistEntity> CheckLists { get; set; }
     }
 }

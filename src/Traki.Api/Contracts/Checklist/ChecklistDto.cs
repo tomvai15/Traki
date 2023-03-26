@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Contracts.Checklist
 {
-    public class ChecklistDto
+    public class OldChecklistDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -2,6 +2,6 @@
 {
     public class GetQuestionsResponse
     {
-        public IEnumerable<QuestionDto> Questions { get; set; }
+        public IEnumerable<OldQuestionDto> Questions { get; set; }
     }
 }
