@@ -43,6 +43,14 @@ namespace Traki.Api.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateProtocol([FromBody] CreateProtocolRequest createProtocolRequest)
+        {
+            var protocol = _mapper.Map<Protocol>(createProtocolRequest.Protocol);
+            await _protocolRepository.CreateProtocol(protocol);
+            return Ok();
+        }
+
         [HttpGet("templates")]
         public async Task<ActionResult<GetProtocolsResponse>> GetTemplateProtocols()
         {

@@ -4,6 +4,7 @@ using Traki.Domain.Extensions;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
+using Traki.Infrastructure.Entities;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -18,9 +19,11 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public Task<Protocol> CreateProtocol()
+        public async Task CreateProtocol(Protocol protocol)
         {
-            throw new NotImplementedException();
+            var protocolEntity = _mapper.Map<ProtocolEntity>(protocol);
+            _context.Protocols.Add(protocolEntity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateProtocol(Protocol protocol)

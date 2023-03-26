@@ -23,8 +23,9 @@ namespace Traki.Infrastructure.Data
 {
             new SectionEntity
             {
-                Name= "test",
-                Priority=1
+                Name = "test",
+                Priority = 1,
+                ProtocolId = 1,
             }
         };
 

@@ -7,5 +7,7 @@
         public int Priority { get; set; }
         public ChecklistEntity? Checklist{ get; set; }
         public TableEntity? Table { get; set; }
+        public int ProtocolId { get; set; }
+        public ProtocolEntity Protocol { get; set; }
     }
 }

@@ -17,7 +17,6 @@ namespace Traki.Infrastructure.Data
 
             bool wasCreated = dbContext.Database.EnsureCreated();
 
-            dbContext.AddSections();
             dbContext.AddCompanies();
             dbContext.AddProjects();
             dbContext.AddProducts();
@@ -26,6 +25,7 @@ namespace Traki.Infrastructure.Data
             dbContext.AddChecklists();
             dbContext.AddChecklistQuestions();
             dbContext.AddProtocols();
+            dbContext.AddSections();
             dbContext.AddUsers();
         }
 

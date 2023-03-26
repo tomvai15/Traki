@@ -53,6 +53,7 @@ namespace Traki.Domain.Handlers
 
         public async Task AddOrUpdateSection(int protocolId, Section section)
         {
+            section.ProtocolId = protocolId;
             var sectionFromDatabase = await _sectionRepository.GetSection(section.Id);
 
             int priority = (await _sectionRepository.GetSections(section.Id)).Count() + 1;

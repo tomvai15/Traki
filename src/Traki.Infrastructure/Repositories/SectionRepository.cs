@@ -58,7 +58,7 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<IEnumerable<Section>> GetSections(int protocolId)
         {
-            var sections = await _context.Sections.Where(p => p.Id > 0)
+            var sections = await _context.Sections.Where(p => p.ProtocolId == protocolId)
                 .Include(x => x.Checklist).ThenInclude(x => x.Items).ToListAsync();
             return _mapper.Map<IEnumerable<Section>>(sections);
         }

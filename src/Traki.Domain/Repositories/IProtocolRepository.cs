@@ -12,7 +12,7 @@ namespace Traki.Domain.Repositories
         Task UpdateProtocol(Protocol protocol);
         Task<Protocol> GetProtocol(int protocolId);
         Task<IEnumerable<Protocol>> GetTemplateProtocols();
-        Task<Protocol> CreateProtocol();
+        Task CreateProtocol(Protocol protocol);
         Task<Protocol> UpdateProtocol();
     }
 }

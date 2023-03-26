@@ -2,5 +2,6 @@
 {
     public class CreateProtocolRequest
     {
+        public ProtocolDto Protocol { get; set; }
     }
 }

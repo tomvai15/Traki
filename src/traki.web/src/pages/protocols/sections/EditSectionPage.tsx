@@ -419,6 +419,9 @@ export function EditSectionPage() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={12} >
+        <Button onClick={() => navigate('/templates/protocols/' + protocolId)} variant='contained' >Go back</Button>
+      </Grid>
+      <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>

@@ -14,7 +14,7 @@ import { v4 as uuid } from 'uuid';
 import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
 import sectionService from '../../../services/section-service';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const question: Question = {
   id: uuid(), 
@@ -278,6 +278,7 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
 
 export function CreateSectionPage() {
 
+  const navigate = useNavigate();
   const { protocolId, sectionId } = useParams();
   const [section, setSection] = useState<Section>(initialSection);
 
@@ -352,6 +353,9 @@ export function CreateSectionPage() {
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12} >
+        <Button onClick={() => navigate('/templates/protocols/' + protocolId)} variant='contained' >Go back</Button>
+      </Grid>
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>

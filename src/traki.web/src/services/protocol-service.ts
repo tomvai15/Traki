@@ -1,3 +1,4 @@
+import { CreateProtocolRequest } from '../contracts/protocol/CreateProtocolRequest';
 import { GetProtocolResponse } from '../contracts/protocol/GetProtocolResponse';
 import { GetProtocolsResponse } from '../contracts/protocol/GetProtocolsResponse';
 import { UpdateProtocolRequest } from '../contracts/protocol/UpdateProtocolRequest';
@@ -17,6 +18,11 @@ class ProtocolService {
     const fullRoute = route + '/' + protocolId;
     console.log(updateProtocolRequest);
     await axiosApiInstance.put(fullRoute, updateProtocolRequest, { headers: {} });
+  }
+
+  async createProtocol(createProtocolRequest: CreateProtocolRequest): Promise<void> {
+    const fullRoute = route;
+    await axiosApiInstance.post(fullRoute, createProtocolRequest, { headers: {} });
   }
 
   async getTemplateProtocols(): Promise<GetProtocolsResponse> {

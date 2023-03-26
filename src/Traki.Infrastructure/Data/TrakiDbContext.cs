@@ -63,6 +63,10 @@ namespace Traki.Infrastructure.Data
             modelBuilder.Entity<ItemEntity>()
                 .HasOne(p => p.Question).WithOne(p => p.Item)
                 .HasForeignKey<QuestionEntity>(e => e.ItemId);
+
+            modelBuilder.Entity<ProtocolEntity>()
+                .HasMany(p => p.Sections)
+                .WithOne(p => p.Protocol);
         }
 
         public virtual DbSet<ProtocolEntity> Protocols { get; set; }
