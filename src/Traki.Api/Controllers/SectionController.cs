@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Section;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models.Section;
-using Traki.Domain.Repositories;
-
 
 namespace Traki.Api.Controllers
 {
-    [Route("api/sections")]
+    [Route("api/protocols/{protocolId}/sections")]
     [ApiController]
     public class SectionController : ControllerBase
     {
@@ -22,12 +20,23 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPut("{sectionId}")]
-        public async Task<ActionResult> AddSection([FromBody]UpdateSectionRequest updateSectionRequest)
+        public async Task<ActionResult> UpdateSection(int protocolId, [FromBody]UpdateSectionRequest updateSectionRequest)
         {
 
             var section = _mapper.Map<Section>(updateSectionRequest.section);
 
-            await _sectionHandler.AddOrUpdateSection(section); ;
+            await _sectionHandler.AddOrUpdateSection(protocolId, section); ;
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateSection(int protocolId, [FromBody] UpdateSectionRequest updateSectionRequest)
+        {
+
+            var section = _mapper.Map<Section>(updateSectionRequest.section);
+
+            await _sectionHandler.AddOrUpdateSection(protocolId, section); ;
 
             return Ok();
         }
@@ -39,6 +48,24 @@ namespace Traki.Api.Controllers
             var section = await _sectionHandler.GetSection(sectionId);
 
             var getSectionRequest = new GetSectionRequest { Section = _mapper.Map<SectionDto>(section) };
+
+            return Ok(getSectionRequest);
+        }
+
+        [HttpDelete("{sectionId}")]
+        public async Task<ActionResult> DeleteSection(int sectionId)
+        {
+            await _sectionHandler.DeleteSection(sectionId);
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<GetSectionsRequest>> GetSections(int protocolId)
+        {
+
+            var sections = await _sectionHandler.GetSections(protocolId);
+
+            var getSectionRequest = new GetSectionsRequest { Sections = _mapper.Map<IEnumerable<SectionDto>>(sections) };
 
             return Ok(getSectionRequest);
         }

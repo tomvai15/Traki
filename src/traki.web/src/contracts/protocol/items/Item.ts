@@ -5,7 +5,7 @@ import { TextInput } from "./TextInput";
 export type Item = {
   id: string,
   name: string,
-  priority: string,
+  priority: number,
   question: Question|undefined,
   multipleChoice: MultipleChoice|undefined,
   textInput: TextInput|undefined

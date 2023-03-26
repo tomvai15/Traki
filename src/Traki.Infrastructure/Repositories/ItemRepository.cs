@@ -41,7 +41,7 @@ namespace Traki.Infrastructure.Repositories
             _context.Questions.RemoveRange(question);
             _context.MultipleChoices.RemoveRange(multipleChoice);
 
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return true;
         }

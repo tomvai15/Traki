@@ -13,7 +13,10 @@ import { CompanyPage } from './company/Company';
 import { TemplatePage } from './templates/TemplatePage';
 import { EditCheckpoint } from './templates/EditCheckpoint';
 import { SectionPage } from './SectionPage';
-import { ProtocolTemplates } from './templates/ProtocolTemplates';
+import { ProtocolPage } from './protocols/ProtocolPage';
+import { TemplateProtocols } from './protocols/TemplateProtocols';
+import { EditSectionPage } from './protocols/sections/EditSectionPage';
+import { CreateSectionPage } from './protocols/sections/CreateSectionPage';
 
 export function Main() {
 
@@ -44,7 +47,14 @@ export function Main() {
           <Route path='projects' element={<Projects/>}/>
           <Route path='report' element={<SectionPage/>}/>
           <Route path='templates' element={<Outlet/>}>
-            <Route index element={<ProtocolTemplates/>}/>
+            <Route path='protocols' element={<Outlet/>}>
+              <Route index element={<TemplateProtocols/>}/>
+              <Route path=':protocolId' element={<Outlet/>}>
+                <Route index element={<ProtocolPage/>}/>
+                <Route path='sections/:sectionId' element={<EditSectionPage/>}/>
+                <Route path='sections/create' element={<CreateSectionPage/>}/>
+              </Route>
+            </Route>
             <Route path=':templateId' element={<Outlet/>}>
               <Route index element={<TemplatePage/>}/>
               <Route path='checkpoints/:checkpointId' element={<EditCheckpoint/>}/>

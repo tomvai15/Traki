@@ -5,6 +5,7 @@ using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
+using Traki.Api.Contracts.Protocol;
 using Traki.Api.Contracts.Section;
 using Traki.Api.Contracts.Section.Items;
 using Traki.Api.Contracts.Template;
@@ -69,6 +70,8 @@ namespace Traki.Api.Mapping
 
         public void AddSectionMapping()
         {
+            CreateMap<Protocol, ProtocolDto>().ReverseMap();
+
             CreateMap<Item, ItemDto>().ReverseMap();
             CreateMap<MultipleChoice, MultipleChoiceDto>().ReverseMap();
             CreateMap<TextInput, TextInputDto>().ReverseMap();

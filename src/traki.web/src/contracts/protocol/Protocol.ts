@@ -1,7 +1,9 @@
-import { Section } from "./Section"
+import { Section } from "./Section";
 
 export type Protocol = {
   id: number,
-  name: string
-  sections: Section[]
+  name: string,
+  isTemplate: boolean,
+  sections: Section[],
+  modifiedDate: string
 }

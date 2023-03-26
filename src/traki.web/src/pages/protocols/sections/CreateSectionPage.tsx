@@ -1,22 +1,20 @@
 import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Section } from '../contracts/protocol/Section';
-import { Checklist } from '../contracts/protocol/Checklist';
-import { Item } from '../contracts/protocol/items/Item';
-import { Question } from '../contracts/protocol/items/Question';
-import { AnswerType } from '../contracts/protocol/items/AnswerType';
-import { TextInput } from '../contracts/protocol/items/TextInput';
-import { MultipleChoice } from '../contracts/protocol/items/MultipleChoice';
-import { Option } from '../contracts/protocol/items/Option';
+import { Section } from '../../../contracts/protocol/Section';
+import { Checklist } from '../../../contracts/protocol/Checklist';
+import { Item } from '../../../contracts/protocol/items/Item';
+import { Question } from '../../../contracts/protocol/items/Question';
+import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
+import { TextInput } from '../../../contracts/protocol/items/TextInput';
+import { MultipleChoice } from '../../../contracts/protocol/items/MultipleChoice';
+import { Option } from '../../../contracts/protocol/items/Option';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { v4 as uuid } from 'uuid';
 import ClearIcon from '@mui/icons-material/Clear';
-import { UpdateSectionRequest } from '../contracts/protocol/UpdateSectionRequest';
-import sectionService from '../services/section-service';
-
-// TODO: allow only specific resolution
+import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
+import sectionService from '../../../services/section-service';
+import { useParams } from 'react-router-dom';
 
 const question: Question = {
   id: uuid(), 
@@ -58,7 +56,7 @@ const value2: Option = {
 
 const defaultItem: Item ={
   id: uuid(), 
-  name: 'Is this Question Item', 
+  name: 'Item Name', 
   priority: 1, 
   question: question, 
   multipleChoice: undefined, 
@@ -70,38 +68,21 @@ const multipleChoice: MultipleChoice = {
   options: [value1, value2],
 };
 
-const items: Item[] = [{
-  id: uuid(), 
-  name: 'Is this Question Item', 
-  priority: 1, 
-  question: question, 
-  multipleChoice: undefined, 
-  textInput: undefined
-}, {
-  id: uuid(), 
-  name: 'Serial number:', 
-  priority: 2, 
-  question: undefined, 
-  multipleChoice: undefined, 
-  textInput: textInput
-}, {
-  id: uuid(), 
-  name: 'Multiple choice question:', 
-  priority: 3, 
-  question: undefined, 
-  multipleChoice: multipleChoice, 
-  textInput: undefined
-}
-];
+const items: Item[] = [];
 
 const checklist: Checklist = {
-  id: 1,
+  id: 0,
   items: items
 };
 
+const initialChecklist: Checklist = {
+  id: 0,
+  items: []
+};
+
 const initialSection: Section = {
-  id: 1,
-  name: 'General check',
+  id: 0,
+  name: 'Section Name',
   priority: 1,
   checklist: checklist,
   table: undefined
@@ -295,9 +276,12 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
   );
 }
 
-export function SectionPage() {
+export function CreateSectionPage() {
 
+  const { protocolId, sectionId } = useParams();
   const [section, setSection] = useState<Section>(initialSection);
+
+  const [canCreate, setCanCreate] = useState<boolean>(true);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -318,9 +302,11 @@ export function SectionPage() {
   };
 
   function addItem() {
-    if (!section.checklist) return;
+    if (!section.checklist) {
+      section.checklist = initialChecklist;
+    }
     const newId = uuid();
-    const newItem: Item = {...defaultItem, id: newId, priority: section.checklist.items.length+1};
+    const newItem: Item = {...defaultItem, id: newId, priority: section.checklist.items.length + 1};
     const copiedItems = [...section.checklist.items, newItem];
     const newChecklist = {...section.checklist, items: copiedItems};
     setSection({...section, checklist: newChecklist});
@@ -351,11 +337,17 @@ export function SectionPage() {
     setSection({...section, checklist: newChecklist});
   }
 
-  async function updateSection() {
+  async function createSection() {
     const updateSectionRequest: UpdateSectionRequest = {
       section: section
     };
-    // await sectionService.updateSection(updateSectionRequest);
+
+    await sectionService.createSection(Number(protocolId), updateSectionRequest);
+    setCanCreate(false);
+  }
+
+  function updateSectionName(newName: string) {
+    setSection({...section, name: newName});
   }
 
   return (
@@ -363,7 +355,16 @@ export function SectionPage() {
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-            <Typography variant='h6'>{section?.name}</Typography>
+            <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <TextField sx={{width: '50%'}}
+                id="standard-disabled"
+                label="Section Name"
+                variant="standard"
+                value={section?.name}
+                onChange={(e) => updateSectionName(e.target.value)}
+              />
+              <Button disabled={!canCreate} onClick={() => createSection()} variant='contained'>Create</Button>
+            </Box>
           </CardContent>    
         </Card>
         <DragDropContext onDragEnd={result => onDragEnd(result)}>
@@ -406,7 +407,6 @@ export function SectionPage() {
           </Droppable>
         </DragDropContext>
         <Button  onClick={() => addItem()} variant='contained'>Add new question</Button>
-        <Button  onClick={() => updateSection()} variant='contained'>Submit</Button>
       </Grid>
     </Grid>
   );

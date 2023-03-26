@@ -21,6 +21,8 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Section> CreateSection(Section section)
         {
             var sectionEntity = _mapper.Map<SectionEntity>(section);
+            sectionEntity.Checklist = null;
+            sectionEntity.Table = null;
             sectionEntity = (await _context.Sections.AddAsync(sectionEntity)).Entity;
             await _context.SaveChangesAsync();
             return _mapper.Map<Section>(sectionEntity);
@@ -45,6 +47,20 @@ namespace Traki.Infrastructure.Repositories
                 return null;
             }
             return _mapper.Map<Section>(section);
+        }
+
+        public async Task DeleteSection(Section section)
+        {
+            var s = _context.Sections.Where(d => d.Id == section.Id).First();
+            _context.Sections.Remove(s);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Section>> GetSections(int protocolId)
+        {
+            var sections = await _context.Sections.Where(p => p.Id > 0)
+                .Include(x => x.Checklist).ThenInclude(x => x.Items).ToListAsync();
+            return _mapper.Map<IEnumerable<Section>>(sections);
         }
     }
 }

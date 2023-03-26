@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Priority { get; set; }
+        public int Priority { get; set; }
         public QuestionDto? Question { get; set; }
         public MultipleChoiceDto? MultipleChoice { get; set; }
         public TextInputDto? TextInput { get; set; }

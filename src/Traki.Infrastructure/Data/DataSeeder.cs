@@ -25,7 +25,16 @@ namespace Traki.Infrastructure.Data
             dbContext.AddQuestions();
             dbContext.AddChecklists();
             dbContext.AddChecklistQuestions();
+            dbContext.AddProtocols();
             dbContext.AddUsers();
+        }
+
+        public static TrakiDbContext AddProtocols(this TrakiDbContext dbContext)
+        {
+            dbContext.Protocols.AddRange(ExampleData.Protocols);
+            dbContext.SaveChanges();
+
+            return dbContext;
         }
 
         public static TrakiDbContext AddSections(this TrakiDbContext dbContext)

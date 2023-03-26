@@ -5,6 +5,19 @@ namespace Traki.Infrastructure.Data
 {
     public static class ExampleData
     {
+        public static IEnumerable<ProtocolEntity> Protocols => new[]
+        {
+            new ProtocolEntity
+            {
+                Name= "Assembly Procedures - Checklist",
+                IsTemplate= true,
+            },
+            new ProtocolEntity
+            {
+                Name= "Welding Procedures - Checklist",
+                IsTemplate= true,
+            }
+        };
 
         public static IEnumerable<SectionEntity> Sections => new[]
 {
@@ -14,6 +27,7 @@ namespace Traki.Infrastructure.Data
                 Priority=1
             }
         };
+
         public static IEnumerable<CompanyEntity> Companies => new[]
         {
             new CompanyEntity

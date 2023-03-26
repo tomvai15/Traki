@@ -13,6 +13,8 @@ namespace Traki.Api.Mapping
     {
         public EntityToDomainModelMappingProfile()
         {
+            CreateMap<Protocol, ProtocolEntity>().ReverseMap();
+
             CreateMap<Company, CompanyEntity>().ReverseMap();
             CreateMap<User, UserEntity>().ReverseMap();
             CreateMap<Project, ProjectEntity>().ReverseMap();

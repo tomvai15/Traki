@@ -65,6 +65,8 @@ namespace Traki.Infrastructure.Data
                 .HasForeignKey<QuestionEntity>(e => e.ItemId);
         }
 
+        public virtual DbSet<ProtocolEntity> Protocols { get; set; }
+
         public virtual DbSet<SectionEntity> Sections { get; set; }
         public virtual DbSet<ChecklistEntity> Checklists { get; set; }
         public virtual DbSet<TableEntity> Tables { get; set; }
