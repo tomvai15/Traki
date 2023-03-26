@@ -56,7 +56,7 @@ namespace Traki.Domain.Handlers
             section.ProtocolId = protocolId;
             var sectionFromDatabase = await _sectionRepository.GetSection(section.Id);
 
-            int priority = (await _sectionRepository.GetSections(section.Id)).Count() + 1;
+            int priority = (await _sectionRepository.GetSections(protocolId)).Count() + 1;
 
             if (sectionFromDatabase == null)
             {

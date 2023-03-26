@@ -18,6 +18,7 @@ import { TemplateProtocols } from './protocols/TemplateProtocols';
 import { EditSectionPage } from './protocols/sections/EditSectionPage';
 import { CreateSectionPage } from './protocols/sections/CreateSectionPage';
 import { ProductPage } from './projects/products/ProductPage';
+import { FillProtocol } from './projects/products/FillProtocol';
 
 export function Main() {
 
@@ -48,7 +49,10 @@ export function Main() {
           <Route path='projects' element={<Outlet/>}>
             <Route index element={<Projects/>}/>
             <Route path=':projectId' element={<Outlet/>}>
-              <Route path='products/:productId' element={<ProductPage/>}/>  
+              <Route path='products/:productId' element={<Outlet/>}>
+                <Route index element={<ProductPage/>}/>
+                <Route path='protocols/:protocolId' element={<FillProtocol/>}/>
+              </Route>  
             </Route>
           </Route>
           <Route path='report' element={<SectionPage/>}/>
