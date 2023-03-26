@@ -15,6 +15,9 @@ import { Section } from '../../../contracts/protocol/Section';
 import sectionService from '../../../services/section-service';
 import { Checklist } from '../../../contracts/protocol/Checklist';
 import { Item } from '../../../contracts/protocol/items/Item';
+import { TextInput } from '../../../contracts/protocol/items/TextInput';
+import { Question } from '../../../contracts/protocol/items/Question';
+import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
 
 const initialProtocol: Protocol = {
   id: 1,
@@ -38,21 +41,71 @@ type FillItemProps = {
 }
 
 function FillItem ({item, updateItem}: FillItemProps) {
+
+  function updateQuestionComment(newValue: string) {
+    if (!item.question) {
+      return;
+    }
+    const updatedQuestion: Question = {...item.question, comment: newValue};
+    const updatedItem: Item = {...item, question: updatedQuestion};
+    updateItem(updatedItem);
+  }
+
+  function updateQuestionAnswer(newAnswer: AnswerType) {
+    if (!item.question) {
+      return;
+    }
+    const updatedQuestion: Question = {...item.question, answer: newAnswer};
+    const updatedItem: Item = {...item, question: updatedQuestion};
+    updateItem(updatedItem);
+  }
+
+  function updateTextInput(newValue: string) {
+    if (!item.textInput) {
+      return;
+    }
+    const updatedTextInput: TextInput = {...item.textInput, value: newValue};
+    const updatedItem: Item = {...item, textInput: updatedTextInput};
+    updateItem(updatedItem);
+  } 
+
+  function updateMultipleChoice(option: string) {
+
+
+    if (!item.multipleChoice) {
+      return;
+    }
+    console.log(option + ' ');
+
+    const updatedOptions = [...item.multipleChoice.options];
+
+    updatedOptions.forEach((item, index) => {
+      updatedOptions[index] = item.name == option ? {...item, selected: !item.selected} : {...item, selected: false};
+    });
+
+    const multipleChoice = {...item.multipleChoice, options: updatedOptions};
+    const updatedItem: Item = {...item, multipleChoice: multipleChoice};
+    console.log(updatedItem);
+    updateItem(updatedItem);
+  }
+
   function checkType() {
     if (item.question) {
       return (
         <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
-            <FormControlLabel control={<Checkbox/>} label="Yes" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox/>} label="No" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox/>} label="Other" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox/>} label="Not applicable" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={item.question.answer==AnswerType.Yes}/>} label="Yes" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={item.question.answer==AnswerType.No}/>} label="No" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Other)} checked={item.question.answer==AnswerType.Other}/>} label="Other" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.NotApplicable)} checked={item.question.answer==AnswerType.NotApplicable}/>} label="Not applicable" labelPlacement="start"/>
           </Box>
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
               id="standard-disabled"
               label="Comment"
               variant="standard"
+              value={item.question.comment}
+              onChange={(e) => updateQuestionComment(e.target.value)}
             />
           </Box>
         </Box>);
@@ -64,6 +117,8 @@ function FillItem ({item, updateItem}: FillItemProps) {
               id="standard-disabled"
               label="Comment"
               variant="standard"
+              value={item.textInput.value}
+              onChange={(e) => updateTextInput(e.target.value)}
             />
           </Box>
         </Box>);
@@ -74,7 +129,7 @@ function FillItem ({item, updateItem}: FillItemProps) {
             { item.multipleChoice.options.map((value, index) => 
               <FormControlLabel 
                 key={index} 
-                control={<Checkbox/>} 
+                control={<Checkbox checked={value.selected ? value.selected : false} onClick={(e) => updateMultipleChoice(value.name)}/>} 
                 label={value.name} 
                 labelPlacement="start"/>
             )}
@@ -115,6 +170,20 @@ function FillSection({protocolId, sectionId}: FillSectionProps) {
     orderAndSetSection(getSectionResponse.section);
   }
 
+  function updateItem(updatedItem: Item) {
+    if (!section.checklist) {
+      return;
+    }
+    const updatedItems = [...section.checklist.items];
+
+    updatedItems.forEach((item, index) => {
+      updatedItems[index] = item.id == updatedItem.id ? updatedItem : item;
+    });
+
+    const updatedChecklist: Checklist = {...section.checklist, items: updatedItems};
+    setSection({...section, checklist: updatedChecklist});
+  }
+
   function orderAndSetSection(sectionToSort: Section) {
     if (!sectionToSort.checklist)
     {
@@ -145,7 +214,7 @@ function FillSection({protocolId, sectionId}: FillSectionProps) {
       </Card>
       <Box sx={{marginLeft:3}}>
         {section.checklist?.items.map((item, index) => 
-          <FillItem key={index} item={item} updateItem={()=> console.log('')}></FillItem>
+          <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
         )}
       </Box>
     </Box>

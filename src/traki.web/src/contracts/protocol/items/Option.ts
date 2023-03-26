@@ -1,4 +1,5 @@
 export type Option = {
   id: string,
-  name: string
+  name: string,
+  selected: boolean
 }
