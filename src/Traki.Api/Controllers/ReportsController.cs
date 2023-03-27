@@ -26,11 +26,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> GenerateReport()
         {
             var a = await _reportsHandler.GenerateHtmlReport();
-
-
-            
-            
-            return File(Encoding.UTF8.GetBytes(a), "text/html");
+            return File(a, "application/pdf");
         }
 
         [HttpPost("sign")]

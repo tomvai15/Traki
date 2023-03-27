@@ -1,5 +1,6 @@
 ﻿using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using PuppeteerSharp;
 using RazorLight;
 using System.Reflection;
 
@@ -7,15 +8,16 @@ namespace Traki.Domain.Handlers
 {
     public interface IReportHandler
     {
-        Task<string> GenerateHtmlReport();
+        Task<byte[]> GenerateHtmlReport();
         string GenerateReport();
         string SignReport();
     }
 
     public class ReportHandler : IReportHandler
     {
-        public async Task<string> GenerateHtmlReport()
+        public async Task<byte[]> GenerateHtmlReport()
         {
+
             string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var engine = new RazorLightEngineBuilder()
                 .UseFileSystemProject(currentPath + @"\Templates")
@@ -26,7 +28,27 @@ namespace Traki.Domain.Handlers
 
             string result = await engine.CompileRenderAsync("Protocol.cshtml", model);
 
-            return result;
+            using var browserFetcher = new BrowserFetcher();
+            await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            {
+                Headless = true
+            });
+
+            string fileName = Guid.NewGuid().ToString() + ".pdf";
+
+            string filePath = currentPath + @"\" + fileName;
+
+            using (var page = await browser.NewPageAsync())
+            {
+                await page.SetContentAsync(result);
+                var r = await page.GetContentAsync();
+                await page.PdfAsync(filePath, new PdfOptions { PrintBackground = true });
+            }
+
+            var a = File.ReadAllBytes(filePath);
+
+            return a;
         }
         public string GenerateReport()
         {
