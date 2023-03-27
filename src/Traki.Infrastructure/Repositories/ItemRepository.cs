@@ -43,7 +43,6 @@ namespace Traki.Infrastructure.Repositories
 
             await UpdateItemAnswers(itemEntity, item);
 
-            itemEntity = (_context.Items.Add(itemEntity)).Entity;
             _context.SaveChanges();
         }
 
