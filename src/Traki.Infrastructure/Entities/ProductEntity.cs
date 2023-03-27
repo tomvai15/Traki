@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public int ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
-
         public ICollection<OldChecklistEntity> CheckLists { get; set; }
+        public ICollection<ProtocolEntity> Protocols { get; set; }
     }
 }

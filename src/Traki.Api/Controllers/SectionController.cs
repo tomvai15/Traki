@@ -22,11 +22,16 @@ namespace Traki.Api.Controllers
         [HttpPut("{sectionId}")]
         public async Task<ActionResult> UpdateSection(int protocolId, [FromBody]UpdateSectionRequest updateSectionRequest)
         {
+            var section = _mapper.Map<Section>(updateSectionRequest.Section);
+            await _sectionHandler.AddOrUpdateSection(protocolId, section);
+            return Ok();
+        }
 
-            var section = _mapper.Map<Section>(updateSectionRequest.section);
-
-            await _sectionHandler.AddOrUpdateSection(protocolId, section); ;
-
+        [HttpPut("{sectionId}/answers")]
+        public async Task<ActionResult> UpdateSectionAnswers(int protocolId, [FromBody] UpdateSectionAnswersRequest updateSectionRequest)
+        {
+            var section = _mapper.Map<Section>(updateSectionRequest.Section);
+            await _sectionHandler.UpdateSectionAnswers(protocolId, section);
             return Ok();
         }
 
@@ -34,7 +39,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> CreateSection(int protocolId, [FromBody] UpdateSectionRequest updateSectionRequest)
         {
 
-            var section = _mapper.Map<Section>(updateSectionRequest.section);
+            var section = _mapper.Map<Section>(updateSectionRequest.Section);
 
             await _sectionHandler.AddOrUpdateSection(protocolId, section); ;
 

@@ -9,6 +9,7 @@ namespace Traki.Domain.Repositories
         Task<IEnumerable<CheckList>> GetChecklists(int productId);
         Task<CheckList> GetCheckList(int checklistId);
 
+        Task UpdateChecklistAnswers(Checklist checkList);
         Task<Checklist> GetChecklist(int checklistId);
         Task<Checklist> GetSectionChecklist(int sectionId);
         Task<Checklist> CreateChecklist(Checklist checkList);

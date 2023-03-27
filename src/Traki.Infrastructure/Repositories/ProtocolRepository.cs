@@ -19,11 +19,13 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task CreateProtocol(Protocol protocol)
+        public async Task<Protocol> CreateProtocol(Protocol protocol)
         {
             var protocolEntity = _mapper.Map<ProtocolEntity>(protocol);
-            _context.Protocols.Add(protocolEntity);
+            protocolEntity = (_context.Protocols.Add(protocolEntity)).Entity;
             await _context.SaveChangesAsync();
+
+            return _mapper.Map<Protocol>(protocolEntity);
         }
 
         public async Task UpdateProtocol(Protocol protocol)
@@ -43,16 +45,18 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<Protocol>(protocol);
         }
 
+        public async Task<IEnumerable<Protocol>> GetProtocols(int productId)
+        {
+            var protocols = await _context.Protocols.Where(p => p.ProductId == productId).ToListAsync();
+
+            return _mapper.Map<IEnumerable<Protocol>>(protocols);
+        }
+
         public async Task<IEnumerable<Protocol>> GetTemplateProtocols()
         {
             var protocols = await _context.Protocols.Where(p =>p.IsTemplate == true).ToListAsync();
 
             return _mapper.Map<IEnumerable<Protocol>>(protocols);
-        }
-
-        public Task<Protocol> UpdateProtocol()
-        {
-            throw new NotImplementedException();
         }
     }
 }

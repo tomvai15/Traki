@@ -89,7 +89,6 @@ function SectionItem ({section}: SectionItemProps) {
 
 
 export function ProtocolPage() {
-
   const navigate = useNavigate();
   const { protocolId } = useParams();
 

@@ -38,7 +38,7 @@ const defaultTextInput: TextInput = {
 
 const defaultMultipleChoice: MultipleChoice = {
   id: uuid(), 
-  options: [{id: uuid(), name: 'Option A'}, {id: uuid(), name: 'Option B'}],
+  options: [{id: uuid(), name: 'Option A', selected: false}, {id: uuid(), name: 'Option B', selected: false}],
 };
 
 const textInput: TextInput = {
@@ -49,11 +49,13 @@ const textInput: TextInput = {
 const value1: Option = {
   id: uuid(), 
   name: 'Option A',
+  selected: false
 };
 
 const value2: Option = {
   id: uuid(), 
   name: 'Option B',
+  selected: false
 };
 
 const defaultItem: Item ={
@@ -149,7 +151,7 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
 
     const letter = (item.multipleChoice.options.length + 10).toString(36).toUpperCase();
 
-    const newValue: Option = {id: uuid(), name: 'Option ' + letter};
+    const newValue: Option = {id: uuid(), name: 'Option ' + letter, selected: false};
     item.multipleChoice.options = [...item.multipleChoice.options, newValue];
     updateItem(item);
   }

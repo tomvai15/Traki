@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Models;
+﻿using Traki.Domain.Models;
 
 namespace Traki.Domain.Repositories
 {
@@ -11,8 +6,8 @@ namespace Traki.Domain.Repositories
     {
         Task UpdateProtocol(Protocol protocol);
         Task<Protocol> GetProtocol(int protocolId);
+        Task<IEnumerable<Protocol>> GetProtocols(int productId);
         Task<IEnumerable<Protocol>> GetTemplateProtocols();
-        Task CreateProtocol(Protocol protocol);
-        Task<Protocol> UpdateProtocol();
+        Task<Protocol> CreateProtocol(Protocol protocol);
     }
 }

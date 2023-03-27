@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Product;
+using Traki.Api.Contracts.Protocol;
+using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 
@@ -11,15 +14,17 @@ namespace Traki.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductsRepository _productsRepository;
+        private readonly IProductHandler _productHandler;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductsRepository productsRepository, IMapper mapper)
+        public ProductsController(IProductsRepository productsRepository, IProductHandler productHandler, IMapper mapper)
         {
             _productsRepository = productsRepository;
+            _productHandler = productHandler;
             _mapper = mapper;
         }
 
-        [HttpGet(("{productId}"))]
+        [HttpGet("{productId}")]
         public async Task<ActionResult<GetProductResponse>> GetProduct(int projectId, int productId)
         {
             var product = await _productsRepository.GetProduct(productId);
@@ -38,6 +43,25 @@ namespace Traki.Api.Controllers
             var products = await _productsRepository.GetProducts(projectId);
 
             return _mapper.Map<GetProductsResponse>(products);
+        }
+
+        [HttpPost("{productId}/protocols")]
+        public async Task<ActionResult> AddProtocol(int productId, AddProtocolRequest addProtocolRequest)
+        {
+            await _productHandler.AddProtocolToProduct(productId, addProtocolRequest.ProtocolId);
+            return Ok();
+        }
+
+        [HttpGet("{productId}/protocols")]
+        public async Task<ActionResult<GetProductProtocolsResponse>> GetProtocols(int productId)
+        {
+            var protocols = await _productHandler.GetProtocols(productId);
+
+            var response = new GetProductProtocolsResponse
+            {
+                Protocols = _mapper.Map<IEnumerable<ProtocolDto>>(protocols)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
