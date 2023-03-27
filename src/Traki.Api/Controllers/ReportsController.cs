@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System.Text;
 using Traki.Domain.Constants;
 using Traki.Domain.Handlers;
 using Traki.Domain.Services.Docusign;
@@ -22,10 +23,14 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<string>> GenerateReport()
+        public async Task<ActionResult> GenerateReport()
         {
-            return _reportsHandler.GenerateReport();
+            var a = await _reportsHandler.GenerateHtmlReport();
+
+
+            
+            
+            return File(Encoding.UTF8.GetBytes(a), "text/html");
         }
 
         [HttpPost("sign")]

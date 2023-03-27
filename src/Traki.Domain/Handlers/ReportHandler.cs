@@ -1,16 +1,33 @@
 ﻿using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using RazorLight;
+using System.Reflection;
 
 namespace Traki.Domain.Handlers
 {
     public interface IReportHandler
     {
+        Task<string> GenerateHtmlReport();
         string GenerateReport();
         string SignReport();
     }
 
     public class ReportHandler : IReportHandler
     {
+        public async Task<string> GenerateHtmlReport()
+        {
+            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var engine = new RazorLightEngineBuilder()
+                .UseFileSystemProject(currentPath + @"\Templates")
+                .UseMemoryCachingProvider()
+                .Build();
+
+            var model = new { SomeText = "asdasd" };
+
+            string result = await engine.CompileRenderAsync("Protocol.cshtml", model);
+
+            return result;
+        }
         public string GenerateReport()
         {
             // Create a new PDF document
