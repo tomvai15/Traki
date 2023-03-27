@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System.IO;
 using System.Text;
 using Traki.Domain.Constants;
 using Traki.Domain.Handlers;
@@ -8,7 +9,7 @@ using Traki.Domain.Services.Docusign;
 
 namespace Traki.Api.Controllers
 {
-    [Route("api/reports")]
+    [Route("api/protocols/{protocolId}/reports")]
     public class ReportsController : ControllerBase
     {
         private readonly IReportHandler _reportsHandler;
@@ -23,17 +24,21 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GenerateReport()
+        public async Task<ActionResult<string>> GenerateReport()
         {
             var a = await _reportsHandler.GenerateHtmlReport();
-            return File(a, "application/pdf");
+
+            var b =  Convert.ToBase64String(a);
+            return b;
         }
 
         [HttpPost("sign")]
         [Authorize]
         public async Task<ActionResult<string>> SignDocument()
         {
-            string report = _reportsHandler.GenerateReport();
+            var reportFile = await _reportsHandler.GenerateHtmlReport();
+
+            string report = Convert.ToBase64String(reportFile);
 
             bool exists = _memoryCache.TryGetValue<string>(GetUserId(), out string accessToken);
 

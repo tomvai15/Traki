@@ -33,22 +33,11 @@ function DashboardContent() {
   return (
     <Box>
       <Box sx={{flex: 1,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
-        <Box sx={{flex: 1, padding: 5, justifyContent: 'center', display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
-          <Box sx={{backgroundColor: (theme) => theme.palette.grey[100]}}>
-            <Card sx={{ padding: 10}}>
-              <Document  file={`data:application/pdf;base64,${pdf}`} >
-                <Page height={500}  renderTextLayer={false}  pageNumber={1}  renderAnnotationLayer={false}></Page>
-              </Document>
-            </Card>
-          </Box>
-        </Box>
         <Box sx={{padding: 3, flex: 2, display: 'flex', flexDirection: 'column', backgroundColor: (theme) => theme.palette.grey[100]}}>
           <Box sx={{flex: 3, padding: 3, display: 'flex',  backgroundColor: (theme) => theme.palette.grey[100]}}>
             <Card sx={{flex: 1}}>
               <Typography>Test</Typography>
             </Card>
-          </Box>
-          <Box sx={{flex: 1, padding: 3, display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
             <Card sx={{flex: 1, padding: 5}}>{userInfo.loggedInDocuSign ?
               <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
                 Sign document with DocuSign
@@ -56,6 +45,15 @@ function DashboardContent() {
               <Button onClick={getCodeUrl} variant="contained" endIcon={<CreateIcon />}>
                 Log in to DocuSign
               </Button>}
+            </Card>
+          </Box>
+        </Box>
+        <Box sx={{flex: 1, justifyContent: 'center', display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
+          <Box sx={{borderColor: 'grey', padding: '5px'}}>
+            <Card sx={{backgroundColor: 'grey'}}>
+              <Document  file={`data:application/pdf;base64,${pdf}`} >
+                <Page height={900}  renderTextLayer={false}  pageNumber={1}  renderAnnotationLayer={false}></Page>
+              </Document>
             </Card>
           </Box>
         </Box>

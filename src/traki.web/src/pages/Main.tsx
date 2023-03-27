@@ -55,7 +55,7 @@ export function Main() {
               </Route>  
             </Route>
           </Route>
-          <Route path='report' element={<SectionPage/>}/>
+          <Route path='report' element={<Dashboard/>}/>
           <Route path='templates' element={<Outlet/>}>
             <Route path='protocols' element={<Outlet/>}>
               <Route index element={<TemplateProtocols/>}/>
