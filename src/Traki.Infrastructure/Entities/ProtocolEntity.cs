@@ -6,6 +6,8 @@ namespace Traki.Infrastructure.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string? ReportName { get; set; }
+        public string? EnvelopeId { get; set; }
         public bool IsTemplate { get; set; }
         public IEnumerable<SectionEntity> Sections { get; set; }
         public int? ProductId { get; set; }

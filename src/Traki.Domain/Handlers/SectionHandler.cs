@@ -62,7 +62,8 @@ namespace Traki.Domain.Handlers
             var checklist = await _checklistRepository.GetSectionChecklist(section.Id);
             if (checklist != null)
             {
-                checklist.Items = (ICollection<Item>)await _itemRepository.GetChecklistItems(checklist.Id);
+                var items = await _itemRepository.GetChecklistItems(checklist.Id);
+                checklist.Items = items.OrderBy(x=> x.Priority).ToList();
             }
 
             section.Checklist = checklist;

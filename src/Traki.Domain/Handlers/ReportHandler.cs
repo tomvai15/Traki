@@ -3,30 +3,105 @@ using PdfSharp.Pdf;
 using PuppeteerSharp;
 using RazorLight;
 using System.Reflection;
+using Traki.Domain.Extensions;
+using Traki.Domain.Models;
+using Traki.Domain.Models.Section;
+using Traki.Domain.Repositories;
+using Traki.Domain.Services.BlobStorage;
 
 namespace Traki.Domain.Handlers
 {
     public interface IReportHandler
     {
-        Task<byte[]> GenerateHtmlReport();
+        Task<ProtocolReport> GetProtocolReportInformation(int protocolId);
+        Task<byte[]> GetProtocolReport(int protocolId);
+        Task<byte[]> GenerateHtmlReport(ProtocolReport protocolReport);
         string GenerateReport();
-        string SignReport();
+        Task SignReport(int protocolId, string envelopeId);
     }
 
     public class ReportHandler : IReportHandler
     {
-        public async Task<byte[]> GenerateHtmlReport()
-        {
+        private readonly ICompaniesRepository _companiesRepository;
+        private readonly IProjectsRepository _projectsRepository;
+        private readonly IProductsRepository _productsRepository;
+        private readonly IProtocolRepository _protocolRepository;
+        private readonly ISectionHandler _sectionHandler;
+        private readonly IStorageService _storageService;
 
+        public ReportHandler(ICompaniesRepository companiesRepository,
+            IProjectsRepository projectsRepository,
+            IProductsRepository productsRepository,
+            IProtocolRepository protocolRepository,
+            ISectionHandler sectionHandler,
+            IStorageService storageService)
+        {
+            _companiesRepository = companiesRepository;
+            _projectsRepository = projectsRepository;
+            _productsRepository = productsRepository;
+            _protocolRepository = protocolRepository;
+            _sectionHandler = sectionHandler;
+            _storageService = storageService;
+        }
+
+        public async Task<ProtocolReport> GetProtocolReportInformation(int protocolId)
+        {
+            var protocol = await _protocolRepository.GetProtocol(protocolId);
+
+            protocol.RequiresToBeNotNullEnity();
+
+            var product = await _productsRepository.GetProduct(protocol.ProductId);
+            var project = await _projectsRepository.GetProject(product.ProjectId);
+            var company = await _companiesRepository.GetCompany(project.CompanyId);
+
+            var sections = await _sectionHandler.GetSections(protocolId);
+
+
+            var fullSections = new List<Section>();
+            foreach (var section in sections)
+            {
+                var fullSection = await _sectionHandler.GetSection(section.Id);
+                fullSections.Add(fullSection);
+            }
+
+            var companyLogo = await _storageService.GetFile("company", company.ImageName);
+
+            var companyLogoBase64 = Convert.ToBase64String(companyLogo.Content.ToArray());
+
+            var protocolReport = new ProtocolReport
+            {
+                CompanyLogoBase64 = companyLogoBase64,
+                Company = company,
+                Project = project,
+                Product = product,
+                Protocol = protocol,
+                Sections = fullSections.OrderBy(s => s.Priority).ToList(),
+            };
+
+            return protocolReport;
+        }
+
+        public async Task<byte[]> GetProtocolReport(int protocolId)
+        {
+            var protocol = await _protocolRepository.GetProtocol(protocolId);
+            if (protocol.ReportName == null)
+            {
+                throw new ArgumentException();
+            }
+            var report = await _storageService.GetFile("company", protocol.ReportName);
+
+            return report.Content.ToArray(); ;
+        }
+
+        public async Task<byte[]> GenerateHtmlReport(ProtocolReport protocolReport)
+        {
             string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var engine = new RazorLightEngineBuilder()
                 .UseFileSystemProject(currentPath + @"\Templates")
                 .UseMemoryCachingProvider()
                 .Build();
 
-            var model = new { SomeText = "asdasd" };
-
-            string result = await engine.CompileRenderAsync("Protocol.cshtml", model);
+            string result = await engine.CompileRenderAsync("Protocol.cshtml", protocolReport);
 
             using var browserFetcher = new BrowserFetcher();
             await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
@@ -46,9 +121,18 @@ namespace Traki.Domain.Handlers
                 await page.PdfAsync(filePath, new PdfOptions { PrintBackground = true });
             }
 
-            var a = File.ReadAllBytes(filePath);
+            // TODO: do in parallel
 
-            return a;
+            var pdfAsBytes = File.ReadAllBytes(filePath);
+            MemoryStream stream = new MemoryStream(pdfAsBytes);
+            await _storageService.AddFile("company", fileName, "application/pdf", stream);
+
+
+            var protocol = protocolReport.Protocol;
+            protocol.ReportName = fileName;
+            await _protocolRepository.UpdateProtocol(protocol);
+
+            return pdfAsBytes;
         }
         public string GenerateReport()
         {
@@ -78,9 +162,11 @@ namespace Traki.Domain.Handlers
             return Convert.ToBase64String(stream.ToArray());
         }
 
-        public string SignReport()
+        public async Task SignReport(int protocolId, string envelopeId)
         {
-            throw new NotImplementedException();
+            var protocol = await _protocolRepository.GetProtocol(protocolId);
+            protocol.EnvelopeId = envelopeId;
+            await _protocolRepository.UpdateProtocol(protocol);
         }
     }
 }

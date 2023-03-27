@@ -71,6 +71,10 @@ namespace Traki.Infrastructure.Data
             modelBuilder.Entity<ProtocolEntity>()
                 .HasMany(p => p.Sections)
                 .WithOne(p => p.Protocol);
+
+            modelBuilder.Entity<CompanyEntity>()
+                .HasMany(p => p.Projects)
+                .WithOne(p => p.Company);
         }
 
         public virtual DbSet<ProtocolEntity> Protocols { get; set; }

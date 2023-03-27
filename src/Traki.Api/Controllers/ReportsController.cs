@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.IO;
 using System.Text;
+using Traki.Api.Contracts.Report;
 using Traki.Domain.Constants;
 using Traki.Domain.Handlers;
+using Traki.Domain.Repositories;
 using Traki.Domain.Services.Docusign;
 
 namespace Traki.Api.Controllers
@@ -15,29 +18,60 @@ namespace Traki.Api.Controllers
         private readonly IReportHandler _reportsHandler;
         private readonly IDocuSignService _docuSignService;
         private readonly IMemoryCache _memoryCache;
+        private readonly IProtocolRepository _protocolRepository;
 
-        public ReportsController(IDocuSignService docuSignService, IMemoryCache memoryCache, IReportHandler reportsHandler)
+        public ReportsController(IProtocolRepository protocolRepository, IDocuSignService docuSignService, IMemoryCache memoryCache, IReportHandler reportsHandler)
         {
+            _protocolRepository = protocolRepository;
             _docuSignService = docuSignService;
             _reportsHandler = reportsHandler;
             _memoryCache = memoryCache;
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> GenerateReport()
+        public async Task<ActionResult<string>> GenerateReport(int protocolId)
         {
-            var a = await _reportsHandler.GenerateHtmlReport();
+            var protocolReport = await _reportsHandler.GetProtocolReportInformation(protocolId);
+            var report = await _reportsHandler.GenerateHtmlReport(protocolReport);
 
-            var b =  Convert.ToBase64String(a);
-            return b;
+            // TODO: this can be done on client
+            var reportBase64 =  Convert.ToBase64String(report);
+            return reportBase64;
+        }
+
+        [HttpGet("validate")]
+        [Authorize]
+        public async Task<ActionResult> ValidateDocumentSign(int protocolId)
+        {
+            bool exists = _memoryCache.TryGetValue<string>(GetUserId(), out string accessToken);
+
+            if (!exists)
+            {
+                return BadRequest();
+            }
+
+            var protocol = await _protocolRepository.GetProtocol(protocolId);
+
+            if (protocol.EnvelopeId == null)
+            {
+                return BadRequest();
+            }
+
+            var userInfo = await _docuSignService.GetUserInformation(accessToken);
+            string envelopeId = protocol.EnvelopeId;
+            string documentId = "3";
+            string basePath = userInfo.Accounts.First().BaseUri + "/restapi";
+            // refactor....
+            var result = await _docuSignService.GetDocument(accessToken, basePath, userInfo.Accounts.First().AccountId, envelopeId, documentId);
+        
+            return File(result, "application/pdf");
         }
 
         [HttpPost("sign")]
         [Authorize]
-        public async Task<ActionResult<string>> SignDocument()
+        public async Task<ActionResult<string>> SignDocument([FromBody]SignDocumentRequest signDocumentRequest)
         {
-            var reportFile = await _reportsHandler.GenerateHtmlReport();
-
+            var reportFile = await _reportsHandler.GetProtocolReport(signDocumentRequest.ProtocolId);
             string report = Convert.ToBase64String(reportFile);
 
             bool exists = _memoryCache.TryGetValue<string>(GetUserId(), out string accessToken);
@@ -53,8 +87,9 @@ namespace Traki.Api.Controllers
 
             // refactor....
             var result = _docuSignService.SendEnvelopeForEmbeddedSigning(userInfo.Email, userInfo.Name, signerClientId.ToString(),
-                accessToken, userInfo.Accounts.First().BaseUri + "/restapi", userInfo.Accounts.First().AccountId, report, "http://localhost:3000");
+                accessToken, userInfo.Accounts.First().BaseUri + "/restapi", userInfo.Accounts.First().AccountId, report, "http://localhost:3000/signvalidation", signDocumentRequest.State);
 
+            await _reportsHandler.SignReport(signDocumentRequest.ProtocolId, result.Item1);
             return Ok(result.Item2);
         }
 

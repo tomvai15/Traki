@@ -1,32 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import reportService from '../services/report-service';
+import reportService from '../../../services/report-service';
 import { Button, Card, CircularProgress, Typography } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { useRecoilState } from 'recoil';
-import { userState } from '../state/user-state';
-import authService from '../services/auth-service';
+import { userState } from '../../../state/user-state';
+import authService from '../../../services/auth-service';
+import { useLocation, useParams } from 'react-router-dom';
+import { AuthorisationCodeRequest } from '../../../contracts/auth/AuthorisationCodeRequest';
+import { SignDocumentRequest } from '../../../contracts/report/SignDocumentRequest';
 
 function DashboardContent() {
+  const { projectId, productId, protocolId } = useParams();
+  const location = useLocation();
 
   const [pdf, setPdf] = useState<string>('');
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
 
   useEffect(() => {
-    reportService.getReport().then((value) => {setPdf(value);});
+    console.log('??' + location.pathname);
+    reportService.getReport(Number(protocolId)).then((value) => {setPdf(value);});
   }, []);
 
   async function signDocument() {
     setLoadingSignIn(true);
-    const res = await reportService.signReport();
+    const request: SignDocumentRequest = {
+      protocolId: Number(protocolId),
+      state: btoa(location.pathname + ':' + protocolId)
+    };
+
+    const res = await reportService.signReport(request);
     setLoadingSignIn(false);
     window.location.replace(res);
   }
 
   async function getCodeUrl() {
-    const res = await authService.getAuthorisationCodeUrl();
+    const request: AuthorisationCodeRequest = {
+      state: btoa(location.pathname)
+    };
+    const res = await authService.getAuthorisationCodeUrl(request);
     window.location.replace(res);
   }
 

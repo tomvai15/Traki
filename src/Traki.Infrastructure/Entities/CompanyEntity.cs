@@ -8,5 +8,6 @@
         public DateTime CreationDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string ImageName { get; set; }
+        public IEnumerable<ProjectEntity> Projects { get; set; }
     }
 }

@@ -73,11 +73,11 @@ namespace Traki.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("code")]
-        [Authorize]
-        public async Task<ActionResult> GetAuthorisationCodeRequestUrl()
+        [HttpPost("code")]
+        [Authorize] 
+        public async Task<ActionResult> GetAuthorisationCodeRequestUrl([FromBody]AuthorisationCodeRequest getAuthorisationCodeRequest)
         {
-            var url = await _docuSignService.GetAuthorisationCodeRequest();
+            var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State);
             return Ok(url);
         }
 

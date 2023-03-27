@@ -8,13 +8,15 @@ import authService from '../../services/auth-service';
 import { LoginOAuthRequest } from '../../contracts/auth/LoginOAuthRequest';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../state/user-state';
+import reportService from '../../services/report-service';
+import path from 'path';
 
 function useQuery() {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export default function CheckOAuth() {
+export default function SignValidation() {
 
   const navigate = useNavigate();
   const [loadinig, setLoading] = useState(true);
@@ -22,27 +24,30 @@ export default function CheckOAuth() {
   let query = useQuery();
 
   useEffect(() => {
-    console.log(query.get('code'));
-    checkAuthCode();
+    validateSign();
   }, []);
 
-  async function checkAuthCode() {
+  async function validateSign() {
 
-    const code = query.get('code');
+    const event = query.get('event');
     const state = query.get('state');
+    const decodedState = atob(state ?? '');
 
-    const docusignRequest: LoginOAuthRequest = {
-      code: code ?? '',
-      state: state ?? ''
+    var values = decodedState.split(':');
+    
+    const path = values[0];
+    const protocolId = values[1];
+
+    console.log(path);
+
+    if (event == 'signing_complete') {
+      setLoading(true);
+      await reportService.validateDocumentSign(Number(protocolId));
+      setLoading(false);
+      navigate(path);
+    } else {
+      navigate(path);
     }
-    const path = atob(docusignRequest.state);
-    console.log( 'kk ' + path);
-
-    setLoading(true);
-    await authService.loginDocusign(docusignRequest);
-    setUserInfo({ id: userInfo.id, loggedInDocuSign: true })
-    setLoading(false);
-    navigate(path);
   }
 
   return (
@@ -53,7 +58,7 @@ export default function CheckOAuth() {
     }}>
       <Container sx={{display: 'flex', alignItems: 'center', marginTop: '30vh', flexDirection: 'column'}} >
         <Box sx={{flex: 1}}>
-          <Typography>Handling oauth</Typography>
+          <Typography>Validating document signing</Typography>
         </Box>
         { loadinig &&
         <Box sx={{flex: 1}}>
