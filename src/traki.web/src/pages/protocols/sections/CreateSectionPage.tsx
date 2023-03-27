@@ -19,14 +19,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 const question: Question = {
   id: uuid(), 
   comment: '',
-  answer: AnswerType.No
+  answer: undefined
 };
 
 
 const defaultQuestion: Question = {
   id: uuid(), 
   comment: '',
-  answer: AnswerType.No
+  answer: undefined
 };
 
 const defaultTextInput: TextInput = {

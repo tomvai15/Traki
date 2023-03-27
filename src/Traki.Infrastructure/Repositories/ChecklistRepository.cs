@@ -61,6 +61,20 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<CheckList>(checklist);
         }
 
+        public async Task UpdateChecklistAnswers(Checklist checklist)
+        {
+            try
+            {
+                var checklistEntity = _mapper.Map<ChecklistEntity>(checklist);
+                _context.Update(checklistEntity);
+                await _context.SaveChangesAsync();
+            }
+            catch  (Exception e)
+            {
+                return;
+            }
+        }
+
         public async Task<Checklist> GetChecklist(int checklistId)
         {
             var checklist = await _context.Checklists

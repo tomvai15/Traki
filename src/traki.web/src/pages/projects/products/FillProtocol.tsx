@@ -18,6 +18,7 @@ import { Item } from '../../../contracts/protocol/items/Item';
 import { TextInput } from '../../../contracts/protocol/items/TextInput';
 import { Question } from '../../../contracts/protocol/items/Question';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
+import { UpdateSectionAnswersRequest } from '../../../contracts/protocol/section/UpdateSectionAnswersRequest';
 
 const initialProtocol: Protocol = {
   id: 1,
@@ -55,7 +56,7 @@ function FillItem ({item, updateItem}: FillItemProps) {
     if (!item.question) {
       return;
     }
-    const updatedQuestion: Question = {...item.question, answer: newAnswer};
+    const updatedQuestion: Question = {...item.question, answer: item.question.answer == newAnswer ? undefined : newAnswer};
     const updatedItem: Item = {...item, question: updatedQuestion};
     updateItem(updatedItem);
   }
@@ -89,15 +90,20 @@ function FillItem ({item, updateItem}: FillItemProps) {
     updateItem(updatedItem);
   }
 
+  function isChecked(i: Item, answer: AnswerType): boolean {
+    if (!i.question) return false;
+    return i.question.answer != undefined ? i.question.answer==answer : false;
+  }
+
   function checkType() {
     if (item.question) {
       return (
         <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={item.question.answer==AnswerType.Yes}/>} label="Yes" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={item.question.answer==AnswerType.No}/>} label="No" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Other)} checked={item.question.answer==AnswerType.Other}/>} label="Other" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.NotApplicable)} checked={item.question.answer==AnswerType.NotApplicable}/>} label="Not applicable" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={isChecked(item, AnswerType.Yes)}/>} label="Yes" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={isChecked(item, AnswerType.No)}/>} label="No" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Other)} checked={isChecked(item, AnswerType.Other)}/>} label="Other" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.NotApplicable)} checked={isChecked(item, AnswerType.NotApplicable)}/>} label="Not applicable" labelPlacement="start"/>
           </Box>
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
@@ -159,6 +165,7 @@ type FillSectionProps = {
 function FillSection({protocolId, sectionId}: FillSectionProps) {
 
   const [section, setSection] = useState<Section>(initialSection);
+  const [initialSectionJson, setInitialSectionJson] = useState<string>('');
 
   useEffect(() => {
     fetchSection();
@@ -188,6 +195,7 @@ function FillSection({protocolId, sectionId}: FillSectionProps) {
     if (!sectionToSort.checklist)
     {
       setSection(sectionToSort);
+      setInitialSectionJson(JSON.stringify(sectionToSort));
       return;
     }
     const sortedItems = [...sectionToSort.checklist.items];
@@ -196,6 +204,19 @@ function FillSection({protocolId, sectionId}: FillSectionProps) {
     const copiedChecklist: Checklist = {...sectionToSort.checklist, items: sortedItems};
     const copiedSection: Section = {...sectionToSort, checklist: copiedChecklist};
     setSection(copiedSection);
+    setInitialSectionJson(JSON.stringify(copiedSection));
+  }
+
+  function canUpdate(): boolean {
+    return initialSectionJson != JSON.stringify(section);
+  }
+
+  async function updateSection() {
+    const request: UpdateSectionAnswersRequest = {
+      section: section
+    };
+    await sectionService.updateSectionAnswers(protocolId, sectionId, request);
+    setInitialSectionJson(JSON.stringify(section));
   }
 
   return (
@@ -207,7 +228,7 @@ function FillSection({protocolId, sectionId}: FillSectionProps) {
               <Typography variant='h6'>{section.name}</Typography>
             </Box>
             <Box>
-              <Button variant='contained'>Save Answers</Button>
+              <Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>
             </Box>
           </Box>
         </CardActions>

@@ -1,6 +1,7 @@
 import { GetSectionResponse } from '../contracts/protocol/GetSectionResponse';
 import { GetSectionsResponse } from '../contracts/protocol/GetSectionsResponse';
 import { UpdateSectionRequest } from '../contracts/protocol/UpdateSectionRequest';
+import { UpdateSectionAnswersRequest } from '../contracts/protocol/section/UpdateSectionAnswersRequest';
 import axiosApiInstance from './axios-instance';
 
 const route = 'protocols/{protocolId}/sections/{sectionId}';
@@ -36,6 +37,11 @@ class SectionService {
 
   async updateSection(protocolId: number, sectionId: number, updateSectionRequest: UpdateSectionRequest): Promise<void> {
     const fullRoute = route.format({protocolId: protocolId.toString(), sectionId: sectionId.toString()}); 
+    await axiosApiInstance.put(fullRoute, updateSectionRequest, { headers: {} });
+  }
+
+  async updateSectionAnswers(protocolId: number, sectionId: number, updateSectionRequest: UpdateSectionAnswersRequest): Promise<void> {
+    const fullRoute = route.format({protocolId: protocolId.toString(), sectionId: sectionId.toString()}) + '/answers'; 
     await axiosApiInstance.put(fullRoute, updateSectionRequest, { headers: {} });
   }
 }

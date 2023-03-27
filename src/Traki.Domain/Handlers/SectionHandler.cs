@@ -10,6 +10,7 @@ namespace Traki.Domain.Handlers
     {
         Task UpdateSections(IEnumerable<Section> sections);
         Task AddOrUpdateSection(int protocolId, Section section);
+        Task UpdateSectionAnswers(int protocolId, Section section);
         Task<Section> GetSection(int sectionId);
         Task DeleteSection(int sectionId);
         Task<IEnumerable<Section>> GetSections(int protocolId);
@@ -36,6 +37,23 @@ namespace Traki.Domain.Handlers
             {
                 await _sectionRepository.UpdateSection(section);
             }
+        }
+
+        public async Task UpdateSectionAnswers(int protocolId, Section section)
+        {
+            var sectionToUpdate = await _sectionRepository.GetSection(section.Id);
+            var checklistToUpdate =  await _checklistRepository.GetSectionChecklist(section.Id);
+            if (checklistToUpdate != null)
+            {
+                checklistToUpdate = await _checklistRepository.GetChecklist(checklistToUpdate.Id);
+                var checklist = section.Checklist;
+                if (checklistToUpdate != null && checklist != null)
+                {
+                    await UpdateChecklistModel(checklist, checklistToUpdate);
+                }
+            }
+
+            return;
         }
 
         public async Task<Section> GetSection(int sectionId)
@@ -78,6 +96,16 @@ namespace Traki.Domain.Handlers
             {
                 checklist.SectionId = sectionFromDatabase.Id;
                 await CreateChecklist(checklist);
+            }
+        }
+
+        private async Task UpdateChecklistModel(Checklist checklist, Checklist checklistToUpdate)
+        {
+            foreach (var itemToUpdate in checklistToUpdate.Items)
+            {
+                var item = checklist.Items.First(x => x.Id == itemToUpdate.Id);
+
+                await _itemRepository.UpdatedItem(item);
             }
         }
 
