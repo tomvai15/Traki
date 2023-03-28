@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import productService from '../../../services/product-service';
 import { Product } from '../../../contracts/product/Product';
@@ -11,6 +11,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import protocolService from '../../../services/protocol-service';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { AreaSelector, IArea } from '@bmunozg/react-image-area';
+import InfoIcon from '@mui/icons-material/Info';
 
 function createData(
   name: string,
@@ -22,12 +24,55 @@ function createData(
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+const itemData = [
+  {
+    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    title: 'Breakfast',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    title: 'Burger',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    title: 'Camera',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    title: 'Coffee',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    title: 'Hats',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+    title: 'Honey',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+    title: 'Basketball',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+    title: 'Fern',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+    title: 'Mushrooms',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    title: 'Tomato basil',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+    title: 'Sea star',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+    title: 'Bike',
+  },
 ];
 
 
@@ -96,6 +141,15 @@ export function ProductPage() {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
 
+  const [selectedImage, setSelectedImage] = React.useState<string>('');
+
+  const [areas, setAreas] = useState<IArea[]>([]);
+
+  const onChangeHandler = (areas: IArea[]) => {
+    console.log(areas);
+    setAreas(areas);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -129,13 +183,69 @@ export function ProductPage() {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12} >
-        <Typography>{product.name}</Typography>
+      <Grid container spacing={2} item xs={12} md={12} >
+        <Grid item xs={8} >
+          <Card>
+            <CardContent>
+              <Typography variant='h5'>{product.name}</Typography>
+              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Box sx={{flex: 2, padding: '5px', width: '100%', height: '100%'}}>
+                  <AreaSelector
+                    areas={areas}
+                    unit='percentage'
+                    onChange={onChangeHandler}
+                  >
+                    <img width={'100%'} src={selectedImage} alt='my image'/>
+                  </AreaSelector>
+                </Box>
+                <Box sx={{flex: 1, padding: '5px'}}>
+                  <ImageList sx={{ width: 200, height: 400 }} cols={1}>
+                    {itemData.map((item) => (
+                      <ImageListItem key={item.img}>
+                        <img
+                          src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                          srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                          alt={item.title}
+                          loading="lazy"
+                        />
+                        <ImageListItemBar
+                          title={item.title}
+                          actionIcon={
+                            <IconButton 
+                              onClick={() => setSelectedImage(item.img)}
+                              sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                              aria-label={`info about ${item.title}`}
+                            >
+                              <InfoIcon />
+                            </IconButton>
+                          }
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4} >
+          <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-around', flexDirection: 'column'}}>
+            <CardContent>
+              <Typography variant='h5'>2 Defects</Typography>
+              <Divider></Divider>
+              <Typography variant='h6'>Bad weld</Typography>
+              <Typography variant='h6'>Incorrect screw</Typography>
+            </CardContent>
+            <CardActions>
+              <Button variant='contained' color='error'>New defect</Button>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent>
-            <Typography>Assigned protocols</Typography>
+            <Typography variant='h5'>Assigned protocols</Typography>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
