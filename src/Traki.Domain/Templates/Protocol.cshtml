@@ -1,0 +1,213 @@
+﻿@model Traki.Domain.Models.ProtocolReport
+
+@{
+    string image = "data:image/png;base64," + Model.CompanyLogoBase64;
+}
+
+<div class="MainPage">
+    <center>
+        <h3>[Tempalte name]</h3>
+    </center>
+    <div class="App">
+        <div class="Container">
+            <table class="GeneratedTable">
+                <tbody>
+                    <tr>
+                        <th>Project name:</th>
+                        <td>@Model.Project.Name</td>
+                    </tr>
+                    <tr>
+                        <th>Address:</th>
+                        <td>[Address]</td>
+                    </tr>
+                    <tr>
+                        <th>Client Name:</th>
+                        <td>[Client Name]</td>
+                    </tr>
+                    <tr>
+                        <th>Product Name:</th>
+                        <td>@Model.Product.Name</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="Container">
+            <img src="@image" style="max-width: 100%;height: auto;" />
+        </div>
+    </div>
+    <div>
+        <table class="ProtocolTable">
+            @foreach (var protocolSection in Model.Sections)
+            {
+                <thead>
+                    <tr>
+                        <th colspan="4">@protocolSection.Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (protocolSection.Checklist != null)
+                    {
+                        @for (int i = 0; i < protocolSection.Checklist.Items.Count; i++)
+                        {
+                            var item = protocolSection.Checklist.Items.ToArray()[i];
+                            <tr>
+                                <td>@(i+1)</td>
+                                <td>@(item.Name)</td>
+                                @if (item.Question != null)
+                                {
+                                    <td>
+                                        <div class="Checkbox">
+                                            <label for="male">Yes</label>
+                                            <input type="checkbox" @(item.Question.Answer == Traki.Domain.Models.Section.Items.AnswerType.Yes ? "checked" : "") id="chk" />
+                                        </div>
+                                        <div class="Checkbox">
+                                            <label for="male">No</label>
+                                            <input type="checkbox" @(item.Question.Answer == Traki.Domain.Models.Section.Items.AnswerType.No ? "checked" : "") id="chk" />
+                                        </div>
+                                        <div class="Checkbox">
+                                            <label for="male">Other</label>
+                                            <input type="checkbox" @(item.Question.Answer == Traki.Domain.Models.Section.Items.AnswerType.Other ? "checked" : "") id="chk" />
+                                        </div>
+                                        <div class="Checkbox">
+                                            <label for="male">Not applicable</label>
+                                            <input type="checkbox" @(item.Question.Answer == Traki.Domain.Models.Section.Items.AnswerType.NotApplicable ? "checked" : "") id="chk" />
+                                        </div>
+                                    </td>
+                                    <td>@item.Question.Comment</td>
+                                }
+                                else if (item.TextInput != null)
+                                {
+                                    <td colspan="2">@item.TextInput.Value</td>
+                                }
+                                else if (item.MultipleChoice != null)
+                                {
+                                     <td colspan="2">
+                                        @foreach (var option in item.MultipleChoice.Options)
+                                        {
+                                            <div class="Checkbox">
+                                                <label for="male">@option.Name</label>
+                                                <input type="checkbox" @(option.Selected == true ? "checked" : "") id="chk" />
+                                            </div>
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>Cell</td>
+                                    <td>Cell</td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+    <div class="App">
+        <div class="Container" style="margin-top: 20px">
+            <table class="GeneratedTable">
+                <tbody>
+                    <tr>
+                        <th>Name, Surname:</th>
+                        <td>[name, surname]</td>
+                    </tr>
+                    <tr>
+                        <th>Signature:</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Date:</th>
+                        <td>[date]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="Container"></div>
+    </div>
+</div>
+
+<style>
+    div.Checkbox {
+        display: table;
+        float: left;
+        margin-right: 15px;
+    }
+
+    label {
+        display: table-row;
+    }
+
+    #chk {
+        display: table-row;
+        width: 100%;
+        accent-color: #636363;
+    }
+    .MainPage {
+        padding: 10px;
+    }
+
+    .App {
+        font-family: sans-serif;
+        text-align: center;
+        display: flex;
+        flex-direction: "row";
+    }
+
+    .Container {
+        flex: 1;
+        margin: 10px;
+    }
+
+    table.GeneratedTable {
+        width: 100%;
+        background-color: #ffffff;
+        border-collapse: collapse;
+        border-width: 2px;
+        border-color: #353535;
+        border-style: none;
+        color: #000000;
+    }
+
+        table.GeneratedTable td,
+        table.GeneratedTable th {
+            text-align: left;
+            border-style: dotted;
+            border-width: 2px;
+            border-color: #3d3d3d;
+            border-style: dotted;
+            padding: 3px;
+        }
+
+        table.GeneratedTable thead {
+            background-color: #ffcc00;
+        }
+
+    table.ProtocolTable {
+        width: 100%;
+        background-color: #ffffff;
+        border-collapse: collapse;
+        border-width: 2px;
+        border-style: solid;
+        color: #000000;
+    }
+
+        table.ProtocolTable td,
+        table.ProtocolTable th {
+            text-align: left;
+            border-width: 2px;
+            border-style: solid;
+            padding: 3px;
+        }
+
+            table.ProtocolTable td:first-child {
+                width: 5%;
+            }
+
+            table.ProtocolTable td:nth-child(2) {
+                width: 50%;
+            }
+
+        table.ProtocolTable thead {
+            background-color: #ffcc00;
+        }
+</style>

@@ -55,11 +55,13 @@ namespace Traki.Infrastructure.Data
         {
             new ProjectEntity
             {
-                Name = $"Sample Project"
+                Name = $"Sample Project",
+                CompanyId = 1,
             },
             new ProjectEntity
             {
-                Name = $"Other Project"
+                Name = $"Other Project",
+                CompanyId = 1,
             }
         };
 

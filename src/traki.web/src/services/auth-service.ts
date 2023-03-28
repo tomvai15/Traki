@@ -3,6 +3,7 @@ import { LoginRequest } from '../contracts/auth/LoginRequest';
 import axiosApiInstance from './axios-instance';
 import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginOAuthRequest } from '../contracts/auth/LoginOAuthRequest';
+import { AuthorisationCodeRequest } from '../contracts/auth/AuthorisationCodeRequest';
 
 const route = 'auth';
 
@@ -26,9 +27,9 @@ class AuthService {
     await axiosApiInstance.post(fullRoute, loginOAuthRequest, { headers: {} });
   }
 
-  async getAuthorisationCodeUrl(): Promise<string> {
+  async getAuthorisationCodeUrl(authorisationCodeRequest: AuthorisationCodeRequest): Promise<string> {
     const fullRoute = route + '/code';
-    const response = await axiosApiInstance.get<string>(fullRoute, { headers: {} });
+    const response = await axiosApiInstance.post<string>(fullRoute, authorisationCodeRequest, { headers: {} });
     return response.data;
   }
 }

@@ -63,6 +63,17 @@ namespace Traki.Infrastructure.Services.Docusign
             return userInformation;
         }
 
+        public async Task<Stream> GetDocument(string accessToken, string basePath, string accountId, string envelopeId, string documentId)
+        {
+            var docuSignClient = new DocuSignClient(basePath);
+            docuSignClient.Configuration.DefaultHeader.Add("Authorization", "Bearer " + accessToken);
+
+            EnvelopesApi envelopesApi = new EnvelopesApi(docuSignClient);
+            var stream = await envelopesApi.GetDocumentAsync(accountId, envelopeId, documentId);
+
+            return stream;
+        }
+
         public (string, string) SendEnvelopeForEmbeddedSigning(
             string signerEmail,
             string signerName,
@@ -72,6 +83,7 @@ namespace Traki.Infrastructure.Services.Docusign
             string accountId,
             string docPdf,
             string returnUrl,
+            string state,
             string pingUrl = null)
         {
             // Step 1 start
@@ -93,7 +105,7 @@ namespace Traki.Infrastructure.Services.Docusign
 
             // Step 3 start
             // Step 3. create the recipient view, the Signing Ceremony
-            RecipientViewRequest viewRequest = MakeRecipientViewRequest(signerEmail, signerName, returnUrl, signerClientId, pingUrl);
+            RecipientViewRequest viewRequest = MakeRecipientViewRequest(signerEmail, signerName, returnUrl, signerClientId, state, pingUrl);
 
             // call the CreateRecipientView API
             ViewUrl results1 = envelopesApi.CreateRecipientView(accountId, envelopeId, viewRequest);
@@ -113,7 +125,7 @@ namespace Traki.Infrastructure.Services.Docusign
             // Step 4 end
         }
 
-        public static RecipientViewRequest MakeRecipientViewRequest(string signerEmail, string signerName, string returnUrl, string signerClientId, string pingUrl = null)
+        public static RecipientViewRequest MakeRecipientViewRequest(string signerEmail, string signerName, string returnUrl, string signerClientId, string state, string pingUrl = null)
         {
             // Data for this method
             // signerEmail
@@ -130,7 +142,7 @@ namespace Traki.Infrastructure.Services.Docusign
             // the DocuSign signing ceremony. It's usually better to use
             // the session mechanism of your web framework. Query parameters
             // can be changed/spoofed very easily.
-            viewRequest.ReturnUrl = returnUrl + "?state=123";
+            viewRequest.ReturnUrl = returnUrl + "?state=" + state;
 
             // How has your app authenticated the user? In addition to your app's
             // authentication, you can include authenticate steps from DocuSign.
@@ -225,10 +237,10 @@ namespace Traki.Infrastructure.Services.Docusign
             return envelopeDefinition;
         }
 
-        public async Task<string> GetAuthorisationCodeRequest()
+        public async Task<string> GetAuthorisationCodeRequest(string state)
         {
             const string redirectUrl = "http://localhost:3000/checkoauth";
-            return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}";
+            return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}&state={state}";
         }
     }
 }

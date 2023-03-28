@@ -153,7 +153,7 @@ export function ProductPage() {
                   >
                     <TableCell component="th" scope="row">{item.name}</TableCell>
                     <TableCell align="right">2021-04-06</TableCell>
-                    <TableCell align="right"></TableCell>
+                    <TableCell align="right"><Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button></TableCell>
                     <TableCell align="right"><Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Fill</Button></TableCell>
                   </TableRow>
                 ))}

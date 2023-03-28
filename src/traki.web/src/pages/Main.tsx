@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { DrawerAndHeader } from '../layout/DrawerAndHeader';
 import SignIn from './Authentication/SignIn';
-import Dashboard from './Dashboard';
 import { useRecoilState } from 'recoil';
 import { userState } from '../state/user-state';
 import authService from '../services/auth-service';
@@ -19,6 +18,8 @@ import { EditSectionPage } from './protocols/sections/EditSectionPage';
 import { CreateSectionPage } from './protocols/sections/CreateSectionPage';
 import { ProductPage } from './projects/products/ProductPage';
 import { FillProtocol } from './projects/products/FillProtocol';
+import SignValidation from './Authentication/SignValidation';
+import { ProtocolReport } from './projects/products/ProtocolReport';
 
 export function Main() {
 
@@ -46,16 +47,20 @@ export function Main() {
           <Route index element={<Navigate to='/projects'/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
+          <Route path='signvalidation' element={<SignValidation/>}/>
           <Route path='projects' element={<Outlet/>}>
             <Route index element={<Projects/>}/>
             <Route path=':projectId' element={<Outlet/>}>
               <Route path='products/:productId' element={<Outlet/>}>
                 <Route index element={<ProductPage/>}/>
-                <Route path='protocols/:protocolId' element={<FillProtocol/>}/>
+                <Route path='protocols/:protocolId' element={<Outlet/>}>
+                  <Route index element={<FillProtocol/>}/>
+                  <Route path='report' element={<ProtocolReport/>}/>
+                </Route>  
               </Route>  
             </Route>
           </Route>
-          <Route path='report' element={<SectionPage/>}/>
+          <Route path='report' element={<ProtocolReport/>}/>
           <Route path='templates' element={<Outlet/>}>
             <Route path='protocols' element={<Outlet/>}>
               <Route index element={<TemplateProtocols/>}/>
