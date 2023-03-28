@@ -13,6 +13,9 @@ import protocolService from '../../../services/protocol-service';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { AreaSelector, IArea } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
+import { Drawing } from '../../../contracts/drawing/Drawing';
+import { type } from 'os';
+import pictureService from '../../../services/picture-service';
 
 function createData(
   name: string,
@@ -73,6 +76,24 @@ const itemData = [
     img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
     title: 'Bike',
   },
+];
+
+const initialDrawings: Drawing[] = [
+  { id: 1, title: 'Drawing 1', imageName: 'Preftek-full-logo.png'},
+  { id: 2, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg'},
+  { id: 3, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg'},
+];
+
+
+type DrawingImage = {
+  id: number,
+  image: string
+};
+
+const drawingImageList: DrawingImage[] = [
+  { id: 1, image: 'Preftek-full-logo.png'},
+  { id: 2, image: 'a8q1bzQ_700b.jpg'},
+  { id: 3, image: 'a8q1bzQ_700b.jpg'},
 ];
 
 
@@ -136,6 +157,11 @@ export function ProductPage() {
   const navigate = useNavigate();
   const { projectId, productId } = useParams();
   const [product, setProduct] = useState<Product>(initialProduct);
+
+  const [drawings, setDrawings] = useState<Drawing[]>(initialDrawings);
+  const [drawingImages, setDrawingImages] = useState<DrawingImage[]>(drawingImageList);
+  const [selectedDrawing, setSelectedDrawing] = React.useState<Drawing>(initialDrawings[0]);
+
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 
   const [open, setOpen] = React.useState(false);
@@ -160,6 +186,7 @@ export function ProductPage() {
 
   useEffect(() => {
     fetchProduct();
+    fetchPictures();
   }, []);
 
   async function addProtocol(protocolId: number) {
@@ -181,6 +208,17 @@ export function ProductPage() {
     setProtocols(getProductProtocolsResponse.protocols);
   }
 
+  async function fetchPictures() {
+    const copiedImages: DrawingImage[] = [];
+    initialDrawings.forEach( async (item, index) => {
+      const imageBase64 = await pictureService.getPicture('company', item.imageName);
+      const newDrawingImage: DrawingImage = {id: item.id, image: imageBase64};
+      copiedImages.push(newDrawingImage);
+    });
+
+    setDrawingImages(copiedImages);
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid container spacing={2} item xs={12} md={12} >
@@ -195,16 +233,18 @@ export function ProductPage() {
                     unit='percentage'
                     onChange={onChangeHandler}
                   >
-                    <img width={'100%'} src={selectedImage} alt='my image'/>
+                    <img style={{objectFit: 'contain'}} width={'100%'} src={drawingImages.find(x=> x.id == selectedDrawing.id)?.image ?? ''} alt={drawingImages.find(x=> x.id == selectedDrawing.id)?.image ?? ''}/>
                   </AreaSelector>
                 </Box>
                 <Box sx={{flex: 1, padding: '5px'}}>
                   <ImageList sx={{ width: 200, height: 400 }} cols={1}>
-                    {itemData.map((item) => (
-                      <ImageListItem key={item.img}>
+                    {drawings.map((item, index) => (
+                      <ImageListItem key={index}>
                         <img
-                          src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                          srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                          style={{objectFit: 'contain'}}
+                          width='200px'
+                          height='200px'
+                          src={drawingImages.find(x=> x.id == item.id)?.image}
                           alt={item.title}
                           loading="lazy"
                         />
@@ -212,7 +252,7 @@ export function ProductPage() {
                           title={item.title}
                           actionIcon={
                             <IconButton 
-                              onClick={() => setSelectedImage(item.img)}
+                              onClick={() => {setSelectedDrawing(item); console.log(item);}}
                               sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                               aria-label={`info about ${item.title}`}
                             >
