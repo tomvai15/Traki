@@ -14,18 +14,18 @@ type Props = NativeStackScreenProps<TemplateStackParamList, 'Template'>;
 const staticQuestions: Question[] = [
   {
     id: 1,
-    title: "Ar siųlės šaknis pilnai privirinta?",
-    description: "Virinimas yra procesas, kai naudojant šilumą ir slėgį sujungiama du ar daugiau metalinių dalių. Proceso metu paprastai kaitinami metalo kraštai ir jie sujungiami. Virinant būtina laikytis saugos taisyklių ir turėti reikiamą apmokymą, kad būtų išvengta sužeidimų ir pasiektas sėkmingas suvirinimas."
+    title: 'Ar siųlės šaknis pilnai privirinta?',
+    description: 'Virinimas yra procesas, kai naudojant šilumą ir slėgį sujungiama du ar daugiau metalinių dalių. Proceso metu paprastai kaitinami metalo kraštai ir jie sujungiami. Virinant būtina laikytis saugos taisyklių ir turėti reikiamą apmokymą, kad būtų išvengta sužeidimų ir pasiektas sėkmingas suvirinimas.'
   },
   {
     id: 2,
-    title: "Josuke",
-    description: "5"
+    title: 'Josuke',
+    description: '5'
   },
   {
     id: 3,
-    title: "Josuke2",
-    description: "4"
+    title: 'Josuke2',
+    description: '4'
   }
 ];
 
@@ -60,23 +60,23 @@ export default function TemplateScreen({ route, navigation }: Props) {
       <FlatList
         data={questions}
         renderItem={({item}) => <List.Accordion
-            title={item.title}
-            left={props => <List.Icon {...props} icon="text" />}>
-            <List.Section style={{marginLeft: 0, paddingLeft: 0 }}>
-              <Text style={{ paddingLeft: 20, fontWeight: 'bold' }}>Paaiškinimas {item.id}</Text>
-              <Text style={{ paddingLeft: 20 }}>{item.description}</Text>
-              <View  style={{ flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20 }} >
-                <Button mode="contained" buttonColor={colors.error} style={{ width: 150, paddingRight: 0, marginRight: 0}}
+          title={item.title}
+          left={props => <List.Icon {...props} icon="text" />}>
+          <List.Section style={{marginLeft: 0, paddingLeft: 0 }}>
+            <Text style={{ paddingLeft: 20, fontWeight: 'bold' }}>Paaiškinimas {item.id}</Text>
+            <Text style={{ paddingLeft: 20 }}>{item.description}</Text>
+            <View  style={{ flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20 }} >
+              <Button mode="contained" buttonColor={colors.error} style={{ width: 150, paddingRight: 0, marginRight: 0}}
                 onPress={() => navigation.navigate('EditQuestion', { id: 1, title: item.title, description: item.description })}>
                   Šalinti
-                </Button>
-                <Button mode="contained" style={{ width: 150, paddingRight: 0, marginRight: 0}}
-                  onPress={() => navigation.navigate('EditQuestion', { templateId: id, questionId: item.id, title: item.title, description: item.description })}>
+              </Button>
+              <Button mode="contained" style={{ width: 150, paddingRight: 0, marginRight: 0}}
+                onPress={() => navigation.navigate('EditQuestion', { templateId: id, questionId: item.id, title: item.title, description: item.description })}>
                   Redaguoti
-                </Button>
-              </View>
-            </List.Section>
-          </List.Accordion>}
+              </Button>
+            </View>
+          </List.Section>
+        </List.Accordion>}
         keyExtractor={item => item.id.toString()}
       />
 

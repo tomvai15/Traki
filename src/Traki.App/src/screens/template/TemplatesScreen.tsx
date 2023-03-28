@@ -33,11 +33,11 @@ export default function TemplatesScreen({ navigation }: Props) {
 
   return (
     <View style={{ flex: 1}}>
-       <Searchbar
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          value={searchQuery}
-        />
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
       <FlatList
         data={templates.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={({item}) => <List.Item onPress={() => navigation.navigate('Template', { id: item.id })}

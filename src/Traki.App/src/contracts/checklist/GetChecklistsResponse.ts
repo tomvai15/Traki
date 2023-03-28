@@ -1,4 +1,4 @@
-import { Checklist } from "./Checklist"
+import { Checklist } from './Checklist';
 
 export type GetChecklistsResponse = {
   checklists: Checklist[]

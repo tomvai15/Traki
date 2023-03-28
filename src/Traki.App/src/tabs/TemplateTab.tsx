@@ -11,12 +11,12 @@ const ProductStack = createNativeStackNavigator<TemplateStackParamList>();
 
 export  default function TemplateTab() {
   return (
-  <ProductStack.Navigator screenOptions={{ animation:'slide_from_right', header: ()=> <></>}}>
-    <ProductStack.Screen name="Templates" options={{title: 'Šablonai',}} component={TemplatesScreen} />
-    <ProductStack.Screen name="Template" options={{title: 'Šablonai',}} component={TemplateScreen} />
-    <ProductStack.Screen name="EditQuestion" options={{title: 'Šablonai',}} component={EditQuestionScreen} />
-    <ProductStack.Screen name="CreateQuestion" options={{title: 'Šablonai',}} component={CreateQuestionScreen} />
-    <ProductStack.Screen name="CreateTemplate" options={{title: 'Šablonai',}} component={CreateTemplateScreen} />
-  </ProductStack.Navigator>
+    <ProductStack.Navigator screenOptions={{ animation:'slide_from_right', header: ()=> <></>}}>
+      <ProductStack.Screen name="Templates" options={{title: 'Šablonai',}} component={TemplatesScreen} />
+      <ProductStack.Screen name="Template" options={{title: 'Šablonai',}} component={TemplateScreen} />
+      <ProductStack.Screen name="EditQuestion" options={{title: 'Šablonai',}} component={EditQuestionScreen} />
+      <ProductStack.Screen name="CreateQuestion" options={{title: 'Šablonai',}} component={CreateQuestionScreen} />
+      <ProductStack.Screen name="CreateTemplate" options={{title: 'Šablonai',}} component={CreateTemplateScreen} />
+    </ProductStack.Navigator>
   );
 }

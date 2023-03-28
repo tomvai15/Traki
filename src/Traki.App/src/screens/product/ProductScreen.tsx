@@ -11,14 +11,19 @@ import templateService from '../../services/template-service';
 import { FlatList } from 'react-native-gesture-handler';
 import { Product } from '../../contracts/product/Product';
 import productService from '../../services/product-service';
+import { Protocol } from '../../contracts/protocol/Protocol';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import protocolService from '../../services/protocol-service';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Product'>;
 
-const LeftContent = props => <List.Icon style={{margin:10}} icon="chevron-right" />
-const Wrench = props => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="wrench" />
+const LeftContent = () => <List.Icon style={{margin:10}} icon="chevron-right" />;
+const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="wrench" />;
 
 export default function ProductScreen({route, navigation}: Props) {
 
+  const projectId = useSelector((state: RootState) => state.project.id);
   const {productId} = route.params;
 
   const [visible, setVisible] = React.useState(false);
@@ -28,6 +33,8 @@ export default function ProductScreen({route, navigation}: Props) {
   const [templateToAdd, setTemplateToAdd] = useState<number>(-1);
   const [searchQuery, setSearchQuery] = React.useState('');
 
+  const [protocols, setProtocols] = useState<Protocol[]>([]);
+
   const showDialog = async () => {
     setVisible(true); 
     await fetchTemplates();
@@ -35,7 +42,7 @@ export default function ProductScreen({route, navigation}: Props) {
 
   const hideDialog = () => {
     setTemplateToAdd(-1);
-    setVisible(false)
+    setVisible(false);
   };
 
   useEffect(() => {
@@ -53,6 +60,13 @@ export default function ProductScreen({route, navigation}: Props) {
     }
     setProduct(getProductResposne.product);
     setChecklists(getChecklistsResposne.checklists);
+
+    await fetchProtocols();
+  }
+
+  async function fetchProtocols() {
+    const getProductProtocolsResponse = await protocolService.getProtocols(projectId, productId);
+    setProtocols(getProductProtocolsResponse.protocols);
   }
 
   async function fetchTemplates() {
@@ -87,12 +101,12 @@ export default function ProductScreen({route, navigation}: Props) {
             />
             <Card mode='outlined' style={{ height: 100, marginTop: 10 }}>
               <FlatList data={templates.filter(x=> x.name.toLowerCase().includes(searchQuery.toLowerCase()))} 
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={({item}) => 
-                      <View style={{margin:5, backgroundColor: item.id==templateToAdd ? '#e4ae3f' : 'white' }}>
-                        <Text onPress={()=> setTemplateToAdd(templateToAdd == item.id ? -1 : item.id)} variant="titleMedium">{item.name}</Text>
-                        <Divider bold={true}></Divider>
-                      </View>}></FlatList>     
+                keyExtractor={item => item.id.toString()}
+                renderItem={({item}) => 
+                  <View style={{margin:5, backgroundColor: item.id==templateToAdd ? '#e4ae3f' : 'white' }}>
+                    <Text onPress={()=> setTemplateToAdd(templateToAdd == item.id ? -1 : item.id)} variant="titleMedium">{item.name}</Text>
+                    <Divider bold={true}></Divider>
+                  </View>}></FlatList>     
             </Card>
           
           </Dialog.Content>
@@ -124,15 +138,15 @@ export default function ProductScreen({route, navigation}: Props) {
         <Card.Title title="Pridėti defektą" subtitle="" left={Wrench} />
       </Card>
       <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>
-        <Title>Inspekcijos</Title>
+        <Title>Protocols</Title>
         <Button onPress={showDialog} icon={'plus'} mode='contained'>Pridėti</Button>
       </View>
       <List.Section style={{marginTop: -10}}>
-        {checklists.map((checklist) => 
-          (<Card mode='outlined' onPress={() => navigation.navigate('Checklist', {productId: productId, checklistId: checklist.id})}
-            key={checklist.id} 
+        {protocols.map((protocol) => 
+          (<Card mode='outlined' onPress={() => navigation.navigate('Protocol', {productId: productId, protocolId: protocol.id})}
+            key={protocol.id} 
             style={{marginTop:10, padding: 5}}>
-            <Card.Title title={checklist.name} subtitle={checklist.standard} right={LeftContent} />
+            <Card.Title title={protocol.name} right={LeftContent} />
           </Card>))}
       </List.Section>
     </ScrollView>

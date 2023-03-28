@@ -3,7 +3,7 @@ import { GetProjectResponse } from '../contracts/projects/GetProjectResponse';
 import { CreateProjectRequest } from '../contracts/projects/CreateProjectRequest';
 import axiosApiInstance from './axios-instance';
 
-const route = 'projects'
+const route = 'projects';
 
 class ProjectService {
   async getProjects(): Promise<GetProjectsResponse> {

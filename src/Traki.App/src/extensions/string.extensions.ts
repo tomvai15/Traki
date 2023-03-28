@@ -4,9 +4,9 @@ interface String {
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
-    var placeholders = arguments;
-    var s = this;
-    for(var propertyName in placeholders[0]) {
+    const placeholders = arguments;
+    let s = this;
+    for(const propertyName in placeholders[0]) {
       s = s.replace(`{${propertyName}}`, placeholders[0][propertyName]);
     }    
     return s.toString();

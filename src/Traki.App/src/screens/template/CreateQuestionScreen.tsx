@@ -49,9 +49,9 @@ export default function CreateQuestionScreen({ route, navigation }: Props) {
         onChangeText={value => setExplanation(value)}
       />
       <Button disabled={canCreate()} 
-              style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
-              mode="contained" 
-              onPress={() => console.log('Question Created')}>
+        style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
+        mode="contained" 
+        onPress={() => console.log('Question Created')}>
         Sukurti klausimą
       </Button>
       <Text>{responseMessage}</Text>
