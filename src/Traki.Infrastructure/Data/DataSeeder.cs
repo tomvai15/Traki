@@ -8,8 +8,6 @@ namespace Traki.Infrastructure.Data
         {
             var dbContext = serviceProvider.GetRequiredService<TrakiDbContext>();
 
-            return;
-
             if (isDevelopment)
             {
                 // this can be done only locally (already deleted database in cloud once)
@@ -29,8 +27,24 @@ namespace Traki.Infrastructure.Data
             dbContext.AddProtocols();
             dbContext.AddSections();
             dbContext.AddUsers();
+            dbContext.AddDrawings();
+            dbContext.AddDefects();
         }
 
+        public static TrakiDbContext AddDrawings(this TrakiDbContext dbContext)
+        {
+            dbContext.Drawings.AddRange(ExampleData.Drawings);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+        public static TrakiDbContext AddDefects(this TrakiDbContext dbContext)
+        {
+            dbContext.Defects.AddRange(ExampleData.Defects);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
         public static TrakiDbContext AddProtocols(this TrakiDbContext dbContext)
         {
             dbContext.Protocols.AddRange(ExampleData.Protocols);
