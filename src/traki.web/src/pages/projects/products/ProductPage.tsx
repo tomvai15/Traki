@@ -16,6 +16,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import { type } from 'os';
 import pictureService from '../../../services/picture-service';
+import { Defect } from '../../../contracts/drawing/defect/Defect';
+import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 
 function createData(
   name: string,
@@ -78,10 +80,21 @@ const itemData = [
   },
 ];
 
+const initialDefects: Defect = {
+  id: 1,
+  title: 'Title 1',
+  description: 'Description',
+  status: DefectStatus.NotFixed,
+  xPosition: 10,
+  yPosition: 10,
+  width: 10,
+  height: 10
+};
+
 const initialDrawings: Drawing[] = [
-  { id: 1, title: 'Drawing 1', imageName: 'Preftek-full-logo.png'},
-  { id: 2, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg'},
-  { id: 3, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg'},
+  { id: 1, title: 'Drawing 1', imageName: 'Preftek-full-logo.png', defects: []},
+  { id: 2, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg', defects: [initialDefects]},
+  { id: 3, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg', defects: []},
 ];
 
 
@@ -219,6 +232,19 @@ export function ProductPage() {
     setDrawingImages(copiedImages);
   }
 
+  function mapDefectToArea(defects: Defect[]): IArea[] {
+    return defects.map(d => { 
+      const area: IArea = {
+        unit: '%',
+        x: d.xPosition, 
+        y: d.yPosition, 
+        width: d.width, 
+        height: d.height
+      };
+      return area;
+    });
+  } 
+
   return (
     <Grid container spacing={2}>
       <Grid container spacing={2} item xs={12} md={12} >
@@ -229,7 +255,7 @@ export function ProductPage() {
               <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
                 <Box sx={{flex: 2, padding: '5px', width: '100%', height: '100%'}}>
                   <AreaSelector
-                    areas={areas}
+                    areas={mapDefectToArea(selectedDrawing.defects)}
                     unit='percentage'
                     onChange={onChangeHandler}
                   >
