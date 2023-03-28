@@ -3,6 +3,8 @@ using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.Checklist;
 using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Contracts.Company;
+using Traki.Api.Contracts.Drawing;
+using Traki.Api.Contracts.Drawing.Defect;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Protocol;
@@ -10,6 +12,7 @@ using Traki.Api.Contracts.Section;
 using Traki.Api.Contracts.Section.Items;
 using Traki.Api.Contracts.Template;
 using Traki.Domain.Models;
+using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
 using Question = Traki.Domain.Models.Section.Items.Question;
@@ -20,6 +23,7 @@ namespace Traki.Api.Mapping
     {
         public DomainToContractMappingProfile()
         {
+            AddDrawingMappings();
             AddCompanyMappings();
             AddProductMappings();
             AddProjectMappings();
@@ -30,6 +34,13 @@ namespace Traki.Api.Mapping
             AddChecklistMappings();
             AddChecklistQuestionMappings();
             AddChecklistQuestionMappings();
+        }
+
+        public void AddDrawingMappings()
+        {
+            CreateMap<Drawing, DrawingDto>().ReverseMap();
+            CreateMap<Defect, DefectDto>().ReverseMap();
+            CreateMap<DefectComment, DefectCommentDto>().ReverseMap();
         }
 
         public void AddCompanyMappings()

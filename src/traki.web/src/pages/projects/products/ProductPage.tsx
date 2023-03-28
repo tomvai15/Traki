@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import productService from '../../../services/product-service';
 import { Product } from '../../../contracts/product/Product';
@@ -11,6 +11,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import protocolService from '../../../services/protocol-service';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { AreaSelector, IArea } from '@bmunozg/react-image-area';
+import InfoIcon from '@mui/icons-material/Info';
+import { Drawing } from '../../../contracts/drawing/Drawing';
+import { type } from 'os';
+import pictureService from '../../../services/picture-service';
+import { Defect } from '../../../contracts/drawing/defect/Defect';
+import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
+import drawingService from '../../../services/drawing-service';
 
 function createData(
   name: string,
@@ -22,12 +30,84 @@ function createData(
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+const itemData = [
+  {
+    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    title: 'Breakfast',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    title: 'Burger',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    title: 'Camera',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    title: 'Coffee',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    title: 'Hats',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+    title: 'Honey',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+    title: 'Basketball',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+    title: 'Fern',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+    title: 'Mushrooms',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    title: 'Tomato basil',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+    title: 'Sea star',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+    title: 'Bike',
+  },
+];
+
+const initialDefects: Defect = {
+  id: 1,
+  title: 'Title 1',
+  description: 'Description',
+  status: DefectStatus.NotFixed,
+  xPosition: 10,
+  yPosition: 10,
+  width: 10,
+  height: 10
+};
+
+const initialDrawings: Drawing[] = [
+  { id: 1, title: 'Drawing 1', imageName: 'Preftek-full-logo.png', defects: []},
+  { id: 2, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg', defects: [initialDefects]},
+  { id: 3, title: 'Drawing 2', imageName: 'a8q1bzQ_700b.jpg', defects: []},
+];
+
+
+type DrawingImage = {
+  id: number,
+  image: string
+};
+
+const drawingImageList: DrawingImage[] = [
+  { id: 1, image: 'Preftek-full-logo.png'},
+  { id: 2, image: 'a8q1bzQ_700b.jpg'},
+  { id: 3, image: 'a8q1bzQ_700b.jpg'},
 ];
 
 
@@ -91,10 +171,24 @@ export function ProductPage() {
   const navigate = useNavigate();
   const { projectId, productId } = useParams();
   const [product, setProduct] = useState<Product>(initialProduct);
+
+  const [drawings, setDrawings] = useState<Drawing[]>(initialDrawings);
+  const [drawingImages, setDrawingImages] = useState<DrawingImage[]>(drawingImageList);
+  const [selectedDrawing, setSelectedDrawing] = React.useState<Drawing>(initialDrawings[0]);
+
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+
+  const [selectedImage, setSelectedImage] = React.useState<string>('');
+
+  const [areas, setAreas] = useState<IArea[]>([]);
+
+  const onChangeHandler = (areas: IArea[]) => {
+    console.log(areas);
+    setAreas(areas);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -106,7 +200,48 @@ export function ProductPage() {
 
   useEffect(() => {
     fetchProduct();
+    fetchDrawings();
   }, []);
+
+  async function fetchProduct() {
+    const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
+    setProduct(getProductResponse.product);
+    const getProductProtocolsResponse = await productService.getProtocols(Number(projectId), Number(productId));
+    setProtocols(getProductProtocolsResponse.protocols);
+  }
+
+  async function fetchDrawings() {
+    const response = await drawingService.getDrawings(Number(productId));
+    await fetchPictures(response.drawings);
+
+    console.log(response.drawings);
+    setDrawings(response.drawings);
+    setSelectedDrawing(response.drawings[0]);
+  }
+
+  async function fetchPictures(drawings: Drawing[]) {
+    const copiedImages: DrawingImage[] = [];
+    drawings.forEach( async (item, index) => {
+      const imageBase64 = await pictureService.getPicture('company', item.imageName);
+      const newDrawingImage: DrawingImage = {id: item.id, image: imageBase64};
+      copiedImages.push(newDrawingImage);
+    });
+    console.log(copiedImages);
+    setDrawingImages(copiedImages);
+  }
+
+  function mapDefectToArea(defects: Defect[]): IArea[] {
+    return defects.map(d => { 
+      const area: IArea = {
+        unit: '%',
+        x: d.xPosition, 
+        y: d.yPosition, 
+        width: d.width, 
+        height: d.height
+      };
+      return area;
+    });
+  } 
 
   async function addProtocol(protocolId: number) {
     console.log('??');
@@ -120,22 +255,73 @@ export function ProductPage() {
     closeDialog();
   };
 
-  async function fetchProduct() {
-    const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
-    setProduct(getProductResponse.product);
-    const getProductProtocolsResponse = await productService.getProtocols(Number(projectId), Number(productId));
-    setProtocols(getProductProtocolsResponse.protocols);
-  }
-
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12} >
-        <Typography>{product.name}</Typography>
+      <Grid container spacing={2} item xs={12} md={12} >
+        <Grid item xs={8} >
+          <Card>
+            <CardContent>
+              <Typography variant='h5'>{product.name}</Typography>
+              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Box sx={{flex: 2, padding: '5px', width: '100%', height: '100%'}}>
+                  <AreaSelector
+                    areas={mapDefectToArea(selectedDrawing.defects)}
+                    unit='percentage'
+                    onChange={onChangeHandler}
+                  >
+                    <img style={{objectFit: 'contain'}} width={'100%'} src={drawingImages.find(x=> x.id == selectedDrawing.id)?.image ?? ''} alt={drawingImages.find(x=> x.id == selectedDrawing.id)?.image ?? ''}/>
+                  </AreaSelector>
+                </Box>
+                <Box sx={{flex: 1, padding: '5px'}}>
+                  <ImageList sx={{ width: 200, height: 400 }} cols={1}>
+                    {drawings.map((item, index) => (
+                      <ImageListItem key={index}>
+                        <img
+                          style={{objectFit: 'contain'}}
+                          width='200px'
+                          height='200px'
+                          src={drawingImages.find(x=> x.id == item.id)?.image}
+                          alt={item.title}
+                          loading="lazy"
+                        />
+                        <ImageListItemBar
+                          title={item.title}
+                          actionIcon={
+                            <IconButton 
+                              onClick={() => {setSelectedDrawing(item); console.log(item);}}
+                              sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                              aria-label={`info about ${item.title}`}
+                            >
+                              <InfoIcon />
+                            </IconButton>
+                          }
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4} >
+          <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-around', flexDirection: 'column'}}>
+            <CardContent>
+              <Typography variant='h5'>2 Defects</Typography>
+              <Divider></Divider>
+              <Typography variant='h6'>Bad weld</Typography>
+              <Typography variant='h6'>Incorrect screw</Typography>
+            </CardContent>
+            <CardActions>
+              <Button variant='contained' color='error'>New defect</Button>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent>
-            <Typography>Assigned protocols</Typography>
+            <Typography variant='h5'>Assigned protocols</Typography>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>

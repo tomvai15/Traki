@@ -1,10 +1,55 @@
-﻿using Traki.Infrastructure.Entities;
+﻿using Traki.Domain.Models.Drawing;
+using Traki.Infrastructure.Entities;
+using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section;
 
 namespace Traki.Infrastructure.Data
 {
     public static class ExampleData
     {
+        public static IEnumerable<DrawingEntity> Drawings => new[]
+        {
+            new DrawingEntity
+            {
+                Title= "Drawing 1",
+                ImageName = "a8q1bzQ_700b.jpg",
+                ProductId = 1
+            },
+            new DrawingEntity
+            {
+                Title= "Drawing 2",
+                ImageName = "aa4PdXoK_700w_0.jpg",
+                ProductId = 1
+            }
+        };
+
+        public static IEnumerable<DefectEntity> Defects => new[]
+        {
+            new DefectEntity
+            {
+                Title  = "Defect 1",
+                Description= "Defect 1",
+                Status= DefectStatus.NotFixed,
+                XPosition = 50,
+                YPosition = 50,
+                Width = 10,
+                Height = 20,
+                DrawingId = 1
+            },
+            new DefectEntity
+            {
+                Title  = "Defect 2",
+                Description= "Defect 2",
+                Status= DefectStatus.NotFixed,
+                XPosition = 10,
+                YPosition = 10,
+                Width = 20,
+                Height = 10,
+                DrawingId = 2
+            }
+        };
+
+
         public static IEnumerable<ProtocolEntity> Protocols => new[]
         {
             new ProtocolEntity
@@ -20,7 +65,7 @@ namespace Traki.Infrastructure.Data
         };
 
         public static IEnumerable<SectionEntity> Sections => new[]
-{
+        {
             new SectionEntity
             {
                 Name = "test",

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities;
+using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Entities.Section.Items;
 
@@ -75,7 +77,20 @@ namespace Traki.Infrastructure.Data
             modelBuilder.Entity<CompanyEntity>()
                 .HasMany(p => p.Projects)
                 .WithOne(p => p.Company);
+
+            modelBuilder.Entity<DrawingEntity>()
+                .HasMany(p => p.Defects)
+                .WithOne(p => p.Drawing);
+
+            modelBuilder.Entity<DefectEntity>()
+                .HasMany(p => p.DefectComments)
+                .WithOne(p => p.Defect);
         }
+
+
+        public virtual DbSet<DrawingEntity> Drawings { get; set; }
+        public virtual DbSet<DefectEntity> Defects { get; set; }
+        public virtual DbSet<DefectComment> DefectComments { get; set; }
 
         public virtual DbSet<ProtocolEntity> Protocols { get; set; }
 
