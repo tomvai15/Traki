@@ -32,10 +32,19 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult<string>> GenerateReport(int protocolId)
         {
             var protocolReport = await _reportsHandler.GetProtocolReportInformation(protocolId);
-            var report = await _reportsHandler.GenerateHtmlReport(protocolReport);
+
+            byte[] report;
+            if (protocolReport.Protocol.IsSigned)
+            {
+                report = await _reportsHandler.GetProtocolReport(protocolId);
+            }
+            else
+            {
+                report = await _reportsHandler.GenerateHtmlReport(protocolReport);
+            }
 
             // TODO: this can be done on client
-            var reportBase64 =  Convert.ToBase64String(report);
+            var reportBase64 = Convert.ToBase64String(report);
             return reportBase64;
         }
 
@@ -58,18 +67,14 @@ namespace Traki.Api.Controllers
             }
 
             var userInfo = await _docuSignService.GetUserInformation(accessToken);
-            string envelopeId = protocol.EnvelopeId;
-            string documentId = "3";
-            string basePath = userInfo.Accounts.First().BaseUri + "/restapi";
-            // refactor....
-            var result = await _docuSignService.GetDocument(accessToken, basePath, userInfo.Accounts.First().AccountId, envelopeId, documentId);
-        
-            return File(result, "application/pdf");
+            await _reportsHandler.ValidateSign(protocol, userInfo, accessToken);
+
+            return Ok();
         }
 
         [HttpPost("sign")]
         [Authorize]
-        public async Task<ActionResult<string>> SignDocument([FromBody]SignDocumentRequest signDocumentRequest)
+        public async Task<ActionResult<string>> SignDocument([FromBody] SignDocumentRequest signDocumentRequest)
         {
             var reportFile = await _reportsHandler.GetProtocolReport(signDocumentRequest.ProtocolId);
             string report = Convert.ToBase64String(reportFile);

@@ -35,6 +35,7 @@ namespace Traki.Infrastructure.Repositories
             protocolEntity.Name = protocol.Name;
             protocolEntity.ReportName = protocol.ReportName;
             protocolEntity.EnvelopeId = protocol.EnvelopeId;
+            protocolEntity.IsSigned = protocol.IsSigned;
             await _context.SaveChangesAsync();
         }
 

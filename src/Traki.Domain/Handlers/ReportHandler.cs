@@ -1,4 +1,5 @@
-﻿using PdfSharp.Drawing;
+﻿using Azure.Core;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PuppeteerSharp;
 using RazorLight;
@@ -8,6 +9,8 @@ using Traki.Domain.Models;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;
+using Traki.Domain.Services.Docusign;
+using Traki.Domain.Services.Docusign.models;
 
 namespace Traki.Domain.Handlers
 {
@@ -18,6 +21,7 @@ namespace Traki.Domain.Handlers
         Task<byte[]> GenerateHtmlReport(ProtocolReport protocolReport);
         string GenerateReport();
         Task SignReport(int protocolId, string envelopeId);
+        Task ValidateSign(Protocol protocol, DocuSignUserInfo userInfo, string accessToken);
     }
 
     public class ReportHandler : IReportHandler
@@ -28,13 +32,15 @@ namespace Traki.Domain.Handlers
         private readonly IProtocolRepository _protocolRepository;
         private readonly ISectionHandler _sectionHandler;
         private readonly IStorageService _storageService;
+        private readonly IDocuSignService _docuSignService;
 
         public ReportHandler(ICompaniesRepository companiesRepository,
             IProjectsRepository projectsRepository,
             IProductsRepository productsRepository,
             IProtocolRepository protocolRepository,
             ISectionHandler sectionHandler,
-            IStorageService storageService)
+            IStorageService storageService,
+            IDocuSignService docuSignService)
         {
             _companiesRepository = companiesRepository;
             _projectsRepository = projectsRepository;
@@ -42,6 +48,7 @@ namespace Traki.Domain.Handlers
             _protocolRepository = protocolRepository;
             _sectionHandler = sectionHandler;
             _storageService = storageService;
+            _docuSignService = docuSignService;
         }
 
         public async Task<ProtocolReport> GetProtocolReportInformation(int protocolId)
@@ -166,6 +173,20 @@ namespace Traki.Domain.Handlers
         {
             var protocol = await _protocolRepository.GetProtocol(protocolId);
             protocol.EnvelopeId = envelopeId;
+            await _protocolRepository.UpdateProtocol(protocol);
+        }
+
+        public async Task ValidateSign(Protocol protocol, DocuSignUserInfo userInfo, string accessToken)
+        {
+            string envelopeId = protocol.EnvelopeId;
+            string documentId = "3";
+            string basePath = userInfo.Accounts.First().BaseUri + "/restapi";
+            var result = await _docuSignService.GetDocument(accessToken, basePath, userInfo.Accounts.First().AccountId, envelopeId, documentId);
+
+            // TODO: do in parallel
+            await _storageService.AddFile("company", protocol.ReportName, "application/pdf", result);
+
+            protocol.IsSigned = true; ;
             await _protocolRepository.UpdateProtocol(protocol);
         }
     }

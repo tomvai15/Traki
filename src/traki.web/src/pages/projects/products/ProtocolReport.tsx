@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import reportService from '../../../services/report-service';
-import { Button, Card, CircularProgress, Typography } from '@mui/material';
+import { Button, Card, CardActions, CircularProgress, Typography } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../../state/user-state';
@@ -11,17 +11,19 @@ import { useLocation, useParams } from 'react-router-dom';
 import { AuthorisationCodeRequest } from '../../../contracts/auth/AuthorisationCodeRequest';
 import { SignDocumentRequest } from '../../../contracts/report/SignDocumentRequest';
 
-function DashboardContent() {
+export function ProtocolReport() {
   const { projectId, productId, protocolId } = useParams();
   const location = useLocation();
 
-  const [pdf, setPdf] = useState<string>('');
+  const [pdfBase64, setPdf] = useState<string>('');
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
 
   useEffect(() => {
     console.log('??' + location.pathname);
-    reportService.getReport(Number(protocolId)).then((value) => {setPdf(value);});
+    reportService.getReport(Number(protocolId)).then((value) => {
+      setPdf(value);
+    });
   }, []);
 
   async function signDocument() {
@@ -48,24 +50,24 @@ function DashboardContent() {
     <Box>
       <Box sx={{flex: 1,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
         <Box sx={{padding: 3, flex: 2, display: 'flex', flexDirection: 'column', backgroundColor: (theme) => theme.palette.grey[100]}}>
-          <Box sx={{flex: 3, padding: 3, display: 'flex',  backgroundColor: (theme) => theme.palette.grey[100]}}>
-            <Card sx={{flex: 1}}>
-              <Typography>Test</Typography>
-            </Card>
-            <Card sx={{flex: 1, padding: 5}}>{userInfo.loggedInDocuSign ?
-              <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
-                Sign document with DocuSign
-              </Button> :
-              <Button onClick={getCodeUrl} variant="contained" endIcon={<CreateIcon />}>
-                Log in to DocuSign
-              </Button>}
+          <Box sx={{flex: 3, padding: 3, display: 'flex',  flexDirection: 'column',  backgroundColor: (theme) => theme.palette.grey[100]}}>
+            <Card>
+              <CardActions>
+                {userInfo.loggedInDocuSign ?
+                  <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
+                  Sign document with DocuSign
+                  </Button> :
+                  <Button onClick={getCodeUrl} variant="contained" endIcon={<CreateIcon />}>
+                  Log in to DocuSign
+                  </Button>}
+              </CardActions>
             </Card>
           </Box>
         </Box>
         <Box sx={{flex: 1, justifyContent: 'center', display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
           <Box sx={{borderColor: 'grey', padding: '5px'}}>
             <Card sx={{backgroundColor: 'grey'}}>
-              <Document  file={`data:application/pdf;base64,${pdf}`} >
+              <Document  file={`data:application/pdf;base64,${pdfBase64}`} >
                 <Page height={900}  renderTextLayer={false}  pageNumber={1}  renderAnnotationLayer={false}></Page>
               </Document>
             </Card>
@@ -74,31 +76,4 @@ function DashboardContent() {
       </Box>
     </Box>
   );
-
-  /*
-  return (
-    <Box
-      component="main"
-      sx={{
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'light'
-            ? theme.palette.grey[100]
-            : theme.palette.grey[900],
-        flexGrow: 1,
-        height: '100vh',
-      }}
-    >
-      <Toolbar />
-      <Container maxWidth="lg" sx={{ mt: 4}}>
-        <Document  file={`data:application/pdf;base64,${pdf}`} >
-          <Page height={600} pageNumber={1}></Page>
-        </Document>
-        <Button onClick={signDocument} variant='contained'>Sign</Button>
-      </Container>
-    </Box>
-  );*/
-}
-
-export default function Dashboard() {
-  return <DashboardContent />;
 }
