@@ -18,6 +18,7 @@ import { type } from 'os';
 import pictureService from '../../../services/picture-service';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
+import drawingService from '../../../services/drawing-service';
 
 function createData(
   name: string,
@@ -199,20 +200,8 @@ export function ProductPage() {
 
   useEffect(() => {
     fetchProduct();
-    fetchPictures();
+    fetchDrawings();
   }, []);
-
-  async function addProtocol(protocolId: number) {
-    console.log('??');
-    await productService.addProtocol(Number(projectId), Number(productId), protocolId);
-    await fetchProduct();
-  }
-
-  const handleClose = (protocolId: number) => {
-    console.log('protocolId');
-    addProtocol(protocolId);
-    closeDialog();
-  };
 
   async function fetchProduct() {
     const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
@@ -221,14 +210,23 @@ export function ProductPage() {
     setProtocols(getProductProtocolsResponse.protocols);
   }
 
-  async function fetchPictures() {
+  async function fetchDrawings() {
+    const response = await drawingService.getDrawings(Number(productId));
+    await fetchPictures(response.drawings);
+
+    console.log(response.drawings);
+    setDrawings(response.drawings);
+    setSelectedDrawing(response.drawings[0]);
+  }
+
+  async function fetchPictures(drawings: Drawing[]) {
     const copiedImages: DrawingImage[] = [];
-    initialDrawings.forEach( async (item, index) => {
+    drawings.forEach( async (item, index) => {
       const imageBase64 = await pictureService.getPicture('company', item.imageName);
       const newDrawingImage: DrawingImage = {id: item.id, image: imageBase64};
       copiedImages.push(newDrawingImage);
     });
-
+    console.log(copiedImages);
     setDrawingImages(copiedImages);
   }
 
@@ -244,6 +242,18 @@ export function ProductPage() {
       return area;
     });
   } 
+
+  async function addProtocol(protocolId: number) {
+    console.log('??');
+    await productService.addProtocol(Number(projectId), Number(productId), protocolId);
+    await fetchProduct();
+  }
+
+  const handleClose = (protocolId: number) => {
+    console.log('protocolId');
+    addProtocol(protocolId);
+    closeDialog();
+  };
 
   return (
     <Grid container spacing={2}>
