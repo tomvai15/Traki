@@ -4,6 +4,7 @@
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string? ItemImage { get; set; }
         public int Priority { get; set; }
         public Question? Question { get; set; }
         public MultipleChoice? MultipleChoice { get; set; }

@@ -12,13 +12,13 @@ namespace Traki.Infrastructure.Data
             new DrawingEntity
             {
                 Title= "Drawing 1",
-                ImageName = "a8q1bzQ_700b.jpg",
+                ImageName = "back.png",
                 ProductId = 1
             },
             new DrawingEntity
             {
                 Title= "Drawing 2",
-                ImageName = "aa4PdXoK_700w_0.jpg",
+                ImageName = "front.png",
                 ProductId = 1
             }
         };

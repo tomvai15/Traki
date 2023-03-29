@@ -33,9 +33,9 @@ export default function CreateTemplateScreen({ navigation }: Props) {
         onChangeText={value => setExplanation(value)}
       />
       <Button disabled={canCreate()} 
-              style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
-              mode="contained" 
-              onPress={() => console.log('Template Created')}>
+        style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
+        mode="contained" 
+        onPress={() => console.log('Template Created')}>
         Sukurti šabloną
       </Button>
       <Text>{responseMessage}</Text>

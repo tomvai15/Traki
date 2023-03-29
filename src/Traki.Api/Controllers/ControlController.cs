@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocuSign.eSign.Model;
+using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Infrastructure.Data;
 
@@ -40,6 +41,20 @@ namespace Traki.Api.Controllers
             IFormFile file = formCollection.Files.First();
 
             await _storageService.AddFile(folderName, fileName, file.ContentType, file.OpenReadStream());
+
+            return Ok();
+        }
+
+
+        [HttpPost("folders/{folderName}/files")]
+        public async Task<ActionResult> UploadFile(string folderName)
+        {
+            var formCollection = await Request.ReadFormAsync();
+
+            foreach(var file in formCollection.Files)
+            {
+                await _storageService.AddFile(folderName, file.FileName, file.ContentType, file.OpenReadStream());
+            }
 
             return Ok();
         }

@@ -1,15 +1,15 @@
 export type ProductStackParamList = {
   Products: undefined;
   Product: ProductScreenParams;
-  Checklist: ChecklistScreenParams;
+  Protocol: ProtocolScreenParams;
 };
 
 export type ProductScreenParams = {
   productId: number
 }
 
-export type ChecklistScreenParams = {
+export type ProtocolScreenParams = {
   productId: number,
-  checklistId: number
+  protocolId: number
 }
 

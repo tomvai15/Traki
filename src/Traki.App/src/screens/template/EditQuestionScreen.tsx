@@ -56,9 +56,9 @@ export default function EditQuestionScreen({ route, navigation }: Props) {
         onChangeText={value => setDescription(value)}
       />
       <Button disabled={canUpdate()} 
-              style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
-              mode="contained" 
-              onPress={() => updateQuestion()}>
+        style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
+        mode="contained" 
+        onPress={() => updateQuestion()}>
         Atnaujinti informaciją
       </Button>
       <Text>{responseMessage}</Text>

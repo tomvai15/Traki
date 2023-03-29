@@ -1,4 +1,4 @@
-import { url } from "./endpoints";
+import { url } from './endpoints';
 import axios from 'axios';
 
 const axiosApiInstance = axios.create({
@@ -14,7 +14,7 @@ axiosApiInstance.interceptors.request.use(function (config) {
 
 axiosApiInstance.interceptors.response.use((res) => { 
   console.log('[\u001b[1;32m' + res.request.responseURL + ' \u001b[1;36mresponded ' + res.request.status + '\u001B[37m]'); 
-  return res 
+  return res; 
 }, function (error) {
   return Promise.reject(error);
 });
