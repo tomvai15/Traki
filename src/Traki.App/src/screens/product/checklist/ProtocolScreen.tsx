@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, View, Image} from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View, Image, TouchableHighlight} from 'react-native';
 import { Button, Card, Paragraph, Text, Title, TextInput, Divider, Avatar, SegmentedButtons, ActivityIndicator, Checkbox, List, IconButton } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProductStackParamList } from '../ProductStackParamList';
@@ -18,6 +18,7 @@ import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
 import { UpdateSectionAnswersRequest } from '../../../contracts/protocol/section/UpdateSectionAnswersRequest';
 import * as ImagePicker from 'expo-image-picker';
 import pictureService from '../../../services/picture-service';
+import ImageView from "react-native-image-viewing";
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Protocol'>;
 
@@ -63,8 +64,23 @@ export default function ProtocolScreen({ route, navigation }: Props) {
     return JSON.stringify(initialChecklist)==JSON.stringify(checklistQuestions);
   }
 
+  const [visible, setIsVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+
+  function openSelectedImgae(image: string) {
+    setSelectedImage(image);
+    setIsVisible(true);
+  }
+
   return (
     <View  style={[styles.container,{flexDirection: 'column'}]}>
+      { selectedImage &&
+        <ImageView
+          images={[{uri: selectedImage}]}
+          imageIndex={0}
+          visible={visible}
+          onRequestClose={() => setIsVisible(false)}
+        />}
       <View>
         <Title>{protocol.name}</Title>
       </View>
@@ -76,7 +92,7 @@ export default function ProtocolScreen({ route, navigation }: Props) {
         <FlatList data={sections} 
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
-          <ProtocolSection protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
+          <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
         }>
         </FlatList>
       </View>}
@@ -86,7 +102,8 @@ export default function ProtocolScreen({ route, navigation }: Props) {
 
 type ProtocolSectionProps = {
   protocolId: number,
-  sectionId: number
+  sectionId: number,
+  setSelectedImage: (image: string) => void
 }
 
 type ItemImage = {
@@ -97,7 +114,7 @@ type ItemImage = {
   imageBase64: string
 }
 
-function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
+function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSectionProps) {
 
   const [section, setSection] = useState<Section>(initialSection);
   const [initialSectionJson, setInitialSectionJson] = useState<string>('');
@@ -202,6 +219,10 @@ function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
     });
 
     await pictureService.uploadPicturesFormData('item', formData);
+
+    if (section.checklist?.items) {
+      fetchItemImages(section.checklist?.items);
+    }
   }
 
   function updateItemImage(itemImage: ItemImage) {
@@ -225,7 +246,7 @@ function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
       <FlatList data={section.checklist?.items} 
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
-          <ProtocolSectionItem item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
+          <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
         }>
         </FlatList>
     </View>
@@ -236,10 +257,11 @@ type ProtocolSectionItemProps = {
   item: Item,
   itemImage: ItemImage| undefined
   updateItem: (item: Item) => void
-  updateItemImage: (itemImage: ItemImage) => void
+  updateItemImage: (itemImage: ItemImage) => void,
+  setSelectedImage: (image: string) => void
 };
 
-function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage }: ProtocolSectionItemProps) {
+function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage, setSelectedImage }: ProtocolSectionItemProps) {
 
   const [image, setImage] = useState<string>('');
 
@@ -295,15 +317,15 @@ function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage }: P
   function checkType() {
     if (item.question) {
       return (
-        <ProtocolSectionItemQuestion item={item} updateItem={updateItem} itemImage={itemImage} updateItemImage={updateItemImage}/>
+        <ProtocolSectionItemQuestion item={item} updateItem={updateItem}/>
       );
     } else if (item.textInput) {
       return (
-        <ProtocolSectionItemTextInput item={item} updateItem={updateItem} itemImage={itemImage} updateItemImage={updateItemImage}/>
+        <ProtocolSectionItemTextInput item={item} updateItem={updateItem} />
       );
     } else {
       return (
-        <ProtocolSectionItemMultipleChoice item={item} updateItem={updateItem} itemImage={itemImage} updateItemImage={updateItemImage}/>
+        <ProtocolSectionItemMultipleChoice item={item} updateItem={updateItem}/>
       );
     }
   }
@@ -311,9 +333,17 @@ function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage }: P
   function displayPhoto() {
     if (itemImage !== undefined) {
       if (itemImage.isLocal) {
-        return <Image source={{ uri: itemImage.localImageUri }} style={{ width: 100, height: 100 }} />
+        return (
+          <TouchableHighlight onPress={() => setSelectedImage(itemImage.localImageUri)}>
+            <Image source={{ uri: itemImage.localImageUri }} style={{ width: 100, height: 100 }} />
+          </TouchableHighlight>
+        );
       } else if (itemImage.imageBase64 != '') {
-        return <Image source={{ uri: itemImage.imageBase64 }} style={{ width: 100, height: 100 }} />
+        return (
+          <TouchableHighlight onPress={() => setSelectedImage(itemImage.imageBase64)}>
+            <Image source={{ uri: itemImage.imageBase64 }} style={{ width: 100, height: 100 }} />
+          </TouchableHighlight>
+        );
       }
       return <Text>No image</Text>
     }
@@ -324,13 +354,13 @@ function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage }: P
 
   return (
     <Card
-        mode='outlined'
-        key={item.id} 
-        style={{ borderWidth:0, marginHorizontal:5, marginVertical:10 }}>
-        <Card.Content>
-          <Title>{item.name}</Title>
-          <Divider style={{ height: 2 }} />
-          {checkType()}
+      mode='outlined'
+      key={item.id} 
+      style={{ borderWidth:0, marginHorizontal:5, marginVertical:10 }}>
+      <Card.Content>
+        <Title>{item.name}</Title>
+        <Divider style={{ height: 2 }} />
+        {checkType()}
       </Card.Content>
       <View style={{display: 'flex', padding: 10, justifyContent: 'space-around', flexDirection: 'row'}}>
         <View>      
@@ -346,7 +376,12 @@ function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage }: P
   );
 }
 
-function ProtocolSectionItemTextInput({ item, updateItem }: ProtocolSectionItemProps) {
+type ProtocolSectionItemCompProps = {
+  item: Item,
+  updateItem: (item: Item) => void
+};
+
+function ProtocolSectionItemTextInput({ item, updateItem }: ProtocolSectionItemCompProps) {
   function updateTextInput(newValue: string) {
     if (!item.textInput) {
       return;
@@ -363,7 +398,7 @@ function ProtocolSectionItemTextInput({ item, updateItem }: ProtocolSectionItemP
   );
 }
 
-function ProtocolSectionItemQuestion({ item, updateItem }: ProtocolSectionItemProps) {
+function ProtocolSectionItemQuestion({ item, updateItem }: ProtocolSectionItemCompProps) {
 
   function updateQuestionComment(newValue: string) {
     if (!item.question) {
@@ -403,7 +438,7 @@ function ProtocolSectionItemQuestion({ item, updateItem }: ProtocolSectionItemPr
   );
 }
 
-function ProtocolSectionItemMultipleChoice({ item, updateItem }: ProtocolSectionItemProps) {
+function ProtocolSectionItemMultipleChoice({ item, updateItem }: ProtocolSectionItemCompProps) {
 
   function updateMultipleChoice(option: string) {
     if (!item.multipleChoice) {
