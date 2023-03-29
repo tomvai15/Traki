@@ -46,6 +46,16 @@ export function ProtocolReport() {
     window.location.replace(res);
   }
 
+
+
+  const [numberOfPages, setNumberOfPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  /*
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumberOfPages(numPages);
+  }*/
+
   return (
     <Box>
       <Box sx={{flex: 1,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
@@ -66,9 +76,15 @@ export function ProtocolReport() {
         </Box>
         <Box sx={{flex: 1, justifyContent: 'center', display: 'flex', backgroundColor: (theme) => theme.palette.grey[100]}}>
           <Box sx={{borderColor: 'grey', padding: '5px'}}>
+            <Button variant='contained' disabled={currentPage==1} onClick={() => setCurrentPage(currentPage-1)}>
+              Previous page
+            </Button>
+            <Button variant='contained' disabled={currentPage==numberOfPages} onClick={() => setCurrentPage(currentPage+1)}>
+              Next page
+            </Button>
             <Card sx={{backgroundColor: 'grey'}}>
-              <Document  file={`data:application/pdf;base64,${pdfBase64}`} >
-                <Page height={900}  renderTextLayer={false}  pageNumber={1}  renderAnnotationLayer={false}></Page>
+              <Document file={`data:application/pdf;base64,${pdfBase64}`} onLoadSuccess={(i)=> setNumberOfPages(i.numPages)} >
+                <Page height={800}  renderTextLayer={false}  pageNumber={currentPage}  renderAnnotationLayer={false}></Page>
               </Document>
             </Card>
           </Box>
