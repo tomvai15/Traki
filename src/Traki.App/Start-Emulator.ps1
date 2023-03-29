@@ -1,1 +1,1 @@
-emulator -avd Pixel_6_Pro_API_30
+emulator -avd Pixel_6_Pro_API_30 -no-snapshot-load

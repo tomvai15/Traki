@@ -89,10 +89,20 @@ type ProtocolSectionProps = {
   sectionId: number
 }
 
+type ItemImage = {
+  id: string,
+  isLocal: boolean,
+  localImageUri: string,
+  imageName: string,
+  imageBase64: string
+}
+
 function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
 
   const [section, setSection] = useState<Section>(initialSection);
   const [initialSectionJson, setInitialSectionJson] = useState<string>('');
+  const [itemImages, setItemImages] = useState<ItemImage[]>([]);
+  const [initialItemImagesJson, setInitialItemImagesJson] = useState<string>('');
 
   useEffect(() => {
     fetchSection();
@@ -118,6 +128,39 @@ function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
     const copiedSection: Section = {...sectionToSort, checklist: copiedChecklist};
     setSection(copiedSection);
     setInitialSectionJson(JSON.stringify(copiedSection));
+
+    if (copiedSection.checklist?.items){
+      fetchItemImages(copiedSection.checklist?.items);
+    }
+  }
+
+  async function fetchItemImages(items: Item[]) {
+
+    console.log('start');
+    const fetchedItemImagesPromises: Promise<ItemImage>[] = items.map( async (item) => {
+      if (item.itemImage == null) {
+        return {
+          id: item.id,
+          isLocal: false,
+          localImageUri: '',
+          imageName: '',
+          imageBase64: ''
+        } as ItemImage
+      }
+      const imageBase64 = await pictureService.getPicture('item', item.itemImage);
+      return {
+        id: item.id,
+        isLocal: false,
+        localImageUri: '',
+        imageName: item.itemImage,
+        imageBase64: imageBase64
+      } as ItemImage;
+    })
+
+    const fetchedItemImages = await Promise.all(fetchedItemImagesPromises);
+
+    setInitialItemImagesJson(JSON.stringify(fetchedItemImages));
+    setItemImages(fetchedItemImages);
   }
 
   function updateItem(updatedItem: Item) {
@@ -140,10 +183,34 @@ function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
     };
     await sectionService.updateSectionAnswers(protocolId, sectionId, request);
     setInitialSectionJson(JSON.stringify(section));
+
+    await updateItemImages()
+  }
+
+  async function updateItemImages() {
+    let formData = new FormData();
+
+    console.log(itemImages);
+    itemImages.forEach((item) => {
+      if (item.isLocal) {
+        console.log('??');
+        let filename = item.localImageUri.split('/').pop() ?? '';
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+        formData.append('photo', JSON.parse(JSON.stringify({ uri: item.localImageUri, name: item.imageName, type })));
+      }
+    });
+
+    await pictureService.uploadPicturesFormData('item', formData);
+  }
+
+  function updateItemImage(itemImage: ItemImage) {
+    const copiedImages: ItemImage[] = [...itemImages.filter(x=> x.id!=itemImage.id)];
+    setItemImages([...copiedImages, itemImage]);
   }
 
   function canUpdate(): boolean {
-    return initialSectionJson != JSON.stringify(section);
+    return initialSectionJson != JSON.stringify(section) || initialItemImagesJson != JSON.stringify(itemImages) ;
   }
 
   return (
@@ -158,7 +225,7 @@ function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
       <FlatList data={section.checklist?.items} 
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
-          <ProtocolSectionItem item={item} updateItem={updateItem}></ProtocolSectionItem>  
+          <ProtocolSectionItem item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
         }>
         </FlatList>
     </View>
@@ -167,10 +234,12 @@ function ProtocolSection({ protocolId, sectionId }: ProtocolSectionProps) {
 
 type ProtocolSectionItemProps = {
   item: Item,
+  itemImage: ItemImage| undefined
   updateItem: (item: Item) => void
+  updateItemImage: (itemImage: ItemImage) => void
 };
 
-function ProtocolSectionItem({ item, updateItem }: ProtocolSectionItemProps) {
+function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage }: ProtocolSectionItemProps) {
 
   const [image, setImage] = useState<string>('');
 
@@ -199,35 +268,60 @@ function ProtocolSectionItem({ item, updateItem }: ProtocolSectionItemProps) {
 
     const localUri = result.assets[0].uri;
 
-    let filename = localUri.split('/').pop() ?? '';
+    const itemImageName = itemImage && itemImage.imageName != '' ? itemImage.imageName : `${item.id}.jpeg`;
 
+    const updatedItemImage: ItemImage = {
+      id: item.id,
+      isLocal: true,
+      localImageUri: localUri,
+      imageName: itemImageName,
+      imageBase64: itemImage ? itemImage.imageBase64 : ''
+    }
+    updateItemImage(updatedItemImage);
+
+    updateItem({...item, itemImage: itemImageName});
+  };
+
+  async function uploadImage(imageUri: string) {
+    let filename = imageUri.split('/').pop() ?? '';
     let match = /\.(\w+)$/.exec(filename);
     let type = match ? `image/${match[1]}` : `image`;
 
-    setImage(result.assets[0].uri);
     let formData = new FormData();
-
-    formData.append('photo', JSON.parse(JSON.stringify({ uri: localUri, name: filename!, type })));
-    
-   await pictureService.uploadPictureFormData('item', 'filename.jpeg', formData)
-  };
+    formData.append('photo', JSON.parse(JSON.stringify({ uri: imageUri, name: filename!, type })));
+    await pictureService.uploadPictureFormData('item', 'filename.jpeg', formData)
+  }
 
   function checkType() {
     if (item.question) {
       return (
-        <ProtocolSectionItemQuestion item={item} updateItem={updateItem}/>
+        <ProtocolSectionItemQuestion item={item} updateItem={updateItem} itemImage={itemImage} updateItemImage={updateItemImage}/>
       );
     } else if (item.textInput) {
       return (
-        <ProtocolSectionItemTextInput item={item} updateItem={updateItem}/>
+        <ProtocolSectionItemTextInput item={item} updateItem={updateItem} itemImage={itemImage} updateItemImage={updateItemImage}/>
       );
     } else {
       return (
-        <ProtocolSectionItemMultipleChoice item={item} updateItem={updateItem}/>
+        <ProtocolSectionItemMultipleChoice item={item} updateItem={updateItem} itemImage={itemImage} updateItemImage={updateItemImage}/>
       );
     }
   }
   
+  function displayPhoto() {
+    if (itemImage !== undefined) {
+      if (itemImage.isLocal) {
+        return <Image source={{ uri: itemImage.localImageUri }} style={{ width: 100, height: 100 }} />
+      } else if (itemImage.imageBase64 != '') {
+        return <Image source={{ uri: itemImage.imageBase64 }} style={{ width: 100, height: 100 }} />
+      }
+      return <Text>No image</Text>
+    }
+    else {
+      return <Text>No image</Text>
+    }
+  }
+
   return (
     <Card
         mode='outlined'
@@ -240,7 +334,7 @@ function ProtocolSectionItem({ item, updateItem }: ProtocolSectionItemProps) {
       </Card.Content>
       <View style={{display: 'flex', padding: 10, justifyContent: 'space-around', flexDirection: 'row'}}>
         <View>      
-          {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+          {displayPhoto()}
         </View>
         <View style={{flex: 2}}>  
         </View>
@@ -328,12 +422,11 @@ function ProtocolSectionItemMultipleChoice({ item, updateItem }: ProtocolSection
   return (
     <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
       {item.multipleChoice?.options.map((item, index) => 
-      <View>
+      <View key={index} >
         <Text>{item.name}</Text>
         <Checkbox 
           status={item.selected ? 'checked' : 'unchecked'} 
-          onPress={() => updateMultipleChoice(item.name)} 
-          key={index}/>
+          onPress={() => updateMultipleChoice(item.name)}/>
       </View>
       )}
     </View>

@@ -81,6 +81,7 @@ namespace Traki.Infrastructure.Repositories
             {
                 return;
             }
+            itemToUpdate.ItemImage = item.ItemImage;
 
             if (itemToUpdate.Question != null && item.Question != null)
             {

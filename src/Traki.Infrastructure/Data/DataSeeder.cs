@@ -14,7 +14,6 @@ namespace Traki.Infrastructure.Data
                 dbContext.Database.EnsureDeleted();
             }
 
-
             bool wasCreated = dbContext.Database.EnsureCreated();
 
             dbContext.AddCompanies();
