@@ -91,9 +91,8 @@ export default function ProductScreen({route, navigation}: Props) {
     <ScrollView>
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Alert</Dialog.Title>
+          <Dialog.Title>Import protocol</Dialog.Title>
           <Dialog.Content>
-            <Text variant="bodyLarge">This is simple dialog</Text>
             <Searchbar
               placeholder="Search"
               onChangeText={setSearchQuery}
@@ -111,12 +110,14 @@ export default function ProductScreen({route, navigation}: Props) {
           
           </Dialog.Content>
           <Dialog.Actions style={{justifyContent: 'space-evenly'}}>
-            <Button style={{ width:80 }} mode='outlined' onPress={hideDialog}>Uždaryti</Button>
+            <Button style={{ width:80 }} mode='outlined' onPress={hideDialog}>
+              Close
+            </Button>
             <Button disabled={templateToAdd==-1} 
               style={{ width:80 }} 
               mode='contained' 
               onPress={createChecklist}>
-                Pridėti
+                Import
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -125,17 +126,15 @@ export default function ProductScreen({route, navigation}: Props) {
       <Card mode='outlined'>
         <Card.Content >
           <Text variant="titleLarge">{product?.name}</Text>
-          <Text variant="bodyMedium">Busena: gaminamas</Text>
         </Card.Content>
         <Card.Cover style={{height:300}} source={{ uri: image }} />
         <Card.Actions>
           <Button>Redaguoti</Button>
-          <Button>Keisti Būseną</Button>
         </Card.Actions>
       </Card>
 
       <Card mode='outlined' style={{marginTop:10}}>
-        <Card.Title title="Pridėti defektą" subtitle="" left={Wrench} />
+        <Card.Title title="Add defect" subtitle="" left={Wrench} />
       </Card>
       <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>
         <Title>Protocols</Title>

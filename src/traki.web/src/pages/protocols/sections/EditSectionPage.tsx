@@ -256,6 +256,7 @@ function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
             id="standard-disabled"
             label="Question"
             variant="standard"
+            multiline={true}
             value={item.name}
             onChange={(e) => updateName(item, e.target.value)}
           />

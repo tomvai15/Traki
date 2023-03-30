@@ -5,7 +5,7 @@ interface ProjectInfo {
 }
 
 const initialState: ProjectInfo = {
-  id: 1
+  id: -1
 };
 
 const projectSlice = createSlice({

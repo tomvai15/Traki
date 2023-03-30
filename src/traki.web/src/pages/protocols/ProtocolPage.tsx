@@ -174,6 +174,7 @@ export function ProtocolPage() {
         </Card>
       </Grid>
       <Grid item xs={12} md={12} >
+        <Typography variant="overline" >sections</Typography>
         <DragDropContext onDragEnd={result => onDragEnd(result)}>
           <Droppable droppableId={'asdsda'} >
             {(provided, snapshot) => {

@@ -1,7 +1,9 @@
 ﻿using Traki.Domain.Models.Drawing;
+using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section;
+using Traki.Infrastructure.Entities.Section.Items;
 
 namespace Traki.Infrastructure.Data
 {
@@ -54,12 +56,12 @@ namespace Traki.Infrastructure.Data
         {
             new ProtocolEntity
             {
-                Name= "Assembly Procedures - Checklist",
+                Name= "Welding Procedures - Checklist",
                 IsTemplate= true,
             },
             new ProtocolEntity
             {
-                Name= "Welding Procedures - Checklist",
+                Name= "Leakage test - Protocol",
                 IsTemplate= true,
             }
         };
@@ -68,10 +70,157 @@ namespace Traki.Infrastructure.Data
         {
             new SectionEntity
             {
-                Name = "test",
+                Name= "General Check-up BEFORE & DURING welding [ISO 13480-5]",
                 Priority = 1,
-                ProtocolId = 1,
-            }
+                ProtocolId= 1,
+            },
+            new SectionEntity
+            {
+                Name= "General Check-up AFTER welding [ISO 13480-5]",
+                Priority = 2,
+                ProtocolId= 1,
+            },
+            new SectionEntity
+            {
+                Name= "General check up before Leakage test",
+                Priority = 1,
+                ProtocolId= 2,
+            },
+            new SectionEntity
+            {
+                Name= "Test procedures",
+                Priority = 2,
+                ProtocolId= 2,
+            },
+        };
+
+        public static IEnumerable<ChecklistEntity> NewChecklists => new[]
+        {
+            new ChecklistEntity
+            {
+                SectionId = 1,
+            },
+            new ChecklistEntity
+            {
+                SectionId = 2,
+            },
+            new ChecklistEntity
+            {
+                SectionId = 3,
+            },
+            new ChecklistEntity
+            {
+                SectionId = 4,
+            },
+        };
+
+        public static IEnumerable<ItemEntity> Items => new[]
+        {
+            new ItemEntity
+            {
+                Id = "A",
+                Name = "Is the WPS clear for welding procedures?",
+                ChecklistId = 1,
+                Priority = 1,
+            },
+            new ItemEntity
+            {
+                Id = "B",
+                Name = "Is the WPS clear for welding procedures?",
+                ChecklistId = 1,
+                Priority = 2,
+            },
+
+            new ItemEntity
+            {
+                Id = "C",
+                Name = "Are all valves and pipes plugged?",
+                ChecklistId = 3,
+                Priority = 1,
+            },
+            new ItemEntity
+            {
+                Id = "D",
+                Name = "Are safety barries applied and warning signs hung up?",
+                ChecklistId = 3,
+                Priority = 2,
+            },
+
+            new ItemEntity
+            {
+                Id = "E",
+                Name = "Manometer ID, Serial No",
+                ChecklistId = 4,
+                Priority = 1,
+            },
+            new ItemEntity
+            {
+                Id = "F",
+                Name = "Test type",
+                ChecklistId = 4,
+                Priority = 2,
+            },
+        };
+
+        public static IEnumerable<QuestionEntity> NewQuestions => new[]
+        {
+            new QuestionEntity
+            {
+                 Id = "A",
+                 ItemId = "A",
+                 Comment = "",
+            },
+            new QuestionEntity
+            {
+                Id = "B",
+                ItemId = "B",
+                Comment = "",
+            },
+
+            new QuestionEntity
+            {
+                 Id = "C",
+                 ItemId = "C",
+                 Comment = "",
+            },
+            new QuestionEntity
+            {
+                Id = "D",
+                ItemId = "D",
+                Comment = "",
+            },
+        };
+
+        public static IEnumerable<TextInputEntity> TextInputs => new[]
+{
+            new TextInputEntity
+            {
+                 Id = "E",
+                 ItemId = "E",
+                 Value= ""
+            },
+        };
+
+        public static IEnumerable<MultipleChoiceEntity> MultipleChoices => new[]
+{
+            new MultipleChoiceEntity
+            {
+                 Id = "F",
+                 ItemId = "F",
+                 Options = new OptionEntity[]
+                 {
+                    new OptionEntity
+                    {
+                         Id = "G",
+                         Name = "Pneumatic",
+                    },
+                    new OptionEntity
+                    {
+                        Id = "H",
+                        Name = "Hydrostatic",
+                    },
+                 }
+            },
         };
 
         public static IEnumerable<CompanyEntity> Companies => new[]

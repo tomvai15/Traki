@@ -236,7 +236,7 @@ function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSe
 
   return (
     <View>
-      <Card mode='contained'>
+      <Card mode='contained' style={{borderWidth: 1}}>
         <Card.Title  title={section.name} right={() => 
           <Button disabled={!canUpdate()} onPress={updateSection} style={{margin: 5, padding: 0 ,width: 120, alignSelf: 'flex-end'}} mode='contained'>
             Atnaujinti
