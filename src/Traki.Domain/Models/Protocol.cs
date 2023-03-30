@@ -14,6 +14,6 @@ namespace Traki.Domain.Models
         public string? ReportName { get; set; }
         public string? EnvelopeId { get; set; }
         public bool IsTemplate { get; set; }
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
     }
 }
