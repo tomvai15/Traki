@@ -8,7 +8,6 @@ namespace Traki.Infrastructure.Data
         {
             var dbContext = serviceProvider.GetRequiredService<TrakiDbContext>();
 
-            return;
 
             if (isDevelopment)
             {
@@ -25,11 +24,26 @@ namespace Traki.Infrastructure.Data
             dbContext.AddQuestions();
             dbContext.AddChecklists();
             dbContext.AddChecklistQuestions();
+
             dbContext.AddProtocols();
             dbContext.AddSections();
+            dbContext.AddCheclists();
+            dbContext.AddItems();
+            dbContext.AddNewQuestions();
+            dbContext.AddTextInputs();
+            dbContext.AddMultipleChoices();
+
             dbContext.AddUsers();
             dbContext.AddDrawings();
             dbContext.AddDefects();
+        }
+
+        public static TrakiDbContext AddCompanies(this TrakiDbContext dbContext)
+        {
+            dbContext.Companies.AddRange(ExampleData.Companies);
+            dbContext.SaveChanges();
+
+            return dbContext;
         }
 
         public static TrakiDbContext AddDrawings(this TrakiDbContext dbContext)
@@ -62,9 +76,41 @@ namespace Traki.Infrastructure.Data
             return dbContext;
         }
 
-        public static TrakiDbContext AddCompanies(this TrakiDbContext dbContext)
+        public static TrakiDbContext AddCheclists(this TrakiDbContext dbContext)
         {
-            dbContext.Companies.AddRange(ExampleData.Companies);
+            dbContext.Checklists.AddRange(ExampleData.NewChecklists);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddItems(this TrakiDbContext dbContext)
+        {
+            dbContext.Items.AddRange(ExampleData.Items);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddNewQuestions(this TrakiDbContext dbContext)
+        {
+            dbContext.Questions.AddRange(ExampleData.NewQuestions);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddTextInputs(this TrakiDbContext dbContext)
+        {
+            dbContext.TextInputs.AddRange(ExampleData.TextInputs);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddMultipleChoices(this TrakiDbContext dbContext)
+        {
+            dbContext.MultipleChoices.AddRange(ExampleData.MultipleChoices);
             dbContext.SaveChanges();
 
             return dbContext;

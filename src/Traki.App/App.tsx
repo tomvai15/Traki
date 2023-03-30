@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button } from 'react-native-paper';
+import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput } from 'react-native-paper';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ProjectTab from './src/tabs/ProjectTab';
 import ProductTab from './src/tabs/ProductTab';
@@ -34,16 +34,36 @@ const Stack = createNativeStackNavigator();
 
 const Drawer = createDrawerNavigator();
 
-
 function SignInScreen() {
   const dispatch = useDispatch();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  function canLogin() {
+    return email != '' && password != '';
+  }
 
   return (
-    <View>
-      <Text onPress={() => dispatch(setId(2))} variant="titleLarge">
-        TODO: Add login
+    <View style={{padding: 20, marginTop: 150}}>
+      <Text variant="titleLarge"  style={{alignSelf: 'center'}}>
+        Sign In
       </Text>
-      <Button mode='contained' onPress={() => dispatch(setId(2))}>
+      <TextInput
+        error={false}
+        mode='outlined'
+        label="Email"
+        value={email}
+        onChangeText={text => setEmail(text)}
+      />
+      <TextInput
+        error={false}
+        secureTextEntry={true}
+        mode='outlined'
+        label="Password"
+        value={password}
+        onChangeText={text => setPassword(text)}
+      />
+      <Button disabled={!canLogin()} style={{marginTop: 10}} mode='contained' onPress={() => dispatch(setId(2))}>
         Login
       </Button>
     </View>
@@ -56,15 +76,15 @@ function TempScreen() {
   const [loggedIn, setLoggedIn] = useState(false);
   return (
     <NavigationContainer>
-      { id != 1 ?
+      { id >= 0 ?
       <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: '' }} name={"Projektai"} component={ProjectTab} />
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Produktai' }} name="Produktai" component={ProductTab} />
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: '' }} name="Šablonai" component={TemplateTab} />
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: 'Projects' }} name={"Company Projects"} component={ProjectTab} />
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Products' }} name="Project Products" component={ProductTab} />
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'Templates' }} name="Protocol Templates" component={TemplateTab} />
       </Drawer.Navigator> 
       :
       <Stack.Navigator>
-        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="SignIn" options={{header: () => <></>}} component={SignInScreen} />
       </Stack.Navigator>
       }
     </NavigationContainer>

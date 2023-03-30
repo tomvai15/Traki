@@ -76,7 +76,7 @@ export function ProtocolReport() {
               <CardContent>
                 <TextField
                   id="standard-read-only-input"
-                  label="Template name"
+                  label="Report name"
                   defaultValue='Sample name'
                   InputProps={{
                     readOnly: true,
@@ -91,7 +91,7 @@ export function ProtocolReport() {
                     Sign document with DocuSign
                     </Button> :
                     <Button onClick={getCodeUrl} variant="contained" endIcon={<CreateIcon />}>
-                    Log in to DocuSign
+                    Login to DocuSign
                     </Button>}
                 </CardActions>}
             </Card>
@@ -102,7 +102,7 @@ export function ProtocolReport() {
             <Button startIcon={<ArrowBackIcon/>} variant='contained' disabled={currentPage==1} onClick={() => setCurrentPage(currentPage-1)}>
               Previous page
             </Button>
-            <Button endIcon={<ArrowForwardIcon/>} variant='contained' disabled={currentPage==numberOfPages} onClick={() => setCurrentPage(currentPage+1)}>
+            <Button sx={{marginLeft: 2}} endIcon={<ArrowForwardIcon/>} variant='contained' disabled={currentPage==numberOfPages} onClick={() => setCurrentPage(currentPage+1)}>
               Next page
             </Button>
             <Card sx={{backgroundColor: 'grey'}}>

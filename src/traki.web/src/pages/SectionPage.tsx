@@ -60,7 +60,7 @@ const value2: Option = {
 
 const defaultItem: Item ={
   id: uuid(), 
-  name: 'Is this Question Item', 
+  name: 'New Item', 
   priority: 1, 
   question: question, 
   multipleChoice: undefined, 
@@ -74,7 +74,7 @@ const multipleChoice: MultipleChoice = {
 
 const items: Item[] = [{
   id: uuid(), 
-  name: 'Is this Question Item', 
+  name: 'New Item', 
   priority: 1, 
   question: question, 
   multipleChoice: undefined, 

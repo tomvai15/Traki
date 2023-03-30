@@ -58,7 +58,7 @@ namespace Traki.Domain.Handlers
 
             protocol.RequiresToBeNotNullEnity();
 
-            var product = await _productsRepository.GetProduct(protocol.ProductId);
+            var product = await _productsRepository.GetProduct(protocol.ProductId.Value);
             var project = await _projectsRepository.GetProject(product.ProjectId);
             var company = await _companiesRepository.GetCompany(project.CompanyId);
 

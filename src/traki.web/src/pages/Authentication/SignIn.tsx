@@ -54,10 +54,10 @@ export default function SignIn() {
       if (response.status == 200) {
         loginUser();
       } else {
-        setError('El.paštas arba slaptažodis yra netesingas');
+        setError('Email or password is incorrect');
       }
     } catch (err) {
-      setError('Svetainė šiuo metu nepasiekiama');
+      setError('Service is currently not available');
     }
   }
 
@@ -85,7 +85,7 @@ export default function SignIn() {
       >
         <LoginIcon fontSize='large'/>
         <Typography component="h1" variant="h5">
-          Prisijungimas
+          Sign in
         </Typography>
         <Box sx={{ mt: 1 }}>
           <TextField onChange={(e) => setEmail(e.target.value)}
@@ -93,7 +93,7 @@ export default function SignIn() {
             required
             fullWidth
             id="email"
-            label="El. Paštas"
+            label="Email"
             name="email"
             autoComplete="email"
             autoFocus
@@ -103,7 +103,7 @@ export default function SignIn() {
             required
             fullWidth
             name="password"
-            label="Slaptažodis"
+            label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -118,14 +118,14 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Prisijungti
+            Login
           </Button>
           <Grid container>
             <Grid item xs>
             </Grid>
             <Grid item>
               <Link href="/sign-up" variant="body2">
-                {'Neturi paskyros? Prisiregistruok čia'}
+                {'Forgot password?'}
               </Link>
             </Grid>
           </Grid>
