@@ -11,7 +11,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import protocolService from '../../../services/protocol-service';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { AreaSelector, IArea } from '@bmunozg/react-image-area';
+import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import { type } from 'os';
@@ -255,6 +255,15 @@ export function ProductPage() {
     closeDialog();
   };
 
+
+  const customRender = (areaProps: IAreaRendererProps) => {
+    if (!areaProps.isChanging) {
+      return (
+        <div key={areaProps.areaNumber}>
+        </div>
+      );
+    }
+  };
   return (
     <Grid container spacing={2}>
       <Grid container spacing={2} item xs={12} md={12} >
@@ -268,6 +277,8 @@ export function ProductPage() {
                     areas={selectedDrawing?.defects != null ? mapDefectToArea(selectedDrawing?.defects) : []}
                     unit='percentage'
                     onChange={onChangeHandler}
+                    customAreaRenderer={customRender}
+                    wrapperStyle={{border: '2px solid black'}}
                   >
                     <img style={{objectFit: 'contain'}} width={'100%'} src={drawingImages.find(x=> x.id == selectedDrawing.id)?.image ?? ''} alt={drawingImages.find(x=> x.id == selectedDrawing.id)?.image ?? ''}/>
                   </AreaSelector>
