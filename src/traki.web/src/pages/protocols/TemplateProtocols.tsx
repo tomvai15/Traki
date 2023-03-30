@@ -28,7 +28,8 @@ export function TemplateProtocols() {
       name: protocolName,
       isTemplate: true,
       modifiedDate: '',
-      sections: []
+      sections: [],
+      isSigned: false
     };
     const createProtocolRequest: CreateProtocolRequest = {
       protocol: newProtocol

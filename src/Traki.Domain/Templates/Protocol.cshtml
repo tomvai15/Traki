@@ -50,6 +50,8 @@
                         @for (int i = 0; i < protocolSection.Checklist.Items.Count; i++)
                         {
                             var item = protocolSection.Checklist.Items.ToArray()[i];
+                            var attachmentName =  Model.ItemImages.Any(x => x.ItemId == item.Id) ? $"({Model.ItemImages.First(x => x.ItemId == item.Id).AttachmentName})" : "";
+
                             <tr>
                                 <td>@(i+1)</td>
                                 <td>@(item.Name)</td>
@@ -73,15 +75,15 @@
                                             <input type="checkbox" @(item.Question.Answer == Traki.Domain.Models.Section.Items.AnswerType.NotApplicable ? "checked" : "") id="chk" />
                                         </div>
                                     </td>
-                                    <td>@item.Question.Comment</td>
+                                    <td>@item.Question.Comment @attachmentName</td>
                                 }
                                 else if (item.TextInput != null)
                                 {
-                                    <td colspan="2">@item.TextInput.Value</td>
+                                    <td colspan="2">@item.TextInput.Value @attachmentName</td>
                                 }
                                 else if (item.MultipleChoice != null)
                                 {
-                                     <td colspan="2">
+                                     <td colspan="1">
                                         @foreach (var option in item.MultipleChoice.Options)
                                         {
                                             <div class="Checkbox">
@@ -90,6 +92,7 @@
                                             </div>
                                         }
                                     </td>
+                                    <td>@attachmentName</td>
                                 }
                                 else
                                 {
@@ -103,13 +106,13 @@
             }
         </table>
     </div>
-    <div class="App">
+    <div class="App" style="page-break-after: always">
         <div class="Container" style="margin-top: 20px">
             <table class="GeneratedTable">
                 <tbody>
                     <tr>
                         <th>Name, Surname:</th>
-                        <td>[name, surname]</td>
+                        <td>Tomas Vainoris</td>
                     </tr>
                     <tr>
                         <th>Signature:</th>
@@ -117,16 +120,40 @@
                     </tr>
                     <tr>
                         <th>Date:</th>
-                        <td>[date]</td>
+                        <td>@(DateTime.Now.ToString("yyyy-MM-dd"))</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="Container"></div>
     </div>
+    @foreach ( var itemImage in Model.ItemImages)
+    {
+        string img = "data:image/png;base64," + itemImage.ImageBase64;
+        <div class="ImageContainerItem">
+            <img class="ImageContainerItemImage" src="@img" />
+            <p>@itemImage.AttachmentName</p>
+        </div>
+    }
 </div>
 
 <style>
+    .ImageContainer {
+      display: flex;
+      flex-wrap:  wrap;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .ImageContainerItem {
+      margin: 10px;
+    }
+
+    .ImageContainerItemImage {
+      width:100%;
+      max-width:300px;
+    }
+
     div.Checkbox {
         display: table;
         float: left;
@@ -204,7 +231,7 @@
             }
 
             table.ProtocolTable td:nth-child(2) {
-                width: 50%;
+                width: 30%;
             }
 
         table.ProtocolTable thead {

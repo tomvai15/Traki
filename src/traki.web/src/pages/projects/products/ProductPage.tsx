@@ -265,7 +265,7 @@ export function ProductPage() {
               <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
                 <Box sx={{flex: 2, padding: '5px', width: '100%', height: '100%'}}>
                   <AreaSelector
-                    areas={areas}
+                    areas={selectedDrawing?.defects != null ? mapDefectToArea(selectedDrawing?.defects) : []}
                     unit='percentage'
                     onChange={onChangeHandler}
                   >

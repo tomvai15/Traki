@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.IdentityModel.Tokens;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PuppeteerSharp;
@@ -71,8 +72,30 @@ namespace Traki.Domain.Handlers
                 fullSections.Add(fullSection);
             }
 
-            var companyLogo = await _storageService.GetFile("company", company.ImageName);
+            fullSections = fullSections.OrderBy(s => s.Priority).ToList();
 
+            var itemsWithImages = fullSections.Where(x => x.Checklist != null)
+                .Select(x => x.Checklist)
+                .SelectMany(x => x.Items)
+                .Where(x => !x.ItemImage.IsNullOrEmpty())
+                .ToList();
+
+
+            List<ItemImage> itemImages = new List<ItemImage>();
+            int num = 1;
+            foreach (var item in itemsWithImages)
+            {
+                var image = await _storageService.GetFile("item", item.ItemImage);
+                var imageBase64 = Convert.ToBase64String(image.Content.ToArray());
+                itemImages.Add(new ItemImage { 
+                    ImageBase64 = imageBase64, 
+                    ItemId = item.Id,
+                    AttachmentName = $"Attachment {num}",
+                });
+                num++;
+            }
+
+            var companyLogo = await _storageService.GetFile("company", company.ImageName);
             var companyLogoBase64 = Convert.ToBase64String(companyLogo.Content.ToArray());
 
             var protocolReport = new ProtocolReport
@@ -82,7 +105,8 @@ namespace Traki.Domain.Handlers
                 Project = project,
                 Product = product,
                 Protocol = protocol,
-                Sections = fullSections.OrderBy(s => s.Priority).ToList(),
+                Sections = fullSections,
+                ItemImages = itemImages,
             };
 
             return protocolReport;

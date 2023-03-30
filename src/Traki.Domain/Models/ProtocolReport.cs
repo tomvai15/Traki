@@ -8,5 +8,6 @@
         public Product Product { get; set; }
         public Protocol Protocol { get; set; }
         public List<Section.Section> Sections { get; set; }
+        public List<ItemImage> ItemImages { get; set; }
     }
 }
