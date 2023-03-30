@@ -22,6 +22,12 @@ namespace Traki.Infrastructure.Data
                 Title= "Drawing 2",
                 ImageName = "front.png",
                 ProductId = 1
+            },
+            new DrawingEntity
+            {
+                Title= "Drawing 1",
+                ImageName = "front.png",
+                ProductId = 2
             }
         };
 
@@ -126,7 +132,7 @@ namespace Traki.Infrastructure.Data
             new ItemEntity
             {
                 Id = "B",
-                Name = "Is the WPS clear for welding procedures?",
+                Name = "Do the general prefab dimensions meet the design?",
                 ChecklistId = 1,
                 Priority = 2,
             },

@@ -16,7 +16,7 @@ import { UpdateProtocolRequest } from '../../contracts/protocol/UpdateProtocolRe
 
 const items: Item[] = [{
   id: uuid(), 
-  name: 'Is this Question Item', 
+  name: 'New Item', 
   priority: 1, 
   question: undefined, 
   multipleChoice: undefined, 

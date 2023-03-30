@@ -45,7 +45,7 @@ export function TemplateProtocols() {
           <Card title='Sample Project'>
             <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
               <Typography variant="h5">{protocol.name}</Typography>
-              <Typography variant="h6" fontSize={15} > Modified in {protocol.modifiedDate}</Typography>
+              <Typography variant="h6" fontSize={15} > Modified in 2023-03-30</Typography>
             </CardContent>    
             <CardActions>  
               <Button onClick={() => navigate('/templates/protocols/' + protocol.id)} variant='contained' >Details</Button>
