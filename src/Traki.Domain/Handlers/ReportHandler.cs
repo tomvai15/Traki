@@ -20,7 +20,6 @@ namespace Traki.Domain.Handlers
         Task<ProtocolReport> GetProtocolReportInformation(int protocolId);
         Task<byte[]> GetProtocolReport(int protocolId);
         Task<byte[]> GenerateHtmlReport(ProtocolReport protocolReport);
-        string GenerateReport();
         Task SignReport(int protocolId, string envelopeId);
         Task ValidateSign(Protocol protocol, DocuSignUserInfo userInfo, string accessToken);
     }
@@ -87,8 +86,9 @@ namespace Traki.Domain.Handlers
             {
                 var image = await _storageService.GetFile("item", item.ItemImage);
                 var imageBase64 = Convert.ToBase64String(image.Content.ToArray());
-                itemImages.Add(new ItemImage { 
-                    ImageBase64 = imageBase64, 
+                itemImages.Add(new ItemImage
+                {
+                    ImageBase64 = imageBase64,
                     ItemId = item.Id,
                     AttachmentName = $"Attachment {num}",
                 });
@@ -148,49 +148,20 @@ namespace Traki.Domain.Handlers
             using (var page = await browser.NewPageAsync())
             {
                 await page.SetContentAsync(result);
-                var r = await page.GetContentAsync();
                 await page.PdfAsync(filePath, new PdfOptions { PrintBackground = true });
             }
 
-            // TODO: do in parallel
-
             var pdfAsBytes = File.ReadAllBytes(filePath);
             MemoryStream stream = new MemoryStream(pdfAsBytes);
-            await _storageService.AddFile("company", fileName, "application/pdf", stream);
-
+            var addFileTask = _storageService.AddFile("company", fileName, "application/pdf", stream);
 
             var protocol = protocolReport.Protocol;
             protocol.ReportName = fileName;
-            await _protocolRepository.UpdateProtocol(protocol);
+            var updateProtocolTask = _protocolRepository.UpdateProtocol(protocol);
+
+            await Task.WhenAll(addFileTask, updateProtocolTask);
 
             return pdfAsBytes;
-        }
-        public string GenerateReport()
-        {
-            // Create a new PDF document
-            PdfDocument document = new PdfDocument();
-            document.Info.Title = "Created with PDFsharp";
-
-            // Create an empty page
-            PdfPage page = document.AddPage();
-
-            // Get an XGraphics object for drawing
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-
-            // Create a font
-            XFont font = new XFont("Verdana", 20, XFontStyle.BoldItalic);
-
-            // Draw the text
-            gfx.DrawString($"Ataskaita {DateTime.Now.ToString("f")}", font, XBrushes.Black,
-              new XRect(0, 0, page.Width, page.Height),
-              XStringFormats.Center);
-
-
-            using MemoryStream stream = new MemoryStream();
-
-            document.Save(stream, closeStream: false);
-
-            return Convert.ToBase64String(stream.ToArray());
         }
 
         public async Task SignReport(int protocolId, string envelopeId)
@@ -207,11 +178,12 @@ namespace Traki.Domain.Handlers
             string basePath = userInfo.Accounts.First().BaseUri + "/restapi";
             var result = await _docuSignService.GetDocument(accessToken, basePath, userInfo.Accounts.First().AccountId, envelopeId, documentId);
 
-            // TODO: do in parallel
-            await _storageService.AddFile("company", protocol.ReportName, "application/pdf", result);
+            var addFileTask = _storageService.AddFile("company", protocol.ReportName, "application/pdf", result);
 
             protocol.IsSigned = true; ;
-            await _protocolRepository.UpdateProtocol(protocol);
+            var updateProtocolTask =  _protocolRepository.UpdateProtocol(protocol);
+
+            await Task.WhenAll(addFileTask, updateProtocolTask);
         }
     }
 }
