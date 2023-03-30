@@ -34,7 +34,6 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Checklist> CreateChecklist(Checklist checkList)
         {
             var checklistEntity = _mapper.Map<ChecklistEntity>(checkList);
-          //  checklistEntity.Items = new ItemEntity[0];
             checklistEntity.Id = 0;
             checklistEntity = (await _context.Checklists.AddAsync(checklistEntity)).Entity;
             await _context.SaveChangesAsync();
