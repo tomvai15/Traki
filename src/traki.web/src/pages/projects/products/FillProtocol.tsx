@@ -25,7 +25,8 @@ const initialProtocol: Protocol = {
   name: '',
   sections: [],
   isTemplate: false,
-  modifiedDate: ''
+  modifiedDate: '',
+  isSigned: false
 };
 
 const initialSection: Section = {
@@ -71,8 +72,6 @@ function FillItem ({item, updateItem}: FillItemProps) {
   } 
 
   function updateMultipleChoice(option: string) {
-
-
     if (!item.multipleChoice) {
       return;
     }

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BusinessIcon from '@mui/icons-material/Business';
 import { Divider } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
 
 export default function DrawerItems() {
 
@@ -15,17 +16,17 @@ export default function DrawerItems() {
 
   return (
     <React.Fragment>
+      <ListItemButton onClick={() => navigate('home')}>
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Home" />
+      </ListItemButton>
       <ListItemButton onClick={() => navigate('projects')}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Projects" />
-      </ListItemButton>
-      <ListItemButton onClick={() => navigate('report')}>
-        <ListItemIcon>
-          <ShoppingCartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Products" />
       </ListItemButton>
       <ListItemButton onClick={() => navigate('/templates/protocols')}>
         <ListItemIcon>

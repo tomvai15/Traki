@@ -20,6 +20,7 @@ import { ProductPage } from './projects/products/ProductPage';
 import { FillProtocol } from './projects/products/FillProtocol';
 import SignValidation from './Authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
+import { HomePage } from './Home';
 
 export function Main() {
 
@@ -47,6 +48,7 @@ export function Main() {
           <Route index element={<Navigate to='/projects'/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
+          <Route path='home' element={<HomePage/>}/>
           <Route path='signvalidation' element={<SignValidation/>}/>
           <Route path='projects' element={<Outlet/>}>
             <Route index element={<Projects/>}/>
