@@ -231,11 +231,6 @@ namespace Traki.Infrastructure.Services.Docusign
             return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}&state={state}";
         }
 
-        public Task<Stream> GetPdfDocument(string accessToken, string basePath, string accountId, string envelopeId, string documentId)
-        {
-            throw new NotImplementedException();
-        }
-
         private async Task<OAuthResponse> GetAccessToken(KeyValuePair<string, string>[] requestData)
         {
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage();

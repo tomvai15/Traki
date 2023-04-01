@@ -53,7 +53,7 @@ namespace Traki.Domain.Handlers
             var userInfo = await _docuSignService.GetUserInformation(accessToken);
 
             string envelopeId = protocol.EnvelopeId;
-            var result = await _docuSignService.GetPdfDocument(userInfo, accessToken, envelopeId);
+            var result = await _docuSignService.GetPdfDocument(userInfo, envelopeId, accessToken);
 
             protocol.IsSigned = true; ;
             var updateProtocolTask = _protocolRepository.UpdateProtocol(protocol);
