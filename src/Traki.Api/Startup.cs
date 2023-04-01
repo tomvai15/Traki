@@ -7,6 +7,7 @@ namespace Traki.Api
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
+                .AddHttpContextAccessor()
                 .AddMemoryCache()
                 .AddMappingProfiles()
                 .AddTrakiDbContext(configuration)

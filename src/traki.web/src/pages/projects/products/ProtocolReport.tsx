@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import protocolService from '../../../services/protocol-service';
 import { Protocol } from '../../../contracts/protocol/Protocol';
+import { GenerateReportRequest } from '../../../contracts/report/GenerateReportRequest';
 
 export function ProtocolReport() {
   const { projectId, productId, protocolId } = useParams();
@@ -25,12 +26,29 @@ export function ProtocolReport() {
   const [protocol, setProtocol] = useState<Protocol>();
 
   useEffect(() => {
-    console.log('??' + location.pathname);
-    reportService.getReport(Number(protocolId)).then((value) => {
-      setPdf(value);
-    });
+    fetchReport();
     fetchProtocol();
   }, []);
+
+  async function fetchReport() {
+    const response = await reportService.getReport(Number(protocolId));
+
+    if (!response.exists) {
+      await generateReport();
+    } else {
+      setPdf(response.reportBase64);
+    }
+  }
+
+  async function generateReport() {
+    const generateReportRequest: GenerateReportRequest = {
+      reportTitle: ""
+    };
+
+    await reportService.generateReport(Number(protocolId), generateReportRequest);
+    const response = await reportService.getReport(Number(protocolId));
+    setPdf(response.reportBase64);
+  }
 
   async function fetchProtocol() {
     const response = await protocolService.getProtocol(Number(protocolId));
@@ -86,6 +104,9 @@ export function ProtocolReport() {
               {
                 protocol && !protocol.isSigned && 
                 <CardActions>
+                  <Button onClick={generateReport}>
+                    Generate report
+                  </Button>
                   {userInfo.loggedInDocuSign ?
                     <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
                     Sign document with DocuSign

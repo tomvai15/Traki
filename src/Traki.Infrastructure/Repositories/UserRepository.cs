@@ -49,5 +49,14 @@ namespace Traki.Infrastructure.Repositories
 
             return _mapper.Map<User>(userEntity);
         }
+
+        public async Task UpdateUser(User user)
+        {
+            var userEntity = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+
+            user.EncryptedRefreshToken = user.EncryptedRefreshToken;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

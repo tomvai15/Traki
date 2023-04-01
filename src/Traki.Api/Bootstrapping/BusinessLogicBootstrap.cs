@@ -4,6 +4,7 @@ using Traki.Domain.Cryptography;
 using Traki.Infrastructure.Repositories;
 using Traki.Domain.Handlers;
 using Traki.Domain.Repositories;
+using Traki.Domain.Providers;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -17,7 +18,12 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IChecklistHandler, ChecklistHandler>()
                 .AddTransient<IReportHandler, ReportHandler>()
                 .AddTransient<ISectionHandler, SectionHandler>()
-                .AddTransient<IProductHandler, ProductHandler>();
+                .AddTransient<IProductHandler, ProductHandler>()
+                .AddTransient<IReportGenerator, ReportGenerator>()
+                .AddTransient<IProtocolHandler, ProtocolHandler>()
+                .AddTransient<IDocumentSignerHandler, DocumentSignerHandler>()
+                .AddTransient<IAccessTokenProvider, AccessTokenProvider>()
+                .AddTransient<IClaimsProvider, ClaimsProvider>();
 
             return services;
         }
