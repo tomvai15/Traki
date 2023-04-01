@@ -49,7 +49,6 @@ namespace Traki.Api.Controllers
         [HttpGet("{sectionId}")]
         public async Task<ActionResult<GetSectionRequest>> GetSection(int sectionId)
         {
-
             var section = await _sectionHandler.GetSection(sectionId);
 
             var getSectionRequest = new GetSectionRequest { Section = _mapper.Map<SectionDto>(section) };

@@ -8,7 +8,6 @@ namespace Traki.Infrastructure.Data
         {
             var dbContext = serviceProvider.GetRequiredService<TrakiDbContext>();
 
-
             if (isDevelopment)
             {
                 // this can be done only locally (already deleted database in cloud once)

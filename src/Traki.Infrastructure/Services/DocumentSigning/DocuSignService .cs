@@ -6,15 +6,17 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Traki.Domain.Models;
 using Traki.Domain.Services;
+using Traki.Domain.Services.DocumentSigning.Models;
 using Traki.Domain.Services.Docusign;
 using Traki.Domain.Services.Docusign.models;
+using static DocuSign.eSign.Client.Auth.OAuth;
 
 namespace Traki.Infrastructure.Services.Docusign
 {
     public class DocuSignService : IDocuSignService
     {
-        private readonly DocuSignClient _docuSignClient = new();
         private readonly DocuSignSettings _docuSignSettings;
         private readonly HttpClient _httpClient;
 
@@ -24,31 +26,26 @@ namespace Traki.Infrastructure.Services.Docusign
             _httpClient = httpClient;
         }
 
-        public async Task<OAuthResponse> GetAccessToken(string code)
+        public async Task<OAuthResponse> GetAccessTokenUsingCode(string code)
         {
-            HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-
-            httpRequestMessage.Method = HttpMethod.Post;
-
-            string s = _docuSignSettings.ClientId + ":" + _docuSignSettings.ClientSecret;
-            string text = Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
-
             var data = new[]
             {
                 new KeyValuePair<string, string>("grant_type", "authorization_code"),
                 new KeyValuePair<string, string>( "code", code ),
             };
 
-            var httpContent = new FormUrlEncodedContent(data);
+            return await GetAccessToken(data);
+        }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", text);
+        public async Task<OAuthResponse> GetAccessTokenUsingRefreshToken(string refreshToken)
+        {
+            var data = new[]
+            {
+                new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                new KeyValuePair<string, string>( "refresh_token", refreshToken ),
+            };
 
-            var response = await _httpClient.PostAsync(_docuSignSettings.TokenEndpoint, httpContent);
-
-            var content = await response.Content.ReadAsStringAsync();
-            var oauthResponse = JsonConvert.DeserializeObject<OAuthResponse>(content);
-
-            return oauthResponse;
+            return await GetAccessToken(data);
         }
 
         public async Task<DocuSignUserInfo> GetUserInformation(string accessToken)
@@ -74,26 +71,33 @@ namespace Traki.Infrastructure.Services.Docusign
             return stream;
         }
 
-        public (string, string) SendEnvelopeForEmbeddedSigning(
-            string signerEmail,
-            string signerName,
-            string signerClientId,
-            string accessToken,
-            string basePath,
-            string accountId,
-            string docPdf,
-            string returnUrl,
-            string state,
-            string pingUrl = null)
+        public async Task<Stream> GetPdfDocument(DocuSignUserInfo docuSignUserInfo, string envelopeId, string accessToken)
         {
-            // Step 1 start
-            // Step 1. Create the envelope definition
+            string accountId = docuSignUserInfo.Accounts.First().AccountId;
+            string documentId = "3";
+            string basePath = docuSignUserInfo.Accounts.First().BaseUri + "/restapi";
+
+            var docuSignClient = new DocuSignClient(basePath);
+            docuSignClient.Configuration.DefaultHeader.Add("Authorization", "Bearer " + accessToken);
+
+            EnvelopesApi envelopesApi = new EnvelopesApi(docuSignClient);
+            var stream = await envelopesApi.GetDocumentAsync(accountId, envelopeId, documentId);
+
+            return stream;
+        }
+
+        public async Task<SignDocumentResult> CreateDocumentSigningRedirectUri(DocuSignUserInfo docuSignUserInfo, string accessToken, string docPdf, string returnUrl, string state)
+        {
+            const string pathEnd = "/restapi";
+            var signerEmail = docuSignUserInfo.Email;
+            var signerName = docuSignUserInfo.Name;
+            var account = docuSignUserInfo.Accounts.First();
+            var accountId = account.AccountId;
+            string basePath = account.BaseUri + pathEnd;
+            const string signerClientId = "1000";
+
             EnvelopeDefinition envelope = MakeEnvelope(signerEmail, signerName, signerClientId, docPdf);
 
-            // Step 1 end
-
-            // Step 2 start
-            // Step 2. Call DocuSign to create the envelope
             var docuSignClient = new DocuSignClient(basePath);
             docuSignClient.Configuration.DefaultHeader.Add("Authorization", "Bearer " + accessToken);
 
@@ -101,31 +105,15 @@ namespace Traki.Infrastructure.Services.Docusign
             EnvelopeSummary results = envelopesApi.CreateEnvelope(accountId, envelope);
             string envelopeId = results.EnvelopeId;
 
-            // Step 2 end
+            RecipientViewRequest viewRequest = MakeRecipientViewRequest(signerEmail, signerName, returnUrl, signerClientId, state, null);
 
-            // Step 3 start
-            // Step 3. create the recipient view, the Signing Ceremony
-            RecipientViewRequest viewRequest = MakeRecipientViewRequest(signerEmail, signerName, returnUrl, signerClientId, state, pingUrl);
-
-            // call the CreateRecipientView API
             ViewUrl results1 = envelopesApi.CreateRecipientView(accountId, envelopeId, viewRequest);
-
-            // Step 3 end
-
-            // Step 4 start
-            // Step 4. Redirect the user to the Signing Ceremony
-            // Don't use an iFrame!
-            // State can be stored/recovered using the framework's session or a
-            // query parameter on the returnUrl (see the makeRecipientViewRequest method)
             string redirectUrl = results1.Url;
 
-            // returning both the envelopeId as well as the url to be used for embedded signing
-            return (envelopeId, redirectUrl);
-
-            // Step 4 end
+            return new SignDocumentResult { EnvelopeId = envelopeId, RedirectUri = redirectUrl };
         }
 
-        public static RecipientViewRequest MakeRecipientViewRequest(string signerEmail, string signerName, string returnUrl, string signerClientId, string state, string pingUrl = null)
+        private static RecipientViewRequest MakeRecipientViewRequest(string signerEmail, string signerName, string returnUrl, string signerClientId, string state, string pingUrl = null)
         {
             // Data for this method
             // signerEmail
@@ -171,7 +159,7 @@ namespace Traki.Infrastructure.Services.Docusign
             return viewRequest;
         }
 
-        public static EnvelopeDefinition MakeEnvelope(string signerEmail, string signerName, string signerClientId, string docPdf)
+        private static EnvelopeDefinition MakeEnvelope(string signerEmail, string signerName, string signerClientId, string docPdf)
         {
             // Data for this method
             // signerEmail
@@ -241,6 +229,34 @@ namespace Traki.Infrastructure.Services.Docusign
         {
             const string redirectUrl = "http://localhost:3000/checkoauth";
             return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}&state={state}";
+        }
+
+        public Task<Stream> GetPdfDocument(string accessToken, string basePath, string accountId, string envelopeId, string documentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<OAuthResponse> GetAccessToken(KeyValuePair<string, string>[] requestData)
+        {
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+
+            httpRequestMessage.Method = HttpMethod.Post;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", CreateAuthCode());
+
+            var httpContent = new FormUrlEncodedContent(requestData);
+
+            var response = await _httpClient.PostAsync(_docuSignSettings.TokenEndpoint, httpContent);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var oauthResponse = JsonConvert.DeserializeObject<OAuthResponse>(content);
+
+            return oauthResponse;
+        }
+
+        private string CreateAuthCode()
+        {
+            string authCode = _docuSignSettings.ClientId + ":" + _docuSignSettings.ClientSecret;
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(authCode));
         }
     }
 }

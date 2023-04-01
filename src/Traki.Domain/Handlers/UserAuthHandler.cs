@@ -60,7 +60,7 @@ namespace Traki.Domain.Handlers
         public async Task<IEnumerable<Claim>> CrateClaimsForUser(User user)
         {
             return new[] {
-               new Claim(Claims.UserId, user.UserId.ToString()),
+               new Claim(Claims.UserId, user.Id.ToString()),
                new Claim(ClaimTypes.Role, user.Role)
             };
         }

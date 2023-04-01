@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Traki.Domain.Extensions;
+﻿using Traki.Domain.Extensions;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
 using Traki.Domain.Repositories;
@@ -18,17 +17,29 @@ namespace Traki.Domain.Handlers
 
     public class SectionHandler : ISectionHandler
     {
-        private readonly IMapper _mapper;
         private readonly ISectionRepository _sectionRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly IItemRepository _itemRepository;
 
-        public SectionHandler(IMapper mapper, ISectionRepository sectionRepository, IChecklistRepository checklistRepository, IItemRepository itemRepository)
+        public SectionHandler(ISectionRepository sectionRepository, IChecklistRepository checklistRepository, IItemRepository itemRepository)
         {
-            _mapper = mapper;
             _sectionRepository = sectionRepository;
             _checklistRepository = checklistRepository;
             _itemRepository = itemRepository;
+        }
+
+        public async Task<Section> GetSection(int sectionId)
+        {
+            var section = await _sectionRepository.GetSection(sectionId);
+            var checklist = await _checklistRepository.GetSectionChecklist(section.Id);
+            if (checklist != null)
+            {
+                var items = await _itemRepository.GetChecklistItems(checklist.Id);
+                checklist.Items = items.OrderBy(x => x.Priority).ToList();
+            }
+
+            section.Checklist = checklist;
+            return section;
         }
 
         public async Task UpdateSections(IEnumerable<Section> sections)
@@ -41,7 +52,6 @@ namespace Traki.Domain.Handlers
 
         public async Task UpdateSectionAnswers(int protocolId, Section section)
         {
-            var sectionToUpdate = await _sectionRepository.GetSection(section.Id);
             var checklistToUpdate =  await _checklistRepository.GetSectionChecklist(section.Id);
             if (checklistToUpdate != null)
             {
@@ -52,22 +62,6 @@ namespace Traki.Domain.Handlers
                     await UpdateChecklistModel(checklist, checklistToUpdate);
                 }
             }
-
-            return;
-        }
-
-        public async Task<Section> GetSection(int sectionId)
-        {
-            var section = await _sectionRepository.GetSection(sectionId);
-            var checklist = await _checklistRepository.GetSectionChecklist(section.Id);
-            if (checklist != null)
-            {
-                var items = await _itemRepository.GetChecklistItems(checklist.Id);
-                checklist.Items = items.OrderBy(x=> x.Priority).ToList();
-            }
-
-            section.Checklist = checklist;
-            return section;
         }
 
         public async Task AddOrUpdateSection(int protocolId, Section section)
@@ -100,6 +94,26 @@ namespace Traki.Domain.Handlers
             }
         }
 
+        public async Task<IEnumerable<Section>> GetSections(int protocolId)
+        {
+            return await _sectionRepository.GetSections(protocolId);
+        }
+
+        public async Task DeleteSection(int sectionId)
+        {
+            var sectionFromDatabase = await _sectionRepository.GetSection(sectionId);
+
+            sectionFromDatabase.RequiresToBeNotNullEnity();
+
+            var checklist = await _checklistRepository.GetSectionChecklist(sectionId);
+            if (checklist != null)
+            {
+                await DeleteChecklist(checklist.Id);
+            }
+
+            await _sectionRepository.DeleteSection(sectionFromDatabase);
+        }
+
         private async Task UpdateChecklistModel(Checklist checklist, Checklist checklistToUpdate)
         {
             foreach (var itemToUpdate in checklistToUpdate.Items)
@@ -128,49 +142,33 @@ namespace Traki.Domain.Handlers
 
         private async Task CreateChecklist(Checklist checklist)
         {
-
             foreach (var item in checklist.Items)
             {
-                item.Id = Guid.NewGuid().ToString();
-                if (item.Question != null)
-                {
-                    item.Question.Id = Guid.NewGuid().ToString();
-                }
-                if (item.TextInput != null)
-                {
-                    item.TextInput.Id = Guid.NewGuid().ToString();
-                }
-                if (item.MultipleChoice != null)
-                {
-                    item.MultipleChoice.Id = Guid.NewGuid().ToString();
-                    foreach (var option in item.MultipleChoice.Options)
-                    {
-                        option.Id = Guid.NewGuid().ToString();
-                    }
-                }
+                UpdateItemIds(item);
             }
 
             await _checklistRepository.CreateChecklist(checklist);
         }
 
-        public async Task<IEnumerable<Section>> GetSections(int protocolId)
+        private void UpdateItemIds(Item item)
         {
-            return await _sectionRepository.GetSections(protocolId);
-        }
-
-        public async Task DeleteSection(int sectionId)
-        {
-            var sectionFromDatabase = await _sectionRepository.GetSection(sectionId);
-
-            sectionFromDatabase.RequiresToBeNotNullEnity();
-
-            var checklist = await _checklistRepository.GetSectionChecklist(sectionId);
-            if (checklist != null)
+            item.Id = Guid.NewGuid().ToString();
+            if (item.Question != null)
             {
-                await DeleteChecklist(checklist.Id);
+                item.Question.Id = Guid.NewGuid().ToString();
             }
-
-            await _sectionRepository.DeleteSection(sectionFromDatabase);
+            if (item.TextInput != null)
+            {
+                item.TextInput.Id = Guid.NewGuid().ToString();
+            }
+            if (item.MultipleChoice != null)
+            {
+                item.MultipleChoice.Id = Guid.NewGuid().ToString();
+                foreach (var option in item.MultipleChoice.Options)
+                {
+                    option.Id = Guid.NewGuid().ToString();
+                }
+            }
         }
     }
 }

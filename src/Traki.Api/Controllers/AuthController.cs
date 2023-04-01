@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Traki.Api.Contracts.Auth;
 using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Handlers;
+using Traki.Domain.Providers;
 using Traki.Domain.Services.Docusign;
 
 namespace Traki.Api.Controllers
@@ -18,14 +19,14 @@ namespace Traki.Api.Controllers
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserAuthHandler _authHandler;
         private readonly IDocuSignService _docuSignService;
-        private readonly IMemoryCache _memoryCache;
+        private readonly IAccessTokenProvider _accessTokenProvider;
 
-        public AuthController(IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IMemoryCache memoryCache, IUserAuthHandler authHandler)
+        public AuthController(IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IAccessTokenProvider accessTokenProvider, IUserAuthHandler authHandler)
         {
             _authHandler = authHandler;
             _docuSignService = docuSignService;
             _jwtTokenGenerator = jwtTokenGenerator;
-            _memoryCache = memoryCache;
+            _accessTokenProvider = accessTokenProvider;
         }
 
         [HttpPost("login")]
@@ -67,15 +68,23 @@ namespace Traki.Api.Controllers
         {
             int userId = GetUserId();
 
-            bool exists = _memoryCache.TryGetValue<string>(GetUserId(), out string accessToken);
+            string accessToken;
+            try
+            {
+                accessToken = await _accessTokenProvider.GetAccessToken();
+            }
+            catch
+            {
+                accessToken = null;
+            }
 
-            var response = new GetUserResponse { User = new UserDto { Id = userId }, LoggedInDocuSign = exists };
+            var response = new GetUserResponse { User = new UserDto { Id = userId }, LoggedInDocuSign = accessToken.IsNullOrEmpty() };
             return Ok(response);
         }
 
         [HttpPost("code")]
-        [Authorize] 
-        public async Task<ActionResult> GetAuthorisationCodeRequestUrl([FromBody]AuthorisationCodeRequest getAuthorisationCodeRequest)
+        [Authorize]
+        public async Task<ActionResult> GetAuthorisationCodeRequestUrl([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
         {
             var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State);
             return Ok(url);
@@ -85,10 +94,9 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult> LoginToDocuSign([FromBody] LoginOAuthRequest loginOAuthRequest)
         {
-            var oauthResponse = await _docuSignService.GetAccessToken(loginOAuthRequest.Code);
-            int userId = GetUserId();
+            var oauthResponse = await _docuSignService.GetAccessTokenUsingCode(loginOAuthRequest.Code);
 
-            _memoryCache.Set(userId, oauthResponse.AccessToken);
+            await _accessTokenProvider.AddAccessToken(oauthResponse);
 
             // create new cookie?
             return Ok();
