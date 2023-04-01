@@ -23,6 +23,7 @@ namespace Traki.Domain.Handlers
         public ReportGenerator()
         {
             _currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Directory.CreateDirectory(_currentPath + @"\Templates");
             _razorLightEngine = new RazorLightEngineBuilder()
                 .UseFileSystemProject(_currentPath + @"\Templates")
                 .UseMemoryCachingProvider()
