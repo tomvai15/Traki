@@ -3,13 +3,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
-import { ProductStackParamList } from './ProductStackParamList';
-import { image } from './test';
-import { image2 } from './test2';
-import { image3 } from './test3';
+import { ProductStackParamList } from '../ProductStackParamList';
+import { image } from '../test';
+import { image2 } from '../test2';
+import { image3 } from '../test3';
 import * as ImagePicker from 'expo-image-picker';
 import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton } from 'react-native-paper';
-import AutoImage from '../../components/AutoImage';
+import AutoImage from '../../../components/AutoImage';
 import ImageView from "react-native-image-viewing";
 
 interface Rectangle {
@@ -22,20 +22,20 @@ interface Rectangle {
 const rect1: Rectangle = {
   x: 0,
   y: 0,
-  width: 100,
-  height: 100
+  width: 1,
+  height: 1
 }
 
-type Props = NativeStackScreenProps<ProductStackParamList, 'DefectsScreen'>;
+type Props = NativeStackScreenProps<ProductStackParamList, 'AddDefectScreen'>;
 
 type ImageSize = {
   width: number,
   height: number
 }
 
-const images = [image, image2];
+const images = [image, image2, image];
 
-export default function DefectsScreen({route, navigation}: Props) {
+export default function AddDefectScreen({route, navigation}: Props) {
   const [rectangles, setRectangles] = useState<Rectangle[]>([rect1]);
 
   const [rectangle, setRectangle] = useState<Rectangle>(rect1);

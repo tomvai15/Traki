@@ -2,7 +2,9 @@ export type ProductStackParamList = {
   Products: undefined;
   Product: ProductScreenParams;
   Protocol: ProtocolScreenParams;
+  AddDefectScreen: AddDefectScreenParams;
   DefectsScreen: DefectsScreenParams;
+  DefectScreen: DefectScreenParams;
 };
 
 export type ProductScreenParams = {
@@ -14,7 +16,14 @@ export type ProtocolScreenParams = {
   protocolId: number
 }
 
+export type AddDefectScreenParams = {
+  productId: number,
+}
+
 export type DefectsScreenParams = {
   productId: number,
 }
 
+export type DefectScreenParams = {
+  productId: number,
+}
