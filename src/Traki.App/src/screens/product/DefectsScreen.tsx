@@ -1,13 +1,16 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef } from 'react';
-import { View, Image, StyleSheet, PanResponder, ScrollView } from 'react-native';
+import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from './ProductStackParamList';
 import { image } from './test';
 import { image2 } from './test2';
+import { image3 } from './test3';
 import * as ImagePicker from 'expo-image-picker';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title } from 'react-native-paper';
+import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton } from 'react-native-paper';
+import AutoImage from '../../components/AutoImage';
+import ImageView from "react-native-image-viewing";
 
 interface Rectangle {
   x: number;
@@ -25,6 +28,12 @@ const rect1: Rectangle = {
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'DefectsScreen'>;
 
+type ImageSize = {
+  width: number,
+  height: number
+}
+
+const images = [image, image2];
 
 export default function DefectsScreen({route, navigation}: Props) {
   const [rectangles, setRectangles] = useState<Rectangle[]>([rect1]);
@@ -32,6 +41,10 @@ export default function DefectsScreen({route, navigation}: Props) {
   const [rectangle, setRectangle] = useState<Rectangle>(rect1);
 
   const [imageUri, setImageUri] = useState<string>('');
+
+  const [selectedImage, setSelectedImage] = useState<string>(image);
+
+  const [visible, setVisible] = React.useState(false);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchCameraAsync({
@@ -65,7 +78,7 @@ export default function DefectsScreen({route, navigation}: Props) {
        // The gesture has started. Show visual feedback so the user knows
        // what is happening!
        // gestureState.d{x,y} will be set to zero now
-       console.log('start');
+       //console.log('start');
 
        const rect: Rectangle = {
         x: evt.nativeEvent.locationX,
@@ -105,7 +118,7 @@ export default function DefectsScreen({route, navigation}: Props) {
      onPanResponderRelease: (evt, gestureState) => {
        // The user has released all touches while this view is the
        // responder. This typically means a gesture has succeeded
-       console.log('end');
+       //console.log('end');
      },
      onPanResponderTerminate: (evt, gestureState) => {
        // Another component has become the responder, so this gesture
@@ -121,9 +134,13 @@ export default function DefectsScreen({route, navigation}: Props) {
 
   return (
     <View>
+      <AddDefectDialog onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
       <Title>Add defect</Title>
-      <View {...panResponder.panHandlers} style={{width: 400, height: 400, borderColor: 'red', borderWidth: 2}}>
-        <Image style={{width: '100%', height: '100%'}} source={{ uri: image }} />
+      <View {...panResponder.panHandlers} style={{ borderColor: 'red', borderWidth: 2}}>
+        <AutoImage
+          source={selectedImage}
+          width={405}
+        />
         <Svg style={StyleSheet.absoluteFill}>
           <Rect
             x={rectangle.x}
@@ -138,14 +155,89 @@ export default function DefectsScreen({route, navigation}: Props) {
       </View>
       <View style={{ marginVertical: 10 }}>
         <ScrollView horizontal={true}>
-          <Image style={{width: 100, height: 100, margin: 5}} source={{ uri: image }} />
-          <Image style={{width: 100, height: 100, margin: 5}} source={{ uri: image2 }} />
+          {images.map((img, index) => 
+            <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedImage(img)}>
+              <AutoImage
+                source={img}
+                height={150}
+              />
+            </TouchableHighlight >
+          )}
         </ScrollView>
       </View>
-      <Button onPress={() => console.log('')} mode='contained'>Add Defect</Button>
+      <Button onPress={() => setVisible(true)} mode='contained'>SELECT REGION</Button>
     </View>
   );
 };
+
+type AddDefectDialogProps = {
+  visible: boolean
+  onClose: () => void
+}
+
+function AddDefectDialog({visible, onClose}: AddDefectDialogProps) {
+
+  const [imageUri, setImageUri] = useState<string>();
+  const [title, setTitle] = useState<string>();
+  const [description, setDescription] = useState<string>();
+  const [viewerActive, setViewerActive] = useState<boolean>(false);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (result.canceled) {
+      return;
+    }
+
+    const localUri = result.assets[0].uri;
+    setImageUri(localUri);
+  };
+
+  return (
+    <Portal>
+       { imageUri &&
+        <ImageView
+          images={[{uri: imageUri}]}
+          imageIndex={0}
+          visible={viewerActive}
+          onRequestClose={() => setViewerActive(false)}
+        />}
+        <Dialog visible={visible} onDismiss={onClose}>
+          <Dialog.Title>Add defect</Dialog.Title>
+          <Dialog.Content>
+            <TextInput label={'Title'} 
+              multiline={true} 
+              value={title} 
+              onChangeText={(value) => setTitle(value)}>
+            </TextInput>
+            <TextInput label={'description'} 
+              multiline={true} 
+              value={description} 
+              onChangeText={(value) => setDescription(value)}>     
+            </TextInput>
+          <View style={{margin: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>  
+            {imageUri != '' && 
+              <TouchableHighlight onPress={() => setViewerActive(true)}>
+                <Image source={{uri: imageUri}} style={{width: 100, height: 100}} ></Image>
+              </TouchableHighlight>
+            }
+            <IconButton onPress={() => pickImage()} size={30} icon='camera' />
+          </View>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => onClose()}>Go back</Button>
+            <Button onPress={() => onClose()}>Submit</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+  );
+
+}
 
 //<TextInput label="Title" multiline={true}></TextInput>
 //<TextInput label="Description" multiline={true}></TextInput>
@@ -160,14 +252,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   imageContainer: {
-    flex: 1,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 150, // replace with your desired width
+    height: 150, // replace with your desired height
+    margin: 5
   },
   image: {
     flex: 1,
-    alignSelf: 'stretch',
+    resizeMode: 'contain',
   },
   imagePlaceholder: {
     backgroundColor: '#DDD',
