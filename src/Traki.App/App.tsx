@@ -14,6 +14,7 @@ import { Animated, PanResponder, View, StyleSheet, Image } from 'react-native';
 import { setId } from './src/store/project-slice';
 import { image } from './src/screens/product/test';
 import Svg, { Rect } from 'react-native-svg';
+import * as ImagePicker from 'expo-image-picker';
 
 const theme = {
   ...DefaultTheme,
@@ -72,113 +73,6 @@ function SignInScreen() {
   );
 }
 
-interface Rectangle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-const rect1: Rectangle = {
-  x: 0,
-  y: 0,
-  width: 100,
-  height: 100
-}
-
-const DefectPrototype = () => {
-  const [rectangles, setRectangles] = useState<Rectangle[]>([rect1]);
-
-  const [rectangle, setRectangle] = useState<Rectangle>(rect1);
-
-  const panResponder = useRef(
-    PanResponder.create({
-     // Ask to be the responder:
-     onStartShouldSetPanResponder: (evt, gestureState) => true,
-     onStartShouldSetPanResponderCapture: (evt, gestureState) =>
-       true,
-     onMoveShouldSetPanResponder: (evt, gestureState) => true,
-     onMoveShouldSetPanResponderCapture: (evt, gestureState) =>
-       true,
-
-     onPanResponderGrant: (evt, gestureState) => {
-       // The gesture has started. Show visual feedback so the user knows
-       // what is happening!
-       // gestureState.d{x,y} will be set to zero now
-       console.log('start');
-
-       const rect: Rectangle = {
-        x: evt.nativeEvent.locationX,
-        y: evt.nativeEvent.locationY,
-        width: 1,
-        height: 1
-       }
-
-       setRectangle(rect);
-     },
-     onPanResponderMove: (evt, gestureState) => {
-       // The most recent move distance is gestureState.move{X,Y}
-       // The accumulated gesture distance since becoming responder is
-       // gestureState.d{x,y}
-
-       const a = evt.nativeEvent.locationX;
-       const b = evt.nativeEvent.locationY;
-
-       setRectangle((prevState => {
-        let dx = a - prevState.x;
-        let dy = b - prevState.y;
-
-      //  dx = dx < 0 ? -1*dx : dx;
-      //  dy = dy < 0 ? -1*dy : dy;
-
-        const rect: Rectangle = {
-          x: prevState.x,
-          y: prevState.y,
-          width: dx,
-          height: dy
-        } 
-        return rect;
-       }));
-     },
-     onPanResponderTerminationRequest: (evt, gestureState) =>
-       true,
-     onPanResponderRelease: (evt, gestureState) => {
-       // The user has released all touches while this view is the
-       // responder. This typically means a gesture has succeeded
-       console.log('end');
-     },
-     onPanResponderTerminate: (evt, gestureState) => {
-       // Another component has become the responder, so this gesture
-       // should be cancelled
-     },
-     onShouldBlockNativeResponder: (evt, gestureState) => {
-       // Returns whether this component should block native components from becoming the JS
-       // responder. Returns true by default. Is currently only supported on android.
-       return true;
-     }
-    }),
-  ).current;
-
-  return (
-    <View style={styles.container}>
-      <View {...panResponder.panHandlers} style={{width: 400, height: 400, borderColor: 'red', borderWidth: 2}}>
-        <Image style={{width: '100%', height: '100%'}} source={{ uri: image }} />
-        <Svg style={StyleSheet.absoluteFill}>
-          <Rect
-            x={rectangle.x}
-            y={rectangle.y}
-            width={rectangle.width}
-            height={rectangle.height}
-            stroke="black"
-            strokeWidth="2"
-            fill="transparent"
-          />
-        </Svg>
-      </View>
-    </View>
-  );
-};
-
 function TempScreen() {
   const id = useSelector((state: RootState) => state.project.id);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -192,7 +86,7 @@ function TempScreen() {
       </Drawer.Navigator> 
       :
       <Stack.Navigator>
-        <Stack.Screen name="SignIn" options={{header: () => <></>}} component={DefectPrototype} />
+        <Stack.Screen name="SignIn" options={{header: () => <></>}} component={SignInScreen} />
       </Stack.Navigator>
       }
     </NavigationContainer>
