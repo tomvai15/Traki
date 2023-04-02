@@ -135,6 +135,7 @@ export default function ProductScreen({route, navigation}: Props) {
 
       <Card mode='outlined' style={{marginTop:10}}>
         <Card.Title title="Add defect" subtitle="" left={Wrench} />
+        <Button onPress={() => navigation.navigate('DefectsScreen', {productId: productId})}>add</Button>
       </Card>
       <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>
         <Title>Protocols</Title>
