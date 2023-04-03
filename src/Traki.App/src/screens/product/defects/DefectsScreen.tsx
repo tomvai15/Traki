@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
@@ -14,6 +14,9 @@ import ImageView from "react-native-image-viewing";
 import { CommentIcon } from '../../../components/CommentIcon';
 import ImageWithRegions from '../../../components/ImageWithRegions';
 import { Rectangle } from '../../../components/types/Rectangle';
+import { Drawing } from '../../../contracts/drawing/Drawing';
+import drawingService from '../../../services/drawing-service';
+import pictureService from '../../../services/picture-service';
 
 const rect1: Rectangle = {height: 0.40555190067590374, width: 0.07161458333333333, x: 0.24264356825086805, y: 0.15273983724257026};
 
@@ -30,18 +33,46 @@ const images = [image, image2, image];
 
 const defects = [1,2,3,4,5,6];
 
+type DrawingWithImage = {
+  drawing: Drawing,
+  imageBase64: string
+}
+
 export default function DefectsScreen({route, navigation}: Props) {
 
   const {productId} = route.params;
+  const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
+  
+  useEffect(() => {
+    fetchDrawings();
+  }, [])
+
+  async function fetchDrawings() {
+    const response = await drawingService.getDrawings(Number(productId));
+    await fetchDrawingPictures(response.drawings);
+  }
+
+  async function fetchDrawingPictures(drawings: Drawing[]) {
+    console.log(drawings);
+    const drawingsWithImage: DrawingWithImage[] = [];
+
+    for (let i = 0; i < drawings.length; i++) {
+      let item = drawings[i];
+      const imageBase64 = await pictureService.getPicture('company', item.imageName);
+      const newDrawingImage: DrawingWithImage = {drawing: item, imageBase64: imageBase64};
+      drawingsWithImage.push(newDrawingImage);
+    };
+    setDrawings(drawingsWithImage);
+  }
 
   return (
     <View>
       <Title>Defects</Title>
       <View style={{ marginVertical: 10 }}>
         <ScrollView horizontal={true}>
-          {images.map((img, index) => 
+          {drawings.map((img, index) => 
             <TouchableHighlight key={index} style={{margin: 5}}>
-              <ImageWithRegions source={img} height={200} rectangles={[rect1]}/>
+              <ImageWithRegions source={img.imageBase64} height={300} rectangles={[rect1]}/>
             </TouchableHighlight >
           )}
         </ScrollView>

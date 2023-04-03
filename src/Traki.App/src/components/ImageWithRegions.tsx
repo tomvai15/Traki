@@ -51,7 +51,7 @@ export default function ImageWithRegions({width, height, source, rectangles}: Im
 
       setTransformedRectangles(newRectangles);
    });
-  }, []);
+  }, [width, height, rectangles, source]);
   
   return (
     <View elevation={5}>
