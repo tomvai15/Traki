@@ -28,11 +28,6 @@ const rect1: Rectangle = {
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'AddDefectScreen'>;
 
-type ImageSize = {
-  width: number,
-  height: number
-}
-
 const images = [image, image2, image];
 
 export default function AddDefectScreen({route, navigation}: Props) {
@@ -45,6 +40,10 @@ export default function AddDefectScreen({route, navigation}: Props) {
   const [selectedImage, setSelectedImage] = useState<string>(image);
 
   const [visible, setVisible] = React.useState(false);
+
+  const [imageWidth, setImageWidth] = useState<number>(405);
+
+  const [imageSize, setImageSize] = useState<ImageSize>();
 
   const pickImage = async () => {
     const result = await ImagePicker.launchCameraAsync({
@@ -132,14 +131,37 @@ export default function AddDefectScreen({route, navigation}: Props) {
     }),
   ).current;
 
+  
+  function createDefect(title: string, description: string) {
+
+    Image.getSize(selectedImage, (sourceImageWidth, sourceImageHeight) => {
+       const newWidth = imageWidth;
+       const newHeight = (sourceImageHeight*imageWidth)/sourceImageWidth;
+      
+       const xPerc = rectangle.x/newWidth;
+       const yPerc = rectangle.y/newHeight;
+       const widthPerc = rectangle.width/newWidth;
+       const heightPerc = rectangle.height/newHeight;
+
+       const rectPerc: Rectangle  = {
+        x: xPerc,
+        y: yPerc,
+        width: widthPerc,
+        height: heightPerc,
+       }
+
+       console.log(rectPerc);
+    });
+  }
+
   return (
     <View>
-      <AddDefectDialog onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
-      <Title>Add defect</Title>
+      <AddDefectDialog onSubmit={createDefect} onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
+      <Title>Select Region</Title>
       <View {...panResponder.panHandlers} style={{ borderColor: 'red', borderWidth: 2}}>
         <AutoImage
           source={selectedImage}
-          width={405}
+          width={imageWidth}
         />
         <Svg style={StyleSheet.absoluteFill}>
           <Rect
@@ -165,21 +187,22 @@ export default function AddDefectScreen({route, navigation}: Props) {
           )}
         </ScrollView>
       </View>
-      <Button onPress={() => setVisible(true)} mode='contained'>SELECT REGION</Button>
+      <Button onPress={() => setVisible(true)} mode='contained'>Confirm Region</Button>
     </View>
   );
 };
 
 type AddDefectDialogProps = {
   visible: boolean
-  onClose: () => void
+  onClose: () => void,
+  onSubmit: (title: string, description: string) => void
 }
 
-function AddDefectDialog({visible, onClose}: AddDefectDialogProps) {
+function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
 
   const [imageUri, setImageUri] = useState<string>();
-  const [title, setTitle] = useState<string>();
-  const [description, setDescription] = useState<string>();
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [viewerActive, setViewerActive] = useState<boolean>(false);
 
   const pickImage = async () => {
@@ -197,6 +220,10 @@ function AddDefectDialog({visible, onClose}: AddDefectDialogProps) {
     const localUri = result.assets[0].uri;
     setImageUri(localUri);
   };
+
+  function createDefect() {
+    onSubmit(title, description);
+  }
 
   return (
     <Portal>
@@ -231,39 +258,9 @@ function AddDefectDialog({visible, onClose}: AddDefectDialogProps) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => onClose()}>Go back</Button>
-            <Button onPress={() => onClose()}>Submit</Button>
+            <Button onPress={() => createDefect()}>Submit</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
   );
-
 }
-
-//<TextInput label="Title" multiline={true}></TextInput>
-//<TextInput label="Description" multiline={true}></TextInput>
-//       <Button mode='contained' onPress={pickImage} >Add Image</Button>
-//      {imageUri &&  <Image source={{ uri: imageUri }} style={{ width: 100, height: 100 }} />}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  imageContainer: {
-    width: 150, // replace with your desired width
-    height: 150, // replace with your desired height
-    margin: 5
-  },
-  image: {
-    flex: 1,
-    resizeMode: 'contain',
-  },
-  imagePlaceholder: {
-    backgroundColor: '#DDD',
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

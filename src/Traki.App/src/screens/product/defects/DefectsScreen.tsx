@@ -12,20 +12,10 @@ import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput,
 import AutoImage from '../../../components/AutoImage';
 import ImageView from "react-native-image-viewing";
 import { CommentIcon } from '../../../components/CommentIcon';
+import ImageWithRegions from '../../../components/ImageWithRegions';
+import { Rectangle } from '../../../components/types/Rectangle';
 
-interface Rectangle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-const rect1: Rectangle = {
-  x: 0,
-  y: 0,
-  width: 1,
-  height: 1
-}
+const rect1: Rectangle = {height: 0.40555190067590374, width: 0.07161458333333333, x: 0.24264356825086805, y: 0.15273983724257026};
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'DefectsScreen'>;
 
@@ -43,38 +33,21 @@ const defects = [1,2,3,4,5,6];
 export default function DefectsScreen({route, navigation}: Props) {
 
   const {productId} = route.params;
-  const [rectangles, setRectangles] = useState<Rectangle[]>([rect1]);
-
-  const [rectangle, setRectangle] = useState<Rectangle>(rect1);
-
-  const [imageUri, setImageUri] = useState<string>('');
-
-  const [selectedImage, setSelectedImage] = useState<string>(image);
-
-  const [visible, setVisible] = React.useState(false);
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (result.canceled) {
-      return;
-    }
-    const localUri = result.assets[0].uri;
-
-    setImageUri(localUri);
-  };
 
   return (
     <View>
-      <Title>Defect</Title>
-      <ScrollView style={{height: 300}}>
+      <Title>Defects</Title>
+      <View style={{ marginVertical: 10 }}>
+        <ScrollView horizontal={true}>
+          {images.map((img, index) => 
+            <TouchableHighlight key={index} style={{margin: 5}}>
+              <ImageWithRegions source={img} height={200} rectangles={[rect1]}/>
+            </TouchableHighlight >
+          )}
+        </ScrollView>
+      </View>
+      <Button style={{marginVertical: 5}} buttonColor='red' onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})} mode='contained'>Add Defect</Button>
+      <ScrollView style={{height: 400}}>
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
             <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId})}>
@@ -83,19 +56,6 @@ export default function DefectsScreen({route, navigation}: Props) {
           </Card>
         )}
       </ScrollView>
-      <View style={{ marginVertical: 10 }}>
-        <ScrollView horizontal={true}>
-          {images.map((img, index) => 
-            <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedImage(img)}>
-              <AutoImage
-                source={img}
-                height={300}
-              />
-            </TouchableHighlight >
-          )}
-        </ScrollView>
-      </View>
-      <Button buttonColor='red' onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})} mode='contained'>Add Defect</Button>
     </View>
   );
 };

@@ -1,6 +1,7 @@
 import  React, { useEffect, useState } from 'react';
 import { View, Image, TouchableHighlight} from 'react-native';
 import ImageView from "react-native-image-viewing";
+import { List } from 'react-native-paper';
 
 type ImageWithViewerProps = {
   width: number,
@@ -21,7 +22,10 @@ export default function ImageWithViewer({ width, height, source }: ImageWithView
           onRequestClose={() => setViewerActive(false)}
         />}
       <TouchableHighlight   underlayColor="#DDDDDD" onPress={() => setViewerActive(true)}>
-        <Image source={{ uri: source}} style={{ width: width, height: height }} />
+        <View>
+          <Image source={{ uri: source}} style={{ width: width, height: height }} />
+          <List.Icon color='grey' style={{position: 'absolute', bottom: 5, right: 5}}  icon={'magnify-plus-outline'}/>
+        </View>
       </TouchableHighlight>
     </View>
   );

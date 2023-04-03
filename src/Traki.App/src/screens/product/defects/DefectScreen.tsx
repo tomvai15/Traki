@@ -73,8 +73,15 @@ export default function DefectScreen({route, navigation}: Props) {
   };
 
   return (
-    <View>
+    <ScrollView>
       <Title>Defects</Title>
+      <Card mode='outlined' style={{marginTop:10}}>
+        <Card.Title title="Missing something" 
+          subtitle="saddsasadsda" 
+          left={() => <Avatar.Text size={50} label="TV" />} 
+          right={() => <View style={{margin: 10}}><ImageWithViewer source={image} width={60} height={100} ></ImageWithViewer></View>}
+        />
+      </Card>
       <View style={{ marginVertical: 10 }}>
         <TouchableHighlight style={{margin: 5}}>
           <AutoImage
@@ -83,17 +90,32 @@ export default function DefectScreen({route, navigation}: Props) {
           />
         </TouchableHighlight >
       </View>
+      <Text>Comments</Text>
       <Card mode='outlined' style={{marginTop:10}}>
-        <TouchableOpacity>
-          <Card.Title title="Missing something" subtitle="saddsasadsda" left={Wrench} right={() => <CommentIcon text={'0'}/>} />
-        </TouchableOpacity >
+        <Card.Title title=''
+          left={() => <Avatar.Text size={30} label="TV" />} 
+        />
+        <Card.Content>
+          <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
+            <TextInput disabled value='Missing something' style={{flex: 1, marginRight: 10}} multiline={true}></TextInput>
+            <ImageWithViewer source={image} width={60} height={100} ></ImageWithViewer>
+          </View>
+        </Card.Content>
       </Card>
+      <Text>New comment</Text>
       <Card mode='outlined' style={{marginTop:10}}>
-        <TouchableOpacity>
-          <Card.Title title="Missing something" left={Wrench} />
-        </TouchableOpacity >
-      </Card> 
-      <ImageWithViewer source={image} width={100} height={100} ></ImageWithViewer>
-    </View>
+        <Card.Title title=''
+          left={() => <Avatar.Text size={30} label="TV" />} 
+          right={() => <View style={{margin: 10}}><IconButton onPress={() => pickImage()} size={30} icon='camera' /></View>}
+        />
+        <Card.Content>
+          <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
+            <TextInput style={{flex: 1, marginRight: 10}} label={'comment'} multiline={true}></TextInput>
+            {image && <ImageWithViewer source={image} width={60} height={100} ></ImageWithViewer>}
+          </View>
+          <Button mode='contained' onPress={() => console.log()}>Submit</Button>
+        </Card.Content>
+      </Card>
+    </ScrollView>
   );
 };
