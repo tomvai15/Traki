@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Avatar, Button, Card, Dialog, Divider, List, Portal, Searchbar, Text, Title } from 'react-native-paper';
 import { image } from './test';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -129,16 +129,18 @@ export default function ProductScreen({route, navigation}: Props) {
         </Card.Content>
         <Card.Cover style={{height:300}} source={{ uri: image }} />
         <Card.Actions>
-          <Button>Redaguoti</Button>
+          <Button onPress={() => navigation.navigate('DefectsScreen', {productId: productId})}>View defects</Button>
         </Card.Actions>
       </Card>
 
       <Card mode='outlined' style={{marginTop:10}}>
-        <Card.Title title="Add defect" subtitle="" left={Wrench} />
+        <TouchableOpacity onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})}>
+          <Card.Title title="Add defect" subtitle="asd" left={Wrench} />
+        </TouchableOpacity >
       </Card>
       <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>
         <Title>Protocols</Title>
-        <Button onPress={showDialog} icon={'plus'} mode='contained'>Pridėti</Button>
+        <Button onPress={showDialog} icon={'plus'} mode='contained'>Add</Button>
       </View>
       <List.Section style={{marginTop: -10}}>
         {protocols.map((protocol) => 

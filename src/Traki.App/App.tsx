@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput } from 'react-native-paper';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -10,8 +10,11 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { RootState, store } from './src/store/store';
 import './src/extensions/string.extensions';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View } from 'react-native';
+import { Animated, PanResponder, View, StyleSheet, Image } from 'react-native';
 import { setId } from './src/store/project-slice';
+import { image } from './src/screens/product/test';
+import Svg, { Rect } from 'react-native-svg';
+import * as ImagePicker from 'expo-image-picker';
 
 const theme = {
   ...DefaultTheme,
@@ -70,7 +73,6 @@ function SignInScreen() {
   );
 }
 
-
 function TempScreen() {
   const id = useSelector((state: RootState) => state.project.id);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -101,3 +103,22 @@ export default function App() {
     </PaperProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleText: {
+    fontSize: 14,
+    lineHeight: 24,
+    fontWeight: 'bold',
+  },
+  box: {
+    height: 150,
+    width: 150,
+    backgroundColor: 'blue',
+    borderRadius: 5,
+  },
+});
