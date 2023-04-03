@@ -17,8 +17,9 @@ import { Rectangle } from '../../../components/types/Rectangle';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import drawingService from '../../../services/drawing-service';
 import pictureService from '../../../services/picture-service';
+import { Defect } from '../../../contracts/drawing/defect/Defect';
 
-const rect1: Rectangle = {height: 0.40555190067590374, width: 0.07161458333333333, x: 0.24264356825086805, y: 0.15273983724257026};
+const rect1: Rectangle = {height: 5.379220725988574, width: 8.324027355806326, x: 84.9352424527392, y: 23.948985593123503};
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'DefectsScreen'>;
 
@@ -31,7 +32,7 @@ const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'orange'}}  
 
 const images = [image, image2, image];
 
-const defects = [1,2,3,4,5,6];
+//const defects = [1,2,3,4,5,6];
 
 type DrawingWithImage = {
   drawing: Drawing,
@@ -42,6 +43,7 @@ export default function DefectsScreen({route, navigation}: Props) {
 
   const {productId} = route.params;
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
+  const [defects, setDefects] = useState<Defect[]>([]);
   
   useEffect(() => {
     fetchDrawings();
@@ -53,16 +55,26 @@ export default function DefectsScreen({route, navigation}: Props) {
   }
 
   async function fetchDrawingPictures(drawings: Drawing[]) {
-    console.log(drawings);
     const drawingsWithImage: DrawingWithImage[] = [];
-
+    const newDefects: Defect[] = [];
     for (let i = 0; i < drawings.length; i++) {
       let item = drawings[i];
+      newDefects.push(...item.defects);
       const imageBase64 = await pictureService.getPicture('company', item.imageName);
       const newDrawingImage: DrawingWithImage = {drawing: item, imageBase64: imageBase64};
       drawingsWithImage.push(newDrawingImage);
     };
+
+    setDefects(newDefects);
     setDrawings(drawingsWithImage);
+  }
+
+  function defectsToRectangles(defects: Defect[]): Rectangle[] {
+    return defects.map(x=> defectToRectangle(x));
+  }
+
+  function defectToRectangle(defect: Defect) : Rectangle {
+    return {x: defect.x, y: defect.y, width: defect.width, height: defect.height};
   }
 
   return (
@@ -72,7 +84,7 @@ export default function DefectsScreen({route, navigation}: Props) {
         <ScrollView horizontal={true}>
           {drawings.map((img, index) => 
             <TouchableHighlight key={index} style={{margin: 5}}>
-              <ImageWithRegions source={img.imageBase64} height={300} rectangles={[rect1]}/>
+              <ImageWithRegions source={img.imageBase64} height={300} rectangles={defectsToRectangles(img.drawing.defects)}/>
             </TouchableHighlight >
           )}
         </ScrollView>
@@ -81,8 +93,8 @@ export default function DefectsScreen({route, navigation}: Props) {
       <ScrollView style={{height: 400}}>
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
-            <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId})}>
-              <Card.Title title="Missing something" subtitle="saddsasadsda" left={Wrench} right={() => <CommentIcon text={'0'}/>} />
+            <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId, drawingId: item.drawingId, defectId: item.id})}>
+              <Card.Title title={item.title} subtitle={item.description} left={Wrench} right={() => <CommentIcon text={'0'}/>} />
             </TouchableOpacity >
           </Card>
         )}

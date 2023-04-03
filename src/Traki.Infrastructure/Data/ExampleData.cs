@@ -38,8 +38,8 @@ namespace Traki.Infrastructure.Data
                 Title  = "Defect 1",
                 Description= "Defect 1",
                 Status= DefectStatus.NotFixed,
-                XPosition = 50,
-                YPosition = 50,
+                X = 50,
+                Y = 50,
                 Width = 10,
                 Height = 20,
                 DrawingId = 1
@@ -49,8 +49,8 @@ namespace Traki.Infrastructure.Data
                 Title  = "Defect 2",
                 Description= "Defect 2",
                 Status= DefectStatus.NotFixed,
-                XPosition = 10,
-                YPosition = 10,
+                X = 10,
+                Y = 10,
                 Width = 20,
                 Height = 10,
                 DrawingId = 2

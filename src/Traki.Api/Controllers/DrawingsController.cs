@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing;
-using Traki.Api.Contracts.Product;
-using Traki.Domain.Handlers;
 using Traki.Domain.Repositories;
 
 namespace Traki.Api.Controllers
@@ -27,6 +25,18 @@ namespace Traki.Api.Controllers
             var response = new GetDrawingsResponse
             {
                 Drawings = _mapper.Map<IEnumerable<DrawingDto>>(drawings)
+            };
+            return Ok(response);
+        }
+
+        [HttpGet("{drawingId}")]
+        public async Task<ActionResult<GetDrawingResponse>> GetDrawing(int productId, int drawingId)
+        {
+            var drawing = await _drawingsRepository.GetDrawing(productId, drawingId);
+
+            var response = new GetDrawingResponse
+            {
+                Drawing = _mapper.Map<DrawingDto>(drawing)
             };
             return Ok(response);
         }

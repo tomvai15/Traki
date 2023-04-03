@@ -8,7 +8,7 @@ namespace Traki.Infrastructure.Data
         {
             var dbContext = serviceProvider.GetRequiredService<TrakiDbContext>();
 
-            return;
+            //return;
 
             if (isDevelopment)
             {

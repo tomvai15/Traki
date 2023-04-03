@@ -41,10 +41,10 @@ export default function ImageWithRegions({width, height, source, rectangles}: Im
 
       const newRectangles = rectangles.map((rectangle) => {
         const newRect: Rectangle = {
-          x: rectangle.x * newWidth,
-          y: rectangle.y * newHeight,
-          width: rectangle.width * newWidth,
-          height: rectangle.height * newHeight,
+          x: rectangle.x * newWidth * 0.01,
+          y: rectangle.y * newHeight * 0.01,
+          width: rectangle.width * newWidth * 0.01,
+          height: rectangle.height * newHeight * 0.01,
         }
         return newRect;
       });

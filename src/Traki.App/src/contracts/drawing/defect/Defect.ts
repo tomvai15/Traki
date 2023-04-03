@@ -1,3 +1,4 @@
+import { DefectComment } from "./DefectComment";
 import { DefectStatus } from "./DefectStatus";
 
 export type Defect = {
@@ -9,4 +10,6 @@ export type Defect = {
   y: number,
   width: number,
   height: number,
+  drawingId: number,
+  defectComments?: DefectComment[]
 }

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
@@ -13,6 +13,14 @@ import AutoImage from '../../../components/AutoImage';
 import ImageView from "react-native-image-viewing";
 import { CommentIcon } from '../../../components/CommentIcon';
 import ImageWithViewer from '../../../components/ImageWithViewer';
+import { Drawing } from '../../../contracts/drawing/Drawing';
+import { Defect } from '../../../contracts/drawing/defect/Defect';
+import drawingService from '../../../services/drawing-service';
+import defectService from '../../../services/defect-service';
+import pictureService from '../../../services/picture-service';
+import ImageWithRegions from '../../../components/ImageWithRegions';
+import { DefectComment } from '../../../contracts/drawing/defect/DefectComment';
+import { CreateDefectCommentRequest } from '../../../contracts/drawing/defect/CreateDefectCommentRequest';
 
 interface Rectangle {
   x: number;
@@ -39,20 +47,36 @@ const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'orange'}}  
 
 const images = [image, image2, image];
 
-const defects = [1,2,3,4,5,6];
+type DrawingWithImage = {
+  drawing: Drawing,
+  imageBase64: string
+}
 
 export default function DefectScreen({route, navigation}: Props) {
+  const {productId, drawingId, defectId} = route.params;
+  const [drawing, setDrawing] = useState<DrawingWithImage>();
+  const [defect, setDefect] = useState<Defect>();
 
-  const {productId} = route.params;
-  const [rectangles, setRectangles] = useState<Rectangle[]>([rect1]);
+  const [commentText, setCommentText] = useState<string>('');
 
-  const [rectangle, setRectangle] = useState<Rectangle>(rect1);
+  useEffect(() => {
+    fetchDefect();
+    fetchDrawing();
+  }, []);
+
+  async function fetchDefect() {
+    const response = await defectService.getDefect(drawingId, defectId);
+    setDefect(response.defect);
+  }
+
+  async function fetchDrawing() {
+    const response = await drawingService.getDrawing(productId, 1);
+    const imageBase64 = await pictureService.getPicture('company', response.drawing.imageName);
+    const newDrawingImage: DrawingWithImage = {drawing: response.drawing, imageBase64: imageBase64};
+    setDrawing(newDrawingImage);
+  }
 
   const [imageUri, setImageUri] = useState<string>('');
-
-  const [selectedImage, setSelectedImage] = useState<string>(image);
-
-  const [visible, setVisible] = React.useState(false);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchCameraAsync({
@@ -72,36 +96,52 @@ export default function DefectScreen({route, navigation}: Props) {
     setImageUri(localUri);
   };
 
+  function defectToRectangle(defect: Defect) : Rectangle {
+    return {x: defect.x, y: defect.y, width: defect.width, height: defect.height};
+  }
+
+  async function createComment() {
+    const defectComment: DefectComment = {
+      id: 0,
+      text: commentText,
+      date: '',
+      author: ''
+    };
+
+    const request: CreateDefectCommentRequest = {
+      defectComment: defectComment
+    };
+
+    await defectService.createDefectComment(drawingId, defectId, request);
+    await fetchDefect();
+
+    setCommentText('');
+  }
+
   return (
     <ScrollView>
-      <Title>Defects</Title>
       <Card mode='outlined' style={{marginTop:10}}>
-        <Card.Title title="Missing something" 
-          subtitle="saddsasadsda" 
+        <Card.Title title={defect?.title}
+          subtitle={defect?.description} 
           left={() => <Avatar.Text size={50} label="TV" />} 
           right={() => <View style={{margin: 10}}><ImageWithViewer source={image} width={60} height={100} ></ImageWithViewer></View>}
         />
       </Card>
       <View style={{ marginVertical: 10 }}>
-        <TouchableHighlight style={{margin: 5}}>
-          <AutoImage
-            source={image}
-            height={300}
-          />
-        </TouchableHighlight >
+        { defect && drawing && <ImageWithRegions source={drawing.imageBase64} height={300} rectangles={[defectToRectangle(defect)]}/>}
       </View>
       <Text>Comments</Text>
-      <Card mode='outlined' style={{marginTop:10}}>
-        <Card.Title title=''
+      { defect?.defectComments?.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
+        <Card.Title title='' subtitle={item.date}
           left={() => <Avatar.Text size={30} label="TV" />} 
         />
         <Card.Content>
           <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <TextInput disabled value='Missing something' style={{flex: 1, marginRight: 10}} multiline={true}></TextInput>
+            <TextInput disabled value={item.text} style={{flex: 1, marginRight: 10}} multiline={true}></TextInput>
             <ImageWithViewer source={image} width={60} height={100} ></ImageWithViewer>
           </View>
         </Card.Content>
-      </Card>
+      </Card>)}
       <Text>New comment</Text>
       <Card mode='outlined' style={{marginTop:10}}>
         <Card.Title title=''
@@ -110,10 +150,10 @@ export default function DefectScreen({route, navigation}: Props) {
         />
         <Card.Content>
           <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <TextInput style={{flex: 1, marginRight: 10}} label={'comment'} multiline={true}></TextInput>
+            <TextInput value={commentText} onChangeText={setCommentText} style={{flex: 1, marginRight: 10}} label={'comment'} multiline={true}></TextInput>
             {image && <ImageWithViewer source={image} width={60} height={100} ></ImageWithViewer>}
           </View>
-          <Button mode='contained' onPress={() => console.log()}>Submit</Button>
+          <Button mode='contained' onPress={createComment}>Submit</Button>
         </Card.Content>
       </Card>
     </ScrollView>

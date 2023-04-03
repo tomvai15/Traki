@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
@@ -11,6 +11,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton } from 'react-native-paper';
 import AutoImage from '../../../components/AutoImage';
 import ImageView from "react-native-image-viewing";
+import defectService from '../../../services/defect-service';
+import { Drawing } from '../../../contracts/drawing/Drawing';
+import { Defect } from '../../../contracts/drawing/defect/Defect';
+import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
+import drawingService from '../../../services/drawing-service';
+import pictureService from '../../../services/picture-service';
+import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 
 interface Rectangle {
   x: number;
@@ -26,12 +33,19 @@ const rect1: Rectangle = {
   height: 1
 }
 
+type DrawingWithImage = {
+  drawing: Drawing,
+  imageBase64: string
+}
+
 type Props = NativeStackScreenProps<ProductStackParamList, 'AddDefectScreen'>;
 
 const images = [image, image2, image];
 
 export default function AddDefectScreen({route, navigation}: Props) {
-  const [rectangles, setRectangles] = useState<Rectangle[]>([rect1]);
+
+  const {productId} = route.params;
+  const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
 
   const [rectangle, setRectangle] = useState<Rectangle>(rect1);
 
@@ -43,25 +57,34 @@ export default function AddDefectScreen({route, navigation}: Props) {
 
   const [imageWidth, setImageWidth] = useState<number>(405);
 
-  const [imageSize, setImageSize] = useState<ImageSize>();
+  const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
+  
+  useEffect(() => {
+    fetchDrawings();
+  }, [])
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  async function fetchDrawings() {
+    const response = await drawingService.getDrawings(Number(productId));
+    await fetchDrawingPictures(response.drawings);
+  }
 
-    console.log(result);
+  async function fetchDrawingPictures(drawings: Drawing[]) {
+    console.log(drawings);
 
-    if (result.canceled) {
+    if (drawings.length == 0) {
       return;
     }
-    const localUri = result.assets[0].uri;
+    const drawingsWithImage: DrawingWithImage[] = [];
 
-    setImageUri(localUri);
-  };
+    for (let i = 0; i < drawings.length; i++) {
+      let item = drawings[i];
+      const imageBase64 = await pictureService.getPicture('company', item.imageName);
+      const newDrawingImage: DrawingWithImage = {drawing: item, imageBase64: imageBase64};
+      drawingsWithImage.push(newDrawingImage);
+    };
+    setSelectedDrawing(drawingsWithImage[0]);
+    setDrawings(drawingsWithImage);
+  }
 
   const panResponder = useRef(
     PanResponder.create({
@@ -100,9 +123,6 @@ export default function AddDefectScreen({route, navigation}: Props) {
         let dx = a - prevState.x;
         let dy = b - prevState.y;
 
-      //  dx = dx < 0 ? -1*dx : dx;
-      //  dy = dy < 0 ? -1*dy : dy;
-
         const rect: Rectangle = {
           x: prevState.x,
           y: prevState.y,
@@ -130,9 +150,11 @@ export default function AddDefectScreen({route, navigation}: Props) {
      }
     }),
   ).current;
-
   
   function createDefect(title: string, description: string) {
+    if (selectedDrawing == null) {
+      return;
+    }
 
     Image.getSize(selectedImage, (sourceImageWidth, sourceImageHeight) => {
        const newWidth = imageWidth;
@@ -144,13 +166,30 @@ export default function AddDefectScreen({route, navigation}: Props) {
        const heightPerc = rectangle.height/newHeight;
 
        const rectPerc: Rectangle  = {
-        x: xPerc,
-        y: yPerc,
-        width: widthPerc,
-        height: heightPerc,
+        x: xPerc * 100,
+        y: yPerc * 100,
+        width: widthPerc * 100,
+        height: heightPerc * 100,
        }
 
-       console.log(rectPerc);
+       const newDefect: Defect = {
+        id: 0,
+        title: title,
+        description: description,
+        status: DefectStatus.NotFixed,
+        x: rectPerc.x,
+        y: rectPerc.y,
+        width: rectPerc.width,
+        height: rectPerc.height,
+        drawingId: 0
+       };
+
+       console.log(newDefect);
+
+       const request: CreateDefectRequest = {
+        defect: newDefect
+       }
+       defectService.createDefect(selectedDrawing.drawing.id, request);
     });
   }
 
@@ -158,9 +197,9 @@ export default function AddDefectScreen({route, navigation}: Props) {
     <View>
       <AddDefectDialog onSubmit={createDefect} onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
       <Title>Select Region</Title>
-      <View {...panResponder.panHandlers} style={{ borderColor: 'red', borderWidth: 2}}>
+      { selectedDrawing && <View {...panResponder.panHandlers} style={{ borderColor: 'red', borderWidth: 2}}>
         <AutoImage
-          source={selectedImage}
+          source={selectedDrawing.imageBase64}
           width={imageWidth}
         />
         <Svg style={StyleSheet.absoluteFill}>
@@ -174,13 +213,13 @@ export default function AddDefectScreen({route, navigation}: Props) {
             fill="transparent"
           />
         </Svg>
-      </View>
+      </View>}
       <View style={{ marginVertical: 10 }}>
         <ScrollView horizontal={true}>
-          {images.map((img, index) => 
-            <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedImage(img)}>
+          {drawings.map((drawing, index) => 
+            <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedDrawing(drawing)}>
               <AutoImage
-                source={img}
+                source={drawing.imageBase64}
                 height={150}
               />
             </TouchableHighlight >

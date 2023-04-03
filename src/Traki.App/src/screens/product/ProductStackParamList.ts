@@ -26,4 +26,6 @@ export type DefectsScreenParams = {
 
 export type DefectScreenParams = {
   productId: number,
+  drawingId: number,
+  defectId: number
 }
