@@ -304,16 +304,6 @@ function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage, set
     updateItem({...item, itemImage: itemImageName});
   };
 
-  async function uploadImage(imageUri: string) {
-    let filename = imageUri.split('/').pop() ?? '';
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-
-    let formData = new FormData();
-    formData.append('photo', JSON.parse(JSON.stringify({ uri: imageUri, name: filename!, type })));
-    await pictureService.uploadPictureFormData('item', 'filename.jpeg', formData)
-  }
-
   function checkType() {
     if (item.question) {
       return (

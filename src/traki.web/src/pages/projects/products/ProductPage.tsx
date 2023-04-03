@@ -86,8 +86,8 @@ const initialDefects: Defect = {
   title: 'Title 1',
   description: 'Description',
   status: DefectStatus.NotFixed,
-  xPosition: 10,
-  yPosition: 10,
+  x: 10,
+  y: 10,
   width: 10,
   height: 10
 };
@@ -234,8 +234,8 @@ export function ProductPage() {
     return defects.map(d => { 
       const area: IArea = {
         unit: '%',
-        x: d.xPosition, 
-        y: d.yPosition, 
+        x: d.x, 
+        y: d.y, 
         width: d.width, 
         height: d.height
       };
