@@ -5,8 +5,8 @@ export type Defect = {
   title: string
   description: string
   status: DefectStatus,
-  xPosition: number,
-  yPosition: number,
+  x: number,
+  y: number,
   width: number,
   height: number,
 }

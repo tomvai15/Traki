@@ -18,6 +18,7 @@ import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import drawingService from '../../../services/drawing-service';
 import pictureService from '../../../services/picture-service';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
+import uuid from 'react-native-uuid';
 
 interface Rectangle {
   x: number;
@@ -151,14 +152,20 @@ export default function AddDefectScreen({route, navigation}: Props) {
     }),
   ).current;
   
-  function createDefect(title: string, description: string) {
+  function createDefect(title: string, description: string, pictureName: string) {
     if (selectedDrawing == null) {
       return;
     }
 
     Image.getSize(selectedImage, (sourceImageWidth, sourceImageHeight) => {
+
+       console.log(sourceImageWidth + ' ' + sourceImageHeight);
        const newWidth = imageWidth;
-       const newHeight = (sourceImageHeight*imageWidth)/sourceImageWidth;
+       // TODO: investigate  reason behind -20
+       const newHeight = ((sourceImageHeight*imageWidth)/sourceImageWidth) - 20;
+
+       console.log(newWidth + ' ' + newHeight);
+       console.log(rectangle.x + ' ' + rectangle.y);
       
        const xPerc = rectangle.x/newWidth;
        const yPerc = rectangle.y/newHeight;
@@ -176,6 +183,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
         id: 0,
         title: title,
         description: description,
+        imageName: pictureName,
         status: DefectStatus.NotFixed,
         x: rectPerc.x,
         y: rectPerc.y,
@@ -184,6 +192,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
         drawingId: 0
        };
 
+       console.log(rectPerc);
        console.log(newDefect);
 
        const request: CreateDefectRequest = {
@@ -197,12 +206,12 @@ export default function AddDefectScreen({route, navigation}: Props) {
     <View>
       <AddDefectDialog onSubmit={createDefect} onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
       <Title>Select Region</Title>
-      { selectedDrawing && <View {...panResponder.panHandlers} style={{ borderColor: 'red', borderWidth: 2}}>
+      { selectedDrawing && <View {...panResponder.panHandlers} style={{ display: 'flex', borderColor: 'red', borderWidth: 2}}>
         <AutoImage
           source={selectedDrawing.imageBase64}
           width={imageWidth}
         />
-        <Svg style={StyleSheet.absoluteFill}>
+        <Svg style={StyleSheet.absoluteFill} color={'red'}>
           <Rect
             x={rectangle.x}
             y={rectangle.y}
@@ -214,7 +223,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
           />
         </Svg>
       </View>}
-      <View style={{ marginVertical: 10 }}>
+      <View>
         <ScrollView horizontal={true}>
           {drawings.map((drawing, index) => 
             <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedDrawing(drawing)}>
@@ -234,7 +243,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
 type AddDefectDialogProps = {
   visible: boolean
   onClose: () => void,
-  onSubmit: (title: string, description: string) => void
+  onSubmit: (title: string, description: string, filename: string) => void
 }
 
 function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
@@ -260,8 +269,23 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
     setImageUri(localUri);
   };
 
-  function createDefect() {
-    onSubmit(title, description);
+  async function createDefect() {
+    let pictureName = '';
+    if (imageUri != null) {
+      pictureName = `${uuid.v4().toString()}.jpeg`;
+      await uploadImage(imageUri, pictureName);
+    }
+    onSubmit(title, description, pictureName);
+  }
+
+  async function uploadImage(imageUri: string, pictureName: string) {
+    let filename = imageUri.split('/').pop() ?? '';
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+
+    let formData = new FormData();
+    formData.append('photo', JSON.parse(JSON.stringify({ uri: imageUri, name: pictureName, type })));
+    await pictureService.uploadPicturesFormData('item', formData)
   }
 
   return (

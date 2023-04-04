@@ -60,6 +60,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet("folders/{folderName}/files/{fileName}")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false)]
         public async Task<ActionResult> GetFile(string folderName, string fileName)
         {
             var file = await _storageService.GetFile(folderName, fileName);

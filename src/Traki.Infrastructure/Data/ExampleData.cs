@@ -37,6 +37,7 @@ namespace Traki.Infrastructure.Data
             {
                 Title  = "Defect 1",
                 Description= "Defect 1",
+                ImageName = "",
                 Status= DefectStatus.NotFixed,
                 X = 50,
                 Y = 50,
@@ -48,6 +49,7 @@ namespace Traki.Infrastructure.Data
             {
                 Title  = "Defect 2",
                 Description= "Defect 2",
+                ImageName = "",
                 Status= DefectStatus.NotFixed,
                 X = 10,
                 Y = 10,

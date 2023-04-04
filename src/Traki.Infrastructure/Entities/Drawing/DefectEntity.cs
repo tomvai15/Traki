@@ -7,6 +7,7 @@ namespace Traki.Infrastructure.Entities.Drawing
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ImageName { get; set; }
         public DefectStatus Status { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
