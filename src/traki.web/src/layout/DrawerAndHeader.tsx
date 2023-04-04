@@ -95,7 +95,7 @@ export function DrawerAndHeader() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="absolute" open={open}>
+      <AppBar position="absolute" sx={{height: 45}} open={open}>
         <Toolbar
           sx={{
             pr: '24px', // keep right padding when drawer closed
@@ -171,7 +171,7 @@ export function DrawerAndHeader() {
         height: '100vh', 
         flexDirection: 'column'
       }}>
-        <Box sx={{height: 60,  backgroundColor: 'red'}}/>
+        <Box sx={{height: 20,  backgroundColor: 'red'}}/>
         <Box sx={{padding: 5}}>
           <Outlet></Outlet>
         </Box>

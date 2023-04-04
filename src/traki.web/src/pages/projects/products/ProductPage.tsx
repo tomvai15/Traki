@@ -89,7 +89,10 @@ const initialDefects: Defect = {
   x: 10,
   y: 10,
   width: 10,
-  height: 10
+  height: 10,
+  imageName: '',
+  defectComments: [],
+  drawingId: 0
 };
 
 const initialDrawings: Drawing[] = [
@@ -367,7 +370,7 @@ export function ProductPage() {
               </List>
             </CardContent>
             <CardActions>
-              <Button variant='contained' color='error'>New defect</Button>
+              <Button onClick={() => navigate('defects')} variant='contained' color='error'>Details</Button>
             </CardActions>
           </Card>
         </Grid>
