@@ -12,5 +12,5 @@ export type Defect = {
   y: number,
   width: number,
   height: number,
-  defectComments: DefectComment[]
+  defectComments?: DefectComment[]
 }

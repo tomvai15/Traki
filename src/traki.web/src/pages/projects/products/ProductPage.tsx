@@ -267,6 +267,7 @@ export function ProductPage() {
       );
     }
   };
+  
   return (
     <Grid container spacing={2}>
       <Grid container spacing={2} item xs={12} md={12} >

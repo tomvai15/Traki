@@ -21,6 +21,8 @@ import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import drawingService from '../../../services/drawing-service';
 import { DefectDetails } from '../../../components/defect/DefectDetails';
 import { Rectangle } from '../../../components/types/Rectangle';
+import defectService from '../../../services/defect-service';
+import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 
 type DrawingImage = {
   id: number,
@@ -52,6 +54,8 @@ export function DefectsPage() {
   const [selectedDefect, setSelectedDefect] = useState<Defect>();
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
 
+  const [tabIndex, setTabIndex] = React.useState(0);
+
   useEffect(() => {
     fetchDrawings();
   }, []);
@@ -76,14 +80,6 @@ export function DefectsPage() {
     setSelectedDrawing(drawingsWithImage[0]);
     setDefects(newDefects);
     setDrawings(drawingsWithImage);
-  }
-
-  function defectsToRectangles(defects: Defect[]): Rectangle[] {
-    return defects.map(x=> defectToRectangle(x));
-  }
-
-  function defectToRectangle(defect: Defect) : Rectangle {
-    return {x: defect.x, y: defect.y, width: defect.width, height: defect.height};
   }
 
   function mapDefectToArea(defects: Defect[]): IArea[] {
@@ -115,6 +111,17 @@ export function DefectsPage() {
     }
   };
 
+  const customRenderSelection = (areaProps: IAreaRendererProps) => {
+    if (!areaProps.isChanging) {
+      return (
+        <div key={areaProps.areaNumber} 
+          onClick={() => setSelectedDefectById(areaProps.areaNumber)} 
+          style={{width: '100%', height: '100%', borderColor: 'orange', borderWidth: 2, borderStyle: 'dashed'}}>
+        </div>
+      );
+    }
+  };
+
   function isSelectedRegion(areaNumber: number) {
     const foundDefect = selectedDrawing?.drawing.defects[areaNumber-1];
     return selectedDefect?.id == foundDefect?.id;
@@ -134,27 +141,57 @@ export function DefectsPage() {
     setSelectedDrawing(foundDrawing);
   }
 
-  const [selectedArea, setSelectedArea] = useState<IArea>();
+  const [areas, setAreas] = useState<IArea[]>([]);
+  const [isNewDefect, setIsNewDefect] = useState<boolean>(false);
 
-  function handleAreaChange(areas: IArea[]) {
-
-    console.log("??");
+  async function createDefect (title: string, description: string, imageName?: string, image?: FormData) {
     if (selectedDrawing == null) {
       return;
     }
-    if (areas.length < selectedDrawing.drawing.defects.length) {
+
+    if (areas.length < 1) {
       return;
     }
 
-    console.log("??");
-    const newArea  = areas.slice(-1)[0];
-    setSelectedArea(newArea);
+    const rectangle = areas[0];
+
+    const newDefect: Defect = {
+      id: 0,
+      title: title,
+      description: description,
+      imageName: imageName ? imageName : '',
+      status: DefectStatus.NotFixed,
+      x: rectangle.x,
+      y: rectangle.y,
+      width: rectangle.width,
+      height: rectangle.height,
+      drawingId: 0
+    };
+
+    const request: CreateDefectRequest = {
+      defect: newDefect
+    };
+
+    if (image) {
+      await pictureService.uploadPicturesFormData('item', image);
+    }
+
+    const response = await defectService.createDefect(selectedDrawing?.drawing.id, request);
+
+    await fetchDrawings();
+
+    setIsNewDefect(false);
+    setTabIndex(0);
+
+    if (response.defect) {
+      setSelectedDefect(response.defect);
+    }
   }
 
   return (
     <Grid container item xs={12} spacing={1}>
       <Grid item xs={5}>
-        <DefectDetails selectedDefect={selectedDefect}/>
+        <DefectDetails tabIndex={tabIndex} setTabIndex={setTabIndex} createDefect={createDefect} onSelectNew={() => setIsNewDefect(true)} onSelectInformation={() => setIsNewDefect(false)}  selectedDefect={selectedDefect}/>
       </Grid>
       <Grid container item xs={7} spacing={1}>
         <Grid item xs={12}>
@@ -162,14 +199,24 @@ export function DefectsPage() {
             <CardContent>
               <Box sx={{display: 'flex', flexDirection: 'row'}}>
                 <Box sx={{padding: '5px', width: '100%', height: '100%'}}>
-                  { selectedDrawing && <AreaSelector
-                    areas={selectedArea == null ?  [...mapDefectToArea(selectedDrawing.drawing.defects)] : mapDefectToArea(selectedDrawing.drawing.defects)}
-                    unit='percentage'
-                    wrapperStyle={{ border: '2px solid black' }} 
-                    customAreaRenderer={customRender}
-                    onChange={handleAreaChange}>
-                    <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
-                  </AreaSelector>}
+                  { isNewDefect ?
+                    (selectedDrawing && <AreaSelector
+                      maxAreas={1}
+                      areas={areas}
+                      unit='percentage'
+                      wrapperStyle={{ border: '2px solid black' }} 
+                      customAreaRenderer={customRenderSelection}
+                      onChange={setAreas}>
+                      <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
+                    </AreaSelector>) :
+                    (selectedDrawing && <AreaSelector
+                      areas={mapDefectToArea(selectedDrawing.drawing.defects)}
+                      unit='percentage'
+                      wrapperStyle={{ border: '2px solid black' }} 
+                      customAreaRenderer={customRender}
+                      onChange={() => {return;}}>
+                      <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
+                    </AreaSelector>)}
                 </Box>
                 <Box sx={{padding: '5px'}}>
                   <ImageList sx={{ width: 180, height: 300 }} cols={1}>

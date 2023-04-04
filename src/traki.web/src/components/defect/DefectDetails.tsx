@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Divider, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardMedia, Divider, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Comment } from './Comment';
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
@@ -9,15 +9,11 @@ import { DefectComment } from '../../contracts/drawing/defect/DefectComment';
 import pictureService from '../../services/picture-service';
 import defectService from '../../services/defect-service';
 import { CommentWithImage } from '../types/CommentWithImage';
-
+import { v4 as uuid } from 'uuid';
 
 type DefectWithImage = {
   defect: Defect,
   imageBase64: string
-}
-
-type DefectDetailsProps = {
-  selectedDefect?: Defect,
 }
 
 function a11yProps(index: number) {
@@ -53,11 +49,31 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export function DefectDetails ({selectedDefect}: DefectDetailsProps) {
+type DefectDetailsProps = {
+  selectedDefect?: Defect,
+  onSelectInformation: () => void,
+  onSelectNew: () => void,
+  createDefect: (title: string, description: string, imageName?: string, image?: FormData) => void
+  tabIndex: number,
+  setTabIndex: (value: number) => void
+}
 
+export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew, createDefect, tabIndex, setTabIndex}: DefectDetailsProps) {
+
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [defect, setDefect] = useState<DefectWithImage>();
   const [comments, setComments] = useState<CommentWithImage[]>([]);
-  const [tabIndex, setTabIndex] = React.useState(0);
+
+  const [previewImage, setPreviewImage] = useState<string>('');
+  const [file, setFile] = useState<File>();
+  
+  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+    setFile(selectedFiles?.[0]);
+    setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
+  };
 
   useEffect(() => {
     fetchDefect();
@@ -102,12 +118,25 @@ export function DefectDetails ({selectedDefect}: DefectDetailsProps) {
     setComments(commentsWithImage);
   }
 
+  function onSubmit() {
+    if (file) {
+      const pictureName = `${uuid()}${file.type.replace('image/','.')}`;
+
+      const formData = new FormData();
+      formData.append(pictureName, file, pictureName);
+  
+      createDefect(title, description, pictureName, formData);
+    } else {
+      createDefect(title, description, undefined, undefined);
+    }
+  }
+
   return (
     <Card>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabIndex} onChange={(e, newValue) => setTabIndex(newValue)} aria-label="basic tabs example">
-          <Tab label="Defect information" {...a11yProps(0)} />
-          <Tab label="New defect" {...a11yProps(1)} />
+          <Tab label="Defect information" {...a11yProps(0)} onClick={() => onSelectInformation()}/>
+          <Tab label="New defect" {...a11yProps(1)} onClick={() => onSelectNew()}/>
         </Tabs>
       </Box>
       <TabPanel value={tabIndex} index={0}>
@@ -137,7 +166,7 @@ export function DefectDetails ({selectedDefect}: DefectDetailsProps) {
                 <Avatar alt="J B" src="/static/images/avatar/1.jpg" />
                 <TextField multiline={true}></TextField>
                 <IconButton color="secondary" aria-label="upload picture" component="label">
-                  <input hidden accept="image/*" type="file" />
+                  <input hidden accept="image/*" type="file" onChange={selectFile} />
                   <PhotoCamera />
                 </IconButton>
               </Box>
@@ -147,13 +176,24 @@ export function DefectDetails ({selectedDefect}: DefectDetailsProps) {
       <TabPanel value={tabIndex} index={1}>
         <CardContent>
           <Typography>Add new defect</Typography>
+          <TextField value={title} onChange={(e) => setTitle(e.target.value)} label='Title' multiline={false} sx={{width: '90%', marginBottom: '10px'}} ></TextField>
           <Box sx={{display: 'flex', width: '100%'}}>
-            <Avatar alt="J B" src="/static/images/avatar/1.jpg" />
-            <TextField multiline={true}></TextField>
+            <TextField value={description} onChange={(e) => setDescription(e.target.value)} label='Description' multiline={true} sx={{width: '90%'}}></TextField>
             <IconButton color="secondary" aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" />
+              <input hidden accept="image/*" type="file" onChange={selectFile} />
               <PhotoCamera />
             </IconButton>
+          </Box>
+        </CardContent>
+        <CardContent>
+          <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between'}}>
+            <Button onClick={onSubmit} sx={{height: 40}} variant='contained'>Submit</Button>
+            { previewImage && <img
+              height={200}
+              width='auto'
+              src={previewImage}
+              alt="random"
+            />}
           </Box>
         </CardContent>
       </TabPanel>  
