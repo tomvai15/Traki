@@ -6,9 +6,10 @@ import axiosApiInstance from './axios-instance';
 const route = 'drawings/{drawingId}/defects/{defectId}';
 
 class DefectService {
-  async createDefect(drawingId: number, createDefectRequest: CreateDefectRequest): Promise<void> {
+  async createDefect(drawingId: number, createDefectRequest: CreateDefectRequest): Promise<GetDefectResponse> {
     const fullRoute = route.format({drawingId: drawingId.toString(), defectId: ''});
-    await axiosApiInstance.post(fullRoute, createDefectRequest, { headers: {} });
+    const response = await axiosApiInstance.post<GetDefectResponse>(fullRoute, createDefectRequest, { headers: {} });
+    return response.data;
   }
 
   async createDefectComment(drawingId: number, defectId: number, createDefectCommentRequest: CreateDefectCommentRequest): Promise<void> {

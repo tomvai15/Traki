@@ -13,7 +13,7 @@ namespace Traki.Api.Controllers
         private readonly IDefectCommentRepository _defectCommentRepository;
         private readonly IMapper _mapper;
 
-        public DefectsController(IDefectsRepository defectsRepository,  IMapper mapper, IDefectCommentRepository defectCommentRepository)
+        public DefectsController(IDefectsRepository defectsRepository, IMapper mapper, IDefectCommentRepository defectCommentRepository)
         {
             _defectsRepository = defectsRepository;
             _mapper = mapper;
@@ -21,13 +21,17 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddDefect(int drawingId, [FromBody] CreateDefectRequest createDefectRequest)
+        public async Task<ActionResult<GetDefectResponse>> CreateDefect(int drawingId, [FromBody] CreateDefectRequest createDefectRequest)
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
             defect.DrawingId = drawingId;
             defect.Status = DefectStatus.NotFixed;
-            await _defectsRepository.CreateDefect(defect);
-            return Ok();
+            defect = await _defectsRepository.CreateDefect(defect);
+            var response = new GetDefectResponse
+            {
+                Defect = _mapper.Map<DefectDto>(defect)
+            };
+            return Ok(response);
         }
 
         [HttpGet("{defectId}")]
