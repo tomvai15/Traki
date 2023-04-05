@@ -17,6 +17,11 @@ class PictureService {
     const fullRoute = route.format({folderName: folderName, fileName: fileName}); 
     await axiosApiInstance.put(fullRoute, formData, {headers: {"Content-Type": "multipart/form-data"}});
   }
+
+  async uploadPicturesFormData(folderName: string, formData: FormData): Promise<void> {
+    const fullRoute = route.format({folderName: folderName, fileName: ''}); 
+    await axiosApiInstance.post(fullRoute, formData, {headers: {"Content-Type": "multipart/form-data"}});
+  }
 }
 
 export default new PictureService ();

@@ -21,6 +21,7 @@ import { FillProtocol } from './projects/products/FillProtocol';
 import SignValidation from './Authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
 import { HomePage } from './Home';
+import { DefectsPage } from './projects/products/DefectsPage';
 
 export function Main() {
 
@@ -55,6 +56,7 @@ export function Main() {
             <Route path=':projectId' element={<Outlet/>}>
               <Route path='products/:productId' element={<Outlet/>}>
                 <Route index element={<ProductPage/>}/>
+                <Route path='defects' element={<DefectsPage/>}/>
                 <Route path='protocols/:protocolId' element={<Outlet/>}>
                   <Route index element={<FillProtocol/>}/>
                   <Route path='report' element={<ProtocolReport/>}/>

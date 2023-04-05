@@ -187,7 +187,7 @@ export default function DefectScreen({route, navigation}: Props) {
           right={() => { return (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}}
         />
       </Card>
-      <View style={{ marginVertical: 10 }}>
+      <View style={styles.box}>
         { defect && drawing && <ImageWithRegions source={drawing.imageBase64} height={300} rectangles={[defectToRectangle(defect.defect)]}/>}
       </View>
       <Text>Comments</Text>
@@ -197,7 +197,7 @@ export default function DefectScreen({route, navigation}: Props) {
         />
         <Card.Content>
           <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <TextInput disabled value={item.defectComment.text} style={{flex: 1, marginRight: 10}} multiline={true}></TextInput>
+            <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
             { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
           </View>
         </Card.Content>
@@ -210,7 +210,7 @@ export default function DefectScreen({route, navigation}: Props) {
         />
         <Card.Content>
           <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <TextInput value={commentText} onChangeText={setCommentText} style={{flex: 1, marginRight: 10}} label={'comment'} multiline={true}></TextInput>
+            <TextInput value={commentText} onChangeText={setCommentText} style={{flex: 1, marginRight: 10}} label={'Comment...'} multiline={true}></TextInput>
             {imageUri && <ImageWithViewer source={imageUri} width={60} height={100} ></ImageWithViewer>}
           </View>
           <Button disabled={commentText==''} mode='contained' onPress={createComment}>Submit</Button>
@@ -219,3 +219,15 @@ export default function DefectScreen({route, navigation}: Props) {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  box: {
+    // ...
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+})

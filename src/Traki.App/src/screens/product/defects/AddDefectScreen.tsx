@@ -152,12 +152,12 @@ export default function AddDefectScreen({route, navigation}: Props) {
     }),
   ).current;
   
-  function createDefect(title: string, description: string, pictureName: string) {
+  async function createDefect(title: string, description: string, pictureName: string) {
     if (selectedDrawing == null) {
       return;
     }
 
-    Image.getSize(selectedImage, (sourceImageWidth, sourceImageHeight) => {
+    Image.getSize(selectedImage, async (sourceImageWidth, sourceImageHeight) => {
 
        console.log(sourceImageWidth + ' ' + sourceImageHeight);
        const newWidth = imageWidth;
@@ -198,7 +198,10 @@ export default function AddDefectScreen({route, navigation}: Props) {
        const request: CreateDefectRequest = {
         defect: newDefect
        }
-       defectService.createDefect(selectedDrawing.drawing.id, request);
+       const response = await defectService.createDefect(selectedDrawing.drawing.id, request);
+       const createdDefect = response.defect;
+       setVisible(false);
+       navigation.navigate('DefectScreen', {productId: productId, drawingId: createdDefect.drawingId, defectId: createdDefect.id});
     });
   }
 
