@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, CardActions, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Button, Card, CardActions, CardContent, Grid, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
 import { CreateProtocolRequest } from '../../contracts/protocol/CreateProtocolRequest';
+import { Link as BreadLink } from '@mui/material';
 
 export function TemplateProtocols() {
 
@@ -40,6 +41,11 @@ export function TemplateProtocols() {
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.primary">Protocol Templates</Typography>
+        </Breadcrumbs>
+      </Grid>
       {protocols.map((protocol, index) =>
         <Grid key={index} item xs={12} md={12} >
           <Card title='Sample Project'>

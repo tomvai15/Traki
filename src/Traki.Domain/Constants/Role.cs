@@ -2,6 +2,8 @@
 {
     public class Role
     {
-        public static readonly string Manager = "Manager";
+        public const string Administrator = "Administrator";
+        public const string ProjectManager = "ProjectManager";
+        public const string ProductManager = "ProductManager";
     }
 }

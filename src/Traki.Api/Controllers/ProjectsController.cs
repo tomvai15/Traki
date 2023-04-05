@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Project;
+using Traki.Domain.Constants;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 
@@ -20,6 +22,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet(("{projectId}"))]
+        [Authorize]
         public async Task<ActionResult<GetProjectResponse>> GetProject(int projectId)
         {
             var project = await _projectsRepository.GetProject(projectId);
@@ -28,6 +31,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<GetProjectsResponse>> GetProjects()
         {
             var projects = await _projectsRepository.GetProjects();
@@ -36,6 +40,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.ProjectManager)]
         public async Task<ActionResult<GetProjectResponse>> PostProject(CreateProjectRequest createProjectRequest)
         {
             var project = _mapper.Map<Project>(createProjectRequest);

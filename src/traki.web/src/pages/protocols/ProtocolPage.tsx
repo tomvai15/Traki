@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Divider, Grid, TextField, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Breadcrumbs, Button, Card, CardContent, Divider, Grid, TextField, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import { Protocol } from '../../contracts/protocol/Protocol';
@@ -12,6 +12,7 @@ import { Checklist } from '../../contracts/protocol/Checklist';
 import protocolService from '../../services/protocol-service';
 import sectionService from '../../services/section-service';
 import { UpdateProtocolRequest } from '../../contracts/protocol/UpdateProtocolRequest';
+import { Link as BreadLink } from '@mui/material';
 // TODO: allow only specific resolution
 
 const items: Item[] = [{
@@ -154,6 +155,14 @@ export function ProtocolPage() {
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <BreadLink color="inherit" href="/templates/protocols">
+            Protocol Templates
+          </BreadLink>
+          <Typography color="text.primary">Protocol</Typography>
+        </Breadcrumbs>
+      </Grid>
       <Grid item xs={12} md={12} >
         <Button onClick={() => navigate('/templates/protocols')} variant='contained' >Go back</Button>
       </Grid>

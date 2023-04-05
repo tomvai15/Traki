@@ -53,8 +53,7 @@ namespace Traki.Api.Bootstrapping
               .RequireAuthenticatedUser()
               .Build();
 
-            services.AddAuthorization(options => options.DefaultPolicy = multiSchemePolicy
-            );
+            services.AddAuthorization(options => options.DefaultPolicy = multiSchemePolicy);
 
             return services;
         }

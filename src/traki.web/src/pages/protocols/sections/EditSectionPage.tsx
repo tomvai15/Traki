@@ -1,4 +1,4 @@
-import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton, Breadcrumbs } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Section } from '../../../contracts/protocol/Section';
 import { Checklist } from '../../../contracts/protocol/Checklist';
@@ -15,6 +15,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
 import sectionService from '../../../services/section-service';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Link as BreadLink } from '@mui/material';
 
 const question: Question = {
   id: uuid(), 
@@ -421,6 +422,20 @@ export function EditSectionPage() {
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <BreadLink color="inherit" href="/templates/protocols">
+            Protocol Templates
+          </BreadLink>
+          <BreadLink
+            color="inherit"
+            href={"/templates/protocols/"+protocolId}
+          >
+            Protocol
+          </BreadLink>
+          <Typography color="text.primary">Section</Typography>
+        </Breadcrumbs>
+      </Grid>
       <Grid item xs={12} md={12} >
         <Button onClick={() => navigate('/templates/protocols/' + protocolId)} variant='contained' >Go back</Button>
       </Grid>

@@ -33,7 +33,7 @@ namespace Traki.Domain.Handlers
             User user = new User { Email = email };
 
             user.HashedPassword = _hasherAdapter.HashText(password);
-            user.Role = Role.Manager;
+            user.Role = Role.ProjectManager;
 
             user = await _usersRepository.AddNewUser(user);
 
@@ -61,6 +61,7 @@ namespace Traki.Domain.Handlers
         {
             return new[] {
                new Claim(Claims.UserId, user.Id.ToString()),
+               new Claim("Role", user.Id.ToString()),
                new Claim(ClaimTypes.Role, user.Role)
             };
         }

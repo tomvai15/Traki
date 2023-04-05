@@ -8,5 +8,7 @@
         public ProjectEntity Project { get; set; }
         public ICollection<OldChecklistEntity> CheckLists { get; set; }
         public ICollection<ProtocolEntity> Protocols { get; set; }
+        public int UserId { get; set; }
+        public UserEntity User { get; set; }
     }
 }

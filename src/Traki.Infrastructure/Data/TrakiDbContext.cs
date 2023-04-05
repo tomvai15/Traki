@@ -84,7 +84,29 @@ namespace Traki.Infrastructure.Data
 
             modelBuilder.Entity<DefectEntity>()
                 .HasMany(p => p.DefectComments)
-                .WithOne(p => p.Defect);
+                .WithOne(p => p.Defect)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(p => p.DefectComments)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(p => p.Defects)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(p => p.Projects)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(p => p.Products)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
 

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Button, Card, CardContent, Divider, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import projectService from '../../services/project-service';
 import productService from '../../services/product-service';
-import { useNavigate } from 'react-router-dom';
+import { Link as BreadLink } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 
 type Project = {
   id: number,
@@ -37,30 +40,38 @@ function ProjectProducts({project}: ProjectProductsProps) {
     setProducts(getProductsResponse.products);
   }
   return (
-    <Card key={project.id} sx={{marginBottom: 2}} title='Sample Project'>
+    <Card key={project.id} sx={{marginBottom: 2, minWidth: '700px', width: '75%', maxWidth: '1000px'}} title='Sample Project'>
       <CardContent>
-        <Typography variant="h5" component="div">
-          {project.name}
-        </Typography>
+        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '10px'}}>
+          <Box>
+            <Typography variant="h5" component="div">
+              {project.name}
+            </Typography>
+            <Typography variant="subtitle1" component="div">
+              Client: Sample Client
+            </Typography>
+          </Box>
+          <Box>
+            <Button onClick={() => navigate(`/projects/${project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
+            <Button onClick={() => navigate(`/projects/${project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>Edit Project</Button>
+          </Box>
+        </Box>
         <Divider/>
-        <Table>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow
-                key={product.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" sx={{display: 'flex', flexDirection: 'row'}}>
-                  <BuildCircleOutlinedIcon/>
-                  <Typography fontSize={20} sx={{marginLeft: 2}}>
-                    {product.name}
-                  </Typography>
-                  <Button variant='contained' onClick={() => navigate(`/projects/${project.id}/products/${product.id}`)}>View Product</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', marginTop: '10px'}}>
+          <Box sx={{width: '100%'}}>
+            <List>
+              {products.map((product, index) => 
+                <ListItem key={index} disablePadding>
+                  <ListItemButton onClick={() => navigate(`/projects/${project.id}/products/${product.id}`)}>
+                    <ListItemText primary={product.name}/>
+                  </ListItemButton>
+                </ListItem>)}
+            </List>
+          </Box>
+          <Box>
+            <img style={{maxWidth: '400px', height: 'auto', borderRadius: '2%',}} src='https://hips.hearstapps.com/hmg-prod/images/cute-cat-photos-1593441022.jpg?crop=1.00xw:0.753xh;0,0.153xh&resize=1200:*' />
+          </Box>
+        </Box>
       </CardContent>      
     </Card>
   );
@@ -68,6 +79,7 @@ function ProjectProducts({project}: ProjectProductsProps) {
 
 export function Projects() {
 
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
@@ -80,10 +92,20 @@ export function Projects() {
   }
 
   return (
-    <Box>
-      { projects.map((item, index) =>
-        <ProjectProducts key={index} project={item}></ProjectProducts>
-      )}
-    </Box>
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.primary">Projects</Typography>
+        </Breadcrumbs>
+      </Grid>
+      <Grid item xs={12} md={12}>
+        <Button onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Project</Button>
+      </Grid>
+      <Grid item xs={12} md={12}>
+        { projects.map((item, index) =>
+          <ProjectProducts key={index} project={item}></ProjectProducts>
+        )}
+      </Grid>
+    </Grid>
   );
 }
