@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardContent, CardMedia, Divider, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Comment } from './Comment';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -10,6 +10,9 @@ import pictureService from '../../services/picture-service';
 import defectService from '../../services/defect-service';
 import { CommentWithImage } from '../types/CommentWithImage';
 import { v4 as uuid } from 'uuid';
+import { FormHelperText } from '@mui/material';
+import ImageWithViewer from '../ImageWithViewer';
+import { CreateDefectCommentRequest } from '../../contracts/drawing/defect/CreateDefectCommentRequest';
 
 type DefectWithImage = {
   defect: Defect,
@@ -55,24 +58,36 @@ type DefectDetailsProps = {
   onSelectNew: () => void,
   createDefect: (title: string, description: string, imageName?: string, image?: FormData) => void
   tabIndex: number,
-  setTabIndex: (value: number) => void
+  setTabIndex: (value: number) => void,
+  canSubmitDefect: boolean
 }
 
-export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew, createDefect, tabIndex, setTabIndex}: DefectDetailsProps) {
+export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew, createDefect, tabIndex, setTabIndex, canSubmitDefect}: DefectDetailsProps) {
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [comment, setComment] = useState<string>('');
   const [defect, setDefect] = useState<DefectWithImage>();
   const [comments, setComments] = useState<CommentWithImage[]>([]);
 
   const [previewImage, setPreviewImage] = useState<string>('');
   const [file, setFile] = useState<File>();
+
+  const [previewCommentImage, setPreviewCommentImage] = useState<string>('');
+  const [commentFile, setCommentFile] = useState<File>();
   
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     const selectedFiles = files as FileList;
     setFile(selectedFiles?.[0]);
     setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
+  };
+
+  const selectFileComment = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+    setCommentFile(selectedFiles?.[0]);
+    setPreviewCommentImage(URL.createObjectURL(selectedFiles?.[0]));
   };
 
   useEffect(() => {
@@ -131,6 +146,41 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     }
   }
 
+  async function submitComment() {
+    if (!selectedDefect) {
+      return;
+    }
+    let pictureName = '';
+    if (previewCommentImage != '' && commentFile) {
+      pictureName = `${uuid()}${commentFile.type.replace('image/','.')}`;
+      const formData = new FormData();
+      formData.append(pictureName, commentFile, pictureName);
+      await pictureService.uploadPicturesFormData('item', formData);
+    }
+
+    const defectComment: DefectComment = {
+      id: 0,
+      text: comment,
+      imageName: pictureName,
+      date: '',
+      author: ''
+    };
+
+    const request: CreateDefectCommentRequest = {
+      defectComment: defectComment
+    };
+
+    await defectService.createDefectComment(selectedDefect.drawingId, selectedDefect.id, request);
+    await fetchDefect();
+
+    setComment('');
+    setPreviewCommentImage('');
+  }
+
+  function canSubmit() {
+    return canSubmitDefect && title && description;
+  }
+
   return (
     <Card>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -145,30 +195,47 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
           </CardContent> :
           <Box>
             <CardContent>
-              <Typography variant='h6'>
-                {selectedDefect.title}
-              </Typography>
-              <Typography>
-                {selectedDefect.description}
-              </Typography>
+              <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <Box>
+                  <Typography variant='h6'>
+                    {selectedDefect.title}
+                  </Typography>
+                  <Typography>
+                    {selectedDefect.description}
+                  </Typography>
+                </Box>
+                <Box>
+                  <ImageWithViewer source={defect?.imageBase64} height={150}/>
+                </Box>
+              </Box>
             </CardContent>
             <Divider></Divider>
             <CardContent>
               <Typography>Comments</Typography>
-              {comments.length == 0 ? 
-                <Typography>No comments</Typography> :
-                comments.map( (item, index) => <Comment defectComment={item} key={index}/>)}
+              <Box sx={{overflow: 'auto', maxHeight: 200}}>
+                {comments.length == 0 ? 
+                  <Typography>No comments</Typography> :
+                  comments.map( (item, index) => <Comment defectComment={item} key={index}/>)}
+              </Box>
             </CardContent>
             <Divider></Divider>
             <CardContent>
               <Typography>Add new comment</Typography>
               <Box sx={{display: 'flex', width: '100%'}}>
                 <Avatar alt="J B" src="/static/images/avatar/1.jpg" />
-                <TextField multiline={true}></TextField>
+                <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{width: '90%'}} multiline={true}></TextField>
                 <IconButton color="secondary" aria-label="upload picture" component="label">
-                  <input hidden accept="image/*" type="file" onChange={selectFile} />
+                  <input hidden accept="image/*" type="file" onChange={selectFileComment} />
                   <PhotoCamera />
                 </IconButton>
+              </Box>
+              <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between', marginTop: '10px'}}>
+                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                  <Button disabled={!comment} onClick={submitComment} sx={{height: 40}} variant='contained'>
+                      Submit
+                  </Button>
+                </Box>
+                <ImageWithViewer source={previewCommentImage} height={180}/>
               </Box>
             </CardContent>
           </Box>}
@@ -187,13 +254,15 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
         </CardContent>
         <CardContent>
           <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between'}}>
-            <Button onClick={onSubmit} sx={{height: 40}} variant='contained'>Submit</Button>
-            { previewImage && <img
-              height={200}
-              width='auto'
-              src={previewImage}
-              alt="random"
-            />}
+            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+              { !canSubmitDefect && <FormHelperText>
+                Select region on drawing
+              </FormHelperText>}
+              <Button disabled={!canSubmit()} onClick={onSubmit} sx={{height: 40}} variant='contained'>
+                  Submit
+              </Button>
+            </Box>
+            <ImageWithViewer source={previewImage} height={200}/>
           </Box>
         </CardContent>
       </TabPanel>  

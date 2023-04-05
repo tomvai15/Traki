@@ -191,7 +191,7 @@ export function DefectsPage() {
   return (
     <Grid container item xs={12} spacing={1}>
       <Grid item xs={5}>
-        <DefectDetails tabIndex={tabIndex} setTabIndex={setTabIndex} createDefect={createDefect} onSelectNew={() => setIsNewDefect(true)} onSelectInformation={() => setIsNewDefect(false)}  selectedDefect={selectedDefect}/>
+        <DefectDetails canSubmitDefect={areas.length>0} tabIndex={tabIndex} setTabIndex={setTabIndex} createDefect={createDefect} onSelectNew={() => setIsNewDefect(true)} onSelectInformation={() => setIsNewDefect(false)}  selectedDefect={selectedDefect}/>
       </Grid>
       <Grid container item xs={7} spacing={1}>
         <Grid item xs={12}>
