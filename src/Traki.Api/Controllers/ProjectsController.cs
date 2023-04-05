@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Project;
 using Traki.Domain.Constants;
 using Traki.Domain.Models;
+using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 
 namespace Traki.Api.Controllers
@@ -13,10 +14,12 @@ namespace Traki.Api.Controllers
     public class ProjectsController: ControllerBase
     {
         private readonly IProjectsRepository _projectsRepository;
+        private readonly IClaimsProvider _claimsProvider;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectsRepository projectsRepository, IMapper mapper)
+        public ProjectsController(IProjectsRepository projectsRepository, IClaimsProvider claimsProvider, IMapper mapper)
         {
+            _claimsProvider = claimsProvider;
             _projectsRepository = projectsRepository;
             _mapper = mapper;
         }
@@ -44,10 +47,24 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult<GetProjectResponse>> PostProject(CreateProjectRequest createProjectRequest)
         {
             var project = _mapper.Map<Project>(createProjectRequest);
-
+            _claimsProvider.TryGetUserId(out int userId);
+            project.CompanyId = 1;
+            project.UserId = userId;
             var createdProject = await _projectsRepository.CreateProject(project);
 
             return CreatedAtAction("GetProject", new { projectId = createdProject.Id }, createdProject);
+        }
+
+        [HttpPut("{projectId}")]
+        [Authorize(Roles = Role.ProjectManager)]
+        public async Task<ActionResult<GetProjectResponse>> UpdateProject(int projectId, CreateProjectRequest createProjectRequest)
+        {
+            var project = _mapper.Map<Project>(createProjectRequest);
+            _claimsProvider.TryGetUserId(out int userId);
+            project.CompanyId = 1;
+            project.UserId = userId;
+            await _projectsRepository.UpdateProject(project);
+            return Ok();
         }
     }
 }

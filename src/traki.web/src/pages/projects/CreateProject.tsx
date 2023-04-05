@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, CardMedia, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemText, Table, TableBody, TableCell, TableRow, TextField, Typography } from '@mui/material';
-import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
+import { Breadcrumbs, Button, Card, CardContent, Grid, IconButton, TextField, Typography } from '@mui/material';
 import projectService from '../../services/project-service';
-import productService from '../../services/product-service';
 import { Link as BreadLink } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { PhotoCamera } from '@mui/icons-material';
-import { CreateDefectCommentRequest } from '../../contracts/drawing/defect/CreateDefectCommentRequest';
-import { DefectComment } from '../../contracts/drawing/defect/DefectComment';
-import defectService from '../../services/defect-service';
 import pictureService from '../../services/picture-service';
 import { v4 as uuid } from 'uuid';
 import { Project } from '../../contracts/projects/Project';
@@ -47,7 +37,8 @@ export function CreateProject() {
       id: 0,
       name: name,
       clientName: client,
-      address: address
+      address: address,
+      imageName: pictureName
     };
 
     const request: CreateProjectRequest = {

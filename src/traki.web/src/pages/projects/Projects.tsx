@@ -8,79 +8,18 @@ import { Link as BreadLink } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import { Project } from '../../contracts/projects/Project';
+import { Product } from '../../contracts/product/Product';
+import pictureService from '../../services/picture-service';
 
-type Project = {
-  id: number,
-  name: string
-}
-
-type Product = {
-  id: number,
-  name: string
-}
-
-
-const data: Project[] = [{id: 1, name: "Sample project 1"}, {id: 2, name: "Sample project 2"}];
-const productData: Product[] = [{id: 1, name: "Sample product 1"}, {id: 2, name: "Sample product 2"}];
-
-
-type ProjectProductsProps = {
-  project: Project
-}
-function ProjectProducts({project}: ProjectProductsProps) {
-  const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  async function fetchProducts() {
-    const getProductsResponse = await productService.getProducts(project.id);
-    setProducts(getProductsResponse.products);
-  }
-  return (
-    <Card key={project.id} sx={{marginBottom: 2, minWidth: '700px', width: '75%', maxWidth: '1000px'}} title='Sample Project'>
-      <CardContent>
-        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '10px'}}>
-          <Box>
-            <Typography variant="h5" component="div">
-              {project.name}
-            </Typography>
-            <Typography variant="subtitle1" component="div">
-              Client: Sample Client
-            </Typography>
-          </Box>
-          <Box>
-            <Button onClick={() => navigate(`/projects/${project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
-            <Button onClick={() => navigate(`/projects/${project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>Edit Project</Button>
-          </Box>
-        </Box>
-        <Divider/>
-        <Box sx={{display: 'flex', justifyContent: 'space-between', marginTop: '10px'}}>
-          <Box sx={{width: '100%'}}>
-            <List>
-              {products.map((product, index) => 
-                <ListItem key={index} disablePadding>
-                  <ListItemButton onClick={() => navigate(`/projects/${project.id}/products/${product.id}`)}>
-                    <ListItemText primary={product.name}/>
-                  </ListItemButton>
-                </ListItem>)}
-            </List>
-          </Box>
-          <Box>
-            <img style={{maxWidth: '400px', height: 'auto', borderRadius: '2%',}} src='https://hips.hearstapps.com/hmg-prod/images/cute-cat-photos-1593441022.jpg?crop=1.00xw:0.753xh;0,0.153xh&resize=1200:*' />
-          </Box>
-        </Box>
-      </CardContent>      
-    </Card>
-  );
+type ProjectWithImage = {
+  project: Project,
+  imageBase64: string
 }
 
 export function Projects() {
-
   const navigate = useNavigate();
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectWithImage[]>([]);
 
   useEffect(() => {
     fetchProjects();
@@ -88,7 +27,27 @@ export function Projects() {
 
   async function fetchProjects() {
     const getProjectsResponse = await projectService.getProjects();
-    setProjects(getProjectsResponse.projects);
+    await fetchProjectImages(getProjectsResponse.projects);
+  }
+
+  async function fetchProjectImages(projects: Project[]) {
+
+    const projectWithImages: ProjectWithImage[] = [];
+
+    console.log(projects);
+    for (let i = 0; i < projects.length; i++) {
+      let imageBase64 = '';
+      if (projects[i].imageName) {
+        imageBase64 = await pictureService.getPicture('item', projects[i].imageName);
+      }
+      const projectWithImage: ProjectWithImage = {
+        project: projects[i],
+        imageBase64: imageBase64
+      };
+      projectWithImages.push(projectWithImage);
+    }
+
+    setProjects(projectWithImages);
   }
 
   return (
@@ -107,5 +66,67 @@ export function Projects() {
         )}
       </Grid>
     </Grid>
+  );
+}
+
+type ProjectProductsProps = {
+  project: ProjectWithImage
+}
+
+function ProjectProducts({project}: ProjectProductsProps) {
+  const navigate = useNavigate();
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  async function fetchProducts() {
+    const getProductsResponse = await productService.getProducts(project.project.id);
+    setProducts(getProductsResponse.products);
+  }
+  return (
+    <Card key={project.project.id} sx={{marginBottom: 2, minWidth: '700px', width: '75%', maxWidth: '1000px'}} title='Sample Project'>
+      <CardContent>
+        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '10px'}}>
+          <Box>
+            <Typography variant="h5" component="div">
+              {project.project.name}
+            </Typography>
+            <Typography variant="subtitle1" component="div">
+              Client: Sample Client
+            </Typography>
+          </Box>
+          <Box>
+            <Button onClick={() => navigate(`/projects/${project.project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
+            <Button onClick={() => navigate(`/projects/${project.project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>Edit Project</Button>
+          </Box>
+        </Box>
+        <Divider/>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', marginTop: '10px'}}>
+          <Box sx={{width: '100%'}}>
+            <Typography variant='subtitle1'>Products</Typography>
+            <List>
+              {products.map((product, index) => 
+                <Box key={index} >
+                  <Divider></Divider>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => navigate(`/projects/${project.project.id}/products/${product.id}`)}>
+                      <ListItemText>
+                        <Typography variant='h6'>{product.name}</Typography>
+                      </ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider></Divider>
+                </Box>)}
+            </List>
+          </Box>
+          <Box>
+            <img style={{maxWidth: 'auto', height: '300px', borderRadius: '2%',}} 
+              src={project.imageBase64 ? project.imageBase64 : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'} />
+          </Box>
+        </Box>
+      </CardContent>      
+    </Card>
   );
 }

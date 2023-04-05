@@ -122,7 +122,7 @@ export function DrawerAndHeader() {
           >
           </Typography>
           <IconButton onClick={handleOpenUserMenu} color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge  color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>

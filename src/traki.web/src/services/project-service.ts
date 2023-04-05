@@ -20,5 +20,10 @@ class ProjectService {
     await axiosApiInstance.post(route, createProjectRequest, { headers: {} });
     return true;
   }
+
+  async updateProject(projectId: number, createProjectRequest: CreateProjectRequest): Promise<boolean> {
+    await axiosApiInstance.put(route + '/' + projectId, createProjectRequest, { headers: {} });
+    return true;
+  }
 }
 export default new ProjectService ();

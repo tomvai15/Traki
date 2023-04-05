@@ -275,6 +275,7 @@ namespace Traki.Infrastructure.Data
                 Name = $"Sample Project",
                 ClientName = $"Sample Client",
                 Address = $"Sample Address",
+                ImageName = "",
                 CompanyId = 1,
                 UserId = 2,
             },
@@ -283,6 +284,7 @@ namespace Traki.Infrastructure.Data
                 Name = $"Other Project",
                 ClientName = $"Sample Client",
                 Address = $"Sample Address",
+                ImageName = "",
                 CompanyId = 1,
                 UserId = 2,
             }

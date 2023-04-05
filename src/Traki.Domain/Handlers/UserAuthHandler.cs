@@ -61,7 +61,7 @@ namespace Traki.Domain.Handlers
         {
             return new[] {
                new Claim(Claims.UserId, user.Id.ToString()),
-               new Claim("Role", user.Id.ToString()),
+               new Claim("Role", user.Role),
                new Claim(ClaimTypes.Role, user.Role)
             };
         }

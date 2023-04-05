@@ -68,6 +68,8 @@ namespace Traki.Api.Controllers
         {
             int userId = GetUserId();
 
+
+            var a = User.Claims;
             string accessToken;
             try
             {

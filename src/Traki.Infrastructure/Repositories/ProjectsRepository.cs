@@ -42,5 +42,21 @@ namespace Traki.Infrastructure.Repositories
             var addedProject = _mapper.Map<Project>(createdProject.Entity);
             return addedProject;
         }
+
+        public async Task<Project> UpdateProject(Project project)
+        {
+            var projectEntity = await _context.Projects.Where(x=> x.Id == project.Id).FirstOrDefaultAsync();
+
+            projectEntity.RequiresToBeNotNullEnity();
+
+            projectEntity.Name = project.Name;
+            projectEntity.ClientName = project.ClientName;
+            projectEntity.ImageName = project.ImageName;
+            projectEntity.Address = project.Address;
+            await _context.SaveChangesAsync();
+
+            var addedProject = _mapper.Map<Project>(projectEntity);
+            return addedProject;
+        }
     }
 }

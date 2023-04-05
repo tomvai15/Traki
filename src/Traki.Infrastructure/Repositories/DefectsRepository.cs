@@ -20,7 +20,7 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Defect> CreateDefect(Defect defect)
         {
             var defectEntity = _mapper.Map<DefectEntity>(defect);
-
+            defectEntity.UserId = 1;
             _context.Add(defectEntity);
             await _context.SaveChangesAsync();
 

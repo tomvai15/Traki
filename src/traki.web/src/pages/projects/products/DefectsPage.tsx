@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
-import productService from '../../../services/product-service';
-import { Product } from '../../../contracts/product/Product';
+import { Avatar, Breadcrumbs, Card, CardContent, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Protocol } from '../../../contracts/protocol/Protocol';
-import { blue } from '@mui/material/colors';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import protocolService from '../../../services/protocol-service';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
 import { Drawing } from '../../../contracts/drawing/Drawing';
-import { type } from 'os';
 import pictureService from '../../../services/picture-service';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import drawingService from '../../../services/drawing-service';
 import { DefectDetails } from '../../../components/defect/DefectDetails';
-import { Rectangle } from '../../../components/types/Rectangle';
 import defectService from '../../../services/defect-service';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
+import { Link as BreadLink } from '@mui/material';
 
 type DrawingImage = {
   id: number,
@@ -190,6 +180,17 @@ export function DefectsPage() {
 
   return (
     <Grid container item xs={12} spacing={1}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <BreadLink color="inherit" href="/projects">
+            Projects
+          </BreadLink>
+          <BreadLink color="inherit" href={`/projects/${projectId}/products/${productId}`}>
+            Product
+          </BreadLink>
+          <Typography color="text.primary">Defects</Typography>
+        </Breadcrumbs>
+      </Grid>
       <Grid item xs={5}>
         <DefectDetails canSubmitDefect={areas.length>0} tabIndex={tabIndex} setTabIndex={setTabIndex} createDefect={createDefect} onSelectNew={() => setIsNewDefect(true)} onSelectInformation={() => setIsNewDefect(false)}  selectedDefect={selectedDefect}/>
       </Grid>

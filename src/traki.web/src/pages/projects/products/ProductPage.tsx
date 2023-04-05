@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Avatar, Breadcrumbs, Button, Card, CardActions, CardContent, Dialog, DialogTitle, Divider, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import productService from '../../../services/product-service';
 import { Product } from '../../../contracts/product/Product';
@@ -19,6 +19,7 @@ import pictureService from '../../../services/picture-service';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import drawingService from '../../../services/drawing-service';
+import { Link as BreadLink } from '@mui/material';
 
 function createData(
   name: string,
@@ -270,6 +271,14 @@ export function ProductPage() {
   
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <BreadLink color="inherit" href="/projects">
+            Projects
+          </BreadLink>
+          <Typography color="text.primary">Product</Typography>
+        </Breadcrumbs>
+      </Grid>
       <Grid container spacing={2} item xs={12} md={12} >
         <Grid item xs={8} >
           <Card>

@@ -7,5 +7,6 @@ namespace Traki.Domain.Repositories
         Task<Project> GetProject(int projectId);
         Task<IEnumerable<Project>> GetProjects();
         Task<Project> CreateProject(Project project);
+        Task<Project> UpdateProject(Project project);
     }
 }
