@@ -1,4 +1,6 @@
-﻿namespace Traki.Infrastructure.Entities
+﻿using Traki.Infrastructure.Entities.Drawing;
+
+namespace Traki.Infrastructure.Entities
 {
     public class ProductEntity
     {
@@ -8,6 +10,7 @@
         public ProjectEntity Project { get; set; }
         public ICollection<OldChecklistEntity> CheckLists { get; set; }
         public ICollection<ProtocolEntity> Protocols { get; set; }
+        public ICollection<DrawingEntity> Drawings { get; set; }
         public int UserId { get; set; }
         public UserEntity User { get; set; }
     }

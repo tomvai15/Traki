@@ -246,7 +246,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
               <Typography>Add new comment</Typography>
               <Box sx={{display: 'flex', width: '100%'}}>
                 <Avatar alt="Ta B" src="/static/images/avatar/1.jpg" />
-                <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{width: '90%'}} multiline={true}></TextField>
+                <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{marginLeft: '10px', width: '90%'}} multiline={true}></TextField>
                 <IconButton color="secondary" aria-label="upload picture" component="label">
                   <input hidden accept="image/*" type="file" onChange={selectFileComment} />
                   <PhotoCamera />

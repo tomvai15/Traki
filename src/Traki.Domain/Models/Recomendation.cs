@@ -9,7 +9,7 @@ namespace Traki.Domain.Models
 {
     public class Recommendation
     {
-        public IEnumerable<Defect> Defects { get; set; }
+        public IEnumerable<DefectRecomendation> Defects { get; set; }
         public IEnumerable<Product> Products { get; set; }
     }
 }

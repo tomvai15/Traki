@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { Avatar, Breadcrumbs, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
 import { Drawing } from '../../../contracts/drawing/Drawing';
@@ -26,6 +26,7 @@ export interface SimpleDialogProps {
 
 export function DefectsPage() {
   const navigate = useNavigate();
+  const {state} = useLocation();
   const { projectId, productId } = useParams();
 
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
@@ -58,8 +59,26 @@ export function DefectsPage() {
       drawingsWithImage.push(newDrawingImage);
     }
 
-    setSelectedDefect(newDefects[0]);
-    setSelectedDrawing(drawingsWithImage[0]);
+    console.log(state);
+    if (!state) {
+      setSelectedDefect(newDefects[0]);
+      setSelectedDrawing(drawingsWithImage[0]);
+    } else {
+      const foundDefect = newDefects.find(x => x.id == state.defectId);
+      if (foundDefect) {
+        setSelectedDefect(foundDefect);
+        const foundDrawing = drawingsWithImage.find(x=> x.drawing.id == foundDefect.drawingId);
+        if (foundDrawing == null) {
+          return;
+        }
+        setSelectedDrawing(foundDrawing);
+      } else {
+        setSelectedDefect(newDefects[0]);
+        setSelectedDrawing(drawingsWithImage[0]);
+      }
+    }
+
+
     setDefects(newDefects);
     setDrawings(drawingsWithImage);
   }

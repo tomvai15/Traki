@@ -1,7 +1,7 @@
-import { Defect } from "../drawing/defect/Defect"
 import { Product } from "../product/Product"
+import { DefectRecomendation } from "./DefectRecomendation"
 
 export type Recommendation = {
   products: Product[],
-  defects: Defect[]
+  defects: DefectRecomendation[]
 }

@@ -28,10 +28,17 @@ namespace Traki.Domain.Handlers
             var products = await _productsRepository.GetProductByQuery(x => x.UserId == userId);
             var defects = await _defectsRepository.GetDefectsByQuery(x => x.UserId == userId);
 
+            var defectRecommendations = defects.Select(x => new DefectRecomendation
+            {
+                Defect = x,
+                ProductId = x.Drawing.ProductId,
+                ProjectId = x.Drawing.Product.ProjectId
+            });
+
             var recommendation = new Recommendation
             {
                 Products = products,
-                Defects = defects
+                Defects = defectRecommendations
             };
 
             return recommendation;

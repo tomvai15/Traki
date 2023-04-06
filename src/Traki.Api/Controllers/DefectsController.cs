@@ -27,6 +27,8 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult<GetDefectResponse>> CreateDefect(int drawingId, [FromBody] CreateDefectRequest createDefectRequest)
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
+            _claimsProvider.TryGetUserId(out int userId);
+            defect.UserId = userId;
             defect.DrawingId = drawingId;
             defect.Status = DefectStatus.NotFixed;
             defect = await _defectsRepository.CreateDefect(defect);

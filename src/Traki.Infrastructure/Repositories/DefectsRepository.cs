@@ -56,7 +56,10 @@ namespace Traki.Infrastructure.Repositories
                 var p = _mapper.Map<Defect>(x);
                 return filter(p);
             };
-            var defects = _context.Defects.Where(func).ToList();
+            var defects = _context.Defects.Include(x=> x.Drawing)
+                                    .ThenInclude(x=> x.Product)
+                                    .Where(func)
+                                    .ToList();
 
             return _mapper.Map<IEnumerable<Defect>>(defects);
         }

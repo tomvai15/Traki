@@ -12,7 +12,7 @@ export function Comment ({defectComment}: CommentProps) {
     <Box sx={{display: 'flex', marginTop: '10px'}}>
       <Avatar alt="J B" src="/static/images/avatar/1.jpg" />
       <TextField value={defectComment.defectComment.text} 
-        sx={{width: '90%'}} 
+        sx={{marginLeft: '10px', width: '90%'}} 
         multiline={true}
         InputProps={{
           readOnly: true,

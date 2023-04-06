@@ -33,6 +33,10 @@ namespace Traki.Infrastructure.Data
                 .HasMany(p => p.Protocols)
                 .WithOne(p => p.Product);
 
+            modelBuilder.Entity<ProductEntity>()
+                .HasMany(p => p.Drawings)
+                .WithOne(p => p.Product);
+
             modelBuilder.Entity<TemplateEntity>()
                 .HasMany(p => p.Questions)
                 .WithOne(p => p.Template);

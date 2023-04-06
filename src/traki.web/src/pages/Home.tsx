@@ -12,11 +12,12 @@ import { Drawing } from '../contracts/drawing/Drawing';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BuildIcon from '@mui/icons-material/Build';
 import { useNavigate } from 'react-router-dom';
+import { DefectRecomendation } from '../contracts/recommendation/DefectRecomendation';
 
 const notFoundImage = 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1';
 
 export function HomePage() {
-  const [defects, setDefects] = useState<DefectWithImage[]>([]);
+  const [defects, setDefects] = useState<DefectRecomendation[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -26,33 +27,7 @@ export function HomePage() {
   async function fetchRecommendations() {
     const response = await recommendationService.getRecommendations();
     setProducts(response.recommendation.products);
-    fetchDefects(response.recommendation.defects);
-  }
-
-  async function fetchDefects(defects: Defect[]) {
-
-    const defectsWithImage: DefectWithImage[] = [];
-
-    for (let i = 0; i < defects.length; i++) {
-      const newDefect = await fetchDefect(defects[i]);
-      defectsWithImage.push(newDefect);
-    }
-
-    setDefects(defectsWithImage);
-  }
-
-  async function fetchDefect(defect: Defect): Promise<DefectWithImage> {
-    const response = await defectService.getDefect(defect.drawingId, defect.id);
-    let imageBase64 = '';
-    if (response.defect.imageName != '') {
-      imageBase64 = await pictureService.getPicture('item', response.defect.imageName);
-    } 
-    const defectWithImage: DefectWithImage = {
-      defect: response.defect,
-      imageBase64: imageBase64
-    };
-
-    return defectWithImage;
+    setDefects(response.recommendation.defects);
   }
 
   return (
@@ -144,17 +119,32 @@ function ProductCard ({product}: ProductCardProps) {
 }
 
 type DefectCardProps = {
-  defect: DefectWithImage
+  defect: DefectRecomendation
 }
 
 function DefectCard ({defect}: DefectCardProps) {
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState<Product>();
+  const [defectWithImage, setDefectWithImage] = useState<DefectWithImage>();
 
   useEffect(() => {
-
+    fetchDefect(defect.defect);
   }, []);
+
+
+  async function fetchDefect(defect: Defect) {
+    const response = await defectService.getDefect(defect.drawingId, defect.id);
+    let imageBase64 = '';
+    if (response.defect.imageName != '') {
+      imageBase64 = await pictureService.getPicture('item', response.defect.imageName);
+    } 
+    const defectWithImage: DefectWithImage = {
+      defect: response.defect,
+      imageBase64: imageBase64
+    };
+
+    setDefectWithImage(defectWithImage);
+  }
 
   return (
     <Grid item xs={12} sm={6} md={4}>
@@ -167,7 +157,7 @@ function DefectCard ({defect}: DefectCardProps) {
           sx={{
             16:9
           }}
-          image={defect.imageBase64 ? defect.imageBase64 : notFoundImage}
+          image={defectWithImage && defectWithImage.imageBase64 ? defectWithImage.imageBase64 : notFoundImage}
           alt="random"
         />
         <CardContent sx={{ flexGrow: 1 }}>
@@ -184,7 +174,7 @@ function DefectCard ({defect}: DefectCardProps) {
           </Typography>
         </CardContent>
         <CardActions>
-        <Button onClick={() => navigate(`/projects/${product.projectId}/products/${product.id}/defects`)} variant='contained' size="small">Details</Button>
+          <Button onClick={() => navigate(`/projects/${defect.projectId}/products/${defect.productId}/defects`, { state: { defectId: defect.defect.id } })} variant='contained' size="small">Details</Button>
         </CardActions>
       </Card>
     </Grid>

@@ -38,7 +38,7 @@ namespace Traki.Infrastructure.Data
             {
                 Title  = "Defect 1",
                 Description= "Defect 1",
-                ImageName = "",
+                ImageName = "ce388de4-8c6b-45b0-ab12-85f78cfa900c.png",
                 Status= DefectStatus.NotFixed,
                 X = 50,
                 Y = 50,
@@ -51,7 +51,7 @@ namespace Traki.Infrastructure.Data
             {
                 Title  = "Defect 2",
                 Description= "Defect 2",
-                ImageName = "",
+                ImageName = "99696138-0e26-4815-9982-40b575269336.png",
                 Status= DefectStatus.NotFixed,
                 X = 10,
                 Y = 10,
@@ -275,7 +275,7 @@ namespace Traki.Infrastructure.Data
                 Name = $"Sample Project",
                 ClientName = $"Sample Client",
                 Address = $"Sample Address",
-                ImageName = "",
+                ImageName = "5e6669e4-c033-4ded-93e6-f44dccc6a157.png",
                 CompanyId = 1,
                 UserId = 2,
             },
@@ -284,7 +284,7 @@ namespace Traki.Infrastructure.Data
                 Name = $"Other Project",
                 ClientName = $"Sample Client",
                 Address = $"Sample Address",
-                ImageName = "",
+                ImageName = "02653609-3004-4a48-b2d6-bddab03e778c.png",
                 CompanyId = 1,
                 UserId = 2,
             }
