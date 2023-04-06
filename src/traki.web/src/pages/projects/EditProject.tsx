@@ -73,6 +73,7 @@ export function EditProject() {
     };
 
     await projectService.updateProject(Number(projectId), request);
+    await fetchProject();
   }
 
   function selectFile (event: React.ChangeEvent<HTMLInputElement>) {
@@ -120,7 +121,7 @@ export function EditProject() {
           </CardContent>  
           <CardContent>    
             <Button disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
-              Create Project
+              Edit Project
             </Button>
           </CardContent>  
         </Card>

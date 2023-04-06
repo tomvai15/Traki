@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Breadcrumbs, Card, CardContent, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { Avatar, Breadcrumbs, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
@@ -13,25 +13,15 @@ import { DefectDetails } from '../../../components/defect/DefectDetails';
 import defectService from '../../../services/defect-service';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 import { Link as BreadLink } from '@mui/material';
-
-type DrawingImage = {
-  id: number,
-  image: string
-};
-
+import DoneIcon from '@mui/icons-material/Done';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import { DrawingWithImage } from '../../../components/types/DrawingWithImage';
 
 export interface SimpleDialogProps {
   open: boolean;
   selectedValue: string;
   addProtocol: (id: number) => void;
   onclose: () => void;
-}
-
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-
-type DrawingWithImage = {
-  drawing: Drawing,
-  imageBase64: string
 }
 
 export function DefectsPage() {
@@ -45,6 +35,8 @@ export function DefectsPage() {
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
 
   const [tabIndex, setTabIndex] = React.useState(0);
+
+  const [includeFixedDefects, setIncludeFixedDefects] = useState(false);
 
   useEffect(() => {
     fetchDrawings();
@@ -211,7 +203,7 @@ export function DefectsPage() {
                       <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
                     </AreaSelector>) :
                     (selectedDrawing && <AreaSelector
-                      areas={mapDefectToArea(selectedDrawing.drawing.defects)}
+                      areas={mapDefectToArea(selectedDrawing.drawing.defects.filter(x=> x.status >= Number(!includeFixedDefects)))}
                       unit='percentage'
                       wrapperStyle={{ border: '2px solid black' }} 
                       customAreaRenderer={customRender}
@@ -254,8 +246,9 @@ export function DefectsPage() {
         <Grid item xs={12}>
           <Card>
             <CardContent>
+              <FormControlLabel control={<Checkbox defaultChecked />} onChange={()=> setIncludeFixedDefects(!includeFixedDefects)} checked={includeFixedDefects} label="Include fixed defects" />
               <List component="nav" sx={{overflow: 'auto', maxHeight: 250}}>
-                { defects.map((item, index) =>
+                { defects.filter(x=> x.status >= Number(!includeFixedDefects)).map((item, index) =>
                   <ListItemButton key={index} alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
                     <ListItemAvatar>
                       <Avatar alt="Tomas Vainoris" src="/static/images/avatar/1.jpg" />
@@ -275,6 +268,14 @@ export function DefectsPage() {
                         </React.Fragment>
                       }
                     />
+                    { item.status == DefectStatus.Fixed ? 
+                      <ListItemIcon>
+                        <DoneIcon sx={{color: 'green'}}/>
+                      </ListItemIcon> :
+                      <ListItemIcon>
+                        <ModeCommentIcon/> 1
+                      </ListItemIcon>
+                    }
                   </ListItemButton>)}
               </List>
             </CardContent>

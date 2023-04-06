@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, CardMedia, Divider, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardMedia, Divider, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Comment } from './Comment';
 import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
@@ -13,11 +13,8 @@ import { v4 as uuid } from 'uuid';
 import { FormHelperText } from '@mui/material';
 import ImageWithViewer from '../ImageWithViewer';
 import { CreateDefectCommentRequest } from '../../contracts/drawing/defect/CreateDefectCommentRequest';
-
-type DefectWithImage = {
-  defect: Defect,
-  imageBase64: string
-}
+import { CreateDefectRequest } from '../../contracts/drawing/defect/CreateDefectRequest';
+import { DefectWithImage } from '../types/DefectWithImage';
 
 function a11yProps(index: number) {
   return {
@@ -91,6 +88,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   };
 
   useEffect(() => {
+    console.log(selectedDefect);
     fetchDefect();
   }, [selectedDefect]);
 
@@ -107,6 +105,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       defect: response.defect,
       imageBase64: imageBase64
     };
+    console.log(defectWithImage);
     setDefect(defectWithImage);
     if (response.defect.defectComments) {
       await fetchComments(response.defect.defectComments);
@@ -181,6 +180,19 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     return canSubmitDefect && title && description;
   }
 
+  async function updateDefectStatus(value: string) {
+    if (!defect) {
+      return;
+    }
+
+    const request: CreateDefectRequest = {
+      defect: {...defect.defect, status: Number(value)}
+    };
+
+    await defectService.updateDefect(defect.defect.drawingId, defect.defect.id, request);
+    await fetchDefect();
+  }
+
   return (
     <Card>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -203,6 +215,17 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                   <Typography>
                     {selectedDefect.description}
                   </Typography>
+                  <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Status"
+                    value={defect ? defect.defect.status : 1}
+                    onChange={(e) => updateDefectStatus(e.target.value as string)}
+                  >
+                    <MenuItem value={1}>Not Fixed</MenuItem>
+                    <MenuItem value={0}>Fixed</MenuItem>
+                  </Select>
                 </Box>
                 <Box>
                   <ImageWithViewer source={defect?.imageBase64} height={150}/>
@@ -214,7 +237,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
               <Typography>Comments</Typography>
               <Box sx={{overflow: 'auto', maxHeight: 200}}>
                 {comments.length == 0 ? 
-                  <Typography>No comments</Typography> :
+                  <Typography color="grey" variant='subtitle2'>No comments</Typography> :
                   comments.map( (item, index) => <Comment defectComment={item} key={index}/>)}
               </Box>
             </CardContent>
@@ -222,7 +245,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             <CardContent>
               <Typography>Add new comment</Typography>
               <Box sx={{display: 'flex', width: '100%'}}>
-                <Avatar alt="J B" src="/static/images/avatar/1.jpg" />
+                <Avatar alt="Ta B" src="/static/images/avatar/1.jpg" />
                 <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{width: '90%'}} multiline={true}></TextField>
                 <IconButton color="secondary" aria-label="upload picture" component="label">
                   <input hidden accept="image/*" type="file" onChange={selectFileComment} />

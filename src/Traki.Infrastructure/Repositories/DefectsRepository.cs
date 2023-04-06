@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Traki.Domain.Extensions;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
+using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Infrastructure.Repositories
@@ -20,8 +23,19 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Defect> CreateDefect(Defect defect)
         {
             var defectEntity = _mapper.Map<DefectEntity>(defect);
-            defectEntity.UserId = 1;
             _context.Add(defectEntity);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<Defect>(defectEntity);
+        }
+
+        public async Task<Defect> UpdateDefect(Defect defect)
+        {
+            var defectEntity = await _context.Defects.Where(x => x.Id == defect.Id).FirstOrDefaultAsync();
+
+            defectEntity.RequiresToBeNotNullEnity();
+
+            defectEntity.Status = defect.Status;
             await _context.SaveChangesAsync();
 
             return _mapper.Map<Defect>(defectEntity);
@@ -34,6 +48,17 @@ namespace Traki.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
 
             return _mapper.Map<Defect>(defectEntity);
+        }
+
+        public async Task<IEnumerable<Defect>> GetDefectsByQuery(Func<Defect, bool> filter)
+        {
+            Func<DefectEntity, bool> func = (x) => {
+                var p = _mapper.Map<Defect>(x);
+                return filter(p);
+            };
+            var defects = _context.Defects.Where(func).ToList();
+
+            return _mapper.Map<IEnumerable<Defect>>(defects);
         }
     }
 }

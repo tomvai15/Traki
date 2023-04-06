@@ -49,10 +49,10 @@ export function Main() {
     <BrowserRouter>
       <Routes>
         <Route path='' element={<ProtectedRoute><DrawerAndHeader/></ProtectedRoute>}>
-          <Route index element={<Navigate to='/projects'/>}/>
+          <Route index element={<Navigate to='/home'/>}/>
+          <Route path='home' element={<HomePage/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
-          <Route path='home' element={<HomePage/>}/>
           <Route path='signvalidation' element={<SignValidation/>}/>
           <Route path='projects' element={<Outlet/>}>
             <Route index element={<Projects/>}/>

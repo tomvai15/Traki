@@ -20,6 +20,7 @@ import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import drawingService from '../../../services/drawing-service';
 import { Link as BreadLink } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 function createData(
   name: string,
@@ -283,8 +284,11 @@ export function ProductPage() {
         <Grid item xs={8} >
           <Card>
             <CardContent>
-              <Typography variant='h5'>{product.name}</Typography>
-              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Typography variant='h5'>{product.name}</Typography>
+                <Button sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>Edit Product</Button>
+              </Box>
+              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Box sx={{flex: 2, padding: '5px', width: '100%', height: '100%'}}>
                   <AreaSelector
                     areas={selectedDrawing?.defects != null ? mapDefectToArea(selectedDrawing?.defects) : []}
@@ -380,7 +384,7 @@ export function ProductPage() {
               </List>
             </CardContent>
             <CardActions>
-              <Button onClick={() => navigate('defects')} variant='contained' color='error'>Details</Button>
+              <Button onClick={() => navigate('defects')} variant='contained' color='primary'>Defect details</Button>
             </CardActions>
           </Card>
         </Grid>

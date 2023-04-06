@@ -8,6 +8,7 @@ using Traki.Api.Contracts.Drawing.Defect;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Protocol;
+using Traki.Api.Contracts.Recommendation;
 using Traki.Api.Contracts.Section;
 using Traki.Api.Contracts.Section.Items;
 using Traki.Api.Contracts.Template;
@@ -23,6 +24,7 @@ namespace Traki.Api.Mapping
     {
         public DomainToContractMappingProfile()
         {
+            AddRecommendationMappings();
             AddDrawingMappings();
             AddCompanyMappings();
             AddProductMappings();
@@ -34,6 +36,11 @@ namespace Traki.Api.Mapping
             AddChecklistMappings();
             AddChecklistQuestionMappings();
             AddChecklistQuestionMappings();
+        }
+
+        public void AddRecommendationMappings()
+        {
+            CreateMap<Recommendation, RecommendationDto>().ReverseMap();
         }
 
         public void AddDrawingMappings()

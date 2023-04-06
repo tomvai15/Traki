@@ -5,6 +5,7 @@ using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
 using Traki.Domain.Extensions;
+using System.Linq;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -45,6 +46,17 @@ namespace Traki.Infrastructure.Repositories
             await _context.SaveChangesAsync();
 
             return _mapper.Map<Product>(createdProduct.Entity);
+        }
+
+        public async Task<IEnumerable<Product>> GetProductByQuery(Func<Product, bool> filter)
+        {
+            Func<ProductEntity, bool> func = (x) => {
+                var p = _mapper.Map<Product>(x);
+                return filter(p);
+            }; 
+            var products = _context.Products.Where(func).ToList();
+
+            return _mapper.Map<IEnumerable<Product>>(products);
         }
     }
 }
