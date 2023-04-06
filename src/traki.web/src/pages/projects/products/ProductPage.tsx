@@ -284,10 +284,11 @@ export function ProductPage() {
         <Grid item xs={8} >
           <Card>
             <CardContent>
-              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '10px'}}>
                 <Typography variant='h5'>{product.name}</Typography>
                 <Button sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>Edit Product</Button>
               </Box>
+              <Divider></Divider>
               <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Box sx={{flex: 2, padding: '5px', width: '100%', height: '100%'}}>
                   <AreaSelector
