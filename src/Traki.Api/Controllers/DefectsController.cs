@@ -28,7 +28,7 @@ namespace Traki.Api.Controllers
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
             _claimsProvider.TryGetUserId(out int userId);
-            defect.UserId = userId;
+            defect.UserId = userId != 0 ? userId : 1;
             defect.DrawingId = drawingId;
             defect.Status = DefectStatus.NotFixed;
             defect = await _defectsRepository.CreateDefect(defect);
@@ -70,7 +70,7 @@ namespace Traki.Api.Controllers
             defectComment.DefectId = defectId;
             defectComment.Author = "TV";
             defectComment.Date = DateTime.Now.ToString("G");
-            defectComment.UserId = userId;
+            defectComment.UserId = userId != 0 ? userId : 1;
 
             await _defectCommentRepository.CreateDefectComment(defectComment);
             return Ok();
