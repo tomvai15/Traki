@@ -1,4 +1,6 @@
-﻿namespace Traki.Infrastructure.Entities
+﻿using Traki.Infrastructure.Entities.Drawing;
+
+namespace Traki.Infrastructure.Entities
 {
     public class UserEntity
     {
@@ -7,5 +9,9 @@
         public string HashedPassword { get; set; }
         public string Role { get; set; }
         public string? EncryptedRefreshToken { get; set; }
+        public IEnumerable<ProjectEntity> Projects { get; set; }
+        public IEnumerable<ProductEntity> Products { get; set; }
+        public IEnumerable<DefectEntity> Defects { get; set; }
+        public IEnumerable<DefectCommentEntity> DefectComments { get; set; }
     }
 }

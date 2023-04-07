@@ -9,5 +9,7 @@
         public string Author { get; set; }
         public int DefectId { get; set; }
         public DefectEntity Defect { get; set; }
+        public int UserId { get; set; }
+        public UserEntity User { get; set; }
     }
 }

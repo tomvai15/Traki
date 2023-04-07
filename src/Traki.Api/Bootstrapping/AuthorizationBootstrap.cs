@@ -17,21 +17,7 @@ namespace Traki.Api.Bootstrapping
             services.Configure<SecuritySettings>(securitySettingsSection);
             var securitySettings = securitySettingsSection.Get<SecuritySettings>();
 
-            services.AddAuthentication(options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
-                    .AddJwtBearer(options =>
-                    {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
-                            ValidateIssuer = false,
-                            ValidateAudience = false
-                        };
-                    })
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
                     {
                         options.Cookie.SameSite = SameSiteMode.None;
@@ -47,14 +33,21 @@ namespace Traki.Api.Bootstrapping
                         };
                     });
 
+            /*
             var multiSchemePolicy = new AuthorizationPolicyBuilder(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 JwtBearerDefaults.AuthenticationScheme)
               .RequireAuthenticatedUser()
               .Build();
 
-            services.AddAuthorization(options => options.DefaultPolicy = multiSchemePolicy
-            );
+            services.AddAuthorization(options => { 
+                options.DefaultPolicy = multiSchemePolicy;
+                options.AddPolicy("ProjectManager", policy =>
+                {
+                    policy.RequireClaim("Role", "ProjectManager");
+                });
+            
+            });*/
 
             return services;
         }

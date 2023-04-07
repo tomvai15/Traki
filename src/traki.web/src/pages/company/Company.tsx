@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, TextField, Typography, styled } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, TextField, Typography, styled } from '@mui/material';
 import companyService from '../../services/company-service';
 import { Company } from '../../contracts/company/Company';
 import { UpdateCompanyRequest } from '../../contracts/company/UpdateCompanyRequest';
@@ -74,9 +74,13 @@ export function CompanyPage() {
     await fetchCompany();
   }
 
-
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.primary">Company information</Typography>
+        </Breadcrumbs>
+      </Grid>
       <Grid item xs={6} md={4} >
         <Card title='Sample Project'>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>

@@ -12,6 +12,12 @@ class DefectService {
     return response.data;
   }
 
+  async updateDefect(drawingId: number, defectId: number, createDefectRequest: CreateDefectRequest): Promise<GetDefectResponse> {
+    const fullRoute = route.format({drawingId: drawingId.toString(), defectId: defectId.toString()});
+    const response = await axiosApiInstance.put<GetDefectResponse>(fullRoute, createDefectRequest, { headers: {} });
+    return response.data;
+  }
+
   async createDefectComment(drawingId: number, defectId: number, createDefectCommentRequest: CreateDefectCommentRequest): Promise<void> {
     const fullRoute = route.format({drawingId: drawingId.toString(), defectId: defectId.toString()}) + '/comments';
     await axiosApiInstance.post(fullRoute, createDefectCommentRequest, { headers: {} });

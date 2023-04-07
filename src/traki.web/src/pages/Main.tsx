@@ -22,6 +22,9 @@ import SignValidation from './Authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
 import { HomePage } from './Home';
 import { DefectsPage } from './projects/products/DefectsPage';
+import { CreateProject } from './projects/CreateProject';
+import { EditProject } from './projects/EditProject';
+import { CreateProduct } from './projects/products/CreateProduct';
 
 export function Main() {
 
@@ -46,20 +49,25 @@ export function Main() {
     <BrowserRouter>
       <Routes>
         <Route path='' element={<ProtectedRoute><DrawerAndHeader/></ProtectedRoute>}>
-          <Route index element={<Navigate to='/projects'/>}/>
+          <Route index element={<Navigate to='/home'/>}/>
+          <Route path='home' element={<HomePage/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
-          <Route path='home' element={<HomePage/>}/>
           <Route path='signvalidation' element={<SignValidation/>}/>
           <Route path='projects' element={<Outlet/>}>
             <Route index element={<Projects/>}/>
+            <Route path='create' element={<CreateProject/>}/>
             <Route path=':projectId' element={<Outlet/>}>
-              <Route path='products/:productId' element={<Outlet/>}>
-                <Route index element={<ProductPage/>}/>
-                <Route path='defects' element={<DefectsPage/>}/>
-                <Route path='protocols/:protocolId' element={<Outlet/>}>
-                  <Route index element={<FillProtocol/>}/>
-                  <Route path='report' element={<ProtocolReport/>}/>
+              <Route path='edit' element={<EditProject/>}/>
+              <Route path='products' element={<Outlet/>}>
+                <Route path='create' element={<CreateProduct/>}/>
+                <Route path=':productId' element={<Outlet/>}>
+                  <Route index element={<ProductPage/>}/>
+                  <Route path='defects' element={<DefectsPage/>}/>
+                  <Route path='protocols/:protocolId' element={<Outlet/>}>
+                    <Route index element={<FillProtocol/>}/>
+                    <Route path='report' element={<ProtocolReport/>}/>
+                  </Route>  
                 </Route>  
               </Route>  
             </Route>

@@ -1,4 +1,5 @@
-﻿using Traki.Domain.Models.Drawing;
+﻿using Traki.Domain.Constants;
+using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
@@ -37,25 +38,27 @@ namespace Traki.Infrastructure.Data
             {
                 Title  = "Defect 1",
                 Description= "Defect 1",
-                ImageName = "",
+                ImageName = "ce388de4-8c6b-45b0-ab12-85f78cfa900c.png",
                 Status= DefectStatus.NotFixed,
                 X = 50,
                 Y = 50,
                 Width = 10,
                 Height = 20,
-                DrawingId = 1
+                DrawingId = 1,
+                UserId = 1,
             },
             new DefectEntity
             {
                 Title  = "Defect 2",
                 Description= "Defect 2",
-                ImageName = "",
+                ImageName = "99696138-0e26-4815-9982-40b575269336.png",
                 Status= DefectStatus.NotFixed,
                 X = 10,
                 Y = 10,
                 Width = 20,
                 Height = 10,
-                DrawingId = 2
+                DrawingId = 2,
+                UserId = 1,
             }
         };
 
@@ -249,7 +252,19 @@ namespace Traki.Infrastructure.Data
             {
                 Email = "vainoristomas@gmail.com",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
-                Role = "admin"
+                Role = Role.ProductManager,
+            },
+            new UserEntity
+            {
+                Email = "vainoristomas9@gmail.com",
+                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
+                Role = Role.ProjectManager
+            },
+            new UserEntity
+            {
+                Email = "tipotomas9@gmail.com",
+                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
+                Role = Role.Administrator
             }
         };
 
@@ -258,12 +273,20 @@ namespace Traki.Infrastructure.Data
             new ProjectEntity
             {
                 Name = $"Sample Project",
+                ClientName = $"Sample Client",
+                Address = $"Sample Address",
+                ImageName = "5e6669e4-c033-4ded-93e6-f44dccc6a157.png",
                 CompanyId = 1,
+                UserId = 2,
             },
             new ProjectEntity
             {
                 Name = $"Other Project",
+                ClientName = $"Sample Client",
+                Address = $"Sample Address",
+                ImageName = "02653609-3004-4a48-b2d6-bddab03e778c.png",
                 CompanyId = 1,
+                UserId = 2,
             }
         };
 
@@ -272,13 +295,21 @@ namespace Traki.Infrastructure.Data
             new ProductEntity
             {
                 Name = $"SH.1 / 01.2.21.1.0016",
-                ProjectId = 1
+                ProjectId = 1,
+                UserId = 1
             },
             new ProductEntity
             {
                 Name = $"SH.2 / 01.2.21.1.0016 GT",
-                ProjectId = 2
-            }
+                ProjectId = 2,
+                UserId = 1
+            },
+            new ProductEntity
+            {
+                Name = $"SH.1 / 01.2.21.1.0016",
+                ProjectId = 1,
+                UserId = 1
+            },
         };
 
         public static IEnumerable<TemplateEntity> Templates => new[]

@@ -19,6 +19,7 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IReportHandler, ReportHandler>()
                 .AddTransient<ISectionHandler, SectionHandler>()
                 .AddTransient<IProductHandler, ProductHandler>()
+                .AddTransient<IRecommendationsHandler, RecommendationsHandler>()
                 .AddTransient<IReportGenerator, ReportGenerator>()
                 .AddTransient<IProtocolHandler, ProtocolHandler>()
                 .AddTransient<IDocumentSignerHandler, DocumentSignerHandler>()
