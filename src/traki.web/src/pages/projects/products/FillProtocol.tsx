@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { Button, Card, CardActions, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardActions, CardContent, Checkbox, Dialog, DialogTitle, Divider, FormControlLabel, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
-import productService from '../../../services/product-service';
-import { Product } from '../../../contracts/product/Product';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Protocol } from '../../../contracts/protocol/Protocol';
-import { blue } from '@mui/material/colors';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import protocolService from '../../../services/protocol-service';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Section } from '../../../contracts/protocol/Section';
-import sectionService from '../../../services/section-service';
 import { Checklist } from '../../../contracts/protocol/Checklist';
-import { Item } from '../../../contracts/protocol/items/Item';
-import { TextInput } from '../../../contracts/protocol/items/TextInput';
-import { Question } from '../../../contracts/protocol/items/Question';
+import { Protocol } from '../../../contracts/protocol/Protocol';
+import { Section } from '../../../contracts/protocol/Section';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
+import { Item } from '../../../contracts/protocol/items/Item';
+import { Question } from '../../../contracts/protocol/items/Question';
+import { TextInput } from '../../../contracts/protocol/items/TextInput';
 import { UpdateSectionAnswersRequest } from '../../../contracts/protocol/section/UpdateSectionAnswersRequest';
+import protocolService from '../../../services/protocol-service';
+import sectionService from '../../../services/section-service';
 
 const initialProtocol: Protocol = {
   id: 1,

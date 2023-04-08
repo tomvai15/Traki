@@ -1,20 +1,13 @@
-import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { Section } from '../../../contracts/protocol/Section';
-import { Checklist } from '../../../contracts/protocol/Checklist';
-import { Item } from '../../../contracts/protocol/items/Item';
-import { Question } from '../../../contracts/protocol/items/Question';
-import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
-import { TextInput } from '../../../contracts/protocol/items/TextInput';
-import { MultipleChoice } from '../../../contracts/protocol/items/MultipleChoice';
-import { Option } from '../../../contracts/protocol/items/Option';
-import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { v4 as uuid } from 'uuid';
-import ClearIcon from '@mui/icons-material/Clear';
-import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
-import sectionService from '../../../services/section-service';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import { Checklist, Section, UpdateSectionRequest } from 'contracts/protocol';
+import { Question, TextInput, MultipleChoice, Item, Option } from 'contracts/protocol/items';
+import { sectionService } from 'services';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ClearIcon from '@mui/icons-material/Clear';
+import { v4 as uuid } from 'uuid';
 
 const question: Question = {
   id: uuid(), 
@@ -39,23 +32,6 @@ const defaultMultipleChoice: MultipleChoice = {
   options: [{id: uuid(), name: 'Option A',   selected: false}, {id: uuid(), name: 'Option B',   selected: false}],
 };
 
-const textInput: TextInput = {
-  id: uuid(), 
-  value: '',
-};
-
-const value1: Option = {
-  id: uuid(), 
-  name: 'Option A',
-  selected: false
-};
-
-const value2: Option = {
-  id: uuid(), 
-  name: 'Option B',
-  selected: false
-};
-
 const defaultItem: Item ={
   id: uuid(), 
   name: 'Item Name', 
@@ -63,11 +39,6 @@ const defaultItem: Item ={
   question: question, 
   multipleChoice: undefined, 
   textInput: undefined
-};
-
-const multipleChoice: MultipleChoice = {
-  id: uuid(), 
-  options: [value1, value2],
 };
 
 const items: Item[] = [];

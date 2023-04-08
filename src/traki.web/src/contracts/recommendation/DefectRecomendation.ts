@@ -1,4 +1,4 @@
-import { Defect } from "../drawing/defect/Defect"
+import { Defect } from "../drawing/defect/Defect";
 
 export type DefectRecomendation = {
   defect: Defect,
