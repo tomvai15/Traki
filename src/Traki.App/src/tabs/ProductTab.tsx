@@ -10,7 +10,7 @@ import DefectScreen from '../screens/product/defects/DefectScreen';
 
 const ProductStack = createNativeStackNavigator<ProductStackParamList>();
 
-export  default function ProductTab() {
+export default function ProductTab() {
   return (
     <ProductStack.Navigator screenOptions={{ header: ()=> <></>}}>
       <ProductStack.Screen name="Products" options={{title: 'Products',}} component={ProductsScreen} />

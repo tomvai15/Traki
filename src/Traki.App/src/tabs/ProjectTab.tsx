@@ -3,12 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../screens/project/RootStackPatamList';
 import CreateProjectScreen from '../screens/project/CreateProjectScreen';
 import DetailsScreen from '../screens/project/DetailsScreen';
-import HomeScreen from '../screens/project/HomeScreen';
 import ProjectsScreens from '../screens/project/ProjectsScreen';
 
 const ProjectStack = createNativeStackNavigator<RootStackParamList>();
 
-export  default function ProjectTab() {
+export default function ProjectTab() {
   return (
     <ProjectStack.Navigator screenOptions={{ animation:'slide_from_right', header: ()=> <></>}}>
       <ProjectStack.Screen name="Projects" component={ProjectsScreens} />

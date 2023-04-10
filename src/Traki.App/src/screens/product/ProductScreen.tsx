@@ -12,8 +12,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Product } from '../../contracts/product/Product';
 import productService from '../../services/product-service';
 import { Protocol } from '../../contracts/protocol/Protocol';
-import { RootState } from '../../store/store';
-import { useSelector } from 'react-redux';
 import protocolService from '../../services/protocol-service';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Product'>;
@@ -23,7 +21,7 @@ const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  ico
 
 export default function ProductScreen({route, navigation}: Props) {
 
-  const projectId = useSelector((state: RootState) => state.project.id);
+  const projectId = 1;
   const {productId} = route.params;
 
   const [visible, setVisible] = React.useState(false);
@@ -89,67 +87,69 @@ export default function ProductScreen({route, navigation}: Props) {
 
   return (
     <ScrollView>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Import protocol</Dialog.Title>
-          <Dialog.Content>
-            <Searchbar
-              placeholder="Search"
-              onChangeText={setSearchQuery}
-              value={searchQuery}
-            />
-            <Card mode='outlined' style={{ height: 100, marginTop: 10 }}>
-              <FlatList data={templates.filter(x=> x.name.toLowerCase().includes(searchQuery.toLowerCase()))} 
-                keyExtractor={item => item.id.toString()}
-                renderItem={({item}) => 
-                  <View style={{margin:5, backgroundColor: item.id==templateToAdd ? '#e4ae3f' : 'white' }}>
-                    <Text onPress={()=> setTemplateToAdd(templateToAdd == item.id ? -1 : item.id)} variant="titleMedium">{item.name}</Text>
-                    <Divider bold={true}></Divider>
-                  </View>}></FlatList>     
-            </Card>
-          
-          </Dialog.Content>
-          <Dialog.Actions style={{justifyContent: 'space-evenly'}}>
-            <Button style={{ width:80 }} mode='outlined' onPress={hideDialog}>
-              Close
-            </Button>
-            <Button disabled={templateToAdd==-1} 
-              style={{ width:80 }} 
-              mode='contained' 
-              onPress={createChecklist}>
-                Import
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <View style={{padding: 10}}>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>Import protocol</Dialog.Title>
+            <Dialog.Content>
+              <Searchbar
+                placeholder="Search"
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+              />
+              <Card mode='outlined' style={{ height: 100, marginTop: 10 }}>
+                <FlatList data={templates.filter(x=> x.name.toLowerCase().includes(searchQuery.toLowerCase()))} 
+                  keyExtractor={item => item.id.toString()}
+                  renderItem={({item}) => 
+                    <View style={{margin:5, backgroundColor: item.id==templateToAdd ? '#e4ae3f' : 'white' }}>
+                      <Text onPress={()=> setTemplateToAdd(templateToAdd == item.id ? -1 : item.id)} variant="titleMedium">{item.name}</Text>
+                      <Divider bold={true}></Divider>
+                    </View>}></FlatList>     
+              </Card>
+            
+            </Dialog.Content>
+            <Dialog.Actions style={{justifyContent: 'space-evenly'}}>
+              <Button style={{ width:80 }} mode='outlined' onPress={hideDialog}>
+                Close
+              </Button>
+              <Button disabled={templateToAdd==-1} 
+                style={{ width:80 }} 
+                mode='contained' 
+                onPress={createChecklist}>
+                  Import
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
 
-      <Card mode='outlined'>
-        <Card.Content >
-          <Text variant="titleLarge">{product?.name}</Text>
-        </Card.Content>
-        <Card.Cover style={{height:300}} source={{ uri: image }} />
-        <Card.Actions>
-          <Button onPress={() => navigation.navigate('DefectsScreen', {productId: productId})}>View defects</Button>
-        </Card.Actions>
-      </Card>
+        <Card mode='outlined'>
+          <Card.Content >
+            <Text variant="titleLarge">{product?.name}</Text>
+          </Card.Content>
+          <Card.Cover style={{height:300}} source={{ uri: image }} />
+          <Card.Actions>
+            <Button onPress={() => navigation.navigate('DefectsScreen', {productId: productId})}>View defects</Button>
+          </Card.Actions>
+        </Card>
 
-      <Card mode='outlined' style={{marginTop:10}}>
-        <TouchableOpacity onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})}>
-          <Card.Title title="Add defect" subtitle="asd" left={Wrench} />
-        </TouchableOpacity >
-      </Card>
-      <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>
-        <Title>Protocols</Title>
-        <Button onPress={showDialog} icon={'plus'} mode='contained'>Add</Button>
+        <Card mode='outlined' style={{marginTop:10}}>
+          <TouchableOpacity onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})}>
+            <Card.Title title="Add defect" subtitle="asd" left={Wrench} />
+          </TouchableOpacity >
+        </Card>
+        <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>
+          <Title>Protocols</Title>
+          <Button onPress={showDialog} icon={'plus'} mode='contained'>Add</Button>
+        </View>
+        <List.Section style={{marginTop: -10}}>
+          {protocols.map((protocol) => 
+            (<Card mode='outlined' onPress={() => navigation.navigate('Protocol', {productId: productId, protocolId: protocol.id})}
+              key={protocol.id} 
+              style={{marginTop:10, padding: 5}}>
+              <Card.Title title={protocol.name} right={LeftContent} />
+            </Card>))}
+        </List.Section>
       </View>
-      <List.Section style={{marginTop: -10}}>
-        {protocols.map((protocol) => 
-          (<Card mode='outlined' onPress={() => navigation.navigate('Protocol', {productId: productId, protocolId: protocol.id})}
-            key={protocol.id} 
-            style={{marginTop:10, padding: 5}}>
-            <Card.Title title={protocol.name} right={LeftContent} />
-          </Card>))}
-      </List.Section>
     </ScrollView>
   );
 }

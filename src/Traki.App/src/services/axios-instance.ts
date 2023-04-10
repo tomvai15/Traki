@@ -1,12 +1,18 @@
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userState } from '../state/user-state';
 import { url } from './endpoints';
 import axios from 'axios';
+import { getRecoil, setRecoil } from 'recoil-nexus'
 
 const axiosApiInstance = axios.create({
   baseURL: url
 });
 
 axiosApiInstance.interceptors.request.use(function (config) {
+  const userInfo = getRecoil(userState);
+  console.log(userInfo);
   console.log('[\u001B[37mMaking \u001b[1;36m'+ config.method?.toUpperCase() +'\u001B[37m request \u001b[1;36m' + config.baseURL +'/'+ config.url + '\u001B[37m]'); 
+  config.headers.Authorization = `Bearer ${userInfo.token}`;
   return config;
 }, function (error) {
   return Promise.reject(error);
