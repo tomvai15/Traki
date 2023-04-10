@@ -19,6 +19,7 @@ import ImageWithRegions from '../../../components/ImageWithRegions';
 import { DefectComment } from '../../../contracts/drawing/defect/DefectComment';
 import { CreateDefectCommentRequest } from '../../../contracts/drawing/defect/CreateDefectCommentRequest';
 import uuid from 'react-native-uuid';
+import { ScreenView } from '../../../components/ScreenView';
 
 interface Rectangle {
   x: number;
@@ -180,42 +181,44 @@ export default function DefectScreen({route, navigation}: Props) {
 
   return (
     <ScrollView>
-      <Card mode='outlined' style={{marginTop:10}}>
-        <Card.Title title={defect?.defect.title}
-          subtitle={defect?.defect.description} 
-          left={() => <Avatar.Text size={50} label="TV" />} 
-          right={() => { return (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}}
-        />
-      </Card>
-      <View style={styles.box}>
-        { defect && drawing && <ImageWithRegions source={drawing.imageBase64} height={300} rectangles={[defectToRectangle(defect.defect)]}/>}
-      </View>
-      <Text>Comments</Text>
-      { comments.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
-        <Card.Title title='' subtitle={item.defectComment.date}
-          left={() => <Avatar.Text size={30} label="TV" />} 
-        />
-        <Card.Content>
-          <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
-            { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
-          </View>
-        </Card.Content>
-      </Card>)}
-      <Text>New comment</Text>
-      <Card mode='outlined' style={{marginTop:10}}>
-        <Card.Title title=''
-          left={() => <Avatar.Text size={30} label="TV" />} 
-          right={() => <View style={{margin: 10}}><IconButton onPress={() => pickImage()} size={30} icon='camera' /></View>}
-        />
-        <Card.Content>
-          <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-            <TextInput value={commentText} onChangeText={setCommentText} style={{flex: 1, marginRight: 10}} label={'Comment...'} multiline={true}></TextInput>
-            {imageUri && <ImageWithViewer source={imageUri} width={60} height={100} ></ImageWithViewer>}
-          </View>
-          <Button disabled={commentText==''} mode='contained' onPress={createComment}>Submit</Button>
-        </Card.Content>
-      </Card>
+      <ScreenView>
+        <Card mode='outlined' style={{marginTop:10}}>
+          <Card.Title title={defect?.defect.title}
+            subtitle={defect?.defect.description} 
+            left={() => <Avatar.Text size={50} label="TV" />} 
+            right={() => { return (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}}
+          />
+        </Card>
+        <View style={styles.box}>
+          { defect && drawing && <ImageWithRegions source={drawing.imageBase64} width={390} rectangles={[defectToRectangle(defect.defect)]}/>}
+        </View>
+        <Text>Comments</Text>
+        { comments.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
+          <Card.Title title='' subtitle={item.defectComment.date}
+            left={() => <Avatar.Text size={30} label="TV" />} 
+          />
+          <Card.Content>
+            <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
+              <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
+              { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
+            </View>
+          </Card.Content>
+        </Card>)}
+        <Text>New comment</Text>
+        <Card mode='outlined' style={{marginTop:10}}>
+          <Card.Title title=''
+            left={() => <Avatar.Text size={30} label="TV" />} 
+            right={() => <View style={{margin: 10}}><IconButton onPress={() => pickImage()} size={30} icon='camera' /></View>}
+          />
+          <Card.Content>
+            <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
+              <TextInput value={commentText} onChangeText={setCommentText} style={{flex: 1, marginRight: 10}} label={'Comment...'} multiline={true}></TextInput>
+              {imageUri && <ImageWithViewer source={imageUri} width={60} height={100} ></ImageWithViewer>}
+            </View>
+            <Button disabled={commentText==''} mode='contained' onPress={createComment}>Submit</Button>
+          </Card.Content>
+        </Card>
+      </ScreenView>
     </ScrollView>
   );
 };

@@ -5,16 +5,12 @@ import { Project } from '../../contracts/projects/Project';
 import { List, Button, Portal, Text, Modal } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './RootStackPatamList';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { setId } from '../../store/project-slice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Projects'>;
 
 export default function ProjectsScreens({ navigation }: Props) {
 
-  const dispatch = useDispatch();
-  const currentSelectedProject = useSelector((state: RootState) => state.project.id);
+  const currentSelectedProject = 1;
 
   const [selectedProject, setSelectedProject] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -41,7 +37,6 @@ export default function ProjectsScreens({ navigation }: Props) {
   }
 
   function updateSelectedProject() {
-    dispatch(setId(selectedProject));
     hideModal();
   }
 

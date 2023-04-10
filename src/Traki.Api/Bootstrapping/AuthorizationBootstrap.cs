@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using System.Text;
 using Traki.Domain.Constants;
 using Traki.Domain.Settings;
+using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -17,7 +19,11 @@ namespace Traki.Api.Bootstrapping
             services.Configure<SecuritySettings>(securitySettingsSection);
             var securitySettings = securitySettingsSection.Get<SecuritySettings>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+                    {
+                        options.DefaultScheme = "JWT_OR_COOKIE";
+                        options.DefaultChallengeScheme = "JWT_OR_COOKIE";
+                    })
                     .AddCookie(options =>
                     {
                         options.Cookie.SameSite = SameSiteMode.None;
@@ -31,12 +37,34 @@ namespace Traki.Api.Bootstrapping
                             context.Response.StatusCode = StatusCodes.Status403Forbidden;
                             return Task.CompletedTask;
                         };
+                    })
+                    .AddJwtBearer("Bearer", options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    })
+                    .AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
+                    {
+                        // runs on each request
+                        options.ForwardDefaultSelector = context =>
+                        {
+                            // filter by auth type
+                            string authorization = context.Request.Headers[HeaderNames.Authorization];
+                            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+                                return "Bearer";
+
+                            // otherwise always check for cookie auth
+                            return "Cookies";
+                        };
                     });
 
-            /*
-            var multiSchemePolicy = new AuthorizationPolicyBuilder(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                JwtBearerDefaults.AuthenticationScheme)
+
+            var multiSchemePolicy = new AuthorizationPolicyBuilder("JWT_OR_COOKIE")
               .RequireAuthenticatedUser()
               .Build();
 
@@ -47,7 +75,7 @@ namespace Traki.Api.Bootstrapping
                     policy.RequireClaim("Role", "ProjectManager");
                 });
             
-            });*/
+            });
 
             return services;
         }

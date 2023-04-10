@@ -34,7 +34,7 @@ namespace Traki.Api.Controllers
         {
             var user = await _authHandler.GetUser(loginRequest.Email, loginRequest.Password);
 
-            var claims = await _authHandler.CrateClaimsForUser(user);
+            var claims = await _authHandler.CreateClaimsForUser(user);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -47,7 +47,7 @@ namespace Traki.Api.Controllers
         {
             var user = await _authHandler.GetUser(loginRequest.Email, loginRequest.Password);
 
-            var claims = await _authHandler.CrateClaimsForUser(user);
+            var claims = await _authHandler.CreateClaimsForUser(user);
 
             var token = _jwtTokenGenerator.GenerateJWTToken(claims);
 
