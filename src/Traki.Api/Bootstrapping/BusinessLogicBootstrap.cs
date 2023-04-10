@@ -26,6 +26,7 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IAccessTokenProvider, AccessTokenProvider>()
                 .AddTransient<IClaimsProvider, ClaimsProvider>();
 
+
             return services;
         }
 
@@ -45,7 +46,8 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IProtocolRepository, ProtocolRepository>()
                 .AddTransient<IDrawingsRepository, DrawingsRepository>()
                 .AddTransient<IDefectsRepository, DefectsRepository>()
-                .AddTransient<IDefectCommentRepository, DefectCommentRepository>();
+                .AddTransient<IDefectCommentRepository, DefectCommentRepository>()
+                .AddTransient<IStatusChangeRepository, StatusChangeRepository>();
 
             return services;
         }

@@ -18,6 +18,7 @@ namespace Traki.Api.Mapping
             CreateMap<Drawing, DrawingEntity>().ReverseMap();
             CreateMap<Defect, DefectEntity>().ReverseMap();
             CreateMap<DefectComment, DefectCommentEntity>().ReverseMap();
+            CreateMap<StatusChange, StatusChangeEntity>().ReverseMap();
 
             CreateMap<Protocol, ProtocolEntity>().ReverseMap();
 

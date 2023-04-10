@@ -45,6 +45,7 @@ namespace Traki.Infrastructure.Repositories
         {
             var defectEntity = await _context.Defects.Where(x => x.Id == defectId)
                 .Include(x => x.DefectComments)
+                .Include(x => x.StatusChanges)
                 .FirstOrDefaultAsync();
 
             return _mapper.Map<Defect>(defectEntity);

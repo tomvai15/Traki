@@ -14,6 +14,7 @@ import { CreateDefectCommentRequest } from '../../contracts/drawing/defect/Creat
 import { CreateDefectRequest } from '../../contracts/drawing/defect/CreateDefectRequest';
 import { DefectWithImage } from '../types/DefectWithImage';
 import { defectService, pictureService } from '../../services/index';
+import { DefectActivities } from './DefectActivity';
 
 function a11yProps(index: number) {
   return {
@@ -104,7 +105,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       defect: response.defect,
       imageBase64: imageBase64
     };
-    console.log(defectWithImage);
+
     setDefect(defectWithImage);
     if (response.defect.defectComments) {
       await fetchComments(response.defect.defectComments);
@@ -192,6 +193,10 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     await fetchDefect();
   }
 
+  if (!defect) {
+    return (<Card sx={{height: '200px'}}></Card>);
+  }
+
   return (
     <Card>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -234,10 +239,8 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             <Divider></Divider>
             <CardContent>
               <Typography>Comments</Typography>
-              <Box sx={{overflow: 'auto', maxHeight: 200}}>
-                {comments.length == 0 ? 
-                  <Typography color="grey" variant='subtitle2'>No comments</Typography> :
-                  comments.map( (item, index) => <Comment defectComment={item} key={index}/>)}
+              <Box sx={{overflow: 'auto', maxHeight: 250}}>
+                <DefectActivities defectComments={comments} statusChanges={defect.defect.statusChanges ?? []} />
               </Box>
             </CardContent>
             <Divider></Divider>

@@ -13,5 +13,6 @@ namespace Traki.Infrastructure.Entities
         public IEnumerable<ProductEntity> Products { get; set; }
         public IEnumerable<DefectEntity> Defects { get; set; }
         public IEnumerable<DefectCommentEntity> DefectComments { get; set; }
+        public IEnumerable<StatusChangeEntity> StatusChanges { get; set; }
     }
 }
