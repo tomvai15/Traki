@@ -19,6 +19,7 @@ import { UpdateSectionAnswersRequest } from '../../../contracts/protocol/section
 import * as ImagePicker from 'expo-image-picker';
 import pictureService from '../../../services/picture-service';
 import ImageView from "react-native-image-viewing";
+import { ScreenView } from '../../../components/ScreenView';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Protocol'>;
 
@@ -73,7 +74,7 @@ export default function ProtocolScreen({ route, navigation }: Props) {
   }
 
   return (
-    <View  style={[styles.container,{flexDirection: 'column'}]}>
+    <ScreenView>
       { selectedImage &&
         <ImageView
           images={[{uri: selectedImage}]}
@@ -85,18 +86,17 @@ export default function ProtocolScreen({ route, navigation }: Props) {
         <Title>{protocol.name}</Title>
       </View>
       { isLoading ?
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View>
         <ActivityIndicator animating={isLoading}/>
       </View> :
-      <View style={{flex: 1}}>
-        <FlatList data={sections} 
+      <FlatList data={sections} 
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
           <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
         }>
-        </FlatList>
-      </View>}
-    </View>
+      </FlatList>}
+    </ScreenView>
   );
 }
 
@@ -236,19 +236,19 @@ function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSe
 
   return (
     <View>
-      <Card mode='contained' style={{borderWidth: 1}}>
-        <Card.Title  title={section.name} right={() => 
-          <Button disabled={!canUpdate()} onPress={updateSection} style={{margin: 5, padding: 0 ,width: 120, alignSelf: 'flex-end'}} mode='contained'>
+      <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
+        <Button disabled={!canUpdate()} onPress={updateSection} mode='contained'>
             Atnaujinti
-          </Button>}>  
-        </Card.Title>
-      </Card>
+          </Button>
+      </View>
       <FlatList data={section.checklist?.items} 
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
           <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
         }>
         </FlatList>
+        <Divider bold></Divider>
     </View>
   );
 }

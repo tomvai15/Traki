@@ -13,6 +13,7 @@ import { Product } from '../../contracts/product/Product';
 import productService from '../../services/product-service';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
+import { ScreenView } from '../../components/ScreenView';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Product'>;
 
@@ -87,7 +88,7 @@ export default function ProductScreen({route, navigation}: Props) {
 
   return (
     <ScrollView>
-      <View style={{padding: 10}}>
+      <ScreenView>
         <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Title>Import protocol</Dialog.Title>
@@ -149,7 +150,7 @@ export default function ProductScreen({route, navigation}: Props) {
               <Card.Title title={protocol.name} right={LeftContent} />
             </Card>))}
         </List.Section>
-      </View>
+      </ScreenView>
     </ScrollView>
   );
 }
