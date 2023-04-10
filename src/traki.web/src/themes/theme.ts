@@ -6,17 +6,17 @@ const colors = {
 
   // primary
   primaryLight: "'#eef2f6",
-  primaryMain: '#2196f3',
-  primaryDark: '#1e88e5',
-  primary200: '#90caf9',
-  primary800: '#1565c0',
+  primaryMain: '#E5A132',
+  primaryDark: '#A66F15',
+  primary200: '#E6AB4D',
+  primary800: '#AB761F',
 
   // secondary
-  secondaryLight: '#ede7f6',
-  secondaryMain: '#673ab7',
-  secondaryDark: '#5e35b1',
-  secondary200: '#b39ddb',
-  secondary800: '#4527a0',
+  secondaryLight: '#F6EEE7',
+  secondaryMain: '#BDBAB4',
+  secondaryDark: '#7B756A',
+  secondary200: '#BDBAB4',
+  secondary800: '#524B3F',
 
   // success Colors
   successLight: '#b9f6ca',
@@ -61,22 +61,22 @@ const colors = {
 
   // primary dark
   darkPrimaryLight: '#eef2f6',
-  darkPrimaryMain: '#2196f3',
-  darkPrimaryDark: '#1e88e5',
-  darkPrimary200: '#90caf9',
-  darkPrimary800: '#1565c0',
+  darkPrimaryMain: '#F3A321',
+  darkPrimaryDark: '#E5881E',
+  darkPrimary200: '#F9D290',
+  darkPrimary800: '#C08115',
 
   // secondary dark
-  darkSecondaryLight: '#d1c4e9',
-  darkSecondaryMain: '#7c4dff',
-  darkSecondaryDark: '#651fff',
-  darkSecondary200: '#b39ddb',
-  darkSecondary800: '#6200ea',
+  darkSecondaryLight: '#E9D6C4',
+  darkSecondaryMain: '#FFAF4D',
+  darkSecondaryDark: '#FFA91F',
+  darkSecondary200: '#DBC49D',
+  darkSecondary800: '#EAA400',
 
   // text variants
   darkTextTitle: '#d7dcec',
-  darkTextPrimary: '#bdc8f0',
-  darkTextSecondary: '#8492c4',
+  darkTextPrimary: '#F0DCBD',
+  darkTextSecondary: '#C4AE84',
 };
 
 const colorScheme = {
