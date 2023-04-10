@@ -1,5 +1,5 @@
 import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Section } from '../contracts/protocol/Section';
 import { Checklist } from '../contracts/protocol/Checklist';
 import { Item } from '../contracts/protocol/items/Item';
@@ -10,11 +10,9 @@ import { MultipleChoice } from '../contracts/protocol/items/MultipleChoice';
 import { Option } from '../contracts/protocol/items/Option';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { v4 as uuid } from 'uuid';
 import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateSectionRequest } from '../contracts/protocol/UpdateSectionRequest';
-import sectionService from '../services/section-service';
 
 // TODO: allow only specific resolution
 

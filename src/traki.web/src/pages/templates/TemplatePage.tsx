@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardActions, CardContent, CardMedia, Divider, Grid, Paper, TextField, Typography, styled } from '@mui/material';
-import companyService from '../../services/company-service';
-import { Company } from '../../contracts/company/Company';
-import { UpdateCompanyRequest } from '../../contracts/company/UpdateCompanyRequest';
-import pictureService from '../../services/picture-service';
 import { DragDropContext, Draggable, DropResult, Droppable } from "react-beautiful-dnd";
 import { v4 as uuid } from 'uuid';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { type } from 'os';
-
-
 
 type Question = {
   id: string,

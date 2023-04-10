@@ -5,17 +5,9 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';
 import { RecoilRoot } from 'recoil';
 import { Main } from './pages/Main';
+import theme from 'themes/theme';
 
-const mdTheme = createTheme({ 
-  palette: {
-    primary: {
-      main: '#e4ae3f',
-    },
-    secondary: {
-      main: '#9ab1c0',
-    }
-  }
-});
+const mdTheme = theme();
 
 function App() {
   return (

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, Breadcrumbs, Button, CardActions, CardMedia, Stack, Box } from '@mui/material';
-import recommendationService from '../services/recommendation-service';
-import { Defect } from '../contracts/drawing/defect/Defect';
-import { DefectWithImage } from '../components/types/DefectWithImage';
-import defectService from '../services/defect-service';
-import pictureService from '../services/picture-service';
-import { Product } from '../contracts/product/Product';
-import { DrawingWithImage } from '../components/types/DrawingWithImage';
-import drawingService from '../services/drawing-service';
-import { Drawing } from '../contracts/drawing/Drawing';
+import { drawingService, defectService, recommendationService, pictureService } from '../services';
+import { Defect } from 'contracts/drawing/defect/Defect';
+import { DefectWithImage } from 'components/types/DefectWithImage';
+import { Product } from 'contracts/product/Product';
+import { DrawingWithImage } from 'components/types/DrawingWithImage';
+import { Drawing } from 'contracts/drawing/Drawing';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BuildIcon from '@mui/icons-material/Build';
 import { useNavigate } from 'react-router-dom';
-import { DefectRecomendation } from '../contracts/recommendation/DefectRecomendation';
+import { DefectRecomendation } from 'contracts/recommendation/DefectRecomendation';
 
 const notFoundImage = 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1';
 

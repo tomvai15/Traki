@@ -1,9 +1,7 @@
-import { AddProtocolRequest } from '../contracts/product/AddProtocolRequest';
 import { CreateProtocolRequest } from '../contracts/protocol/CreateProtocolRequest';
 import { GetProtocolResponse } from '../contracts/protocol/GetProtocolResponse';
 import { GetProtocolsResponse } from '../contracts/protocol/GetProtocolsResponse';
 import { UpdateProtocolRequest } from '../contracts/protocol/UpdateProtocolRequest';
-import { UpdateSectionRequest } from '../contracts/protocol/UpdateSectionRequest';
 import axiosApiInstance from './axios-instance';
 
 const route = 'protocols';

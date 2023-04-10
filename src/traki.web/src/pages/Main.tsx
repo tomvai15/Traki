@@ -25,6 +25,7 @@ import { DefectsPage } from './projects/products/DefectsPage';
 import { CreateProject } from './projects/CreateProject';
 import { EditProject } from './projects/EditProject';
 import { CreateProduct } from './projects/products/CreateProduct';
+import MainLayout from 'layout/MainLayout';
 
 export function Main() {
 
@@ -48,7 +49,7 @@ export function Main() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='' element={<ProtectedRoute><DrawerAndHeader/></ProtectedRoute>}>
+        <Route path='' element={<ProtectedRoute><MainLayout/></ProtectedRoute>}>
           <Route index element={<Navigate to='/home'/>}/>
           <Route path='home' element={<HomePage/>}/>
           <Route path='company' element={<CompanyPage/>}/>

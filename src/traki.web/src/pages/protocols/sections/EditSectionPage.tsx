@@ -1,21 +1,19 @@
-import { Grid, Card, CardContent, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton, Breadcrumbs } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, Menu, MenuItem, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Section } from '../../../contracts/protocol/Section';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import { useNavigate, useParams } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import { Checklist } from '../../../contracts/protocol/Checklist';
+import { Section } from '../../../contracts/protocol/Section';
+import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
 import { Item } from '../../../contracts/protocol/items/Item';
-import { Question } from '../../../contracts/protocol/items/Question';
-import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
-import { TextInput } from '../../../contracts/protocol/items/TextInput';
 import { MultipleChoice } from '../../../contracts/protocol/items/MultipleChoice';
 import { Option } from '../../../contracts/protocol/items/Option';
-import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { v4 as uuid } from 'uuid';
-import ClearIcon from '@mui/icons-material/Clear';
-import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
+import { Question } from '../../../contracts/protocol/items/Question';
+import { TextInput } from '../../../contracts/protocol/items/TextInput';
 import sectionService from '../../../services/section-service';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Link as BreadLink } from '@mui/material';
 
 const question: Question = {
   id: uuid(), 

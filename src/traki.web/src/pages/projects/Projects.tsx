@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
-import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
-import projectService from '../../services/project-service';
-import productService from '../../services/product-service';
-import { Link as BreadLink } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Box, Breadcrumbs, Button, Card, CardContent, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { pictureService, productService, projectService } from '../../services';
+import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { Project } from '../../contracts/projects/Project';
 import { Product } from '../../contracts/product/Product';
-import pictureService from '../../services/picture-service';
 
 type ProjectWithImage = {
   project: Project,
