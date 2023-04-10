@@ -12,7 +12,7 @@ namespace Traki.Domain.Handlers
     public interface IUserAuthHandler
     {
         Task<User> GetUser(string email, string password);
-        Task<IEnumerable<Claim>> CrateClaimsForUser(User user);
+        Task<IEnumerable<Claim>> CreateClaimsForUser(User user);
         Task<bool> TryCreateUser(string email, string password);
     }
     public class UserAuthHandler : IUserAuthHandler
@@ -57,11 +57,10 @@ namespace Traki.Domain.Handlers
             return user;
         }
 
-        public async Task<IEnumerable<Claim>> CrateClaimsForUser(User user)
+        public async Task<IEnumerable<Claim>> CreateClaimsForUser(User user)
         {
             return new[] {
                new Claim(Claims.UserId, user.Id.ToString()),
-               new Claim("Role", user.Role),
                new Claim(ClaimTypes.Role, user.Role)
             };
         }
