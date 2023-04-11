@@ -5,5 +5,6 @@
         public int Id { get; set; }
         public int SectionId { get; set; }
         public SectionEntity Section { get; set; }
+        public IEnumerable<TableRowEntity> TableRows { get; set; }
     }
 }
