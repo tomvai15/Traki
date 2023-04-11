@@ -251,18 +251,24 @@ namespace Traki.Infrastructure.Data
             new UserEntity
             {
                 Email = "vainoristomas@gmail.com",
+                Name = "Tomas",
+                Surname = "Vainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.ProductManager,
             },
             new UserEntity
             {
                 Email = "vainoristomas9@gmail.com",
+                Name = "Domas",
+                Surname = "Bainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.ProjectManager
             },
             new UserEntity
             {
                 Email = "tipotomas9@gmail.com",
+                Name = "Romas",
+                Surname = "Fainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.Administrator
             }

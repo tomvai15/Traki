@@ -97,11 +97,6 @@ namespace Traki.Infrastructure.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserEntity>()
-                .HasMany(p => p.DefectComments)
-                .WithOne(p => p.User)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.Defects)
                 .WithOne(p => p.User)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -118,8 +113,13 @@ namespace Traki.Infrastructure.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserEntity>()
+                .HasMany(p => p.DefectComments)
+                .WithOne(p => p.Author)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.StatusChanges)
-                .WithOne(p => p.User)
+                .WithOne(p => p.Author)
                 .OnDelete(DeleteBehavior.NoAction);
         }
 

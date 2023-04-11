@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, Breadcrumbs, Button, CardActions, CardMedia, Stack, Box } from '@mui/material';
 import { drawingService, defectService, recommendationService, pictureService } from '../services';
 import { Defect } from 'contracts/drawing/defect/Defect';
-import { DefectWithImage } from 'components/types/DefectWithImage';
+import { DefectWithImage } from 'features/defects/types/DefectWithImage';
 import { Product } from 'contracts/product/Product';
 import { DrawingWithImage } from 'components/types/DrawingWithImage';
 import { Drawing } from 'contracts/drawing/Drawing';

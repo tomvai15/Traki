@@ -5,17 +5,15 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
 import { Drawing } from '../../../contracts/drawing/Drawing';
-import pictureService from '../../../services/picture-service';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
-import drawingService from '../../../services/drawing-service';
-import { DefectDetails } from '../../../components/defect/DefectDetails';
-import defectService from '../../../services/defect-service';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 import { Link as BreadLink } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { DrawingWithImage } from '../../../components/types/DrawingWithImage';
+import { DefectDetails } from 'features/defects/components/DefectDetails';
+import { drawingService, pictureService, defectService } from 'services';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -210,7 +208,7 @@ export function DefectsPage() {
           <Card>
             <CardContent>
               <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                <Box sx={{padding: '5px', width: '100%', height: '100%'}}>
+                <Box sx={{padding: '5px', width: '100%'}}>
                   { isNewDefect ?
                     (selectedDrawing && <AreaSelector
                       maxAreas={1}

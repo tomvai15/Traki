@@ -1,4 +1,5 @@
-﻿using Traki.Domain.Models.Drawing;
+﻿using Traki.Api.Contracts.Drawing.Defect;
+using Traki.Domain.Models.Drawing;
 
 namespace Traki.Infrastructure.Entities.Drawing
 {
@@ -10,5 +11,6 @@ namespace Traki.Infrastructure.Entities.Drawing
         public string Date { get; set; }
         public int UserId { get; set; }
         public int DefectId { get; set; }
+        public AuthorDto Author { get; set; }
     }
 }

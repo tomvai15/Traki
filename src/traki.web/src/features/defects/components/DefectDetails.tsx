@@ -1,20 +1,18 @@
 import { Avatar, Box, Card, CardContent, Divider, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from '@mui/material';
-import { Comment } from './Comment';
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Defect } from '../../contracts/drawing/defect/Defect';
-import { DefectComment } from '../../contracts/drawing/defect/DefectComment';
-import { CommentWithImage } from '../types/CommentWithImage';
+import { Defect } from 'contracts/drawing/defect/Defect';
+import { DefectComment } from 'contracts/drawing/defect/DefectComment';
 import { v4 as uuid } from 'uuid';
 import { FormHelperText } from '@mui/material';
-import ImageWithViewer from '../ImageWithViewer';
-import { CreateDefectCommentRequest } from '../../contracts/drawing/defect/CreateDefectCommentRequest';
-import { CreateDefectRequest } from '../../contracts/drawing/defect/CreateDefectRequest';
-import { DefectWithImage } from '../types/DefectWithImage';
-import { defectService, pictureService } from '../../services/index';
-import { DefectActivities } from './DefectActivity';
+import { CreateDefectCommentRequest } from 'contracts/drawing/defect/CreateDefectCommentRequest';
+import { CreateDefectRequest } from 'contracts/drawing/defect/CreateDefectRequest';
+import { CommentWithImage, DefectWithImage } from 'features/defects/types';
+import { defectService, pictureService } from 'services';
+import { DefectActivities } from './DefectActivities';
+import ImageWithViewer from 'components/ImageWithViewer';
 
 function a11yProps(index: number) {
   return {
@@ -162,7 +160,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       text: comment,
       imageName: pictureName,
       date: '',
-      author: ''
     };
 
     const request: CreateDefectCommentRequest = {

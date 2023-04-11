@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing.Defect;
 using Traki.Domain.Models.Drawing;
@@ -44,6 +45,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPut("{defectId}")]
+        [Authorize]
         public async Task<ActionResult<GetDefectResponse>> CreateDefect(int drawingId, int defectId, [FromBody] CreateDefectRequest createDefectRequest)
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
@@ -56,7 +58,7 @@ namespace Traki.Api.Controllers
                 From = def.Status,
                 To = defect.Status,
                 Date = DateTime.Now.ToString("s"),
-                UserId = userId,
+                AuthorId = userId,
                 DefectId = defectId,
             };
 
@@ -86,9 +88,8 @@ namespace Traki.Api.Controllers
             _claimsProvider.TryGetUserId(out int userId);
 
             defectComment.DefectId = defectId;
-            defectComment.Author = "TV";
             defectComment.Date = DateTime.Now.ToString("s");
-            defectComment.UserId = userId != 0 ? userId : 1;
+            defectComment.AuthorId = userId != 0 ? userId : 1;
 
             await _defectCommentRepository.CreateDefectComment(defectComment);
             return Ok();
@@ -97,16 +98,7 @@ namespace Traki.Api.Controllers
         [HttpPost("{defectId}/statuschanges")]
         public async Task<ActionResult> AddStatusChange(int drawingId, int defectId, [FromBody] CreateStatusChangeRequest createStatusChangeRequest)
         {
-            /*
-            var defectComment = _mapper.Map<DefectComment>(createDefectCommentRequest.DefectComment);
-            _claimsProvider.TryGetUserId(out int userId);
-
-            defectComment.DefectId = defectId;
-            defectComment.Author = "TV";
-            defectComment.Date = DateTime.Now.ToString("G");
-            defectComment.UserId = userId != 0 ? userId : 1;
-
-            await _defectCommentRepository.CreateDefectComment(defectComment);*/
+           // TODO: reconsider usingthis endpoint
             return Ok();
         }
     }
