@@ -1,37 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Card, CardContent, List, ListItemButton, ListItemText, useTheme } from '@mui/material';
 import { Protocol } from 'contracts/protocol/Protocol';
-import { protocolService } from 'services';
 
-export function ProtocolsCard() {
-  const navigate = useNavigate();
+type Props = {
+  protocols: Protocol[],
+  setSelectedProtocol: (protocol: Protocol) => void
+}
 
-  const [protocols, setProtocols] = useState<Protocol[]>([]);
-
-  useEffect(() => {
-    fetchProtocols();
-  }, []);
-
-  async function fetchProtocols() {
-    const getProtocolsResponse = await protocolService.getTemplateProtocols();
-    setProtocols(getProtocolsResponse.protocols);
-  }
+export function ProtocolsCard({protocols, setSelectedProtocol}: Props) {
+  const theme = useTheme();
 
   return (
     <Card>
-      {protocols.map((protocol, index) =>
-        <Grid key={index} item xs={12} md={12} >
-          <Card title='Sample Project'>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-              <Typography variant="h5">{protocol.name}</Typography>
-              <Typography variant="h6" fontSize={15} > Modified in 2023-03-30</Typography>
-            </CardContent>    
-            <CardActions>  
-              <Button onClick={() => navigate('/templates/protocols/' + protocol.id)} variant='contained' >Details</Button>
-            </CardActions>  
-          </Card>
-        </Grid>)}
+      <CardContent>
+        <List component="nav">
+          {protocols.map((protocol, index) =>
+            <Card key={index} sx={{margin: '5px'}} >
+              <ListItemButton onClick={() => setSelectedProtocol(protocol)} key={index} alignItems="flex-start" sx={{backgroundColor: theme.palette.grey[100]}}>
+                <ListItemText
+                  primary={protocol.name}
+                  secondary='Modified in 2023-03-30'
+                />
+              </ListItemButton>
+            </Card>)}
+        </List>
+      </CardContent>
     </Card>
   );
 }

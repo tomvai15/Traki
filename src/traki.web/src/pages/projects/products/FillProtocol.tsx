@@ -27,7 +27,8 @@ const initialSection: Section = {
   name: '',
   priority: 1,
   checklist: undefined,
-  table: undefined
+  table: undefined,
+  protocolId: 0
 };
 
 type FillItemProps = {

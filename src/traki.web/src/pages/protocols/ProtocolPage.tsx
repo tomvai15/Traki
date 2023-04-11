@@ -33,7 +33,8 @@ const initialSection: Section = {
   name: 'General check',
   priority: 1,
   checklist: checklist,
-  table: undefined
+  table: undefined,
+  protocolId: 0
 };
 
 const initialProtocol: Protocol = {

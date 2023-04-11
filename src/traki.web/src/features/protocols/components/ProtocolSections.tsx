@@ -11,6 +11,7 @@ type Props = {
 }
 
 export function ProtocolSections({sections, setSections}: Props) {
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;

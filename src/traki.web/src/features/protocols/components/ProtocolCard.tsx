@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Grid, Stack, TextField } from '@mui/material';
+import { Button, Card, CardContent, Grid, Stack, TextField, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Section } from 'contracts/protocol';
 import { Protocol } from 'contracts/protocol/Protocol';
@@ -8,10 +8,11 @@ import { protocolService, sectionService } from 'services';
 import { ProtocolSections } from './ProtocolSections';
 
 type Props = {
-  protocolId: number
+  selectedProtocol?: Protocol,
+  updateProtocol: (protocol: Protocol) => void
 }
 
-export function ProtocolCard({protocolId}: Props) {
+export function ProtocolCard({selectedProtocol, updateProtocol}: Props) {
   const navigate = useNavigate();
 
   const [protocol, setProtocol] = useState<Protocol>();
@@ -22,7 +23,7 @@ export function ProtocolCard({protocolId}: Props) {
 
   useEffect(() => {
     fetchProtocol();
-  }, []);
+  }, [selectedProtocol]);
 
   function canUpdate() {
     return (JSON.stringify(sections) != initialSectionsJson) || (JSON.stringify(protocol) != initialProtocolJson);
@@ -37,14 +38,17 @@ export function ProtocolCard({protocolId}: Props) {
       protocol: protocol,
       sections: sections
     };
-    await protocolService.updateProtocol(Number(protocolId), updateProtocolRequest);
+    await protocolService.updateProtocol(protocol.id, updateProtocolRequest);
     setInitialProtocolJson(JSON.stringify(protocol));
     setInitialSectionsJson(JSON.stringify(sections));
   }
 
   async function fetchProtocol() {
-    const getProtocolsResponse = await protocolService.getProtocol(Number(protocolId));
-    const getSectionsResponse = await sectionService.getSections(Number(protocolId));
+    if (!selectedProtocol) {
+      return;
+    }
+    const getProtocolsResponse = await protocolService.getProtocol(selectedProtocol.id);
+    const getSectionsResponse = await sectionService.getSections(selectedProtocol.id);
     setProtocol(getProtocolsResponse.protocol);
     setInitialProtocolJson(JSON.stringify(getProtocolsResponse.protocol));
     orderAndSetSections(getSectionsResponse.sections);
@@ -66,23 +70,25 @@ export function ProtocolCard({protocolId}: Props) {
   }
 
   if (!protocol) {
-    return (<></>);
+    return (<Card sx={{height: 200}}></Card>);
   }
 
   return (
     <Card>
-      <Stack>
-        <TextField sx={{width: '50%'}}
-          id="standard-disabled"
-          label="Protocol Name"
-          variant="standard"
-          value={protocol.name}
-          onChange={(e) => updateName(e.target.value)}
-        />
-        <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >Save</Button>
-      </Stack>
-      <ProtocolSections sections={sections} setSections={setSections}/>
-      <Button onClick={() => navigate('sections/create')} variant='contained' >Add Section</Button>
+      <CardContent>
+        <Stack direction='row' justifyContent={'space-between'}>
+          <TextField sx={{width: '50%'}}
+            id="standard-disabled"
+            label="Protocol Name"
+            variant="standard"
+            value={protocol.name}
+            onChange={(e) => updateName(e.target.value)}
+          />
+          <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >Save</Button>
+        </Stack>
+        <ProtocolSections sections={sections} setSections={setSections}/>
+        <Button onClick={() => navigate(`/templates/protocols/${protocol.id}/sections/create`)} variant='contained' >Add Section</Button>
+      </CardContent>
     </Card>
   );
 }

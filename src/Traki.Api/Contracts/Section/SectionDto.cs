@@ -7,5 +7,6 @@
         public int Priority { get; set; }
         public ChecklistDto? Checklist{ get; set; }
         public TableDto? Table { get; set; }
+        public int ProtocolId { get; set; }
     }
 }
