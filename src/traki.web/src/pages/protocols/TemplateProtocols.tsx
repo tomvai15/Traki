@@ -5,6 +5,7 @@ import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
 import { CreateProtocolRequest } from '../../contracts/protocol/CreateProtocolRequest';
 import { Link as BreadLink } from '@mui/material';
+import { ProtocolsCard } from 'features/protocols/components/ProtocolsCard';
 
 export function TemplateProtocols() {
 
@@ -46,18 +47,7 @@ export function TemplateProtocols() {
           <Typography color="text.primary">Protocol Templates</Typography>
         </Breadcrumbs>
       </Grid>
-      {protocols.map((protocol, index) =>
-        <Grid key={index} item xs={12} md={12} >
-          <Card title='Sample Project'>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-              <Typography variant="h5">{protocol.name}</Typography>
-              <Typography variant="h6" fontSize={15} > Modified in 2023-03-30</Typography>
-            </CardContent>    
-            <CardActions>  
-              <Button onClick={() => navigate('/templates/protocols/' + protocol.id)} variant='contained' >Details</Button>
-            </CardActions>  
-          </Card>
-        </Grid>)}
+      <ProtocolsCard/>
       <Grid item xs={12} md={12}  sx={{ display: 'flex', flexDirection: 'column'}}>
         <Card>
           <CardContent> 

@@ -1,5 +1,5 @@
 import { Checklist } from "./Checklist";
-import { Table } from "./Table";
+import { Table } from "./section/Table";
 
 export type Section = {
   id: number,
