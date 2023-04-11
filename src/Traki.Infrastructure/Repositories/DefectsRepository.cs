@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
-using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Infrastructure.Repositories
@@ -44,7 +42,8 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Defect> GetDefect(int defectId)
         {
             var defectEntity = await _context.Defects.Where(x => x.Id == defectId)
-                .Include(x => x.DefectComments)
+                .Include(x => x.DefectComments).ThenInclude(x => x.Author)
+                .Include(x => x.StatusChanges).ThenInclude(x => x.Author)
                 .FirstOrDefaultAsync();
 
             return _mapper.Map<Defect>(defectEntity);

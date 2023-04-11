@@ -1,4 +1,6 @@
-﻿namespace Traki.Domain.Models.Drawing
+﻿using Traki.Infrastructure.Entities.Drawing;
+
+namespace Traki.Domain.Models.Drawing
 {
     public class Defect
     {
@@ -15,5 +17,6 @@
         public int DrawingId { get; set; }
         public Drawing Drawing { get; set; }
         public IEnumerable<DefectComment> DefectComments { get; set; }
+        public IEnumerable<StatusChange> StatusChanges { get; set; }
     }
 }

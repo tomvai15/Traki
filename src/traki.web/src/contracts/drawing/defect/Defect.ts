@@ -1,5 +1,6 @@
 import { DefectComment } from "./DefectComment";
 import { DefectStatus } from "./DefectStatus";
+import { StatusChange } from "./StatusChange";
 
 export type Defect = {
   id: number,
@@ -13,4 +14,5 @@ export type Defect = {
   width: number,
   height: number,
   defectComments?: DefectComment[]
+  statusChanges?: StatusChange[]
 }

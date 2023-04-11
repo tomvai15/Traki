@@ -1,19 +1,18 @@
 import { Avatar, Box, Card, CardContent, Divider, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from '@mui/material';
-import { Comment } from './Comment';
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Defect } from '../../contracts/drawing/defect/Defect';
-import { DefectComment } from '../../contracts/drawing/defect/DefectComment';
-import { CommentWithImage } from '../types/CommentWithImage';
+import { Defect } from 'contracts/drawing/defect/Defect';
+import { DefectComment } from 'contracts/drawing/defect/DefectComment';
 import { v4 as uuid } from 'uuid';
 import { FormHelperText } from '@mui/material';
-import ImageWithViewer from '../ImageWithViewer';
-import { CreateDefectCommentRequest } from '../../contracts/drawing/defect/CreateDefectCommentRequest';
-import { CreateDefectRequest } from '../../contracts/drawing/defect/CreateDefectRequest';
-import { DefectWithImage } from '../types/DefectWithImage';
-import { defectService, pictureService } from '../../services/index';
+import { CreateDefectCommentRequest } from 'contracts/drawing/defect/CreateDefectCommentRequest';
+import { CreateDefectRequest } from 'contracts/drawing/defect/CreateDefectRequest';
+import { CommentWithImage, DefectWithImage } from 'features/defects/types';
+import { defectService, pictureService } from 'services';
+import { DefectActivities } from './DefectActivities';
+import ImageWithViewer from 'components/ImageWithViewer';
 
 function a11yProps(index: number) {
   return {
@@ -104,7 +103,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       defect: response.defect,
       imageBase64: imageBase64
     };
-    console.log(defectWithImage);
+
     setDefect(defectWithImage);
     if (response.defect.defectComments) {
       await fetchComments(response.defect.defectComments);
@@ -161,7 +160,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       text: comment,
       imageName: pictureName,
       date: '',
-      author: ''
     };
 
     const request: CreateDefectCommentRequest = {
@@ -190,6 +188,10 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
 
     await defectService.updateDefect(defect.defect.drawingId, defect.defect.id, request);
     await fetchDefect();
+  }
+
+  if (!defect) {
+    return (<Card sx={{height: '200px'}}></Card>);
   }
 
   return (
@@ -234,10 +236,8 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             <Divider></Divider>
             <CardContent>
               <Typography>Comments</Typography>
-              <Box sx={{overflow: 'auto', maxHeight: 200}}>
-                {comments.length == 0 ? 
-                  <Typography color="grey" variant='subtitle2'>No comments</Typography> :
-                  comments.map( (item, index) => <Comment defectComment={item} key={index}/>)}
+              <Box sx={{overflow: 'auto', maxHeight: 250}}>
+                <DefectActivities defectComments={comments} statusChanges={defect.defect.statusChanges ?? []} />
               </Box>
             </CardContent>
             <Divider></Divider>

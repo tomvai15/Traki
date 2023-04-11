@@ -1,4 +1,5 @@
 ﻿using Traki.Domain.Models.Drawing;
+using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Api.Contracts.Drawing.Defect
 {
@@ -14,6 +15,7 @@ namespace Traki.Api.Contracts.Drawing.Defect
         public float Width { get; set; }
         public float Height { get; set; }
         public int DrawingId { get; set; }
-        public IEnumerable<DefectComment> DefectComments { get; set; }
+        public IEnumerable<DefectCommentDto> DefectComments { get; set; }
+        public IEnumerable<StatusChangeDto> StatusChanges { get; set; }
     }
 }

@@ -16,6 +16,7 @@ using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
+using Traki.Infrastructure.Entities.Drawing;
 using Question = Traki.Domain.Models.Section.Items.Question;
 
 namespace Traki.Api.Mapping
@@ -49,6 +50,8 @@ namespace Traki.Api.Mapping
             CreateMap<Drawing, DrawingDto>().ReverseMap();
             CreateMap<Defect, DefectDto>().ReverseMap();
             CreateMap<DefectComment, DefectCommentDto>().ReverseMap();
+            CreateMap<StatusChange, StatusChangeDto>().ReverseMap();
+            CreateMap<User, AuthorDto>().ReverseMap();
         }
 
         public void AddCompanyMappings()

@@ -22,7 +22,7 @@ namespace Traki.Infrastructure.Repositories
             var defectCommentEntity = _mapper.Map<DefectCommentEntity>(defectComment);
 
             defectCommentEntity.Id = defectComment.Id;
-            defectCommentEntity.UserId = 1;
+            defectCommentEntity.AuthorId = 1;
             _context.Add(defectCommentEntity);
             await _context.SaveChangesAsync();
         }

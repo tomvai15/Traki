@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing.Defect;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
+using Traki.Infrastructure.Entities.Drawing;
+using Traki.Infrastructure.Repositories;
 
 namespace Traki.Api.Controllers
 {
@@ -12,15 +15,17 @@ namespace Traki.Api.Controllers
     {
         private readonly IDefectsRepository _defectsRepository;
         private readonly IDefectCommentRepository _defectCommentRepository;
+        private readonly IStatusChangeRepository _statusChangeRepository;
         private readonly IClaimsProvider _claimsProvider;
         private readonly IMapper _mapper;
 
-        public DefectsController(IClaimsProvider claimsProvider, IDefectsRepository defectsRepository, IMapper mapper, IDefectCommentRepository defectCommentRepository)
+        public DefectsController(IClaimsProvider claimsProvider, IDefectsRepository defectsRepository,  IMapper mapper, IDefectCommentRepository defectCommentRepository, IStatusChangeRepository statusChangeRepository)
         {
             _claimsProvider = claimsProvider;
             _defectsRepository = defectsRepository;
             _mapper = mapper;
             _defectCommentRepository = defectCommentRepository;
+            _statusChangeRepository = statusChangeRepository;
         }
 
         [HttpPost]
@@ -40,12 +45,27 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPut("{defectId}")]
+        [Authorize]
         public async Task<ActionResult<GetDefectResponse>> CreateDefect(int drawingId, int defectId, [FromBody] CreateDefectRequest createDefectRequest)
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
             _claimsProvider.TryGetUserId(out int userId);
             defect.UserId = userId;
+
+            var def = await _defectsRepository.GetDefect(defectId);
+            var statusChange = new StatusChange
+            {
+                From = def.Status,
+                To = defect.Status,
+                Date = DateTime.Now.ToString("s"),
+                AuthorId = userId,
+                DefectId = defectId,
+            };
+
+
             defect = await _defectsRepository.UpdateDefect(defect);
+            await _statusChangeRepository.CreateStatusChange(statusChange);
+
             var response = new GetDefectResponse
             {
                 Defect = _mapper.Map<DefectDto>(defect)
@@ -68,11 +88,17 @@ namespace Traki.Api.Controllers
             _claimsProvider.TryGetUserId(out int userId);
 
             defectComment.DefectId = defectId;
-            defectComment.Author = "TV";
-            defectComment.Date = DateTime.Now.ToString("G");
-            defectComment.UserId = userId != 0 ? userId : 1;
+            defectComment.Date = DateTime.Now.ToString("s");
+            defectComment.AuthorId = userId != 0 ? userId : 1;
 
             await _defectCommentRepository.CreateDefectComment(defectComment);
+            return Ok();
+        }
+
+        [HttpPost("{defectId}/statuschanges")]
+        public async Task<ActionResult> AddStatusChange(int drawingId, int defectId, [FromBody] CreateStatusChangeRequest createStatusChangeRequest)
+        {
+           // TODO: reconsider usingthis endpoint
             return Ok();
         }
     }
