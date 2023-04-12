@@ -25,10 +25,15 @@ export function FillTable ({table, updateTable}: Props) {
 
     const newTableRow: TableRow = {
       id: table.tableRows.length+10000,
-      rowColumns: newTableRowColumns
+      rowColumns: newTableRowColumns,
+      rowIndex: 0
     };
 
-    updateTable({...table, tableRows: [...table.tableRows, newTableRow]});
+    const updatedRows =  [...table.tableRows, newTableRow].map((item, index) => {
+      return {...item, rowIndex: index};
+    });
+
+    updateTable({...table, tableRows: updatedRows});
   }
 
   return (

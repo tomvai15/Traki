@@ -44,16 +44,9 @@ export function FillSection({protocolId, sectionId}: Props) {
       return;
     }
 
-    const firstRow = table.tableRows[0];
-    const columns: RowColumn[] = firstRow.rowColumns.map((column, index) => {
-      return {...column, id: index};
-    });
-  
-    const row: TableRow = {...firstRow, rowColumns: columns};
     setSectionType('table');
-    const newTable: Table = {...table, tableRows: [row]};
-    setTable(newTable);
-    setInitialTableJson(JSON.stringify(newTable));
+    setTable(table);
+    setInitialTableJson(JSON.stringify(table));
   }
 
   function updateItem(updatedItem: Item) {
@@ -97,6 +90,7 @@ export function FillSection({protocolId, sectionId}: Props) {
       section: {...section, table: table}
     };
     await sectionService.updateSectionAnswers(protocolId, sectionId, request);
+    setInitialTableJson(JSON.stringify(table));
     setInitialSectionJson(JSON.stringify(section));
   }
 
