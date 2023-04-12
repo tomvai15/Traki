@@ -34,6 +34,8 @@ namespace Traki.Api.Mapping
             CreateMap<ChecklistEntity, Checklist>().ReverseMap();
             CreateMap<SectionEntity, Section>().ReverseMap();
             CreateMap<TableEntity, Table>().ReverseMap();
+            CreateMap<TableRowEntity, TableRow>().ReverseMap();
+            CreateMap<RowColumnEntity, RowColumn>().ReverseMap();
 
             CreateMap<ItemEntity, Item>().ReverseMap();
             CreateMap<MultipleChoiceEntity, MultipleChoice>().ReverseMap();

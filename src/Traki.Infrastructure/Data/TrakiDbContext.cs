@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Traki.Domain.Models.Drawing;
-using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section;
@@ -52,6 +51,14 @@ namespace Traki.Infrastructure.Data
             modelBuilder.Entity<SectionEntity>()
                 .HasOne(p => p.Table).WithOne(p => p.Section)
                 .HasForeignKey<TableEntity>(e => e.SectionId);
+
+            modelBuilder.Entity<TableEntity>()
+                .HasMany(x => x.TableRows)
+                .WithOne(x => x.Table);
+
+            modelBuilder.Entity<TableRowEntity>()
+                .HasMany(x => x.RowColumns)
+                .WithOne(x => x.TableRow);
 
             modelBuilder.Entity<ChecklistEntity>()
                 .HasMany(p => p.Items)
@@ -134,6 +141,8 @@ namespace Traki.Infrastructure.Data
         public virtual DbSet<SectionEntity> Sections { get; set; }
         public virtual DbSet<ChecklistEntity> Checklists { get; set; }
         public virtual DbSet<TableEntity> Tables { get; set; }
+        public virtual DbSet<TableRowEntity> TableRows { get; set; }
+        public virtual DbSet<RowColumnEntity> RowColumns { get; set; }
 
         public virtual DbSet<ItemEntity> Items { get; set; }
         public virtual DbSet<MultipleChoiceEntity> MultipleChoices { get; set; }

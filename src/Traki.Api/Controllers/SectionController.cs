@@ -38,7 +38,6 @@ namespace Traki.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSection(int protocolId, [FromBody] UpdateSectionRequest updateSectionRequest)
         {
-
             var section = _mapper.Map<Section>(updateSectionRequest.Section);
 
             await _sectionHandler.AddOrUpdateSection(protocolId, section); ;

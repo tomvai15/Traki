@@ -1,42 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Breadcrumbs, Button, Card, CardActions, CardContent, Grid, TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Breadcrumbs, Grid, Typography } from '@mui/material';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
-import { CreateProtocolRequest } from '../../contracts/protocol/CreateProtocolRequest';
-import { Link as BreadLink } from '@mui/material';
+import { NewProtocol, ProtocolCard, ProtocolsCard } from 'features/protocols/components';
 
 export function TemplateProtocols() {
-
-  const navigate = useNavigate();
-
-  const [protocolName, setProtocolName] = useState<string>('');
   const [protocols, setProtocols] = useState<Protocol[]>([]);
+  const [selectedProtocol, setSelectedProtocol] = useState<Protocol>();
 
   useEffect(() => {
     fetchProtocols();
   }, []);
 
   async function fetchProtocols() {
-    const getProtocolsResponse = await protocolService.getTemplateProtocols();
-    setProtocols(getProtocolsResponse.protocols);
+    const response = await protocolService.getTemplateProtocols();
+    setSelectedProtocol(response.protocols[0]);
+    setProtocols(response.protocols);
   }
 
-  async function createProtocol() {
-
-    const newProtocol: Protocol = {
-      id:0,
-      name: protocolName,
-      isTemplate: true,
-      modifiedDate: '',
-      sections: [],
-      isSigned: false
-    };
-    const createProtocolRequest: CreateProtocolRequest = {
-      protocol: newProtocol
-    };
-    await protocolService.createProtocol(createProtocolRequest);
-    await fetchProtocols();
+  function updateProtocol(protocol: Protocol) {
+    setProtocols([...protocols.filter(x => x.id != protocol.id), protocol]);
   }
 
   return (
@@ -46,36 +29,16 @@ export function TemplateProtocols() {
           <Typography color="text.primary">Protocol Templates</Typography>
         </Breadcrumbs>
       </Grid>
-      {protocols.map((protocol, index) =>
-        <Grid key={index} item xs={12} md={12} >
-          <Card title='Sample Project'>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
-              <Typography variant="h5">{protocol.name}</Typography>
-              <Typography variant="h6" fontSize={15} > Modified in 2023-03-30</Typography>
-            </CardContent>    
-            <CardActions>  
-              <Button onClick={() => navigate('/templates/protocols/' + protocol.id)} variant='contained' >Details</Button>
-            </CardActions>  
-          </Card>
-        </Grid>)}
-      <Grid item xs={12} md={12}  sx={{ display: 'flex', flexDirection: 'column'}}>
-        <Card>
-          <CardContent> 
-            <Typography>New Protocol</Typography> 
-            <Box>
-              <TextField sx={{width: '50%'}}
-                id="standard-disabled"
-                label="Protocol Name"
-                variant="standard"
-                value={protocolName}
-                onChange={(e) => setProtocolName(e.target.value)}
-              />
-            </Box>
-            <Box>
-              <Button onClick={createProtocol} disabled={!protocolName.length} variant='contained' >Add New Protocol</Button>
-            </Box>
-          </CardContent>  
-        </Card>
+      <Grid container item xs={5} md={5} spacing={2}>
+        <Grid item xs={12} md={12}>
+          <ProtocolsCard protocols={protocols} setSelectedProtocol={(protocol) => setSelectedProtocol(protocol)}/>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <NewProtocol fetchProtocols={fetchProtocols}/>
+        </Grid>
+      </Grid>
+      <Grid item xs={7} md={7}>
+        <ProtocolCard selectedProtocol={selectedProtocol} updateProtocol={updateProtocol}/>
       </Grid>
     </Grid>
   );

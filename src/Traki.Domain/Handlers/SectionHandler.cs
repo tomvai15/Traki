@@ -20,12 +20,20 @@ namespace Traki.Domain.Handlers
         private readonly ISectionRepository _sectionRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly IItemRepository _itemRepository;
+        private readonly ITableRepository _tableRepository;
+        private readonly ITableRowRepository _tableRowRepository;
 
-        public SectionHandler(ISectionRepository sectionRepository, IChecklistRepository checklistRepository, IItemRepository itemRepository)
+        public SectionHandler(ISectionRepository sectionRepository, 
+            IChecklistRepository checklistRepository, 
+            IItemRepository itemRepository, 
+            ITableRepository tableRepository,
+            ITableRowRepository tableRowRepository)
         {
             _sectionRepository = sectionRepository;
             _checklistRepository = checklistRepository;
             _itemRepository = itemRepository;
+            _tableRepository = tableRepository;
+            _tableRowRepository = tableRowRepository;
         }
 
         public async Task<Section> GetSection(int sectionId)
@@ -37,8 +45,14 @@ namespace Traki.Domain.Handlers
                 var items = await _itemRepository.GetChecklistItems(checklist.Id);
                 checklist.Items = items.OrderBy(x => x.Priority).ToList();
             }
-
             section.Checklist = checklist;
+
+            var table = await _tableRepository.GetSectionTable(section.Id);
+            if (table != null)
+            {
+                
+            }
+            section.Table = table;
             return section;
         }
 
@@ -81,18 +95,62 @@ namespace Traki.Domain.Handlers
                 sectionFromDatabase = await _sectionRepository.UpdateSection(section);
             }
 
+            await UpdateChecklist(section, sectionFromDatabase.Id);
+            await UpdateTable(section, sectionFromDatabase.Id);
+        }
+
+        private async Task UpdateTable(Section section, int sectionId)
+        {
+            var table = await _tableRepository.GetSectionTable(section.Id);
+            if (table != null)
+            {
+                await _tableRepository.DeleteTable(table.Id);
+            }
+
+            if (section.Table == null)
+            {
+                return;
+            }
+            table = section.Table;
+            table.Id = 0;
+            table.SectionId = sectionId;
+            table.TableRows = section.Table.TableRows;
+            await CreateTable(table);   
+        }
+
+        private async Task CreateTable(Table table)
+        {
+            var tableRows = table.TableRows;
+            table.TableRows = null;
+            table = await _tableRepository.CreateTable(table);
+            foreach (var tableRow in tableRows) 
+            {
+                tableRow.TableId = table.Id;
+                await _tableRowRepository.CreateTableRow(tableRow);
+            }
+            return;
+        }
+
+        private async Task UpdateChecklist(Section section, int sectionId)
+        {
             var checklist = await _checklistRepository.GetSectionChecklist(section.Id);
             if (checklist != null)
             {
                 await DeleteChecklist(checklist.Id);
             }
+            if (section.Checklist == null)
+            {
+                return;
+            }
             checklist = section.Checklist;
             if (checklist != null)
             {
-                checklist.SectionId = sectionFromDatabase.Id;
+                checklist.SectionId = sectionId;
                 await CreateChecklist(checklist);
             }
         }
+
+
 
         public async Task<IEnumerable<Section>> GetSections(int protocolId)
         {

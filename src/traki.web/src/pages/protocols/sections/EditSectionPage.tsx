@@ -1,310 +1,38 @@
-import ClearIcon from '@mui/icons-material/Clear';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, Menu, MenuItem, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import { Checklist } from '../../../contracts/protocol/Checklist';
 import { Section } from '../../../contracts/protocol/Section';
 import { UpdateSectionRequest } from '../../../contracts/protocol/UpdateSectionRequest';
 import { Item } from '../../../contracts/protocol/items/Item';
-import { MultipleChoice } from '../../../contracts/protocol/items/MultipleChoice';
-import { Option } from '../../../contracts/protocol/items/Option';
-import { Question } from '../../../contracts/protocol/items/Question';
-import { TextInput } from '../../../contracts/protocol/items/TextInput';
 import sectionService from '../../../services/section-service';
-
-const question: Question = {
-  id: uuid(), 
-  comment: '',
-  answer: undefined
-};
-
-
-const defaultQuestion: Question = {
-  id: uuid(), 
-  comment: '',
-  answer: undefined
-};
-
-const defaultTextInput: TextInput = {
-  id: uuid(), 
-  value: ''
-};
-
-const defaultMultipleChoice: MultipleChoice = {
-  id: uuid(), 
-  options: [{id: uuid(), name: 'Option A',  selected: false}, {id: uuid(), name: 'Option B',   selected: false}],
-};
-
-const textInput: TextInput = {
-  id: uuid(), 
-  value: '',
-};
-
-const value1: Option = {
-  id: uuid(), 
-  name: 'Option A',
-  selected: false
-};
-
-const value2: Option = {
-  id: uuid(), 
-  name: 'Option B',
-  selected: false
-};
-
-const defaultItem: Item ={
-  id: uuid(), 
-  name: 'New Item', 
-  priority: 1, 
-  question: question, 
-  multipleChoice: undefined, 
-  textInput: undefined
-};
-
-const multipleChoice: MultipleChoice = {
-  id: uuid(), 
-  options: [value1, value2],
-};
-
-const items: Item[] = [{
-  id: uuid(), 
-  name: 'New Item', 
-  priority: 1, 
-  question: question, 
-  multipleChoice: undefined, 
-  textInput: undefined
-}, {
-  id: uuid(), 
-  name: 'Serial number:', 
-  priority: 2, 
-  question: undefined, 
-  multipleChoice: undefined, 
-  textInput: textInput
-}, {
-  id: uuid(), 
-  name: 'Multiple choice question:', 
-  priority: 3, 
-  question: undefined, 
-  multipleChoice: multipleChoice, 
-  textInput: undefined
-}
-];
-
-const checklist: Checklist = {
-  id: 1,
-  items: items
-};
-
-const initialChecklist: Checklist = {
-  id: 1,
-  items: []
-};
+import { CreateChecklistCard } from 'features/protocols/components/CreateChecklistCard';
+import { Table } from 'contracts/protocol/section/Table';
+import { CreateTableCard } from 'features/protocols/components/CreateTableCard';
+import { TableRow } from 'contracts/protocol/section/TableRow';
+import { RowColumn } from 'contracts/protocol/section/RowColumn';
 
 const initialSection: Section = {
   id: 1,
   name: 'General check',
   priority: 1,
-  checklist: checklist,
-  table: undefined
+  checklist: undefined,
+  table: undefined,
+  protocolId: 0
 };
-
-type TemplateItemProps = {
-  item: Item
-  deleteItem: (id: string) => void
-  updateItem: (item: Item) => void
-}
-
-function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  function changeToQuestion(item: Item) {
-    item.textInput = undefined;
-    item.multipleChoice = undefined;
-    item.question = {...defaultQuestion};
-    updateItem(item);
-  }
-
-  function changeToTextInput(item: Item) {
-    item.multipleChoice = undefined;
-    item.question = undefined;
-    item.textInput = {...defaultTextInput};
-    updateItem(item);
-  }
-
-  function changeToMultipleChoice(item: Item) {
-    item.textInput = undefined;
-    item.question = undefined;
-    item.multipleChoice = {...defaultMultipleChoice};
-    updateItem(item);
-  }
-
-  function addOption(item: Item) {
-    if (!item.multipleChoice) return;
-
-    const letter = (item.multipleChoice.options.length + 10).toString(36).toUpperCase();
-
-    const newValue: Option = {id: uuid(), name: 'Option ' + letter, selected: false};
-    item.multipleChoice.options = [...item.multipleChoice.options, newValue];
-    updateItem(item);
-  }
-
-  function removeOption(item: Item, valueId: string) {
-    if (!item.multipleChoice) return;
-
-    item.multipleChoice.options = item.multipleChoice.options.filter(v => v.id!= valueId);
-    updateItem(item);
-  }
-
-  function updateOption(item: Item, valueId: string, updatedName: string) {
-    if (!item.multipleChoice) return;
-
-    const copiedOptions = [...item.multipleChoice.options];
-    copiedOptions.forEach((element, index) => {
-      copiedOptions[index] = element.id == valueId ? {...element, name: updatedName}  : element;
-    });
-
-    item.multipleChoice.options = copiedOptions;
-    updateItem(item);
-  }
-
-  function updateName(item: Item, name: string) {
-    item.name = name;
-    updateItem(item);
-  }
-
-  function checkType() {
-    if (item.question) {
-      return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
-          <Box sx={{flex: 3}}>
-            <FormControlLabel control={<Checkbox disabled />} label="Yes" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox disabled />} label="No" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox disabled />} label="Other" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox disabled />} label="Not applicable" labelPlacement="start"/>
-          </Box>
-          <Box sx={{flex: 3}}>
-            <TextField sx={{width: '100%'}}
-              inputProps={{min: 0, style: { textAlign: 'center' }}}
-              disabled
-              id="standard-disabled"
-              label="Comment"
-              variant="standard"
-            />
-          </Box>
-        </Box>);
-    } else if (item.textInput) {
-      return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
-          <Box sx={{flex: 3}}>
-            <TextField sx={{width: '100%'}}
-              inputProps={{min: 0, style: { textAlign: 'center' }}}
-              disabled
-              id="standard-disabled"
-              label="Comment"
-              variant="standard"
-            />
-          </Box>
-        </Box>);
-    } else if (item.multipleChoice) {
-      return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
-          <Box sx={{flex: 3}}>
-            { item.multipleChoice.options.map((value, index) => 
-              <FormControlLabel 
-                key={index} 
-                control={<Checkbox disabled />} 
-                label={
-                  <>
-                    <IconButton onClick={() => removeOption(item, value.id)}>
-                      <ClearIcon color={'error'}/>
-                    </IconButton> 
-                    <TextField
-                      size='small'
-                      id="standard-disabled"
-                      label={null}
-                      variant="standard"
-                      value={value.name}
-                      onChange={(e) => updateOption(item, value.id, e.target.value)}
-                    />
-                  </>
-                } 
-                labelPlacement="start"/>
-            )}
-          </Box>
-          <Button onClick={() => addOption(item)}>Add</Button>
-        </Box>);
-    }
-    return <></>;
-  }
-
-  return (
-    <Box sx={{padding: 1}}>
-      <Card sx={{display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
-        <Box sx={{flex: 1}}>
-          <TextField sx={{width: '90%'}}
-            id="standard-disabled"
-            label="Question"
-            variant="standard"
-            multiline={true}
-            value={item.name}
-            onChange={(e) => updateName(item, e.target.value)}
-          />
-        </Box>
-        {checkType()}
-        <Box>
-          <IconButton onClick={handleOpenUserMenu}>
-            <MoreVertIcon/>
-          </IconButton> 
-          <Menu
-            sx={{ mt: '45px' }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            <MenuItem onClick={() => {changeToQuestion(item); handleCloseUserMenu();}}>
-              <Typography textAlign="center">Default Question</Typography>
-            </MenuItem>
-            <MenuItem onClick={() => {changeToMultipleChoice(item); handleCloseUserMenu();}}>
-              <Typography textAlign="center">Multiple Choice</Typography>
-            </MenuItem>
-            <MenuItem onClick={() => {changeToTextInput(item); handleCloseUserMenu();}}>
-              <Typography textAlign="center">Text Input</Typography>
-            </MenuItem>
-            <MenuItem onClick={() => {handleCloseUserMenu(); deleteItem(item.id);}}>
-              <Typography color={'red'} textAlign="center">Delete</Typography>
-            </MenuItem>
-          </Menu>
-        </Box>
-      </Card>
-    </Box>
-  );
-}
 
 export function EditSectionPage() {
   const navigate = useNavigate();
 
   const { protocolId, sectionId } = useParams();
   const [section, setSection] = useState<Section>(initialSection);
+  const [checklist, setChecklist] = useState<Checklist>();
+  const [table, setTable] = useState<Table>();
+
+  const [sectionType, setSectionType] = useState<string>('checklist');
+  
+  const [initialTableJson,  setInitialTableJson] = useState<string>('');
+  const [initialChecklistJson,  setInitialChecklistJson] = useState<string>('');
   const [initialSectionJson,  setInitialSectionJson] = useState<string>('');
 
   useEffect(() => {
@@ -312,100 +40,97 @@ export function EditSectionPage() {
   }, []);
 
   async function fetchSection() {
-    const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
-    orderAndSetSection(getSectionResponse.section);
+    const response = await sectionService.getSection(Number(protocolId), Number(sectionId));
+    setSection(response.section);
+    setInitialSectionJson(JSON.stringify(response.section));
+    orderAndSetChecklist(response.section.checklist);
+    orderAndSetTable(response.section.table);
+  }
+
+  function updateItems (items: Item[]) {
+    if (!checklist) {
+      return;
+    }
+    const newChecklist: Checklist = {...checklist, items: items};
+    setChecklist(newChecklist);
+  }
+
+  function setRow(row: TableRow) {
+    if (!table) {
+      return;
+    }
+    setTable({...table, tableRows: [row]});
   }
 
   function canUpdate() {
+
+    console.log(JSON.stringify(section) != initialSectionJson);
+    console.log(JSON.stringify(checklist) != initialChecklistJson);
+    console.log(JSON.stringify(table) != initialTableJson);
+
+    console.log(initialSectionJson);
+    console.log(initialChecklistJson);
+    console.log(initialTableJson);
+
     console.log(JSON.stringify(section));
-    const result = JSON.stringify(section) != initialSectionJson;
+    console.log(JSON.stringify(checklist));
+    console.log(JSON.stringify(table));
 
-    console.log(result);
-
-    return result;
+    return  JSON.stringify(section) != initialSectionJson || 
+            JSON.stringify(checklist) != initialChecklistJson ||
+            JSON.stringify(table) != initialTableJson;
   }
 
-  function orderAndSetSection(sectionToSort: Section) {
-    if (!sectionToSort.checklist)
-    {
-      setSection(sectionToSort);
-      setInitialSectionJson(JSON.stringify(sectionToSort));
+  function orderAndSetTable(table?: Table) {
+    if (!table) {
+      setInitialTableJson(JSON.stringify(undefined));
       return;
     }
-    const sortedItems = [...sectionToSort.checklist.items];
 
+    const firstRow = table.tableRows[0];
+    const columns: RowColumn[] = firstRow.rowColumns.map((column, index) => {
+      return {...column, id: index};
+    });
+  
+    const row: TableRow = {...firstRow, rowColumns: columns};
+    setSectionType('table');
+    const newTable: Table = {...table, tableRows: [row]};
+    setTable(newTable);
+    setInitialTableJson(JSON.stringify(newTable));
+  }
+
+  function orderAndSetChecklist(checklistToSort?: Checklist) {
+    if (!checklistToSort) {
+      setInitialChecklistJson(JSON.stringify(undefined));
+      return;
+    }
+    setSectionType('checklist');
+    const sortedItems = [...checklistToSort.items];
     sortedItems.sort((a, b) => a.priority - b.priority);
 
-    console.log(sortedItems);
+    const copiedChecklist: Checklist = {...checklistToSort, items: sortedItems};
 
-    const copiedChecklist: Checklist = {...sectionToSort.checklist, items: sortedItems};
-    const copiedSection: Section = {...sectionToSort, checklist: copiedChecklist};
-    console.log(copiedSection);
-    setSection(copiedSection);
-    setInitialSectionJson(JSON.stringify(copiedSection));
-  }
-
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
-
-    if (!section.checklist) return;
-  
-    const copiedItems = [...section.checklist.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-
-    copiedItems.forEach((element, index) => {
-      copiedItems[index] = {...element, priority: index+1};
-    });
-
-    const newChecklist = {...section.checklist, items: copiedItems};
-    setSection({...section, checklist: newChecklist});
-  };
-
-  function addItem() {
-    if (!section.checklist) {
-      section.checklist = initialChecklist;
-    }
-    const newId = uuid();
-    const newItem: Item = {...defaultItem, id: newId, priority: section.checklist.items.length + 1};
-    const copiedItems = [...section.checklist.items, newItem];
-    const newChecklist = {...section.checklist, items: copiedItems};
-    setSection({...section, checklist: newChecklist});
-  }
-
-  function updateItem(item: Item) {
-    if (!section.checklist) return;
-
-    const copiedItems = [...section.checklist.items];
-    copiedItems.forEach((element, index) => {
-
-      copiedItems[index] = element.id==item.id ? item : copiedItems[index];
-    });
-
-    const newChecklist = {...section.checklist, items: copiedItems};
-    setSection({...section, checklist: newChecklist});
-  }
-
-  function deleteItem(id: string) {
-    if (!section.checklist) return;
-
-    const copiedItems = [...section.checklist.items.filter(x=> x.id != id)];
-
-    copiedItems.forEach((element, index) => {
-      copiedItems[index] = {...element, priority: index+1};
-    });
-    const newChecklist = {...section.checklist, items: copiedItems};
-    setSection({...section, checklist: newChecklist});
+    setChecklist(copiedChecklist);
+    setInitialChecklistJson(JSON.stringify(copiedChecklist));
   }
 
   async function updateSection() {
-    const updateSectionRequest: UpdateSectionRequest = {
-      section: section
+    const sectionTocreate: Section = {
+      ...section, 
+      checklist: sectionType == 'checklist' ? checklist : undefined,
+      table: sectionType == 'table' ? table : undefined,
     };
 
-    console.log(updateSectionRequest);
+    const updateSectionRequest: UpdateSectionRequest = {
+      section: sectionTocreate
+    };
+
     await sectionService.updateSection(Number(protocolId), Number(sectionId), updateSectionRequest);
+    if (sectionType == 'checklist') {
+      setInitialChecklistJson(JSON.stringify(checklist));
+    } else if (sectionType == 'table') {
+      setInitialTableJson(JSON.stringify(table));
+    }
     setInitialSectionJson(JSON.stringify(section));
   }
 
@@ -455,46 +180,8 @@ export function EditSectionPage() {
             </Box>
           </CardContent>    
         </Card>
-        <DragDropContext onDragEnd={result => onDragEnd(result)}>
-          <Droppable droppableId={'asdsda'} >
-            {(provided, snapshot) => {
-              return (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {section.checklist?.items.map((item, index) => {
-                    return (
-                      <Draggable
-                        key={index}
-                        draggableId={item.priority.toString()}
-                        index={index}
-                      >
-                        {(provided, snapshot) => {
-                          return (
-                            <Box
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              style={{
-                                userSelect: "none",
-                                ...provided.draggableProps.style
-                              }}
-                            >
-                              <TemplateItem item={item} deleteItem={deleteItem} updateItem={updateItem}></TemplateItem>
-                            </Box>
-                          );
-                        }}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              );
-            }}
-          </Droppable>
-        </DragDropContext>
-        <Button  onClick={() => addItem()} variant='contained'>Add new question</Button>
+        {table && <CreateTableCard row={table.tableRows[0]} setRow={setRow}/>}
+        {checklist && <CreateChecklistCard checklist={checklist} updateItems={updateItems}/>}
       </Grid>
     </Grid>
   );

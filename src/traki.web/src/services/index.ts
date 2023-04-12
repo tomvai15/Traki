@@ -5,3 +5,4 @@ export { default as recommendationService } from './recommendation-service';
 export { default as pictureService } from './picture-service';
 export { default as projectService } from './project-service';
 export { default as productService } from './product-service';
+export { default as protocolService } from './protocol-service';

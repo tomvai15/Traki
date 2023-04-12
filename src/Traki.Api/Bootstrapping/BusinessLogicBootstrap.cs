@@ -47,7 +47,9 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IDrawingsRepository, DrawingsRepository>()
                 .AddTransient<IDefectsRepository, DefectsRepository>()
                 .AddTransient<IDefectCommentRepository, DefectCommentRepository>()
-                .AddTransient<IStatusChangeRepository, StatusChangeRepository>();
+                .AddTransient<IStatusChangeRepository, StatusChangeRepository>()
+                .AddTransient<ITableRepository, TableRepository>()
+                .AddTransient<ITableRowRepository, TableRowRepository>();
 
             return services;
         }

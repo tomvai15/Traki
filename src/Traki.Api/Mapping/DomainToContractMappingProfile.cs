@@ -17,6 +17,7 @@ using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities.Drawing;
+using Traki.Infrastructure.Entities.Section;
 using Question = Traki.Domain.Models.Section.Items.Question;
 
 namespace Traki.Api.Mapping
@@ -101,8 +102,11 @@ namespace Traki.Api.Mapping
             CreateMap<Question, QuestionDto>().ReverseMap();
 
             CreateMap<Section, SectionDto>().ReverseMap();
-            CreateMap<Table, TableDto>().ReverseMap();
             CreateMap<Checklist, ChecklistDto>().ReverseMap();
+
+            CreateMap<Table, TableDto>().ReverseMap();
+            CreateMap<TableRow, TableRowDto>().ReverseMap();
+            CreateMap<RowColumn, RowColumnDto>().ReverseMap();
         }
 
         public void AddUserMappings()
