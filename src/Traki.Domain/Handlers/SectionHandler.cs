@@ -36,6 +36,7 @@ namespace Traki.Domain.Handlers
             _tableRowRepository = tableRowRepository;
         }
 
+        // todo: move to repository?
         public async Task<Section> GetSection(int sectionId)
         {
             var section = await _sectionRepository.GetSection(sectionId);
