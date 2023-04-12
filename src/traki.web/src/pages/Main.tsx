@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { DrawerAndHeader } from '../layout/DrawerAndHeader';
 import SignIn from './Authentication/SignIn';
 import { useRecoilState } from 'recoil';
 import { userState } from '../state/user-state';
@@ -9,23 +8,18 @@ import CheckOAuth from './Authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { CompanyPage } from './company/Company';
-import { TemplatePage } from './templates/TemplatePage';
 import { EditCheckpoint } from './templates/EditCheckpoint';
-import { SectionPage } from './SectionPage';
-import { ProtocolPage } from './protocols/ProtocolPage';
-import { TemplateProtocols } from './protocols/TemplateProtocols';
-import { EditSectionPage } from './protocols/sections/EditSectionPage';
-import { CreateSectionPage } from './protocols/sections/CreateSectionPage';
-import { ProductPage } from './projects/products/ProductPage';
-import { FillProtocol } from './projects/products/FillProtocol';
 import SignValidation from './Authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
 import { HomePage } from './Home';
-import { DefectsPage } from './projects/products/DefectsPage';
 import { CreateProject } from './projects/CreateProject';
 import { EditProject } from './projects/EditProject';
 import { CreateProduct } from './projects/products/CreateProduct';
 import MainLayout from 'layout/MainLayout';
+import { ProductPage, DefectsPage, FillProtocolPage } from './projects/products';
+import { TemplateProtocols, ProtocolPage } from './protocols';
+import { EditSectionPage, CreateSectionPage } from './protocols/sections';
+import { TemplatePage } from './templates/TemplatePage';
 
 export function Main() {
 
@@ -66,7 +60,7 @@ export function Main() {
                   <Route index element={<ProductPage/>}/>
                   <Route path='defects' element={<DefectsPage/>}/>
                   <Route path='protocols/:protocolId' element={<Outlet/>}>
-                    <Route index element={<FillProtocol/>}/>
+                    <Route index element={<FillProtocolPage/>}/>
                     <Route path='report' element={<ProtocolReport/>}/>
                   </Route>  
                 </Route>  
