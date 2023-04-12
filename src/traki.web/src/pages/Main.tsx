@@ -12,14 +12,13 @@ import { EditCheckpoint } from './templates/EditCheckpoint';
 import SignValidation from './Authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
 import { HomePage } from './Home';
-import { CreateProject } from './projects/CreateProject';
-import { EditProject } from './projects/EditProject';
 import { CreateProduct } from './projects/products/CreateProduct';
 import MainLayout from 'layout/MainLayout';
 import { ProductPage, DefectsPage, FillProtocolPage } from './projects/products';
 import { TemplateProtocols, ProtocolPage } from './protocols';
 import { EditSectionPage, CreateSectionPage } from './protocols/sections';
 import { TemplatePage } from './templates/TemplatePage';
+import { CreateProject, EditProject } from './projects';
 
 export function Main() {
 

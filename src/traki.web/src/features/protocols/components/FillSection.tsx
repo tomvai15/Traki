@@ -7,6 +7,11 @@ import { Item } from '../../../contracts/protocol/items/Item';
 import { UpdateSectionAnswersRequest } from '../../../contracts/protocol/section/UpdateSectionAnswersRequest';
 import { sectionService } from 'services';
 import { initialSection } from '../data';
+import { FillItem } from '.';
+import { Table } from 'contracts/protocol/section/Table';
+import { RowColumn } from 'contracts/protocol/section/RowColumn';
+import { TableRow } from 'contracts/protocol/section/TableRow';
+import { FillTable } from './FillTable';
 
 type Props = {
   protocolId: number,
@@ -16,6 +21,10 @@ type Props = {
 export function FillSection({protocolId, sectionId}: Props) {
 
   const [section, setSection] = useState<Section>(initialSection);
+  const [table, setTable] = useState<Table>();
+  const [sectionType, setSectionType] = useState<string>('checklist');
+
+  const [initialTableJson, setInitialTableJson] = useState<string>('');
   const [initialSectionJson, setInitialSectionJson] = useState<string>('');
 
   useEffect(() => {
@@ -24,8 +33,27 @@ export function FillSection({protocolId, sectionId}: Props) {
 
   async function fetchSection() {
     const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
-    console.log(getSectionResponse);
+
     orderAndSetSection(getSectionResponse.section);
+    orderAndSetTable(getSectionResponse.section.table);
+  }
+
+  function orderAndSetTable(table?: Table) {
+    if (!table) {
+      setInitialTableJson(JSON.stringify(undefined));
+      return;
+    }
+
+    const firstRow = table.tableRows[0];
+    const columns: RowColumn[] = firstRow.rowColumns.map((column, index) => {
+      return {...column, id: index};
+    });
+  
+    const row: TableRow = {...firstRow, rowColumns: columns};
+    setSectionType('table');
+    const newTable: Table = {...table, tableRows: [row]};
+    setTable(newTable);
+    setInitialTableJson(JSON.stringify(newTable));
   }
 
   function updateItem(updatedItem: Item) {
@@ -49,6 +77,7 @@ export function FillSection({protocolId, sectionId}: Props) {
       setInitialSectionJson(JSON.stringify(sectionToSort));
       return;
     }
+    setSectionType('checklist');
     const sortedItems = [...sectionToSort.checklist.items];
     sortedItems.sort((a, b) => a.priority - b.priority);
 
@@ -59,12 +88,13 @@ export function FillSection({protocolId, sectionId}: Props) {
   }
 
   function canUpdate(): boolean {
-    return initialSectionJson != JSON.stringify(section);
+    return  initialSectionJson != JSON.stringify(section) ||
+            initialTableJson != JSON.stringify(table) ;
   }
 
   async function updateSection() {
     const request: UpdateSectionAnswersRequest = {
-      section: section
+      section: {...section, table: table}
     };
     await sectionService.updateSectionAnswers(protocolId, sectionId, request);
     setInitialSectionJson(JSON.stringify(section));
@@ -84,11 +114,16 @@ export function FillSection({protocolId, sectionId}: Props) {
           </Box>
         </CardActions>
       </Card>
-      <Box sx={{marginLeft:3}}>
-        {section.checklist?.items.map((item, index) => 
-          <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
-        )}
-      </Box>
+      {sectionType == 'checklist' &&
+        <Box sx={{marginLeft:3}}>
+          {section.checklist?.items.map((item, index) => 
+            <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
+          )}
+        </Box>}
+      {sectionType == 'table' && table &&
+        <Box sx={{marginLeft:3}}>
+          <FillTable table={table} updateTable={setTable}/>
+        </Box>}
     </Box>
   );
 }

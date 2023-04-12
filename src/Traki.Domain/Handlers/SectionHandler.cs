@@ -76,6 +76,17 @@ namespace Traki.Domain.Handlers
                     await UpdateChecklistModel(checklist, checklistToUpdate);
                 }
             }
+            var table = await _tableRepository.GetSectionTable(section.Id);
+            if (table != null && section.Table != null)
+            {
+                var tablesToAdd = section.Table.TableRows.Skip(1);
+                foreach (var tableRow in tablesToAdd)
+                {
+                    tableRow.TableId = table.Id;
+                    await _tableRowRepository.CreateTableRow(tableRow);
+                }
+            }
+            return;
         }
 
         public async Task AddOrUpdateSection(int protocolId, Section section)
@@ -88,6 +99,7 @@ namespace Traki.Domain.Handlers
             if (sectionFromDatabase == null)
             {
                 section.Priority = priority;
+                section.Id = 0;
                 sectionFromDatabase = await _sectionRepository.CreateSection(section);
             }
             else
@@ -122,6 +134,7 @@ namespace Traki.Domain.Handlers
         {
             var tableRows = table.TableRows;
             table.TableRows = null;
+            table.Section = null;
             table = await _tableRepository.CreateTable(table);
             foreach (var tableRow in tableRows) 
             {
