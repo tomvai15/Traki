@@ -51,7 +51,7 @@ namespace Traki.Api.Controllers
         [HttpPost("email/{emailName}")]
         public async Task<ActionResult> SendEmail(string emailName)
         {
-            await _emailService.SendEmail(emailName);
+            await _emailService.SendEmail(emailName, "a", "b");
             return Ok();
         }
 

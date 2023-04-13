@@ -13,6 +13,7 @@ namespace Traki.Domain.Handlers
     {
         Task<User> GetUser(string email, string password);
         Task<IEnumerable<Claim>> CreateClaimsForUser(User user);
+        Task ActivateAccount(string registerId, string code, string password);
         Task<bool> TryCreateUser(string email, string password);
     }
     public class UserAuthHandler : IUserAuthHandler
@@ -26,6 +27,28 @@ namespace Traki.Domain.Handlers
             _usersRepository = usersRepository;
             _mapper = mapper;
             _hasherAdapter = hasherAdapter;
+        }
+
+        public async Task ActivateAccount(string registerId, string code, string password)
+        {
+            var users = await _usersRepository.GetUsersByQuery(x => x.RegisterId == registerId);
+            var user = users.First();
+
+            user.RequiresToBeNotNullEnity();
+
+            bool correctCode = _hasherAdapter.VerifyHashedText(code, user.HashedPassword);
+
+            if (!correctCode) 
+            { 
+                throw new UnauthorizedException();
+            }
+
+            string hashedPassword = _hasherAdapter.HashText(password);
+
+            user.HashedPassword = hashedPassword;
+            user.RegisterId = null;
+
+            await _usersRepository.UpdateUser(user);
         }
 
         public async Task<bool> TryCreateUser(string email, string password)

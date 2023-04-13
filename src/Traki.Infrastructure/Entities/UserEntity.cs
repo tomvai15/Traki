@@ -5,6 +5,7 @@ namespace Traki.Infrastructure.Entities
     public class UserEntity
     {
         public int Id { get; set; }
+        public string? RegisterId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }

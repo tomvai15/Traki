@@ -4,17 +4,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { CircularProgress, Container } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import authService from '../../services/auth-service';
-import { LoginOAuthRequest } from '../../contracts/auth/LoginOAuthRequest';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../state/user-state';
 import reportService from '../../services/report-service';
-import path from 'path';
-
-function useQuery() {
-  const { search } = useLocation();
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+import { useQuery } from 'features/auth/hooks/useQuery';
 
 export default function SignValidation() {
 

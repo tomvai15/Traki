@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Net;
 using Traki.Domain.Services.Email;
+using System.Diagnostics;
 
 namespace Traki.Infrastructure.Services
 {
@@ -12,7 +13,7 @@ namespace Traki.Infrastructure.Services
         {
             _emailSettings = emailSettings.Value;
         }
-        public async Task SendEmail(string emailAddress)
+        public async Task SendEmail(string emailAddress, string subject, string body)
         {
             using var client = new SmtpClient();
 
@@ -28,8 +29,8 @@ namespace Traki.Infrastructure.Services
                 ))
             {
 
-                message.Subject = "Hello from code!";
-                message.Body = "Loremn ipsum dolor sit amet ...";
+                message.Subject = subject;
+                message.Body = body;
 
                 client.Send(message);
             }

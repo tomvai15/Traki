@@ -19,6 +19,12 @@ class UserService {
     return response.data;
   }
 
+  async getUserForActivation(registerId: string): Promise<GetUserResponse> {
+    const fullRoute = `users/pending/${registerId}`;
+    const response = await axiosApiInstance.get<GetUserResponse>(fullRoute, { headers: {} });
+    return response.data;
+  }
+
   async createUser(request: CreateUserRequest): Promise<void> {
     const fullRoute = route.format({userId: ''}); 
     await axiosApiInstance.post(fullRoute, request, { headers: {} });

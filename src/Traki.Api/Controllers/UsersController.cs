@@ -15,13 +15,26 @@ namespace Traki.Api.Controllers
     {
         private readonly IUserAuthHandler _userAuthHandler;
         private readonly IUsersRepository _usersRepository;
+        private readonly IUserHandler _userHandler;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserAuthHandler userAuthHandler, IUsersRepository usersRepository, IMapper mapper)
+        public UsersController(IUserHandler userHandler, IUserAuthHandler userAuthHandler, IUsersRepository usersRepository, IMapper mapper)
         {
+            _userHandler = userHandler;
             _userAuthHandler = userAuthHandler;
             _usersRepository = usersRepository;
             _mapper = mapper;
+        }
+
+        [HttpGet("pending/{registerId}")]
+        public async Task<ActionResult<GetUserResponse>> GetUser(string registerId)
+        {
+            var users = await _usersRepository.GetUsersByQuery(x => x.RegisterId == registerId);
+            var response = new GetUserResponse
+            {
+                User = _mapper.Map<UserDto>(users.First())
+            };
+            return Ok(response);
         }
 
         [HttpGet("{userId}")]
@@ -37,14 +50,16 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost("{userId}/status")]
-        public async Task<ActionResult> UpdateStatus(int userId, [FromBody]UpdateUserStatusRequest updateUserStatusRequest)
+        public async Task<ActionResult> UpdateStatus(int userId, [FromBody] UpdateUserStatusRequest updateUserStatusRequest)
         {
             var user = await _usersRepository.GetUserById(userId);
 
-            if (updateUserStatusRequest.Status == UserStatus.Active || updateUserStatusRequest.Status == UserStatus.Blocked) {
+            if (updateUserStatusRequest.Status == UserStatus.Active || updateUserStatusRequest.Status == UserStatus.Blocked)
+            {
                 user.Status = updateUserStatusRequest.Status;
                 await _usersRepository.UpdateUser(user);
-            } else
+            }
+            else
             {
                 return BadRequest();
             }
@@ -56,7 +71,7 @@ namespace Traki.Api.Controllers
         {
             var user = _mapper.Map<User>(createUserRequest.User);
 
-            await _usersRepository.AddNewUser(user);
+            await _userHandler.CreateUser(user);
             return Ok();
         }
 

@@ -9,5 +9,6 @@ namespace Traki.Domain.Repositories
         Task<User> GetUserByEmail(string email);
         Task<User> AddNewUser(User userToAdd);
         Task UpdateUser(User user);
+        Task<IEnumerable<User>> GetUsersByQuery(Func<User, bool> filter);
     }
 }

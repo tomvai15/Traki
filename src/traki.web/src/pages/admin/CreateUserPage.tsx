@@ -12,7 +12,7 @@ const initialUser: User = {
   name: '',
   surname: '',
   email: '',
-  role: Role.ProjectManager,
+  role: Role[Role.ProjectManager],
   status: UserStatus.created,
 };
 
@@ -22,7 +22,7 @@ export function CreateUserPage() {
 
   async function createUser() {
     const request: CreateUserRequest = {
-      user: user
+      user: {...user, role: user.role}
     };
     await userService.createUser(request);
     setMessage('User created');
@@ -74,11 +74,11 @@ export function CreateUserPage() {
                     id="demo-simple-select"
                     value={user.role}
                     label="Age"
-                    onChange={(e) => setUser({...user, role: Number(e.target.value)})}
+                    onChange={(e) => setUser({...user, role: e.target.value as string})}
                   >
-                    <MenuItem value={Role.Administrator}>{Role[Role.Administrator]}</MenuItem>
-                    <MenuItem value={Role.ProjectManager}>{Role[Role.ProjectManager]}</MenuItem>
-                    <MenuItem value={Role.ProductManager}>{Role[Role.ProductManager]}</MenuItem>
+                    <MenuItem value={Role[Role.Administrator]}>{Role[Role.Administrator]}</MenuItem>
+                    <MenuItem value={Role[Role.ProjectManager]}>{Role[Role.ProjectManager]}</MenuItem>
+                    <MenuItem value={Role[Role.ProductManager]}>{Role[Role.ProductManager]}</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

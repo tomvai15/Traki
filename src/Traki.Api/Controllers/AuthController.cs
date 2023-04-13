@@ -42,6 +42,13 @@ namespace Traki.Api.Controllers
             return Ok();
         }
 
+        [HttpPost("activate")]
+        public async Task<ActionResult> ActivateAccount([FromBody] ActivateAccountRequest request)
+        {
+            await _authHandler.ActivateAccount(request.RegisterId, request.Code, request.Password);
+            return Ok();
+        }
+
         [HttpPost("jwtlogin")]
         public async Task<ActionResult<LoginResponse>> JWTLogin([FromBody] LoginRequest loginRequest)
         {

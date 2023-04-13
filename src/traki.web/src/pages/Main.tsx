@@ -22,6 +22,7 @@ import { CreateProject, EditProject } from './projects';
 import { UsersPage } from './admin/UsersPage';
 import { UserPage } from './admin/UserPage';
 import { CreateUserPage } from './admin/CreateUserPage';
+import RegisterPage from './authentication/RegisterPage';
 
 export function Main() {
 
@@ -91,6 +92,7 @@ export function Main() {
           </Route>
         </Route>
         <Route path='/login' element={<SignIn/>}/>
+        <Route path='/auth/register' element={<RegisterPage/>}/>
         <Route path='*' element={<Navigate to='/'/>} />
       </Routes>
     </BrowserRouter>

@@ -250,6 +250,7 @@ namespace Traki.Infrastructure.Data
         {
             new UserEntity
             {
+                RegisterId = "abc",
                 Email = "vainoristomas@gmail.com",
                 Name = "Tomas",
                 Surname = "Vainoris",
@@ -266,6 +267,8 @@ namespace Traki.Infrastructure.Data
                 Role = Role.ProjectManager,
                 Status = UserStatus.Active
             },
+
+            /*
             new UserEntity
             {
                 Email = "tipotomas9@gmail.com",
@@ -274,7 +277,7 @@ namespace Traki.Infrastructure.Data
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.Administrator,
                 Status = UserStatus.Active
-            }
+            }*/
         };
 
         public static IEnumerable<ProjectEntity> Projects => new[]
