@@ -23,9 +23,9 @@ namespace Traki.Domain.Handlers
         private readonly ITableRepository _tableRepository;
         private readonly ITableRowRepository _tableRowRepository;
 
-        public SectionHandler(ISectionRepository sectionRepository, 
-            IChecklistRepository checklistRepository, 
-            IItemRepository itemRepository, 
+        public SectionHandler(ISectionRepository sectionRepository,
+            IChecklistRepository checklistRepository,
+            IItemRepository itemRepository,
             ITableRepository tableRepository,
             ITableRowRepository tableRowRepository)
         {
@@ -36,6 +36,7 @@ namespace Traki.Domain.Handlers
             _tableRowRepository = tableRowRepository;
         }
 
+        // todo: move to repository?
         public async Task<Section> GetSection(int sectionId)
         {
             var section = await _sectionRepository.GetSection(sectionId);
@@ -50,7 +51,7 @@ namespace Traki.Domain.Handlers
             var table = await _tableRepository.GetSectionTable(section.Id);
             if (table != null)
             {
-                
+
             }
             section.Table = table;
             return section;
@@ -66,7 +67,7 @@ namespace Traki.Domain.Handlers
 
         public async Task UpdateSectionAnswers(int protocolId, Section section)
         {
-            var checklistToUpdate =  await _checklistRepository.GetSectionChecklist(section.Id);
+            var checklistToUpdate = await _checklistRepository.GetSectionChecklist(section.Id);
             if (checklistToUpdate != null)
             {
                 checklistToUpdate = await _checklistRepository.GetChecklist(checklistToUpdate.Id);
@@ -76,6 +77,24 @@ namespace Traki.Domain.Handlers
                     await UpdateChecklistModel(checklist, checklistToUpdate);
                 }
             }
+            var table = await _tableRepository.GetSectionTable(section.Id);
+            if (table != null && section.Table != null)
+            {
+                var tableRows = await _tableRowRepository.GetTableRows(table.Id);
+
+                foreach (var row in tableRows.Skip(1))
+                {
+                    await _tableRowRepository.DeleteTableRow(row);
+                }
+
+                var tablesToAdd = section.Table.TableRows.Skip(1);
+                foreach (var tableRow in tablesToAdd)
+                {
+                    tableRow.TableId = table.Id;
+                    await _tableRowRepository.CreateTableRow(tableRow);
+                }
+            }
+            return;
         }
 
         public async Task AddOrUpdateSection(int protocolId, Section section)
@@ -88,6 +107,7 @@ namespace Traki.Domain.Handlers
             if (sectionFromDatabase == null)
             {
                 section.Priority = priority;
+                section.Id = 0;
                 sectionFromDatabase = await _sectionRepository.CreateSection(section);
             }
             else
@@ -115,15 +135,16 @@ namespace Traki.Domain.Handlers
             table.Id = 0;
             table.SectionId = sectionId;
             table.TableRows = section.Table.TableRows;
-            await CreateTable(table);   
+            await CreateTable(table);
         }
 
         private async Task CreateTable(Table table)
         {
             var tableRows = table.TableRows;
             table.TableRows = null;
+            table.Section = null;
             table = await _tableRepository.CreateTable(table);
-            foreach (var tableRow in tableRows) 
+            foreach (var tableRow in tableRows)
             {
                 tableRow.TableId = table.Id;
                 await _tableRowRepository.CreateTableRow(tableRow);

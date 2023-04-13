@@ -36,17 +36,17 @@
         </div>
     </div>
     <div>
-        <table class="ProtocolTable">
             @foreach (var protocolSection in Model.Sections)
             {
-                <thead>
-                    <tr>
-                        <th colspan="4">@protocolSection.Name</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table class="ProtocolTable">
                     @if (protocolSection.Checklist != null)
                     {
+                    <thead>
+                        <tr>
+                            <th colspan="4">@protocolSection.Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @for (int i = 0; i < protocolSection.Checklist.Items.Count; i++)
                         {
                             var item = protocolSection.Checklist.Items.ToArray()[i];
@@ -101,10 +101,42 @@
                                 }
                             </tr>
                         }
-                    }
-                </tbody>
+                    </tbody>
+                }
+                else if (protocolSection.Table != null)
+                {
+                    var tableRows = protocolSection.Table.TableRows.OrderBy(x => x.RowIndex);
+                    var firstRow = tableRows.First();
+                    int i = 1;
+
+                    <thead>
+                        <tr>
+                            <th colspan="@(firstRow.RowColumns.ToArray().Length+1)">@protocolSection.Name</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            @foreach (var column in firstRow.RowColumns)
+                            {
+                                <th>@column.Value</th>
+                            }
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var tableRow in tableRows.Skip(1))
+                        {
+                            <tr>
+                                <td>@(i++)</td>
+                                @foreach (var column in tableRow.RowColumns)
+                                {
+                                    <td>@column.Value</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
             }
-        </table>
     </div>
     <div class="App" style="page-break-after: always">
         <div class="Container" style="margin-top: 20px">

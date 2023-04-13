@@ -18,7 +18,10 @@ export function CreateTableCard ({row, setRow}:Props) {
 
   function addColumn() {
     const newColumn = {...defaultColumn, id: row.rowColumns.length};
-    updateRowColumns([...row.rowColumns, newColumn]);
+    const numberedColumns: RowColumn[] = [...row.rowColumns, newColumn].map((item, index) => {
+      return {...item, columnIndex: index};
+    });
+    updateRowColumns(numberedColumns);
   }
 
   function updateRowColumn(rowColumnId: number, value: string) {

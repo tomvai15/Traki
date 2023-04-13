@@ -22,12 +22,14 @@ export const defaultItem: Item ={
 
 export const defaultColumn: RowColumn = {
   id: 0, 
-  value: ''
+  value: '',
+  columnIndex: 0
 };
 
 export const defaulRow: TableRow = {
   id: 0, 
-  rowColumns: [defaultColumn]
+  rowColumns: [defaultColumn],
+  rowIndex: 0
 };
 
 export const defaulTable: Table = {

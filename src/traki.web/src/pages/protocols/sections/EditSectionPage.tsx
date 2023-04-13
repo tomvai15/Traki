@@ -63,19 +63,6 @@ export function EditSectionPage() {
   }
 
   function canUpdate() {
-
-    console.log(JSON.stringify(section) != initialSectionJson);
-    console.log(JSON.stringify(checklist) != initialChecklistJson);
-    console.log(JSON.stringify(table) != initialTableJson);
-
-    console.log(initialSectionJson);
-    console.log(initialChecklistJson);
-    console.log(initialTableJson);
-
-    console.log(JSON.stringify(section));
-    console.log(JSON.stringify(checklist));
-    console.log(JSON.stringify(table));
-
     return  JSON.stringify(section) != initialSectionJson || 
             JSON.stringify(checklist) != initialChecklistJson ||
             JSON.stringify(table) != initialTableJson;
