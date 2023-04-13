@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import SignIn from './Authentication/SignIn';
+import SignIn from './authentication/SignIn';
 import { useRecoilState } from 'recoil';
 import { userState } from '../state/user-state';
 import authService from '../services/auth-service';
-import CheckOAuth from './Authentication/CheckOAuth';
+import CheckOAuth from './authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { CompanyPage } from './company/Company';
 import { EditCheckpoint } from './templates/EditCheckpoint';
-import SignValidation from './Authentication/SignValidation';
+import SignValidation from './authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
 import { HomePage } from './Home';
 import { CreateProduct } from './projects/products/CreateProduct';
@@ -19,6 +19,10 @@ import { TemplateProtocols, ProtocolPage } from './protocols';
 import { EditSectionPage, CreateSectionPage } from './protocols/sections';
 import { TemplatePage } from './templates/TemplatePage';
 import { CreateProject, EditProject } from './projects';
+import { UsersPage } from './admin/UsersPage';
+import { UserPage } from './admin/UserPage';
+import { CreateUserPage } from './admin/CreateUserPage';
+import RegisterPage from './authentication/RegisterPage';
 
 export function Main() {
 
@@ -44,6 +48,11 @@ export function Main() {
       <Routes>
         <Route path='' element={<ProtectedRoute><MainLayout/></ProtectedRoute>}>
           <Route index element={<Navigate to='/home'/>}/>
+          <Route path='admin/users' element={<Outlet/>}>
+            <Route index element={<UsersPage/>}/>
+            <Route path=':userId' element={<UserPage/>}/>
+            <Route path='create' element={<CreateUserPage/>}/>
+          </Route>
           <Route path='home' element={<HomePage/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
@@ -83,6 +92,7 @@ export function Main() {
           </Route>
         </Route>
         <Route path='/login' element={<SignIn/>}/>
+        <Route path='/auth/register' element={<RegisterPage/>}/>
         <Route path='*' element={<Navigate to='/'/>} />
       </Routes>
     </BrowserRouter>

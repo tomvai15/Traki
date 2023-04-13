@@ -250,11 +250,13 @@ namespace Traki.Infrastructure.Data
         {
             new UserEntity
             {
+                RegisterId = "abc",
                 Email = "vainoristomas@gmail.com",
                 Name = "Tomas",
                 Surname = "Vainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.ProductManager,
+                Status = UserStatus.Active
             },
             new UserEntity
             {
@@ -262,16 +264,20 @@ namespace Traki.Infrastructure.Data
                 Name = "Domas",
                 Surname = "Bainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
-                Role = Role.ProjectManager
+                Role = Role.ProjectManager,
+                Status = UserStatus.Active
             },
+
+            /*
             new UserEntity
             {
                 Email = "tipotomas9@gmail.com",
                 Name = "Romas",
                 Surname = "Fainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
-                Role = Role.Administrator
-            }
+                Role = Role.Administrator,
+                Status = UserStatus.Active
+            }*/
         };
 
         public static IEnumerable<ProjectEntity> Projects => new[]

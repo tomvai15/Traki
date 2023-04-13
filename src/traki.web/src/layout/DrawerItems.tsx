@@ -3,12 +3,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BusinessIcon from '@mui/icons-material/Business';
 import { Divider } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
+import GroupIcon from '@mui/icons-material/Group';
 
 export default function DrawerItems() {
 
@@ -40,6 +40,12 @@ export default function DrawerItems() {
           <BusinessIcon />
         </ListItemIcon>
         <ListItemText primary="Company" />
+      </ListItemButton>
+      <ListItemButton onClick={() => navigate('/admin/users')}>
+        <ListItemIcon>
+          <GroupIcon />
+        </ListItemIcon>
+        <ListItemText primary="Users" />
       </ListItemButton>
     </React.Fragment>
   );

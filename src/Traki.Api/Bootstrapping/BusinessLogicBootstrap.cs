@@ -5,6 +5,8 @@ using Traki.Infrastructure.Repositories;
 using Traki.Domain.Handlers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Providers;
+using Traki.Domain.Services.BlobStorage;
+using Traki.Domain.Constants;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -13,6 +15,7 @@ namespace Traki.Api.Bootstrapping
         public static IServiceCollection AddHandlers(this IServiceCollection services, IConfiguration configuration)
         {
             services
+                .AddTransient<IUserHandler, UserHandler>()
                 .AddTransient<IUserAuthHandler, UserAuthHandler>()
                 .AddTransient<IUsersRepository, UsersHandler>()
                 .AddTransient<IChecklistHandler, ChecklistHandler>()
@@ -59,6 +62,13 @@ namespace Traki.Api.Bootstrapping
             services.AddTransient<IHasherAdapter, HasherAdapter>()
                 .AddTransient<IJwtTokenGenerator, JwtTokenGenerator>()
                 .AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddWebConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<WebSettings>(configuration.GetSection(WebSettings.SectionName));
 
             return services;
         }

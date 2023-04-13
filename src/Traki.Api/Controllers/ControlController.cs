@@ -1,6 +1,7 @@
 ﻿using DocuSign.eSign.Model;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
+using Traki.Domain.Services.Email;
 using Traki.Infrastructure.Data;
 
 namespace Traki.Api.Controllers
@@ -10,11 +11,13 @@ namespace Traki.Api.Controllers
     {
         private readonly TrakiDbContext _trakiDbContext;
         private readonly IStorageService _storageService;
+        private readonly IEmailService _emailService;
 
-        public ControlController(IStorageService storageService, TrakiDbContext trakiDbContext)
+        public ControlController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService)
         {
             _storageService = storageService;
             _trakiDbContext = trakiDbContext;
+            _emailService = emailService;
         }
 
         [HttpGet("create")]
@@ -42,6 +45,13 @@ namespace Traki.Api.Controllers
 
             await _storageService.AddFile(folderName, fileName, file.ContentType, file.OpenReadStream());
 
+            return Ok();
+        }
+
+        [HttpPost("email/{emailName}")]
+        public async Task<ActionResult> SendEmail(string emailName)
+        {
+            await _emailService.SendEmail(emailName, "a", "b");
             return Ok();
         }
 

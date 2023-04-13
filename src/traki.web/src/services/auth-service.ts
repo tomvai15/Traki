@@ -4,10 +4,18 @@ import axiosApiInstance from './axios-instance';
 import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginOAuthRequest } from '../contracts/auth/LoginOAuthRequest';
 import { AuthorisationCodeRequest } from '../contracts/auth/AuthorisationCodeRequest';
+import { ActivateAccountRequest } from 'contracts/auth/ActivateAccountRequest';
 
 const route = 'auth';
 
 class AuthService {
+
+  async activate(request: ActivateAccountRequest): Promise<AxiosResponse> {
+    const fullRoute = route + '/activate';
+    const response = await axiosApiInstance.post(fullRoute, request, { headers: {} ,  validateStatus: (status) => status < 500 });
+    return response;
+  }
+
   async login(loginRequest: LoginRequest): Promise<AxiosResponse> {
     console.log(loginRequest);
     const fullRoute = route + '/login';

@@ -12,6 +12,7 @@ using Traki.Api.Contracts.Recommendation;
 using Traki.Api.Contracts.Section;
 using Traki.Api.Contracts.Section.Items;
 using Traki.Api.Contracts.Template;
+using Traki.Api.Contracts.User;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
@@ -112,6 +113,7 @@ namespace Traki.Api.Mapping
         public void AddUserMappings()
         {
             CreateMap<CreateUserRequest, User>();
+            CreateMap<UserDto, User>().ReverseMap();
         }
 
         public void AddTemplateMappings()

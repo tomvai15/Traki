@@ -3,6 +3,7 @@ using Traki.Infrastructure.Entities;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -41,7 +42,7 @@ namespace Traki.Infrastructure.Repositories
 
             if (user != null) return null;
 
-            var userEntity = _mapper.Map<UserEntity>(user);
+            var userEntity = _mapper.Map<UserEntity>(userToAdd);
 
             userEntity = _context.Users.Add(userEntity).Entity;
 
@@ -54,9 +55,29 @@ namespace Traki.Infrastructure.Repositories
         {
             var userEntity = _context.Users.FirstOrDefault(u => u.Id == user.Id);
 
-            user.EncryptedRefreshToken = user.EncryptedRefreshToken;
+            userEntity.Status = user.Status;
+            userEntity.EncryptedRefreshToken = user.EncryptedRefreshToken;
+            userEntity.HashedPassword = user.HashedPassword;
+            userEntity.RegisterId = user.RegisterId;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<IEnumerable<User>>(users);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByQuery(Func<User, bool> filter)
+        {
+            Func<UserEntity, bool> func = (x) => {
+                var p = _mapper.Map<User>(x);
+                return filter(p);
+            };
+            var users = _context.Users.Where(func).ToList();
+
+            return _mapper.Map<IEnumerable<User>>(users);
         }
     }
 }

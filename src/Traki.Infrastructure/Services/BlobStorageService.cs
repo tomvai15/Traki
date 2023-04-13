@@ -3,20 +3,20 @@ using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 using Traki.Domain.Services.BlobStorage;
 
-namespace Traki.Infrastructure.Services.BlobStorage
+namespace Traki.Infrastructure.Services
 {
     public class BlobStorageService : IStorageService
     {
         private readonly BlobStorageSettings _blobStorageSettings;
 
-        public BlobStorageService(IOptions<BlobStorageSettings> blobStorageSettings) 
+        public BlobStorageService(IOptions<BlobStorageSettings> blobStorageSettings)
         {
             _blobStorageSettings = blobStorageSettings.Value;
         }
 
         public async Task AddFile(string containerName, string fileName, string contentType, Stream content)
         {
-            BlobContainerClient blobContainerClient = new BlobContainerClient(_blobStorageSettings.ConnectionString, containerName); 
+            BlobContainerClient blobContainerClient = new BlobContainerClient(_blobStorageSettings.ConnectionString, containerName);
             blobContainerClient.CreateIfNotExists();
 
             var blobHttpHeader = new BlobHttpHeaders { ContentType = contentType };
