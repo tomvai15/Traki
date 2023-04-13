@@ -3,6 +3,7 @@ using Traki.Infrastructure.Entities;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -54,9 +55,16 @@ namespace Traki.Infrastructure.Repositories
         {
             var userEntity = _context.Users.FirstOrDefault(u => u.Id == user.Id);
 
-            user.EncryptedRefreshToken = user.EncryptedRefreshToken;
+            userEntity.Status = user.Status;
+            userEntity.EncryptedRefreshToken = user.EncryptedRefreshToken;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<IEnumerable<User>>(users);
         }
     }
 }

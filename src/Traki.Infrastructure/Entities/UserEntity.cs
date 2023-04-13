@@ -10,6 +10,7 @@ namespace Traki.Infrastructure.Entities
         public string Email { get; set; }
         public string HashedPassword { get; set; }
         public string Role { get; set; }
+        public string Status { get; set; }
         public string? EncryptedRefreshToken { get; set; }
         public IEnumerable<ProjectEntity> Projects { get; set; }
         public IEnumerable<ProductEntity> Products { get; set; }

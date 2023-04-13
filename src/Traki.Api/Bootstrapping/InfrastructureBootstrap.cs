@@ -1,7 +1,7 @@
 ﻿using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Docusign;
-using Traki.Infrastructure.Services.BlobStorage;
-using Traki.Infrastructure.Services.Docusign;
+using Traki.Domain.Services.Email;
+using Traki.Infrastructure.Services;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -20,6 +20,14 @@ namespace Traki.Api.Bootstrapping
         {
             services.Configure<BlobStorageSettings>(configuration.GetSection(BlobStorageSettings.SectionName));
             services.AddSingleton<IStorageService, BlobStorageService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddEmailServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.SectionName));
+            services.AddSingleton<IEmailService, EmailService>();
 
             return services;
         }

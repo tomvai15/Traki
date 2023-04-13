@@ -13,7 +13,7 @@ using Traki.Domain.Services.Docusign;
 using Traki.Domain.Services.Docusign.models;
 using static DocuSign.eSign.Client.Auth.OAuth;
 
-namespace Traki.Infrastructure.Services.Docusign
+namespace Traki.Infrastructure.Services
 {
     public class DocuSignService : IDocuSignService
     {

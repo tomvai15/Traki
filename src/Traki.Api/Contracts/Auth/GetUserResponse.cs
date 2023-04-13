@@ -1,8 +1,8 @@
 ﻿namespace Traki.Api.Contracts.Auth
 {
-    public class GetUserResponse
+    public class GetUserInfoResponse
     {
-        public UserDto User { get; set; }
+        public UserInfoDto User { get; set; }
         public bool LoggedInDocuSign { get; set; }
     }
 }

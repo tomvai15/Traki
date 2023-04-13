@@ -33,8 +33,7 @@ export function DefectsPage() {
   const [selectedDefect, setSelectedDefect] = useState<Defect>();
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
 
-  const [tabIndex, setTabIndex] = React.useState(0);
-
+  const [tabIndex, setTabIndex] = useState(0);
   const [includeFixedDefects, setIncludeFixedDefects] = useState(false);
 
   useEffect(() => {
@@ -75,7 +74,6 @@ export function DefectsPage() {
         setSelectedDrawing(drawingsWithImage[0]);
       }
     }
-
 
     setDefects(newDefects);
     setDrawings(drawingsWithImage);

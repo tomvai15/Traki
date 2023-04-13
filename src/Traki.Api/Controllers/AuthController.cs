@@ -64,7 +64,7 @@ namespace Traki.Api.Controllers
 
         [HttpGet("userinfo")]
         [Authorize]
-        public async Task<ActionResult<GetUserResponse>> GetUserInfo()
+        public async Task<ActionResult<GetUserInfoResponse>> GetUserInfo()
         {
             int userId = GetUserId();
 
@@ -80,7 +80,7 @@ namespace Traki.Api.Controllers
                 accessToken = null;
             }
 
-            var response = new GetUserResponse { User = new UserDto { Id = userId }, LoggedInDocuSign = accessToken.IsNullOrEmpty() };
+            var response = new GetUserInfoResponse { User = new UserInfoDto { Id = userId }, LoggedInDocuSign = accessToken.IsNullOrEmpty() };
             return Ok(response);
         }
 

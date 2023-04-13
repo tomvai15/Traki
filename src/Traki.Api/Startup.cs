@@ -17,6 +17,7 @@ namespace Traki.Api
                 .AddHttpResponseMappings(configuration)
                 .AddDocusignServices(configuration)
                 .AddBlobStorageServices(configuration)
+                .AddEmailServices(configuration)
                 .AddCryptographyServices()
                 .AddCorsPolicy();
 

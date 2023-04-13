@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Contracts.Auth
 {
-    public class UserDto
+    public class UserInfoDto
     {
         public int Id { get; set; }
     }
