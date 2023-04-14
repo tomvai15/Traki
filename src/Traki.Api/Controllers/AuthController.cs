@@ -87,7 +87,7 @@ namespace Traki.Api.Controllers
                 accessToken = null;
             }
 
-            var response = new GetUserInfoResponse { User = new UserInfoDto { Id = userId }, LoggedInDocuSign = accessToken.IsNullOrEmpty() };
+            var response = new GetUserInfoResponse { User = new UserInfoDto { Id = userId }, LoggedInDocuSign = !accessToken.IsNullOrEmpty() };
             return Ok(response);
         }
 
