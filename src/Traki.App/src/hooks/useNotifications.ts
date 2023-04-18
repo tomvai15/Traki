@@ -1,8 +1,13 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Linking, Platform } from "react-native";
+import { useRecoilState } from "recoil";
+import { deviceState } from "../state/device-state";
 
 export const useNotifications = () => {
+
+  const [deviceInfo, setDeviceInfo] = useRecoilState(deviceState);
+  
   const registerForPushNotificationsAsync = async () => {
     let token;
     if (Device.isDevice) {
@@ -17,6 +22,7 @@ export const useNotifications = () => {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
+      setDeviceInfo({token: token});
       console.log("TOKEN " + token);
     } else {
       alert('Must use physical device for Push Notifications');

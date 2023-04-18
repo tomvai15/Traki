@@ -61,7 +61,7 @@ namespace Traki.Api.Controllers
         [HttpPost("notification")]
         public async Task<ActionResult> Notification()
         {
-            await _notificationService.SendNotification();
+           // await _notificationService.SendNotification();
             return Ok();
         }
 

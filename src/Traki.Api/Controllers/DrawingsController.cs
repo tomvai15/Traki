@@ -32,7 +32,7 @@ namespace Traki.Api.Controllers
         [HttpGet("{drawingId}")]
         public async Task<ActionResult<GetDrawingResponse>> GetDrawing(int productId, int drawingId)
         {
-            var drawing = await _drawingsRepository.GetDrawing(productId, drawingId);
+            var drawing = await _drawingsRepository.GetDrawing(drawingId);
 
             var response = new GetDrawingResponse
             {

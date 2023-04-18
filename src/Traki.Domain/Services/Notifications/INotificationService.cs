@@ -2,6 +2,6 @@
 {
     public interface INotificationService
     {
-        public Task SendNotification();
+        public Task SendNotification(string deviceToken, string title, string body);
     }
 }

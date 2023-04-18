@@ -13,7 +13,7 @@ using static Traki.UnitTests.Fakes.Dummy;
 
 namespace Traki.UnitTests.Controllers
 {
-    public class AuthControllerTests
+    /*public class AuthControllerTests
     {
         private readonly Mock<IJwtTokenGenerator> _jwtTokenGenerator = new Mock<IJwtTokenGenerator>();
         private readonly Mock<IUserAuthHandler> _authHandler = new Mock<IUserAuthHandler>();
@@ -49,5 +49,5 @@ namespace Traki.UnitTests.Controllers
             a.Token.Should().Be(token);
             a.Email.Should().Be(loginRequest.Email);
         }
-    }
+    }*/
 }

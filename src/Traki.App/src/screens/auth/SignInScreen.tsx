@@ -5,9 +5,12 @@ import { userState } from '../../state/user-state';
 import { useRecoilState } from 'recoil';
 import { authService } from '../../services';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
+import { RegisterDeviceRequest } from '../../contracts/auth/RegisterDeviceRequest';
+import { deviceState } from '../../state/device-state';
 
 export default function SignInScreen() {
   const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [deviceInfo, setDeviceInfo] = useRecoilState(deviceState);
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -25,6 +28,15 @@ export default function SignInScreen() {
       const response = await authService.login(request);
       console.log(response);
       setUserInfo({...userInfo, token: response.token});
+
+      const registerDeviceRequest: RegisterDeviceRequest = {
+        deviceToken: deviceInfo.token
+      };
+
+      console.log( '?? ' + registerDeviceRequest);
+
+      await authService.registerDevice(registerDeviceRequest);
+
     } catch (err) {
       console.log(err);
     }

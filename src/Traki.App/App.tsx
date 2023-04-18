@@ -17,6 +17,24 @@ import { useNotifications } from './src/hooks/useNotifications';
 const Drawer = createDrawerNavigator();
 
 export default function App() {
+  return (
+    <PaperProvider theme={theme}>
+      <RecoilRoot>
+        <ReactNativeRecoilPersistGate store={ReactNativeRecoilPersist}>
+          <RecoilNexus/>
+          <Main/>
+        </ReactNativeRecoilPersistGate>
+      </RecoilRoot>
+    </PaperProvider>
+  );
+}
+
+function Main() {
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+
+  function loggedIn() {
+    return userInfo.token != '';
+  }
 
   const { registerForPushNotificationsAsync, handleNotification, handleNotificationResponse} = useNotifications();
 
@@ -39,26 +57,6 @@ export default function App() {
       }
     }
   }, []);
-
-
-  return (
-    <PaperProvider theme={theme}>
-      <RecoilRoot>
-        <ReactNativeRecoilPersistGate store={ReactNativeRecoilPersist}>
-          <RecoilNexus/>
-          <Main/>
-        </ReactNativeRecoilPersistGate>
-      </RecoilRoot>
-    </PaperProvider>
-  );
-}
-
-function Main() {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
-
-  function loggedIn() {
-    return userInfo.token != '';
-  }
 
   return (
     <NavigationContainer>

@@ -11,8 +11,6 @@ namespace Traki.Infrastructure.Services
 {
     public class NotificationService : INotificationService
     {
-       // private readonly PushApiClient _pushApiClient = new PushApiClient();
-
         private readonly HttpClient _httpClient;
 
         public NotificationService(HttpClient httpClient)
@@ -20,13 +18,13 @@ namespace Traki.Infrastructure.Services
             _httpClient = httpClient;
         }
 
-        public async Task SendNotification()
+        public async Task SendNotification(string deviceToken, string title, string body)
         {
             var payload = new
             {
-                to = "ExponentPushToken[X_Ov7mI0JUS43mxirmksWW]",
-                title = "c#",
-                body = "zjbs"
+                to = deviceToken,
+                title = title,
+                body = body
             };
 
             var json = JsonConvert.SerializeObject(payload);
@@ -38,19 +36,5 @@ namespace Traki.Infrastructure.Services
 
             return;
         }
-        /*
-        public async Task SendNotification()
-        {
-            var request = new Expo.Server.Models.PushTicketRequest
-            {
-                PushTo = new List<string>() { "ExponentPushToken[X_Ov7mI0JUS43mxirmksWW]" },
-                PushData = "test",
-                PushBody = "byb",
-                PushTitle = "kiaus",
-            };
-            var a = await _pushApiClient.PushSendAsync(request);
-
-            return;
-        }*/
     }
 }
