@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { List, Provider as PaperProvider } from 'react-native-paper';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -11,10 +11,36 @@ import { userState } from './src/state/user-state';
 import { ProjectTab, ProductTab, TemplateTab, AuthTab } from './src/tabs';
 import RecoilNexus from 'recoil-nexus'
 import UserScreen from './src/screens/user/UserScreen';
+import * as Notifications from "expo-notifications";
+import { useNotifications } from './src/hooks/useNotifications';
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
+
+  const { registerForPushNotificationsAsync, handleNotification, handleNotificationResponse} = useNotifications();
+
+  useEffect(() => {
+
+    registerForPushNotificationsAsync();
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+
+    const responseListener = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+
+    return () => {
+      if (responseListener) {
+        Notifications.removeNotificationSubscription(responseListener);
+      }
+    }
+  }, []);
+
+
   return (
     <PaperProvider theme={theme}>
       <RecoilRoot>

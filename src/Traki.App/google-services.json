@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "336262940833",
+    "project_id": "traki-notifications",
+    "storage_bucket": "traki-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336262940833:android:8b9dbd37cb1da19fdf08e0",
+        "android_client_info": {
+          "package_name": "com.tomvai.traki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "336262940833-qa8kualfd978up394pbca48ljfar8ho8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC051W7qrL3jgERUCbVJI-2CtngG2TtQ94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "336262940833-qa8kualfd978up394pbca48ljfar8ho8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,7 +37,9 @@
     "react-native-web": "~0.18.9",
     "recoil": "^0.7.7",
     "recoil-nexus": "^0.4.0",
-    "recoil-persist": "^4.2.0"
+    "recoil-persist": "^4.2.0",
+    "expo-notifications": "~0.17.0",
+    "expo-device": "~5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
