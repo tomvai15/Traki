@@ -1,6 +1,7 @@
 ﻿using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Docusign;
 using Traki.Domain.Services.Email;
+using Traki.Domain.Services.Notifications;
 using Traki.Infrastructure.Services;
 
 namespace Traki.Api.Bootstrapping
@@ -28,6 +29,13 @@ namespace Traki.Api.Bootstrapping
         {
             services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.SectionName));
             services.AddSingleton<IEmailService, EmailService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddNotificationService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHttpClient<INotificationService, NotificationService>();
 
             return services;
         }

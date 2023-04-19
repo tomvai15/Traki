@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '../state/user-state';
 import { url } from './endpoints';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { getRecoil, setRecoil } from 'recoil-nexus'
 
 const axiosApiInstance = axios.create({
@@ -21,6 +21,12 @@ axiosApiInstance.interceptors.response.use((res) => {
   console.log('[\u001b[1;32m' + res.request.responseURL + ' \u001b[1;36mresponded ' + res.request.status + '\u001B[37m]'); 
   return res; 
 }, function (error) {
+  if (axios.isAxiosError(error))  {
+    if (error.response?.status == 401) {
+      console.log('bybys');
+      setRecoil(userState, { id: 1, token: '', loggedInDocuSign: false });
+    }
+  } 
   return Promise.reject(error);
 });
 

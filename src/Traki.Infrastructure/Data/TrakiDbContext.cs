@@ -103,8 +103,18 @@ namespace Traki.Infrastructure.Data
                 .WithOne(p => p.Defect)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<DefectEntity>()
+                .HasMany(p => p.DefectNotifications)
+                .WithOne(p => p.Defect)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.Defects)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(p => p.DefectNotifications)
                 .WithOne(p => p.User)
                 .OnDelete(DeleteBehavior.NoAction);
 
@@ -135,6 +145,7 @@ namespace Traki.Infrastructure.Data
         public virtual DbSet<DefectEntity> Defects { get; set; }
         public virtual DbSet<DefectComment> DefectComments { get; set; }
         public virtual DbSet<StatusChangeEntity> StatusChanges { get; set; }
+        public virtual DbSet<DefectNotificationEntity> DefectNotifications { get; set; }
 
         public virtual DbSet<ProtocolEntity> Protocols { get; set; }
 

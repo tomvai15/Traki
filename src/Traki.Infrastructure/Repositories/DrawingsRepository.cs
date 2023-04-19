@@ -25,7 +25,7 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<IEnumerable<Drawing>>(drawings);
         }
 
-        public async Task<Drawing> GetDrawing(int productId, int drawingId)
+        public async Task<Drawing> GetDrawing(int drawingId)
         {
             var drawing = await _context.Drawings.Where(x => x.Id == drawingId).FirstOrDefaultAsync();
             return _mapper.Map<Drawing>(drawing);

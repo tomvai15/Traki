@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Email;
+using Traki.Domain.Services.Notifications;
 using Traki.Infrastructure.Data;
 
 namespace Traki.Api.Controllers
@@ -12,12 +13,14 @@ namespace Traki.Api.Controllers
         private readonly TrakiDbContext _trakiDbContext;
         private readonly IStorageService _storageService;
         private readonly IEmailService _emailService;
+        private readonly INotificationService _notificationService;
 
-        public ControlController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService)
+        public ControlController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService, INotificationService notificationService)
         {
             _storageService = storageService;
             _trakiDbContext = trakiDbContext;
             _emailService = emailService;
+            _notificationService = notificationService;
         }
 
         [HttpGet("create")]
@@ -52,6 +55,13 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> SendEmail(string emailName)
         {
             await _emailService.SendEmail(emailName, "a", "b");
+            return Ok();
+        }
+
+        [HttpPost("notification")]
+        public async Task<ActionResult> Notification()
+        {
+           // await _notificationService.SendNotification();
             return Ok();
         }
 

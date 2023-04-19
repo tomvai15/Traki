@@ -11,5 +11,6 @@
         public string Role { get; set; }
         public string Status { get; set; }
         public string? EncryptedRefreshToken { get; set; }
+        public string DeviceToken { get; set; }
     }
 }

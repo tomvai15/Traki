@@ -16,6 +16,7 @@ namespace Traki.Api
                 .AddRepositories(configuration)
                 .AddHttpResponseMappings(configuration)
                 .AddDocusignServices(configuration)
+                .AddNotificationService(configuration)
                 .AddBlobStorageServices(configuration)
                 .AddEmailServices(configuration)
                 .AddWebConfiguration(configuration)

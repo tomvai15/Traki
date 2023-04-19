@@ -1,9 +1,10 @@
 {
   "expo": {
     "name": "Traki.App",
-    "slug": "Traki.App",
+    "slug": "traki-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "scheme": "com.tomvai.traki",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -21,6 +22,8 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.tomvai.traki",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

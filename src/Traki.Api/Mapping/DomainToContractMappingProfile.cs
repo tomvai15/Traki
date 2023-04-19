@@ -54,6 +54,7 @@ namespace Traki.Api.Mapping
             CreateMap<DefectComment, DefectCommentDto>().ReverseMap();
             CreateMap<StatusChange, StatusChangeDto>().ReverseMap();
             CreateMap<User, AuthorDto>().ReverseMap();
+            CreateMap<DefectNotification, DefectNotificationDto>().ReverseMap();
         }
 
         public void AddCompanyMappings()

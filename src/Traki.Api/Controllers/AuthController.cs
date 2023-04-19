@@ -9,6 +9,7 @@ using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Handlers;
 using Traki.Domain.Providers;
+using Traki.Domain.Repositories;
 using Traki.Domain.Services.Docusign;
 
 namespace Traki.Api.Controllers
@@ -20,13 +21,17 @@ namespace Traki.Api.Controllers
         private readonly IUserAuthHandler _authHandler;
         private readonly IDocuSignService _docuSignService;
         private readonly IAccessTokenProvider _accessTokenProvider;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IClaimsProvider _claimsProvider;
 
-        public AuthController(IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IAccessTokenProvider accessTokenProvider, IUserAuthHandler authHandler)
+        public AuthController(IClaimsProvider claimsProvider, IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IAccessTokenProvider accessTokenProvider, IUserAuthHandler authHandler, IUsersRepository usersRepository)
         {
             _authHandler = authHandler;
             _docuSignService = docuSignService;
             _jwtTokenGenerator = jwtTokenGenerator;
             _accessTokenProvider = accessTokenProvider;
+            _usersRepository = usersRepository;
+            _claimsProvider = claimsProvider;
         }
 
         [HttpPost("login")]
@@ -75,8 +80,6 @@ namespace Traki.Api.Controllers
         {
             int userId = GetUserId();
 
-
-            var a = User.Claims;
             string accessToken;
             try
             {
@@ -91,9 +94,22 @@ namespace Traki.Api.Controllers
             return Ok(response);
         }
 
+        [HttpPost("registerdevice")]
+        [Authorize]
+        public async Task<ActionResult> GetAuthorisationCodeRequestUrl([FromBody] RegisterDeviceRequest request)
+        {
+            _claimsProvider.TryGetUserId(out int userId);
+            var user = await _usersRepository.GetUserById(userId);
+
+            user.DeviceToken = request.DeviceToken;
+            await _usersRepository.UpdateUser(user);
+            return Ok();
+        }
+
+
         [HttpPost("code")]
         [Authorize]
-        public async Task<ActionResult> GetAuthorisationCodeRequestUrl([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
+        public async Task<ActionResult> RegisterDevice([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
         {
             var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State);
             return Ok(url);

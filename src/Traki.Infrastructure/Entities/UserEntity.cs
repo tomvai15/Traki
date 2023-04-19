@@ -12,11 +12,13 @@ namespace Traki.Infrastructure.Entities
         public string HashedPassword { get; set; }
         public string Role { get; set; }
         public string Status { get; set; }
+        public string? DeviceToken { get; set; }
         public string? EncryptedRefreshToken { get; set; }
         public IEnumerable<ProjectEntity> Projects { get; set; }
         public IEnumerable<ProductEntity> Products { get; set; }
         public IEnumerable<DefectEntity> Defects { get; set; }
         public IEnumerable<DefectCommentEntity> DefectComments { get; set; }
         public IEnumerable<StatusChangeEntity> StatusChanges { get; set; }
+        public IEnumerable<DefectNotificationEntity> DefectNotifications { get; set; }
     }
 }

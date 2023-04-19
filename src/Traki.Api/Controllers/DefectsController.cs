@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing.Defect;
+using Traki.Domain.Handlers;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
@@ -13,30 +14,30 @@ namespace Traki.Api.Controllers
     [Route("api/drawings/{drawingId}/defects")]
     public class DefectsController : ControllerBase
     {
+        private readonly IDefectHandler _defectHandler;
         private readonly IDefectsRepository _defectsRepository;
         private readonly IDefectCommentRepository _defectCommentRepository;
         private readonly IStatusChangeRepository _statusChangeRepository;
         private readonly IClaimsProvider _claimsProvider;
         private readonly IMapper _mapper;
 
-        public DefectsController(IClaimsProvider claimsProvider, IDefectsRepository defectsRepository,  IMapper mapper, IDefectCommentRepository defectCommentRepository, IStatusChangeRepository statusChangeRepository)
+        public DefectsController(IDefectHandler defectHandler, IDefectsRepository defectsRepository, IDefectCommentRepository defectCommentRepository, IStatusChangeRepository statusChangeRepository, IClaimsProvider claimsProvider, IMapper mapper)
         {
-            _claimsProvider = claimsProvider;
+            _defectHandler = defectHandler;
             _defectsRepository = defectsRepository;
-            _mapper = mapper;
             _defectCommentRepository = defectCommentRepository;
             _statusChangeRepository = statusChangeRepository;
+            _claimsProvider = claimsProvider;
+            _mapper = mapper;
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<GetDefectResponse>> CreateDefect(int drawingId, [FromBody] CreateDefectRequest createDefectRequest)
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
             _claimsProvider.TryGetUserId(out int userId);
-            defect.UserId = userId != 0 ? userId : 1;
-            defect.DrawingId = drawingId;
-            defect.Status = DefectStatus.NotFixed;
-            defect = await _defectsRepository.CreateDefect(defect);
+            defect = await _defectHandler.CreateDefect(userId, drawingId, defect);
             var response = new GetDefectResponse
             {
                 Defect = _mapper.Map<DefectDto>(defect)
