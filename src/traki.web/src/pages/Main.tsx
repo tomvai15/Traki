@@ -23,6 +23,7 @@ import { UsersPage } from './admin/UsersPage';
 import { UserPage } from './admin/UserPage';
 import { CreateUserPage } from './admin/CreateUserPage';
 import RegisterPage from './authentication/RegisterPage';
+import { EditProduct } from './projects/products/EditProduct';
 
 export function Main() {
 
@@ -67,6 +68,7 @@ export function Main() {
                 <Route path=':productId' element={<Outlet/>}>
                   <Route index element={<ProductPage/>}/>
                   <Route path='defects' element={<DefectsPage/>}/>
+                  <Route path='edit' element={<EditProduct/>}/>
                   <Route path='protocols/:protocolId' element={<Outlet/>}>
                     <Route index element={<FillProtocolPage/>}/>
                     <Route path='report' element={<ProtocolReport/>}/>

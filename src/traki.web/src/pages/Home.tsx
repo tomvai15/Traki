@@ -4,12 +4,12 @@ import { drawingService, defectService, recommendationService, pictureService } 
 import { Defect } from 'contracts/drawing/defect/Defect';
 import { DefectWithImage } from 'features/defects/types/DefectWithImage';
 import { Product } from 'contracts/product/Product';
-import { DrawingWithImage } from 'components/types/DrawingWithImage';
 import { Drawing } from 'contracts/drawing/Drawing';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BuildIcon from '@mui/icons-material/Build';
 import { useNavigate } from 'react-router-dom';
 import { DefectRecomendation } from 'contracts/recommendation/DefectRecomendation';
+import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
 
 const notFoundImage = 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1';
 

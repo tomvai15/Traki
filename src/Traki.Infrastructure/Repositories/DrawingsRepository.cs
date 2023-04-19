@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
+using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -29,6 +30,14 @@ namespace Traki.Infrastructure.Repositories
         {
             var drawing = await _context.Drawings.Where(x => x.Id == drawingId).FirstOrDefaultAsync();
             return _mapper.Map<Drawing>(drawing);
+        }
+
+        public async Task CreateDrawing(Drawing drawing)
+        {
+            var drawingEntity = _mapper.Map<DrawingEntity>(drawing);
+
+            _context.Drawings.Add(drawingEntity);
+            await _context.SaveChangesAsync();
         }
     }
 }
