@@ -24,7 +24,8 @@ namespace Traki.Infrastructure.Services
             BlobClient blobClient = blobContainerClient.GetBlobClient(fileName);
 
             // For performance improvement if needed https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-upload#upload-by-staging-blocks-and-then-committing-them
-            await blobClient.UploadAsync(content, blobHttpHeader);
+            var response = await blobClient.UploadAsync(content, blobHttpHeader);
+            return;
         }
 
         public async Task<BlobDownloadResult> GetFile(string containerName, string fileName)

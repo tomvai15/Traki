@@ -11,9 +11,9 @@ import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDef
 import { Link as BreadLink } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import { DrawingWithImage } from '../../../components/types/DrawingWithImage';
 import { DefectDetails } from 'features/defects/components/DefectDetails';
 import { drawingService, pictureService, defectService } from 'services';
+import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
 
 export interface SimpleDialogProps {
   open: boolean;

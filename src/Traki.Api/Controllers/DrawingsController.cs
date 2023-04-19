@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing;
+using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 
 namespace Traki.Api.Controllers
@@ -39,6 +40,22 @@ namespace Traki.Api.Controllers
                 Drawing = _mapper.Map<DrawingDto>(drawing)
             };
             return Ok(response);
+        }
+
+        [HttpDelete("{drawingId}")]
+        public async Task<ActionResult> DeleteDrawing(int drawingId)
+        {
+            await _drawingsRepository.DeleteDrawing(drawingId);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateDrawing(int productId, [FromBody]CreateDrawingRequest createDrawingRequest)
+        {
+            var drawing = _mapper.Map<Drawing>(createDrawingRequest.Drawing);
+            drawing.ProductId = productId;
+            await _drawingsRepository.CreateDrawing(drawing);
+            return Ok();
         }
     }
 }

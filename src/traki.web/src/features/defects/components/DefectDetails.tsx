@@ -195,10 +195,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     await fetchDefect();
   }
 
-  if (!defect) {
-    return (<Card sx={{height: '200px'}}></Card>);
-  }
-
   return (
     <Card>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -208,7 +204,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
         </Tabs>
       </Box>
       <TabPanel value={tabIndex} index={0}>
-        { selectedDefect == null ? 
+        { defect == null || selectedDefect == null ? 
           <CardContent sx={{height: 200}}>
           </CardContent> :
           <Box>
@@ -240,7 +236,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             </CardContent>
             <Divider></Divider>
             <CardContent>
-              <Typography>Comments</Typography>
+              <Typography>Activity</Typography>
               <Box sx={{overflow: 'auto', maxHeight: 250}}>
                 <DefectActivities defectComments={comments} statusChanges={defect.defect.statusChanges ?? []} />
               </Box>

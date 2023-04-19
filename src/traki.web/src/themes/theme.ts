@@ -355,8 +355,11 @@ function componentStyleOverrides(borderRadius: number) {
         root: {
           '&.MuiChip-deletable .MuiChip-deleteIcon': {
             color: 'inherit'
-          }
-        }
+          },
+          '& .MuiChip-label': {
+            overflow: 'visible !important',
+          },
+        },
       }
     },
     MuiTooltip: {

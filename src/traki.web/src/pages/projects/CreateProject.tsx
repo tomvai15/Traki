@@ -100,7 +100,7 @@ export function CreateProject() {
       <Grid item xs={6} md={6}>
         <Card sx={{height: "100%", padding: 5, paddingBottom: 0}}>
           <CardContent>
-            <img style={{maxHeight: '300px', width: 'auto', borderRadius: '2%',}} 
+            <img style={{maxHeight: '200px', width: 'auto', borderRadius: '2%',}} 
               src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}></img>
           </CardContent>  
           <CardContent>

@@ -33,7 +33,7 @@ export function Projects() {
     for (let i = 0; i < projects.length; i++) {
       let imageBase64 = '';
       if (projects[i].imageName) {
-        imageBase64 = await pictureService.getPicture('item', projects[i].imageName);
+        imageBase64 = await pictureService.getPicture('company', projects[i].imageName);
       }
       const projectWithImage: ProjectWithImage = {
         project: projects[i],
