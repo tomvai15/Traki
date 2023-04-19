@@ -10,9 +10,10 @@ import { FormHelperText } from '@mui/material';
 import { CreateDefectCommentRequest } from 'contracts/drawing/defect/CreateDefectCommentRequest';
 import { CreateDefectRequest } from 'contracts/drawing/defect/CreateDefectRequest';
 import { CommentWithImage, DefectWithImage } from 'features/defects/types';
-import { defectService, pictureService } from 'services';
+import { defectService, notificationService, pictureService } from 'services';
 import { DefectActivities } from './DefectActivities';
 import ImageWithViewer from 'components/ImageWithViewer';
+import { useUpdateNotifications } from 'hooks/useUpdateNotifications';
 
 function a11yProps(index: number) {
   return {
@@ -58,6 +59,7 @@ type DefectDetailsProps = {
 }
 
 export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew, createDefect, tabIndex, setTabIndex, canSubmitDefect}: DefectDetailsProps) {
+  const { updateNotifications } = useUpdateNotifications();
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -108,6 +110,9 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     if (response.defect.defectComments) {
       await fetchComments(response.defect.defectComments);
     }
+
+    await notificationService.deleteNotifications(selectedDefect.id);
+    await updateNotifications();
   }
 
   async function fetchComments(defectComments: DefectComment[]) {

@@ -19,6 +19,8 @@ import DrawerItems from './DrawerItems';
 import { Menu, MenuItem } from '@mui/material';
 import { userState } from 'state/user-state';
 import { useRecoilState } from 'recoil';
+import NotificationsMenu from './NotificationsMenu';
+import ProfileMenu from './ProfileMenu';
 
 const drawerWidth = 240;
 
@@ -71,27 +73,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MainLayout() {
-  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
-
-  const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  function logOut() {
-    navigate('/signin');
-    setUserInfo({id:-1, loggedInDocuSign: false});
-  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -123,31 +109,8 @@ export default function MainLayout() {
           >
             Dashboard
           </Typography>
-          <IconButton onClick={handleOpenUserMenu} color="inherit">
-            <Badge color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <Menu
-            sx={{ mt: '45px' }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            <MenuItem key={1} onClick={logOut}>
-              <Typography textAlign="center">Logout</Typography>
-            </MenuItem>
-          </Menu>
+          <NotificationsMenu/>
+          <ProfileMenu/>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -188,56 +151,3 @@ export default function MainLayout() {
     </Box>
   );
 }
-/*
-<Grid container spacing={3}>
-<Grid item xs={12} md={8} lg={9}>
-  <Paper
-    sx={{
-      p: 2,
-      display: 'flex',
-      flexDirection: 'column',
-      height: 240,
-    }}
-  >
-  </Paper>
-</Grid>
-<Grid item xs={12} md={8} lg={9}>
-  <Paper
-    sx={{
-      p: 2,
-      display: 'flex',
-      flexDirection: 'column',
-      height: 240,
-    }}
-  >
-  </Paper>
-</Grid>
-<Grid item xs={12} md={8} lg={9}>
-  <Paper
-    sx={{
-      p: 2,
-      display: 'flex',
-      flexDirection: 'column',
-      height: 240,
-    }}
-  >
-  </Paper>
-</Grid>
-<Grid item xs={12} md={4} lg={3}>
-  <Paper
-    sx={{
-      p: 2,
-      display: 'flex',
-      flexDirection: 'column',
-      height: 240,
-    }}
-  >
-  </Paper>
-</Grid>
-<Grid item xs={12}>
-  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-  </Paper>
-</Grid>
-</Grid>
-<Copyright sx={{ pt: 4 }} />
-*/

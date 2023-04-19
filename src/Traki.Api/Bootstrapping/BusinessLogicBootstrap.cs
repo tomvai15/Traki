@@ -38,6 +38,7 @@ namespace Traki.Api.Bootstrapping
         {
             services
                 .AddTransient<IUsersRepository, UsersHandler>()
+                .AddTransient<IDefectNotificationRepository, DefectNotificationRepository>()
                 .AddTransient<ICompaniesRepository, CompaniesRepository>()
                 .AddTransient<IProjectsRepository, ProjectsRepository>()
                 .AddTransient<IProductsRepository, ProductsRepository>()

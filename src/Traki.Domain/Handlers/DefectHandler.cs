@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,16 @@ namespace Traki.Domain.Handlers
         private readonly IDrawingsRepository _drawingsRepository;
         private readonly IProductsRepository _productsRepository;
         private readonly IUsersRepository _usersRepository;
+        private readonly IDefectNotificationRepository _defectNotificationRepository;
 
-        public DefectHandler(IDefectsRepository defectsRepository, INotificationService notificationService, IDrawingsRepository drawingsRepository, IProductsRepository productsRepository, IUsersRepository usersRepository)
+        public DefectHandler(IDefectsRepository defectsRepository, INotificationService notificationService, IDrawingsRepository drawingsRepository, IProductsRepository productsRepository, IUsersRepository usersRepository, IDefectNotificationRepository defectNotificationRepository)
         {
             _defectsRepository = defectsRepository;
             _notificationService = notificationService;
             _drawingsRepository = drawingsRepository;
             _productsRepository = productsRepository;
             _usersRepository = usersRepository;
+            _defectNotificationRepository = defectNotificationRepository;
         }
 
         public async Task<Defect> CreateDefect(int userId, int drawingId, Defect defect)
@@ -39,11 +42,27 @@ namespace Traki.Domain.Handlers
             defect = await _defectsRepository.CreateDefect(defect);
 
             var drawing = await _drawingsRepository.GetDrawing(drawingId);
-
             var product = await _productsRepository.GetProduct(drawing.ProductId);
-
             var user = await _usersRepository.GetUserById(product.UserId);
 
+            string data = JsonConvert.SerializeObject(new
+            {
+                projectId = product.ProjectId,
+                productId = product.Id,
+                drawingId = drawing.Id,
+                defectId = defect.Id
+            });
+
+            var defectNotification = new DefectNotification
+            {
+                DefectId = defect.Id,
+                UserId = product.UserId,
+                Title = "New Defect",
+                Body = $"Someone create new defect for product {product.Name}",
+                Data = data
+            };
+
+            await _defectNotificationRepository.CreateDefectNotification(defectNotification);
 
             // todo create new component INotificationHandler
             string deviceToken = user.DeviceToken;
@@ -52,7 +71,7 @@ namespace Traki.Domain.Handlers
                 return defect;
             }
 
-            await _notificationService.SendNotification(deviceToken, "New defect", "new defect was created");
+            await _notificationService.SendNotification(deviceToken, defectNotification.Title, defectNotification.Body);
             return defect;
         }
     }
