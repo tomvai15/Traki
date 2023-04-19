@@ -50,7 +50,7 @@ export default function ProfileMenu() {
           }
         }}
         onClick={handleOpenUserMenu}
-        label={userInfo.id} 
+        label={userInfo.name} 
         icon={<SettingsIcon/>}
       />
       <Menu

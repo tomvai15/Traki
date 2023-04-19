@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import SignIn from './authentication/SignIn';
-import { useRecoilState } from 'recoil';
-import { userState } from '../state/user-state';
-import authService from '../services/auth-service';
 import CheckOAuth from './authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
@@ -24,25 +21,14 @@ import { UserPage } from './admin/UserPage';
 import { CreateUserPage } from './admin/CreateUserPage';
 import RegisterPage from './authentication/RegisterPage';
 import { EditProduct } from './projects/products/EditProduct';
+import { useUserInformation } from 'hooks/useUserInformation';
 
 export function Main() {
-
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const { fetchUser } = useUserInformation();
 
   useEffect(() => {
     fetchUser();
   }, []);
-
-  async function fetchUser() {
-    try {
-      const getUserResponse = await authService.getUserInfo();
-      setUserInfo({ id: getUserResponse.user.id, loggedInDocuSign: getUserResponse.loggedInDocuSign });
-      console.log('ok');
-    } catch {
-      setUserInfo({ id: -1, loggedInDocuSign: false });
-      console.log('ne ok');
-    }
-  }
 
   return (
     <BrowserRouter>

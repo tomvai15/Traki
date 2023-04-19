@@ -4,6 +4,7 @@ import { CreateProductRequest } from '../contracts/product/CreateProductRequest'
 import axiosApiInstance from './axios-instance';
 import { AddProtocolRequest } from '../contracts/product/AddProtocolRequest';
 import { GetProductProtocolsResponse } from '../contracts/product/GetProductProtocolsResponse';
+import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 
 const route = 'projects/{projectId}/products/{productId}';
 
@@ -18,6 +19,11 @@ class ProductService {
     const fullRoute = route.format({projectId: projectId.toString(), productId: id.toString()}); 
     const response = await axiosApiInstance.get<GetProductResponse>(fullRoute, { headers: {} });
     return response.data;
+  }
+
+  async updateProduct(projectId: number, productId: number, request: UpdateProductRequest): Promise<void> {
+    const fullRoute = route.format({projectId: projectId.toString(), productId: productId.toString()}); 
+    await axiosApiInstance.put(fullRoute, request, { headers: {} });
   }
 
   async createProduct(projectId: number, createProductRequest: CreateProductRequest): Promise<boolean> {

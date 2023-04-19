@@ -39,5 +39,12 @@ namespace Traki.Infrastructure.Repositories
             _context.Drawings.Add(drawingEntity);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteDrawing(int drawingId)
+        {
+            var drawing = await _context.Drawings.Where(x => x.Id == drawingId).FirstOrDefaultAsync();
+            _context.Drawings.Remove(drawing);
+            await _context.SaveChangesAsync();
+        }
     }
 }

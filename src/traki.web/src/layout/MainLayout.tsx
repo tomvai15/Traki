@@ -21,6 +21,7 @@ import { userState } from 'state/user-state';
 import { useRecoilState } from 'recoil';
 import NotificationsMenu from './NotificationsMenu';
 import ProfileMenu from './ProfileMenu';
+import AlertBar from './AlertBar';
 
 const drawerWidth = 240;
 
@@ -146,6 +147,7 @@ export default function MainLayout() {
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Outlet></Outlet>
+          <AlertBar/>
         </Container>
       </Box>
     </Box>

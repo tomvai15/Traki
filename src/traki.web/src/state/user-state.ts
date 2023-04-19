@@ -4,6 +4,8 @@ import { recoilPersist } from "recoil-persist";
 
 interface UserInfo {
 	id: number,
+  name?: string,
+  email?: string,
   loggedInDocuSign: boolean
 }
 

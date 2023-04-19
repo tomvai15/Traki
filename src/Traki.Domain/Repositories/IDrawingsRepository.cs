@@ -6,6 +6,7 @@ namespace Traki.Domain.Repositories
     {
         public Task<IEnumerable<Drawing>> GetDrawings(int productId);
         public Task<Drawing> GetDrawing(int drawingId);
+        public Task DeleteDrawing(int drawingId);
         public Task CreateDrawing(Drawing drawing);
     }
 }

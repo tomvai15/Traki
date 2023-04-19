@@ -37,6 +37,15 @@ namespace Traki.Api.Controllers
             return _mapper.Map<GetProductResponse>(product);
         }
 
+        [HttpPut("{productId}")]
+        public async Task<ActionResult> UpdateProduct(int projectId, int productId, [FromBody]UpdateProductRequest updateProductRequest)
+        {
+            var product = _mapper.Map<Product>(updateProductRequest.Product);
+            await _productsRepository.UpdateProduct(product);
+
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<ActionResult<GetProductsResponse>> GetProducts(int projectId)
         {

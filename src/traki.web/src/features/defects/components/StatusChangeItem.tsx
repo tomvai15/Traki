@@ -18,7 +18,13 @@ function defectStatusToText(defectStatus: DefectStatus): string {
 export function StatusChangeItem ({statusChange}: StatusChangeItemProps) {
   return (
     <Box sx={{display: 'flex', marginTop: '10px', gap: '10px', flexDirection: 'row', alignItems: 'center'}}>
-      <Chip label={defectStatusToText(statusChange.from)}></Chip> <ArrowRightAltIcon/> <Chip color='primary' label={defectStatusToText(statusChange.to)}></Chip>
+      <Chip 
+        sx={{
+          '& .MuiChip-label': {
+            overflow: 'visible !important',
+          },
+        }} 
+        label={defectStatusToText(statusChange.from)}></Chip> <ArrowRightAltIcon/> <Chip color='primary' label={defectStatusToText(statusChange.to)}></Chip>
     </Box>
   );
 }

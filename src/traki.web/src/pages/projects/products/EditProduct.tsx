@@ -1,4 +1,4 @@
-import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Divider, Grid, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -11,6 +11,10 @@ import { PhotoCamera } from '@mui/icons-material';
 import ImageWithViewer from 'components/ImageWithViewer';
 import { v4 as uuid } from 'uuid';
 import { CreateDrawingRequest } from 'contracts/drawing/CreateDrawingRequest';
+import { useAlert } from 'hooks/useAlert';
+import { alertInitialState } from 'state/alert-state';
+import ClearIcon from '@mui/icons-material/Clear';
+import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 
 const initialProduct: Product = {
   id: 0,
@@ -20,21 +24,38 @@ const initialProduct: Product = {
 
 export function EditProduct() {
   const navigate = useNavigate();
+  const { displaySuccess  } = useAlert();
+
   const { projectId, productId } = useParams();
 
   const [previewImage, setPreviewImage] = useState<string>();
   const [file, setFile] = useState<File>();
 
   const [product, setProduct] = useState<Product>(initialProduct);
+  const [initialProductJson, setInitialProductJson] = useState<string>('');
+
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
   const [drawingName, setDrawingName] = useState<string>('');
+  const [selectedDrawing, setSelectedDrawing] = useState<number>();
 
-  const [open, setOpen] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
 
   useEffect(() => {
     fetchProduct();
     fetchDrawings();
   }, []);
+
+  function canUpdateProduct(): boolean {
+    return initialProductJson != JSON.stringify(product);
+  }
 
   function canCreateDrawing(): boolean {
     return drawingName != '' && file != undefined;
@@ -43,6 +64,7 @@ export function EditProduct() {
   async function fetchProduct() {
     const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
     setProduct(getProductResponse.product);
+    setInitialProductJson(JSON.stringify(getProductResponse.product));
   }
 
   async function fetchDrawings() {
@@ -71,6 +93,24 @@ export function EditProduct() {
     setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
   }
 
+  async function deletedDrawing() {
+    if (!selectedDrawing) {
+      return;
+    }
+    await drawingService.deleteDrawing(Number(productId), selectedDrawing);
+    await fetchDrawings();
+  }
+
+  async function updateProduct() {
+    const request: UpdateProductRequest = {
+      product: product
+    };
+
+    await productService.updateProduct(Number(projectId), Number(productId), request);
+    await fetchProduct();
+    displaySuccess("Product was updated successfully");
+  }
+
   async function createDrawing() {
     if (!canCreateDrawing()) {
       return;
@@ -93,8 +133,13 @@ export function EditProduct() {
     const request: CreateDrawingRequest = {
       drawing: drawing
     };
-
     await drawingService.createDrawing(Number(productId), request);
+    await fetchDrawings();
+    displaySuccess("Drawing was added successfully");
+
+    setDrawingName('');
+    setPreviewImage('');
+    setFile(undefined);
   }
 
   if (!productId) {
@@ -111,79 +156,103 @@ export function EditProduct() {
           <Typography color="text.primary">Product</Typography>
         </Breadcrumbs>
       </Grid>
-      <Grid container spacing={2} item xs={12} md={12} >
-        <Grid item xs={5} >
-          <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={12}>
-                  <Typography>Product Information</Typography>
+      <Grid container spacing={2} item xs={12} md={12}>
+        <Grid item container xs={5} spacing={2}>
+          <Grid item xs={12} >
+            <Card sx={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
+              <CardContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={12}>
+                    <Typography>Product Information</Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Divider></Divider>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <TextField 
+                      sx={{width: '100%'}}
+                      label='Name'
+                      value={product.name}
+                      onChange={(e) => setProduct({...product, name: e.target.value})}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                  <Divider></Divider>
+              </CardContent>
+              <CardActions>
+                <Button disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card sx={{height: "100%"}}>
+              <CardContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={12}>
+                    <Typography>New drawing</Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Divider></Divider>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Stack direction={'row'}>
+                      <TextField 
+                        sx={{width: '100%'}}
+                        label='Drawing name'
+                        value={drawingName}
+                        onChange={(e) => setDrawingName(e.target.value)}
+                      />
+                      <IconButton color="secondary" aria-label="upload picture" component="label">
+                        <input hidden accept="image/*" type="file" onChange={selectFile} />
+                        <PhotoCamera />
+                      </IconButton>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Stack direction={'column'}  alignItems={'flex-start'}>
+                      <img style={{maxHeight: '200px', width: 'auto', borderRadius: '2%',}} 
+                        src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}> 
+                      </img>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Button variant='contained' disabled={!canCreateDrawing()} onClick={createDrawing}>Add drawing</Button>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                  <TextField 
-                    sx={{width: '100%'}}
-                    label='Name'
-                    value={product.name}/>
-                </Grid>
-              </Grid>
-            </CardContent>
-            <CardActions>
-              <Button onClick={() => navigate('defects')} variant='contained' color='primary'>Update information</Button>
-            </CardActions>
-          </Card>
+              </CardContent>  
+            </Card>
+          </Grid>
         </Grid>
-        <Grid item xs={7}>
-          <Card sx={{height: "100%"}}>
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={12}>
-                  <Typography>New drawing</Typography>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Divider></Divider>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Stack direction={'column'}  alignItems={'flex-start'}>
-                    <img style={{maxHeight: '200px', width: 'auto', borderRadius: '2%',}} 
-                      src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}> 
-                    </img>
-                    <IconButton color="secondary" aria-label="upload picture" component="label">
-                      <input hidden accept="image/*" type="file" onChange={selectFile} />
-                      <PhotoCamera />
-                    </IconButton>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <TextField 
-                    sx={{width: '100%'}}
-                    label='Drawing name'
-                    value={drawingName}
-                    onChange={(e) => setDrawingName(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Button disabled={!canCreateDrawing()} onClick={createDrawing}>Create drawing</Button>
-                </Grid>
-              </Grid>
-            </CardContent>  
-          </Card>
-        </Grid>
-        <Grid item xs={12} >
-          <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
+        <Grid item xs={7} >
+          <Card sx={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
             <CardContent>
               <Stack direction={'row'} spacing={2} sx={{ flexWrap: 'wrap', gap: 1 }}>
                 {drawings.map((item, index) => 
                   <Box key={index} sx={{borderColor: 'black', borderWidth: 1, borderStyle: 'solid'}}>
                     <ImageWithViewer source={item.imageBase64} height={200}/>
+                    <Stack direction={'row'} alignItems={'center'} justifyContent={'space-around'}>
+                      <Typography>{item.drawing.title}</Typography>
+                      <IconButton onClick={() => {handleClickOpen(); setSelectedDrawing(item.drawing.id);}}>
+                        <ClearIcon color={'error'}/>
+                      </IconButton> 
+                    </Stack>
                   </Box>)}
               </Stack>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+      <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle color={'error'}>Delete drawing</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete drawing? {selectedDrawing}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button color='error' onClick={() => {handleClose(); deletedDrawing();}}>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 }

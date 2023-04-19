@@ -19,6 +19,17 @@ namespace Traki.Infrastructure.Repositories
             _context = context;
             _mapper = mapper;
         }
+
+        public async Task UpdateProduct(Product product)
+        {
+            var productEntity = await _context.Products.FirstOrDefaultAsync(p => p.Id == product.Id);
+
+            productEntity.RequiresToBeNotNullEnity();
+            productEntity.Name = product.Name;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Product> GetProduct(int productId)
         {
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);

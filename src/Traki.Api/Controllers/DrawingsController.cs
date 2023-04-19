@@ -42,6 +42,13 @@ namespace Traki.Api.Controllers
             return Ok(response);
         }
 
+        [HttpDelete("{drawingId}")]
+        public async Task<ActionResult> DeleteDrawing(int drawingId)
+        {
+            await _drawingsRepository.DeleteDrawing(drawingId);
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateDrawing(int productId, [FromBody]CreateDrawingRequest createDrawingRequest)
         {
