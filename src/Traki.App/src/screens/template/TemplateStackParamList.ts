@@ -7,7 +7,7 @@ export type TemplateStackParamList = {
 };
 
 export type TemplateScreenParams = {
-  id: number
+  protocolId: number
 }
 
 export type EditQuestionScreenParams = {
