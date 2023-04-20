@@ -26,7 +26,6 @@ export default function ProductScreen({route, navigation}: Props) {
   const {productId} = route.params;
 
   const [visible, setVisible] = React.useState(false);
-  const [checklists, setChecklists] = useState<Checklist[]>([]);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [product, setProduct] = useState<Product>();
   const [templateToAdd, setTemplateToAdd] = useState<number>(-1);
@@ -52,13 +51,11 @@ export default function ProductScreen({route, navigation}: Props) {
   }, [navigation]);
 
   async function fetchProduct() {
-    const getChecklistsResposne = await checklistService.getChecklists(productId).catch(err =>console.log(err));
     const getProductResposne = await productService.getProduct(productId).catch(err =>console.log(err));
-    if (!getChecklistsResposne || !getProductResposne) {
+    if (!getProductResposne) {
       return;
     }
     setProduct(getProductResposne.product);
-    setChecklists(getChecklistsResposne.checklists);
 
     await fetchProtocols();
   }

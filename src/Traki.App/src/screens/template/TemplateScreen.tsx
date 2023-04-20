@@ -1,86 +1,222 @@
 import  React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, Text } from 'react-native';
-import { Button, List } from 'react-native-paper';
+import { StyleSheet, View, FlatList, Text, ActivityIndicator, TextInput, TouchableHighlight, Image } from 'react-native';
+import { Button, Card, Checkbox, Divider, IconButton, List, Paragraph, SegmentedButtons, Title } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
-import templateService from '../../services/template-service';
-import { useTheme } from 'react-native-paper';
-import { Question } from '../../contracts/question/Question';
-import questionService from '../../services/question-service';
-import { Template } from '../../contracts/template/Template';
+import protocolService from '../../services/protocol-service';
+import { sectionService } from '../../services';
+import { Checklist } from '../../contracts/protocol/Checklist';
+import { Protocol } from '../../contracts/protocol/Protocol';
+import { Section } from '../../contracts/protocol/Section';
+import { ScreenView } from '../../components/ScreenView';
+import ImageView from "react-native-image-viewing";
+import { Item } from '../../contracts/protocol/items/Item';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'Template'>;
 
-const staticQuestions: Question[] = [
-  {
-    id: 1,
-    title: 'Ar siųlės šaknis pilnai privirinta?',
-    description: 'Virinimas yra procesas, kai naudojant šilumą ir slėgį sujungiama du ar daugiau metalinių dalių. Proceso metu paprastai kaitinami metalo kraštai ir jie sujungiami. Virinant būtina laikytis saugos taisyklių ir turėti reikiamą apmokymą, kad būtų išvengta sužeidimų ir pasiektas sėkmingas suvirinimas.'
-  },
-  {
-    id: 2,
-    title: 'Josuke',
-    description: '5'
-  },
-  {
-    id: 3,
-    title: 'Josuke2',
-    description: '4'
-  }
-];
-
 export default function TemplateScreen({ route, navigation }: Props) {
-
-  const { id } = route.params;
-  const [questions, setQuestions] = useState<Question[]>();
-  const [template, setTemplate] = useState<Template>();
-
-  const { colors } = useTheme();
+  const [isLoading, setLoading] = React.useState(false);
+  const {protocolId} = route.params;
+  
+  const [protocol, setProtocol] = useState<Protocol>(initialProtocol);
+  const [sections, setSections] = useState<Section[]>([]);
 
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
-      void fetchQuestions();
+      fetchProtocol();
     });
     return focusHandler;
   }, [navigation]);
 
-  async function fetchQuestions() {
-    const getQuestionsResponse = await questionService.getQuestions(id).catch(err =>console.log(err));
-    const getTemplateResponse = await templateService.getTemplate(id).catch(err =>console.log(err));
-    if (!getQuestionsResponse || !getTemplateResponse) {
-      return;
-    }
-    setQuestions(getQuestionsResponse.questions);
-    setTemplate(getTemplateResponse.template);
+  async function fetchProtocol() {
+    const response = await protocolService.getProtocol(protocolId);
+    setProtocol(response.protocol);
+    const getSectionsResponse = await sectionService.getSections(protocolId);
+    setSections(getSectionsResponse.sections);
+  }
+
+  const [visible, setIsVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+
+  function openSelectedImgae(image: string) {
+    setSelectedImage(image);
+    setIsVisible(true);
   }
 
   return (
-    <View style={{ flex: 1}}>
-      <Text>{template?.name}</Text>
-      <FlatList
-        data={questions}
-        renderItem={({item}) => <List.Accordion
-          title={item.title}
-          left={props => <List.Icon {...props} icon="text" />}>
-          <List.Section style={{marginLeft: 0, paddingLeft: 0 }}>
-            <Text style={{ paddingLeft: 20, fontWeight: 'bold' }}>Paaiškinimas {item.id}</Text>
-            <Text style={{ paddingLeft: 20 }}>{item.description}</Text>
-            <View  style={{ flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20 }} >
-              <Button mode="contained" buttonColor={colors.error} style={{ width: 150, paddingRight: 0, marginRight: 0}}
-                onPress={() => navigation.navigate('EditQuestion', { id: 1, title: item.title, description: item.description })}>
-                  Šalinti
-              </Button>
-              <Button mode="contained" style={{ width: 150, paddingRight: 0, marginRight: 0}}
-                onPress={() => navigation.navigate('EditQuestion', { templateId: id, questionId: item.id, title: item.title, description: item.description })}>
-                  Redaguoti
-              </Button>
-            </View>
-          </List.Section>
-        </List.Accordion>}
+    <ScreenView>
+      { selectedImage &&
+        <ImageView
+          images={[{uri: selectedImage}]}
+          imageIndex={0}
+          visible={visible}
+          onRequestClose={() => setIsVisible(false)}
+        />}
+      <View>
+        <Title>{protocol.name}</Title>
+      </View>
+      { isLoading ?
+      <View>
+        <ActivityIndicator animating={isLoading}/>
+      </View> :
+      <FlatList data={sections} 
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id.toString()}
-      />
+        renderItem={ ({item}) =>   
+          <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
+        }>
+      </FlatList>}
+    </ScreenView>
+  );
+}
 
-      <Button mode="contained" onPress={() => navigation.navigate('CreateQuestion', { id: 1 }) }>Naujas klausimas</Button>
+type ProtocolSectionProps = {
+  protocolId: number,
+  sectionId: number,
+  setSelectedImage: (image: string) => void
+}
+
+type ItemImage = {
+  id: string,
+  isLocal: boolean,
+  localImageUri: string,
+  imageName: string,
+  imageBase64: string
+}
+
+function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSectionProps) {
+
+  const [section, setSection] = useState<Section>(initialSection);
+  const [initialSectionJson, setInitialSectionJson] = useState<string>('');
+  const [itemImages, setItemImages] = useState<ItemImage[]>([]);
+  const [initialItemImagesJson, setInitialItemImagesJson] = useState<string>('');
+
+  useEffect(() => {
+    fetchSection();
+  }, []);
+
+  async function fetchSection() {
+    const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
+    console.log(getSectionResponse);
+    orderAndSetSection(getSectionResponse.section);
+  }
+
+  function orderAndSetSection(sectionToSort: Section) {
+    if (!sectionToSort.checklist)
+    {
+      setSection(sectionToSort);
+      setInitialSectionJson(JSON.stringify(sectionToSort));
+      return;
+    }
+    const sortedItems = [...sectionToSort.checklist.items];
+    sortedItems.sort((a, b) => a.priority - b.priority);
+
+    const copiedChecklist: Checklist = {...sectionToSort.checklist, items: sortedItems};
+    const copiedSection: Section = {...sectionToSort, checklist: copiedChecklist};
+    setSection(copiedSection);
+    setInitialSectionJson(JSON.stringify(copiedSection));
+  }
+
+  return (
+    <View>
+      <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
+      </View>
+      <FlatList data={section.checklist?.items} 
+        keyExtractor={item => item.id.toString()}
+        renderItem={ ({item}) =>   
+          <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
+        }>
+        </FlatList>
+        <Divider bold></Divider>
+    </View>
+  );
+}
+
+type ProtocolSectionItemProps = {
+  item: Item,
+  itemImage: ItemImage| undefined
+  setSelectedImage: (image: string) => void
+};
+
+function ProtocolSectionItem({ item, itemImage, setSelectedImage }: ProtocolSectionItemProps) {
+
+  function checkType() {
+    if (item.question) {
+      return (
+        <ProtocolSectionItemQuestion item={item}/>
+      );
+    } else if (item.textInput) {
+      return (
+        <ProtocolSectionItemTextInput item={item}/>
+      );
+    } else {
+      return (
+        <ProtocolSectionItemMultipleChoice item={item}/>
+      );
+    }
+  }
+  
+  return (
+    <Card
+      mode='outlined'
+      key={item.id} 
+      style={{ borderWidth:0, marginHorizontal:5, marginVertical:10 }}>
+      <Card.Content>
+        <Title>{item.name}</Title>
+        <Divider style={{ height: 2 }} />
+        {checkType()}
+      </Card.Content>
+      <View style={{display: 'flex', padding: 10, justifyContent: 'space-around', flexDirection: 'row'}}>
+        <View style={{flex: 2}}>  
+        </View>
+      </View>
+    </Card>
+  );
+}
+
+type ProtocolSectionItemCompProps = {
+  item: Item,
+};
+
+function ProtocolSectionItemTextInput({ item }: ProtocolSectionItemCompProps) {
+  return (
+    <TextInput value={item.textInput?.value} 
+            multiline={true}></TextInput>
+  );
+}
+
+function ProtocolSectionItemQuestion({ item }: ProtocolSectionItemCompProps) {
+  return (
+    <View>
+      <SegmentedButtons
+        value={item.question?.answer == undefined ? '' : item.question?.answer.toString()}
+        onValueChange={() => { return 'NOOP';}}
+        buttons={[
+          { value: '0', label: 'Yes' },
+          { value: '1', label: 'No'},
+          { value: '2', label: 'Other' },
+          { value: '3', label: 'Not applicable' },
+        ]}
+      />
+      <Paragraph>Comment</Paragraph>
+      <TextInput
+        multiline={true}></TextInput>
+    </View>
+  );
+}
+
+function ProtocolSectionItemMultipleChoice({ item }: ProtocolSectionItemCompProps) {
+
+  return (
+    <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+      {item.multipleChoice?.options.map((item, index) => 
+      <View key={index} >
+        <Text>{item.name}</Text>
+        <Checkbox 
+          status={item.selected ? 'checked' : 'unchecked'}/>
+      </View>
+      )}
     </View>
   );
 }
@@ -90,3 +226,19 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+const initialProtocol: Protocol = {
+  id: 1,
+  name: '',
+  sections: [],
+  isTemplate: false,
+  modifiedDate: ''
+};
+
+const initialSection: Section = {
+  id: 0,
+  name: '',
+  priority: 1,
+  checklist: undefined,
+  table: undefined
+};

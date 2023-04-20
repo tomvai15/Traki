@@ -3,30 +3,26 @@ import { View, FlatList } from 'react-native';
 import { Button, List, Searchbar } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
-import { Template } from '../../contracts/template/Template';
-import templateService from '../../services/template-service';
+import protocolService from '../../services/protocol-service';
+import { Protocol } from '../../contracts/protocol/Protocol';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'Templates'>;
 
 export default function TemplatesScreen({ navigation }: Props) {
 
-  const [templates, setTemplates] = useState<Template[]>([]);
+  const [protocols, setProtocols] = useState<Protocol[]>([]);
 
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
-      void fetchTemplates();
+      void fetchProtocols();
     });
     return focusHandler;
   }, [navigation]);
 
-  async function fetchTemplates() {
-    const getTemplatesResponse = await templateService.getTemplates().catch(err =>console.log(err));
-    if (!getTemplatesResponse) {
-      return;
-    }
-    setTemplates(getTemplatesResponse.templates);
+  async function fetchProtocols() {
+    const response = await protocolService.getTemplateProtocols();
+    setProtocols(response.protocols);
   }
-
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
@@ -39,15 +35,14 @@ export default function TemplatesScreen({ navigation }: Props) {
         value={searchQuery}
       />
       <FlatList
-        data={templates.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
-        renderItem={({item}) => <List.Item onPress={() => navigation.navigate('Template', { id: item.id })}
+        data={protocols.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
+        renderItem={({item}) => <List.Item onPress={() => navigation.navigate('Template', { protocolId: item.id })}
           title={item.name}
-          description={item.standard}
+          description={'Modified in '}
           left={props => <List.Icon {...props} icon='folder' />}
         />}
         keyExtractor={item => item.id.toString()}
       />
-      <Button mode='contained' onPress={() => navigation.navigate('CreateTemplate')}>Naujas šablonas</Button>
     </View>
   );
 }
