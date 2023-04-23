@@ -19,6 +19,7 @@ import drawingService from '../../../services/drawing-service';
 import pictureService from '../../../services/picture-service';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 import uuid from 'react-native-uuid';
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 
 interface Rectangle {
   x: number;
@@ -268,7 +269,15 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
       return;
     }
 
-    const localUri = result.assets[0].uri;
+    result.assets[0].uri;
+
+    const manipResult = await manipulateAsync(
+      result.assets[0].uri,
+      [],
+      { compress: 0.1 }
+    );
+
+    const localUri = manipResult.uri;
     setImageUri(localUri);
   };
 
