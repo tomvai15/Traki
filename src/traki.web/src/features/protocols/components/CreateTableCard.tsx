@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
-import { Button, Divider, IconButton, Stack, TextField } from '@mui/material';
+import { Button, Divider, IconButton, Stack, Table, TableBody, TableCell, TableHead, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { defaultColumn } from '../data';
 
@@ -56,5 +56,8 @@ export function CreateTableCard ({row, setRow}:Props) {
       </Stack>
       <Button onClick={addColumn}>Add column</Button>
     </Box>
+
+
+  
   );
 }
