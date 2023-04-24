@@ -17,6 +17,15 @@ namespace Traki.Api.Controllers
             _documentSignerHandler = documentSignerHandler;
         }
 
+        [HttpGet("raw")]
+        [Authorize]
+        public async Task<ActionResult> GetReportRaw(int protocolId)
+        {
+            var report = await _reportsHandler.GetProtocolReport(protocolId);
+
+            return File(report, "application/pdf");
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<GetReportResponse>> GetReport(int protocolId)

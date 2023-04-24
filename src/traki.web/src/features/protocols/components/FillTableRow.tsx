@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Stack, TextField } from '@mui/material';
+import { Divider, Stack, TextField, TableRow as MuiTableRow, TableCell } from '@mui/material';
 import Box from '@mui/material/Box';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
@@ -18,10 +18,9 @@ export function FillTableRow ({tableRow, updateTableRow}: Props) {
   }
 
   return (
-    <Stack direction='row' alignItems='center'>
+    <MuiTableRow>
       {tableRow.rowColumns.map((column, index) => 
-        <Stack key={index} direction='row' alignItems='center'>
-          <Divider orientation="vertical" flexItem />
+        <TableCell key={index}>
           <TextField 
             sx={{marginLeft: '10px'}}
             size='small'
@@ -31,8 +30,7 @@ export function FillTableRow ({tableRow, updateTableRow}: Props) {
             value={column.value}
             onChange={(e) => updateColumn(column, e.target.value)}
           />
-          <Divider orientation="vertical" flexItem /> 
-        </Stack>)}
-    </Stack>
+        </TableCell >)}
+    </MuiTableRow>
   );
 }

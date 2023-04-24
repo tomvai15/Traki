@@ -15,6 +15,7 @@ import authService from '../../../services/auth-service';
 import protocolService from '../../../services/protocol-service';
 import reportService from '../../../services/report-service';
 import { userState } from '../../../state/user-state';
+import { saveAs } from 'file-saver';
 
 export function ProtocolReport() {
   const { projectId, productId, protocolId } = useParams();
@@ -85,6 +86,14 @@ export function ProtocolReport() {
     setNumberOfPages(numPages);
   }*/
 
+  async function  downloadPDF () 
+  {
+    const { data } = await reportService.getReportPdf(Number(protocolId));
+    console.log(data);
+    const blob = new Blob([data], { type: 'application/pdf' });
+    saveAs(blob, "ataskaita.pdf");
+  }
+
   return (
     <Box>
       <Box sx={{flex: 1,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
@@ -106,6 +115,9 @@ export function ProtocolReport() {
                 <CardActions>
                   <Button onClick={generateReport}>
                     Generate report
+                  </Button>
+                  <Button onClick={downloadPDF}>
+                    Download Report
                   </Button>
                   {userInfo.loggedInDocuSign ?
                     <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>

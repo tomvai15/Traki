@@ -11,6 +11,7 @@ export default function CreateProjectScreen() {
   async function createProject() {
     const createProjectRequest: CreateProjectRequest = {
       project:{
+        id: 0,
         name: name
       }
     };

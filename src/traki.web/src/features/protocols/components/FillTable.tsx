@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Stack, TextField } from '@mui/material';
+import { Button, Divider, Stack, Table as MuiTable, TableRow as MuiTableRow, TableCell, TableHead, TextField, TableContainer, Paper, TableBody } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Table } from 'contracts/protocol/section/Table';
 import { FillTableRow } from './FillTableRow';
@@ -37,23 +37,23 @@ export function FillTable ({table, updateTable}: Props) {
   }
 
   return (
-    <Box>
-      <Stack direction='row'>
-        {table.tableRows[0].rowColumns.map((column, index) => 
-          <Stack key={index} direction='row' alignItems='center'>
-            <Divider orientation="vertical" flexItem />
-            <TextField 
-              sx={{marginLeft: '10px'}}
-              size='small'
-              id="standard-disabled"
-              label={null}
-              variant="standard"
-              value={column.value}
-            />
-            <Divider orientation="vertical" flexItem /> 
-          </Stack>)}
-      </Stack>
-      {table.tableRows.slice(1).map((item, index) => <FillTableRow key={index} tableRow={item} updateTableRow={updateTableRow}/> )}
+    <Box sx={{marginRight: 2, marginLeft: 2}}>
+      <TableContainer component={Paper}>
+        <MuiTable aria-label="simple table">
+          <TableHead>
+            <MuiTableRow>
+              {table.tableRows[0].rowColumns.map((column, index) => 
+                <TableCell key={index}>{column.value}</TableCell>
+              )}
+            </MuiTableRow>
+          </TableHead>
+          <TableBody>
+            {table.tableRows.slice(1).map((item, index)  => (
+              <FillTableRow key={index} tableRow={item} updateTableRow={updateTableRow}/>
+            ))}
+          </TableBody>
+        </MuiTable>
+      </TableContainer>
       <Button onClick={addTableRow}>Add Row</Button>
     </Box>
   );
