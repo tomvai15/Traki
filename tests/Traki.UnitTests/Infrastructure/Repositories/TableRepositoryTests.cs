@@ -1,16 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Traki.Api.Mapping;
-using Traki.Domain.Models.Section;
-using Traki.Infrastructure.Entities.Section;
-using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Infrastructure.Fixture;
-using static Traki.UnitTests.Fakes.Dummy;
 
 namespace Traki.UnitTests.Infrastructure.Repositories
 {

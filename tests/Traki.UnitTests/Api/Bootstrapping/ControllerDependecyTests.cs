@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Traki.Api;
 
-namespace Traki.UnitTests.Bootstrapping
+namespace Traki.UnitTests.Api.Bootstrapping
 {
     public class ControllerDependecyTests
     {
@@ -19,7 +19,7 @@ namespace Traki.UnitTests.Bootstrapping
             IConfiguration configuration = configurationBuilder.Build();
 
             IServiceCollection services = new ServiceCollection();
-            Startup.ConfigureServices(services, configuration);
+            services.ConfigureServices(configuration);
 
             services.AddSingleton(type);
 

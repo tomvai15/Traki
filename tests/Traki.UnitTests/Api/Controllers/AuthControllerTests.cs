@@ -9,9 +9,9 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Providers;
 using Traki.Domain.Services.Docusign;
-using static Traki.UnitTests.Fakes.Dummy;
+using static Traki.UnitTests.Helpers.Dummy;
 
-namespace Traki.UnitTests.Controllers
+namespace Traki.UnitTests.Api.Controllers
 {
     /*public class AuthControllerTests
     {
