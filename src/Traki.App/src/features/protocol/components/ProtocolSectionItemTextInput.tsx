@@ -20,7 +20,7 @@ export function ProtocolSectionItemTextInput({ item, updateItem }: Props) {
 
   return (
     <TextInput value={item.textInput?.value} 
-            onChangeText={(value)=>  updateTextInput(value)}
+            onChangeText={(value) =>  updateTextInput(value)}
             multiline={true}></TextInput>
   );
 }

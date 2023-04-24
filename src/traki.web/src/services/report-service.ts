@@ -6,6 +6,17 @@ import axiosApiInstance from './axios-instance';
 const route = 'protocols/{protocolId}/reports';
 
 class ReportService {
+
+  async getReportPdf(protocolId: number) {
+    const fullRoute = route.format({protocolId: protocolId.toString()}) + "/raw";     
+    return axiosApiInstance.get(fullRoute, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      responseType: 'arraybuffer'
+    });
+  }
+
   async getReport(protocolId: number): Promise<GetReportResponse> {
     const fullRoute = route.format({protocolId: protocolId.toString()}); 
     const response = await axiosApiInstance.get<GetReportResponse>(fullRoute, { headers: {} });
