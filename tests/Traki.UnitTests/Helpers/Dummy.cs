@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Traki.UnitTests.Fakes
+namespace Traki.UnitTests.Helpers
 {
     public static class Dummy
     {

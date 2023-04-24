@@ -6,7 +6,6 @@ namespace Traki.Domain.Handlers
     public interface IProductHandler
     {
         Task AddProtocolToProduct(int productId, int protocolId);
-
         Task<IEnumerable<Protocol>> GetProtocols(int productId);
     }
 
