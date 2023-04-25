@@ -67,11 +67,7 @@ export function CreateSectionPage() {
               <Button disabled={!canCreate} onClick={() => createSection()} variant='contained'>Create</Button>
             </Box>
           </CardContent>    
-        </Card>
-      </Grid>
-      <Grid item xs={12} md={12} >
-        <Card>
-          <CardContent>
+          <CardContent sx={{paddingTop: 0}}>
             <ToggleButtonGroup
               value={sectionType}
               color="primary"

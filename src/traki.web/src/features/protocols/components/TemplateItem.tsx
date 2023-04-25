@@ -1,9 +1,10 @@
 import React from 'react';
-import { Card, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
+import { Card, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton, useTheme } from '@mui/material';
 import { Question, TextInput, MultipleChoice, Item, Option } from 'contracts/protocol/items';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import { v4 as uuid } from 'uuid';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 const defaultQuestion: Question = {
   id: uuid(), 
@@ -28,6 +29,7 @@ type TemplateItemProps = {
 };
 
 export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
+  const theme = useTheme();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -95,7 +97,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
   function checkType() {
     if (item.question) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             <FormControlLabel control={<Checkbox disabled />} label="Yes" labelPlacement="start"/>
             <FormControlLabel control={<Checkbox disabled />} label="No" labelPlacement="start"/>
@@ -114,7 +116,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
         </Box>);
     } else if (item.textInput) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
               inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -127,7 +129,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
         </Box>);
     } else if (item.multipleChoice) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             { item.multipleChoice.options.map((value, index) => 
               <FormControlLabel 
@@ -151,7 +153,9 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
                 labelPlacement="start"/>
             )}
           </Box>
-          <Button onClick={() => addOption(item)}>Add</Button>
+          <Box sx={{alignSelf: 'flex-start'}}>
+            <Button onClick={() => addOption(item)}>Add</Button>
+          </Box>
         </Box>);
     }
     return <></>;
@@ -159,10 +163,11 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
 
   return (
     <Box sx={{padding: 1}}>
-      <Card sx={{display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
+      <Card sx={{backgroundColor: theme.palette.grey[100], display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
         <Box sx={{flex: 1}}>
           <TextField sx={{width: '90%'}}
             id="standard-disabled"
+            multiline
             label="Question"
             variant="standard"
             value={item.name}

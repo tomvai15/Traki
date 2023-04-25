@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import DrawerItems from './DrawerItems';
 import { Menu, MenuItem } from '@mui/material';
 import { userState } from 'state/user-state';
@@ -22,6 +22,8 @@ import { useRecoilState } from 'recoil';
 import NotificationsMenu from './NotificationsMenu';
 import ProfileMenu from './ProfileMenu';
 import AlertBar from './AlertBar';
+import { pageState } from 'state/page-state';
+import { useEffect } from 'react';
 
 const drawerWidth = 240;
 
@@ -75,6 +77,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function MainLayout() {
   const [open, setOpen] = React.useState(true);
+  const [page, setPageState] = useRecoilState(pageState);
+
+  const location = useLocation();
+  useEffect(() => {
+    setPageState({...page, notFound: false});
+  }, [location]);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -146,7 +154,11 @@ export default function MainLayout() {
       >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Outlet></Outlet>
+          { page.notFound ? 
+            <Box>
+              <Typography>404</Typography>
+            </Box> :
+            <Outlet></Outlet>}
           <AlertBar/>
         </Container>
       </Box>

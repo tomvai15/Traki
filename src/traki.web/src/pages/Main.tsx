@@ -24,6 +24,7 @@ import { EditProduct } from './projects/products/EditProduct';
 import { useUserInformation } from 'hooks/useUserInformation';
 
 export function Main() {
+  
   const { fetchUser } = useUserInformation();
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
-import { Button, Divider, IconButton, Stack, Table, TableBody, TableCell, TableHead, TextField } from '@mui/material';
+import { Button, Divider, IconButton, Stack, Table, TableBody, TableCell, TableHead, TextField, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { defaultColumn } from '../data';
 
@@ -35,26 +35,29 @@ export function CreateTableCard ({row, setRow}:Props) {
 
   return (
     <Box>
-      <Stack direction='row'>
-        {row.rowColumns.map((column, index) => 
-          <Stack key={index} direction='row' alignItems='center'>
-            <Divider orientation="vertical" flexItem />
-            <TextField 
-              sx={{marginLeft: '10px'}}
-              size='small'
-              id="standard-disabled"
-              label={null}
-              variant="standard"
-              value={column.value}
-              onChange={(e) => updateRowColumn(column.id, e.target.value)}
-            />
-            <IconButton onClick={() => removeColumn(column.id)}>
-              <ClearIcon color={'error'}/>
-            </IconButton>
-            <Divider orientation="vertical" flexItem /> 
-          </Stack>)}
+      <Stack direction={'column'} spacing={1} alignItems={'flex-start'}>
+        <Typography variant='caption'>Table headers</Typography>
+        <Stack direction='row'>
+          {row.rowColumns.map((column, index) => 
+            <Stack key={index} direction='row' alignItems='center'>
+              <Divider orientation="vertical" flexItem />
+              <TextField 
+                sx={{marginLeft: '10px'}}
+                size='small'
+                id="standard-disabled"
+                label={null}
+                variant="standard"
+                value={column.value}
+                onChange={(e) => updateRowColumn(column.id, e.target.value)}
+              />
+              <IconButton onClick={() => removeColumn(column.id)}>
+                <ClearIcon color={'error'}/>
+              </IconButton>
+              <Divider orientation="vertical" flexItem /> 
+            </Stack>)}
+        </Stack>
+        <Button variant='contained' onClick={addColumn}>Add column</Button>
       </Stack>
-      <Button onClick={addColumn}>Add column</Button>
     </Box>
 
 

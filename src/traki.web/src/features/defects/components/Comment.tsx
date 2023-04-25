@@ -9,14 +9,18 @@ type CommentProps = {
 
 export function Comment ({defectComment}: CommentProps) {
   return (
-    <Box sx={{display: 'flex', marginTop: '10px'}}>
+    <Box sx={{display: 'flex', marginTop: '10px', width: '100%'}}>
       <TextField value={defectComment.defectComment.text} 
-        sx={{width: '90%'}} 
+        sx={{padding: 0,  width: '100%', marginRight: '10px'}}
         multiline={true}
+        focused={false}
         InputProps={{
           readOnly: true,
-        }}
-        variant="filled">
+          "aria-selected": 'false',
+          style: {
+            padding: 0
+          }
+        }}>
       </TextField>
       <ImageWithViewer source={defectComment.imageBase64} height={100}></ImageWithViewer>
     </Box>

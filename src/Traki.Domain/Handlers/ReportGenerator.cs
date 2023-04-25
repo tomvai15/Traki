@@ -13,7 +13,7 @@ namespace Traki.Domain.Handlers
     public interface IReportGenerator
     {
         Task<string> GenerateHtmlReport(object model, string templateName);
-        Task<MemoryStream> GeneratePDFReportFromHtml(string htmlContent);
+        Task<MemoryStream> GeneratePDFReportFromHtml(string htmlContent, bool useColors);
     }
     public class ReportGenerator: IReportGenerator
     {
@@ -35,7 +35,7 @@ namespace Traki.Domain.Handlers
             return await _razorLightEngine.CompileRenderAsync(templateName, model);
         }
 
-        public async Task<MemoryStream> GeneratePDFReportFromHtml(string htmlContent)
+        public async Task<MemoryStream> GeneratePDFReportFromHtml(string htmlContent, bool useColors)
         {
             using var browserFetcher = new BrowserFetcher();
             await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
@@ -51,7 +51,7 @@ namespace Traki.Domain.Handlers
             using (var page = await browser.NewPageAsync())
             {
                 await page.SetContentAsync(htmlContent);
-                await page.PdfAsync(filePath, new PdfOptions { PrintBackground = true });
+                await page.PdfAsync(filePath, new PdfOptions { PrintBackground = useColors });
             }
 
             var pdfAsBytes = File.ReadAllBytes(filePath);

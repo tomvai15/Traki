@@ -31,17 +31,17 @@ export function Activity ({defectActivity}: Props) {
   }
   return (
     <Paper sx={{padding: '10px', backgroundColor: theme.palette.grey[100] }}>
-      <Box sx={{display: 'flex', marginTop: '10px', gap: '10px'}}>
+      <Box sx={{display: 'flex', marginTop: '10px', gap: '10px',  width: '100%'}}>
         <Avatar src="/static/images/avatar/1.jpg">
           {initials()}
         </Avatar>
-        <Box>
+        <Box sx={{ width: '100%'}}> 
           <Box sx={{display: 'flex', gap: '10px'}}>
             <Typography>{formatName()}</Typography>
             <br/>
             <Typography variant='caption'>{formatDate(new Date(defectActivity.date))}</Typography>
           </Box>
-          <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%'}}>
             {renderActivity()}
           </Box>
         </Box>

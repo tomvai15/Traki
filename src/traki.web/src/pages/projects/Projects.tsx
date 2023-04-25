@@ -6,6 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { Project } from '../../contracts/projects/Project';
 import { Product } from '../../contracts/product/Product';
+import { useRecoilState } from 'recoil';
+import { pageState } from 'state/page-state';
 
 type ProjectWithImage = {
   project: Project,
@@ -15,6 +17,7 @@ type ProjectWithImage = {
 export function Projects() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectWithImage[]>([]);
+  const [page, setPageState] = useRecoilState(pageState);
 
   useEffect(() => {
     fetchProjects();
@@ -52,6 +55,7 @@ export function Projects() {
           <Typography color="text.primary">Projects</Typography>
         </Breadcrumbs>
       </Grid>
+      <Button onClick={() => setPageState({...page, notFound: true})}>Press</Button>
       <Grid item xs={12} md={12}>
         <Button onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Project</Button>
       </Grid>

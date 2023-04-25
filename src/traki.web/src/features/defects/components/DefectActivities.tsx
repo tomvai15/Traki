@@ -40,7 +40,7 @@ export function DefectActivities ({defectComments, statusChanges}: DefectActivit
     });
 
     const newActivities = [...statusActivities, ...commentActivities];
-    const sortedActivities = newActivities.sort((a,b) => Date.parse(a.date) - Date.parse(b.date));
+    const sortedActivities = newActivities.sort((a,b) => Date.parse(b.date) - Date.parse(a.date));
 
     setActivities(sortedActivities);
   }

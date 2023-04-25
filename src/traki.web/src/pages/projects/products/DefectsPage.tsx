@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Breadcrumbs, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { Avatar, Breadcrumbs, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
@@ -201,101 +201,103 @@ export function DefectsPage() {
       <Grid item xs={5}>
         <DefectDetails canSubmitDefect={areas.length>0} tabIndex={tabIndex} setTabIndex={setTabIndex} createDefect={createDefect} onSelectNew={() => setIsNewDefect(true)} onSelectInformation={() => setIsNewDefect(false)}  selectedDefect={selectedDefect}/>
       </Grid>
-      <Grid container item xs={7} spacing={1}>
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                <Box sx={{padding: '5px', width: '100%'}}>
-                  { isNewDefect ?
-                    (selectedDrawing && <AreaSelector
-                      maxAreas={1}
-                      areas={areas}
-                      unit='percentage'
-                      wrapperStyle={{ border: '2px solid black' }} 
-                      customAreaRenderer={customRenderSelection}
-                      onChange={setAreas}>
-                      <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
-                    </AreaSelector>) :
-                    (selectedDrawing && <AreaSelector
-                      areas={mapDefectToArea(selectedDrawing.drawing.defects.filter(x=> x.status >= Number(!includeFixedDefects)))}
-                      unit='percentage'
-                      wrapperStyle={{ border: '2px solid black' }} 
-                      customAreaRenderer={customRender}
-                      onChange={() => {return;}}>
-                      <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
-                    </AreaSelector>)}
+      <Grid item xs={7} spacing={1}>
+        <Stack spacing={1}>
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                  <Box sx={{padding: '5px', width: '100%'}}>
+                    { isNewDefect ?
+                      (selectedDrawing && <AreaSelector
+                        maxAreas={1}
+                        areas={areas}
+                        unit='percentage'
+                        wrapperStyle={{ border: '2px solid black' }} 
+                        customAreaRenderer={customRenderSelection}
+                        onChange={setAreas}>
+                        <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
+                      </AreaSelector>) :
+                      (selectedDrawing && <AreaSelector
+                        areas={mapDefectToArea(selectedDrawing.drawing.defects.filter(x=> x.status >= Number(!includeFixedDefects)))}
+                        unit='percentage'
+                        wrapperStyle={{ border: '2px solid black' }} 
+                        customAreaRenderer={customRender}
+                        onChange={() => {return;}}>
+                        <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
+                      </AreaSelector>)}
+                  </Box>
+                  <Box sx={{padding: '5px'}}>
+                    <ImageList sx={{ width: 180, height: 300 }} cols={1}>
+                      {drawings.map((item, index) => (
+                        <ImageListItem key={index}>
+                          <img
+                            style={{objectFit: 'contain'}}
+                            width='200px'
+                            height='200px'
+                            src={item.imageBase64}
+                            alt={item.drawing.title}
+                            loading="lazy"
+                          />
+                          <ImageListItemBar
+                            title={item.drawing.title}
+                            actionIcon={
+                              <IconButton 
+                                onClick={() => {setSelectedDrawing(item); console.log(item);}}
+                                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                aria-label={`info about ${item.drawing.title}`}
+                              >
+                                <InfoIcon />
+                              </IconButton>
+                            }
+                          />
+                        </ImageListItem>
+                      ))}
+                    </ImageList>
+                  </Box>
                 </Box>
-                <Box sx={{padding: '5px'}}>
-                  <ImageList sx={{ width: 180, height: 300 }} cols={1}>
-                    {drawings.map((item, index) => (
-                      <ImageListItem key={index}>
-                        <img
-                          style={{objectFit: 'contain'}}
-                          width='200px'
-                          height='200px'
-                          src={item.imageBase64}
-                          alt={item.drawing.title}
-                          loading="lazy"
-                        />
-                        <ImageListItemBar
-                          title={item.drawing.title}
-                          actionIcon={
-                            <IconButton 
-                              onClick={() => {setSelectedDrawing(item); console.log(item);}}
-                              sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                              aria-label={`info about ${item.drawing.title}`}
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <FormControlLabel control={<Checkbox defaultChecked />} onChange={()=> setIncludeFixedDefects(!includeFixedDefects)} checked={includeFixedDefects} label="Include fixed defects" />
+                <List component="nav" sx={{overflow: 'auto', maxHeight: 250}}>
+                  { defects.filter(x=> x.status >= Number(!includeFixedDefects)).map((item, index) =>
+                    <ListItemButton key={index} alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
+                      <ListItemAvatar>
+                        <Avatar alt="Tomas Vainoris" src="/static/images/avatar/1.jpg" />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={item.title}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              sx={{ display: 'inline' }}
+                              component="span"
+                              variant="body2"
+                              color="text.primary"
                             >
-                              <InfoIcon />
-                            </IconButton>
-                          }
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <FormControlLabel control={<Checkbox defaultChecked />} onChange={()=> setIncludeFixedDefects(!includeFixedDefects)} checked={includeFixedDefects} label="Include fixed defects" />
-              <List component="nav" sx={{overflow: 'auto', maxHeight: 250}}>
-                { defects.filter(x=> x.status >= Number(!includeFixedDefects)).map((item, index) =>
-                  <ListItemButton key={index} alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
-                    <ListItemAvatar>
-                      <Avatar alt="Tomas Vainoris" src="/static/images/avatar/1.jpg" />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={item.title}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{ display: 'inline' }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                          </Typography>
-                          {item.description}
-                        </React.Fragment>
+                            </Typography>
+                            {item.description}
+                          </React.Fragment>
+                        }
+                      />
+                      { item.status == DefectStatus.Fixed ? 
+                        <ListItemIcon>
+                          <DoneIcon sx={{color: 'green'}}/>
+                        </ListItemIcon> :
+                        <ListItemIcon>
+                          <ModeCommentIcon/> 1
+                        </ListItemIcon>
                       }
-                    />
-                    { item.status == DefectStatus.Fixed ? 
-                      <ListItemIcon>
-                        <DoneIcon sx={{color: 'green'}}/>
-                      </ListItemIcon> :
-                      <ListItemIcon>
-                        <ModeCommentIcon/> 1
-                      </ListItemIcon>
-                    }
-                  </ListItemButton>)}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
+                    </ListItemButton>)}
+                </List>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Stack>
       </Grid>
     </Grid>
   );

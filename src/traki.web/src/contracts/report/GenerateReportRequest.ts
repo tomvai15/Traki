@@ -1,3 +1,5 @@
 export type GenerateReportRequest = {
-  reportTitle: string
+  reportTitle: string,
+  useColors: boolean,
+  sectionsToNotInclude: number[]
 }
