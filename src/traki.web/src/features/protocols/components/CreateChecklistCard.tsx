@@ -105,7 +105,7 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
           }}
         </Droppable>
       </DragDropContext>
-      <Button onClick={() => addItem()} variant='contained'>Add new question</Button>
+      <Button sx={{marginLeft: '10px'}} onClick={() => addItem()} variant='contained'>Add new question</Button>
     </Box>
   );
 }

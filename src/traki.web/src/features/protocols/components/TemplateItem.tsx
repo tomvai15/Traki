@@ -1,9 +1,10 @@
 import React from 'react';
-import { Card, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton } from '@mui/material';
+import { Card, Typography, Box, FormControlLabel, Checkbox, TextField, Button, Menu, MenuItem, IconButton, useTheme } from '@mui/material';
 import { Question, TextInput, MultipleChoice, Item, Option } from 'contracts/protocol/items';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import { v4 as uuid } from 'uuid';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 const defaultQuestion: Question = {
   id: uuid(), 
@@ -28,6 +29,7 @@ type TemplateItemProps = {
 };
 
 export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
+  const theme = useTheme();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -161,7 +163,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
 
   return (
     <Box sx={{padding: 1}}>
-      <Card sx={{display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
+      <Card sx={{backgroundColor: theme.palette.grey[100], display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
         <Box sx={{flex: 1}}>
           <TextField sx={{width: '90%'}}
             id="standard-disabled"

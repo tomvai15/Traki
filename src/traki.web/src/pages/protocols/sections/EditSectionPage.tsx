@@ -147,9 +147,6 @@ export function EditSectionPage() {
         </Breadcrumbs>
       </Grid>
       <Grid item xs={12} md={12} >
-        <Button onClick={() => navigate('/templates/protocols/' + protocolId)} variant='contained' >Go back</Button>
-      </Grid>
-      <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -166,9 +163,11 @@ export function EditSectionPage() {
               </Box>
             </Box>
           </CardContent>    
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', paddingTop: 0}}>
+            {table && <CreateTableCard row={table.tableRows[0]} setRow={setRow}/>}
+            {checklist && <CreateChecklistCard checklist={checklist} updateItems={updateItems}/>}
+          </CardContent>    
         </Card>
-        {table && <CreateTableCard row={table.tableRows[0]} setRow={setRow}/>}
-        {checklist && <CreateChecklistCard checklist={checklist} updateItems={updateItems}/>}
       </Grid>
     </Grid>
   );

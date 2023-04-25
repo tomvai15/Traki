@@ -30,45 +30,47 @@ export function ProtocolSections({sections, setSections}: Props) {
   return (
     <Box>
       <Typography variant="overline" >sections</Typography>
-      <DragDropContext onDragEnd={result => onDragEnd(result)}>
-        <Droppable droppableId={'asdsda'} >
-          {(provided, snapshot) => {
-            return (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {sections.map((item, index) => {
-                  return (
-                    <Draggable
-                      key={index}
-                      draggableId={item.priority.toString()}
-                      index={index}
-                    >
-                      {(provided, snapshot) => {
-                        return (
-                          <Box
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              userSelect: "none",
-                              ...provided.draggableProps.style
-                            }}
-                          >
-                            <ProtocolSectionCard section={item}></ProtocolSectionCard>
-                          </Box>
-                        );
-                      }}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            );
-          }}
-        </Droppable>
-      </DragDropContext>
+      <Box sx={{marginLeft: '-5px'}}>
+        <DragDropContext onDragEnd={result => onDragEnd(result)}>
+          <Droppable droppableId={'asdsda'} >
+            {(provided, snapshot) => {
+              return (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {sections.map((item, index) => {
+                    return (
+                      <Draggable
+                        key={index}
+                        draggableId={item.priority.toString()}
+                        index={index}
+                      >
+                        {(provided, snapshot) => {
+                          return (
+                            <Box
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={{
+                                userSelect: "none",
+                                ...provided.draggableProps.style
+                              }}
+                            >
+                              <ProtocolSectionCard section={item}></ProtocolSectionCard>
+                            </Box>
+                          );
+                        }}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              );
+            }}
+          </Droppable>
+        </DragDropContext>
+      </Box>
     </Box>
   );
 }

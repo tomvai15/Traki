@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material';
 import { Protocol } from 'contracts/protocol/Protocol';
 import { CreateProtocolRequest } from 'contracts/protocol/CreateProtocolRequest';
 import { protocolService } from 'services';
@@ -32,19 +32,20 @@ export function NewProtocol({fetchProtocols}: Props) {
   return (
     <Card>
       <CardContent> 
-        <Typography>New Protocol</Typography> 
-        <Box>
-          <TextField sx={{width: '50%'}}
+        <Stack spacing={1}>
+          <Typography>New Protocol</Typography> 
+          <TextField
+            sx={{marginTop: '-10px'}}
             id="standard-disabled"
             label="Protocol Name"
             variant="standard"
             value={protocolName}
             onChange={(e) => setProtocolName(e.target.value)}
           />
-        </Box>
-        <Box>
-          <Button onClick={createProtocol} disabled={!protocolName.length} variant='contained' >Add New Protocol</Button>
-        </Box>
+          <Box >
+            <Button onClick={createProtocol} disabled={!protocolName.length} variant='contained' >Add New Protocol</Button>
+          </Box>
+        </Stack>
       </CardContent>  
     </Card>
   );
