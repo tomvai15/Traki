@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Divider, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Divider, InputLabel, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -14,6 +14,7 @@ import { defectService, notificationService, pictureService } from 'services';
 import { DefectActivities } from './DefectActivities';
 import ImageWithViewer from 'components/ImageWithViewer';
 import { useUpdateNotifications } from 'hooks/useUpdateNotifications';
+import CustomTab from 'components/CustomTab';
 
 function a11yProps(index: number) {
   return {
@@ -203,7 +204,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
           <Tab label="New defect" {...a11yProps(1)} onClick={() => onSelectNew()}/>
         </Tabs>
       </Box>
-      <TabPanel value={tabIndex} index={0}>
+      <CustomTab value={tabIndex} index={0}>
         { defect == null || selectedDefect == null ? 
           <CardContent sx={{height: 200}}>
           </CardContent> :
@@ -236,36 +237,42 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             </CardContent>
             <Divider></Divider>
             <CardContent>
-              <Typography>Activity</Typography>
-              <Box sx={{overflow: 'auto', maxHeight: 250}}>
-                <DefectActivities defectComments={comments} statusChanges={defect.defect.statusChanges ?? []} />
-              </Box>
+              <Typography>Add new comment</Typography>
+              <Stack direction={'row'} spacing={1} sx={{marginTop: '10px'}}>
+                <Box>
+                  <Avatar alt="Ta B" src="/static/images/avatar/1.jpg" />
+                </Box>
+                <Box sx={{width: '100%'}}>
+                  <Box sx={{display: 'flex', width: '100%'}}>
+                    <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{width: '90%'}} multiline={true}></TextField>
+                    <IconButton color="secondary" aria-label="upload picture" component="label">
+                      <input hidden accept="image/*" type="file" onChange={selectFileComment} />
+                      <PhotoCamera />
+                    </IconButton>
+                  </Box>
+                  <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between', marginTop: '10px'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                      <Button disabled={!comment} onClick={submitComment} sx={{height: 40}} variant='contained'>
+                          Submit
+                      </Button>
+                    </Box>
+                    <ImageWithViewer source={previewCommentImage} height={180}/>
+                  </Box>
+                </Box>
+              </Stack>
             </CardContent>
             <Divider></Divider>
             <CardContent>
-              <Typography>Add new comment</Typography>
-              <Box sx={{display: 'flex', width: '100%'}}>
-                <Avatar alt="Ta B" src="/static/images/avatar/1.jpg" />
-                <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{marginLeft: '10px', width: '90%'}} multiline={true}></TextField>
-                <IconButton color="secondary" aria-label="upload picture" component="label">
-                  <input hidden accept="image/*" type="file" onChange={selectFileComment} />
-                  <PhotoCamera />
-                </IconButton>
-              </Box>
-              <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between', marginTop: '10px'}}>
-                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                  <Button disabled={!comment} onClick={submitComment} sx={{height: 40}} variant='contained'>
-                      Submit
-                  </Button>
-                </Box>
-                <ImageWithViewer source={previewCommentImage} height={180}/>
+              <Typography>Activity</Typography>
+              <Box sx={{ marginTop: '10px'}}>
+                <DefectActivities defectComments={comments} statusChanges={defect.defect.statusChanges ?? []} />
               </Box>
             </CardContent>
           </Box>}
-      </TabPanel>
-      <TabPanel value={tabIndex} index={1}>
+      </CustomTab>
+      <CustomTab value={tabIndex} index={1}>
         <CardContent>
-          <Typography>Add new defect</Typography>
+          <Typography sx={{marginBottom: '10px'}}>{'Add defect\'s information'}</Typography>
           <TextField value={title} onChange={(e) => setTitle(e.target.value)} label='Title' multiline={false} sx={{width: '90%', marginBottom: '10px'}} ></TextField>
           <Box sx={{display: 'flex', width: '100%'}}>
             <TextField value={description} onChange={(e) => setDescription(e.target.value)} label='Description' multiline={true} sx={{width: '90%'}}></TextField>
@@ -274,9 +281,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
               <PhotoCamera />
             </IconButton>
           </Box>
-        </CardContent>
-        <CardContent>
-          <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between'}}>
+          <Box sx={{display: 'flex', flexDirection: 'row', marginTop: '10px', justifyContent: 'space-between'}}>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
               { !canSubmitDefect && <FormHelperText>
                 Select region on drawing
@@ -288,7 +293,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             <ImageWithViewer source={previewImage} height={200}/>
           </Box>
         </CardContent>
-      </TabPanel>  
+      </CustomTab>  
     </Card>
   );
 }

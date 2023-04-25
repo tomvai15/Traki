@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CreateIcon from '@mui/icons-material/Create';
-import { Button, Card, CardActions, CardContent, CircularProgress, TextField } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Checkbox, CircularProgress, Divider, FormControlLabel, IconButton, Stack, TextField, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
@@ -16,19 +16,35 @@ import protocolService from '../../../services/protocol-service';
 import reportService from '../../../services/report-service';
 import { userState } from '../../../state/user-state';
 import { saveAs } from 'file-saver';
+import DownloadIcon from '@mui/icons-material/Download';
+import InfoIcon from '@mui/icons-material/Info';
+import InputIcon from '@mui/icons-material/Input';
+import { sectionService } from 'services';
+import { Section } from 'contracts/protocol';
+
+type SectionWithFlag = {
+  section: Section,
+  include: boolean
+}
 
 export function ProtocolReport() {
   const { projectId, productId, protocolId } = useParams();
   const location = useLocation();
+
+  const [reportName, setReportName] = useState<string>('');
+  const [useColors, setUseColors] = useState<boolean>(true);
 
   const [pdfBase64, setPdf] = useState<string>('');
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
   const [protocol, setProtocol] = useState<Protocol>();
 
+  const [sections, setSections] = useState<SectionWithFlag[]>([]);
+
   useEffect(() => {
     fetchReport();
     fetchProtocol();
+    fetchSections();
   }, []);
 
   async function fetchReport() {
@@ -41,10 +57,22 @@ export function ProtocolReport() {
     }
   }
 
+  async function fetchSections() {
+    const getSectionsResponse = await sectionService.getSections(Number(protocolId));
+    console.log(getSectionsResponse.sections);
+    setSections(getSectionsResponse.sections.map((item): SectionWithFlag => {
+      return {section: item, include: true};
+    }));
+  }
+
   async function generateReport() {
     const generateReportRequest: GenerateReportRequest = {
-      reportTitle: ""
+      reportTitle: reportName,
+      useColors: useColors,
+      sectionsToNotInclude: sections.filter(x => x.include==false).map(x=> x.section.id)
     };
+
+    console.log(generateReportRequest);
 
     await reportService.generateReport(Number(protocolId), generateReportRequest);
     const response = await reportService.getReport(Number(protocolId));
@@ -54,6 +82,7 @@ export function ProtocolReport() {
   async function fetchProtocol() {
     const response = await protocolService.getProtocol(Number(protocolId));
     setProtocol(response.protocol);
+    setReportName(response.protocol.name);
   }
 
   async function signDocument() {
@@ -94,6 +123,11 @@ export function ProtocolReport() {
     saveAs(blob, "ataskaita.pdf");
   }
 
+  async function  updateSectionWithFlag(id: number, include: boolean) {
+
+    setSections(sections.map((item) => item.section.id == id ? {...item, include: include} : item ));
+  }
+
   return (
     <Box>
       <Box sx={{flex: 1,  display: 'flex', backgroundColor: (theme) => theme.palette.grey[100], flexDirection: 'row'}}>
@@ -101,32 +135,59 @@ export function ProtocolReport() {
           <Box sx={{flex: 3, padding: 3, display: 'flex',  flexDirection: 'column',  backgroundColor: (theme) => theme.palette.grey[100]}}>
             <Card>
               <CardContent>
-                <TextField
-                  id="standard-read-only-input"
-                  label="Report name"
-                  defaultValue='Sample name'
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  variant="standard"/>
+                <Stack direction={'column'}>
+                  <TextField
+                    id="standard-read-only-input"
+                    label="Report name"
+                    value={reportName}
+                    onChange={(e)=>setReportName(e.target.value)}
+                    variant="standard"/>
+                  <FormControlLabel control={<Checkbox checked={useColors} onChange={(e)=> setUseColors(e.target.checked)} />} label="Use colors" />
+                  <Divider/>
+                  {sections.map((item, index) => 
+                    <FormControlLabel key={index} control={<Checkbox checked={item.include} onChange={(e)=> updateSectionWithFlag(item.section.id, e.target.checked)} />} label={item.section.name} />)}
+                </Stack>
               </CardContent>
+              { !(protocol && !protocol.isSigned) && 
+                  <CardContent>
+                    <Tooltip title="Download report" placement="top">
+                      <IconButton onClick={downloadPDF}>
+                        <DownloadIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </CardContent>}
               {
                 protocol && !protocol.isSigned && 
-                <CardActions>
-                  <Button onClick={generateReport}>
-                    Generate report
-                  </Button>
-                  <Button onClick={downloadPDF}>
-                    Download Report
-                  </Button>
-                  {userInfo.loggedInDocuSign ?
-                    <Button onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
-                    Sign document with DocuSign
-                    </Button> :
-                    <Button onClick={getCodeUrl} variant="contained" endIcon={<CreateIcon />}>
-                    Login to DocuSign
-                    </Button>}
-                </CardActions>}
+                <CardContent>
+                  <Stack direction={'row'} justifyContent={'space-between'} sx={{marginBottom: '20px'}}>
+                    <Button variant='contained' onClick={generateReport}>
+                      Regenerate report
+                    </Button>
+                    <Tooltip title="Download report" placement="top">
+                      <IconButton onClick={downloadPDF}>
+                        <DownloadIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                  <Divider/>
+                  <Card color='secondary' sx={{paddingTop: '20px'}}>
+                    <Stack direction={'column'} spacing={1}>
+                      <Stack direction={'row'} spacing={1}>
+                        <Button disabled={!userInfo.loggedInDocuSign} onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
+                          Sign document with DocuSign
+                        </Button> 
+                        { !userInfo.loggedInDocuSign && <Tooltip title="You need to sign to DocuSign first" placement="top">
+                          <IconButton>
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>}
+                      </Stack>
+                      { !userInfo.loggedInDocuSign && <Button onClick={getCodeUrl} variant="contained" endIcon={<InputIcon />}>
+                        Login to DocuSign
+                      </Button>}
+                    </Stack>
+                  </Card>
+                </CardContent>}
             </Card>
           </Box>
         </Box>

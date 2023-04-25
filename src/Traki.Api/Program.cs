@@ -2,6 +2,7 @@ using Hellang.Middleware.ProblemDetails;
 using Serilog;
 using Traki.Api;
 using Traki.Domain.Constants;
+using Traki.Domain.Handlers;
 using Traki.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     var serviceProvider = app.Services.CreateScope().ServiceProvider;
     serviceProvider.AddInitialData(true);
+
+    var generator = serviceProvider.GetRequiredService<IReportGenerator>();
+    const string protocolTemplateName = "Protocol.cshtml";
+    try
+    {
+        await generator.GenerateHtmlReport(new { }, protocolTemplateName);
+    } catch(Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
 }
 
 app.UseCors(Policy.DevelopmentCors);

@@ -44,9 +44,9 @@ namespace Traki.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> GenerateReport(int protocolId, GenerateReportRequest generateReportRequest)
+        public async Task<ActionResult> GenerateReport(int protocolId, [FromBody] GenerateReportRequest request)
         {
-            await _reportsHandler.GenerateProtocolReport(protocolId);
+            await _reportsHandler.GenerateProtocolReport(protocolId, request.ReportTitle, request.UseColors, request.SectionsToNotInclude);
             return Ok();
         }
 

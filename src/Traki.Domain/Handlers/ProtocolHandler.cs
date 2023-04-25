@@ -64,6 +64,7 @@ namespace Traki.Domain.Handlers
 
             var protocolReport = new ProtocolReport
             {
+                ProtocolName = protocol.Name,
                 CompanyLogoBase64 = companyLogoBase64,
                 Company = company,
                 Project = project,

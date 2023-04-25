@@ -1,4 +1,5 @@
-﻿using Traki.Domain.Repositories;
+﻿using Microsoft.IdentityModel.Tokens;
+using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;
 
 namespace Traki.Domain.Handlers
@@ -6,7 +7,7 @@ namespace Traki.Domain.Handlers
     public interface IReportHandler
     {
         Task<byte[]> GetProtocolReport(int protocolId);
-        Task<byte[]> GenerateProtocolReport(int protocolId);
+        Task<byte[]> GenerateProtocolReport(int protocolId, string protocolName, bool useColors, IEnumerable<int> sectionsToNotInclude);
     }
 
     public class ReportHandler : IReportHandler
@@ -39,14 +40,21 @@ namespace Traki.Domain.Handlers
             return reportResult.Content.ToArray();
         }
 
-        public async Task<byte[]> GenerateProtocolReport(int protocolId)
+        public async Task<byte[]> GenerateProtocolReport(int protocolId, string protocolName, bool useColors, IEnumerable<int> sectionsToNotInclude)
         {
             var protocolInformation = await _protocolHandler.GetInformationForReport(protocolId);
+
+            if (!protocolName.IsNullOrEmpty())
+            {
+                protocolInformation.ProtocolName = protocolName;
+            }
+
+            protocolInformation.Sections = protocolInformation.Sections.Where(x => !sectionsToNotInclude.Contains(x.Id)).ToList();
 
             const string protocolTemplateName = "Protocol.cshtml";
             var htmlReport = await _reportGenerator.GenerateHtmlReport(protocolInformation, protocolTemplateName);
 
-            var pdfStream = await _reportGenerator.GeneratePDFReportFromHtml(htmlReport);
+            var pdfStream = await _reportGenerator.GeneratePDFReportFromHtml(htmlReport, useColors);
 
             var protocol = await _protocolRepository.GetProtocol(protocolId);
             string reportName = protocolInformation.Protocol.ReportName ?? $"{Guid.NewGuid().ToString()}.pdf";

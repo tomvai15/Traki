@@ -6,7 +6,7 @@ const colors = {
 
   // primary
   primaryLight: "'#eef2f6",
-  primaryMain: '#E5A132',
+  primaryMain: '#e2af3f',
   primaryDark: '#A66F15',
   primary200: '#E6AB4D',
   primary800: '#AB761F',

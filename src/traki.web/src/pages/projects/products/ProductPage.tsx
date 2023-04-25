@@ -1,4 +1,4 @@
-import { Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -6,6 +6,8 @@ import { Protocol } from '../../../contracts/protocol/Protocol';
 import productService from '../../../services/product-service';
 import { DrawingDefectsViewer } from 'features/products/components/DrawingDefectsViewer';
 import AddProtocolDialog from 'features/products/components/AddProtocolDialog';
+import { useRecoilState } from 'recoil';
+import { pageState } from 'state/page-state';
 
 const initialProduct: Product = {
   id: 0,
@@ -19,6 +21,8 @@ export function ProductPage() {
   const navigate = useNavigate();
   const { projectId, productId } = useParams();
   const [product, setProduct] = useState<Product>(initialProduct);
+
+  const [page, setPageState] = useRecoilState(pageState);
 
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 
@@ -34,8 +38,18 @@ export function ProductPage() {
   };
 
   useEffect(() => {
-    fetchProduct();
+    notFoundCatcher(fetchProduct);
   }, []);
+
+
+  async function notFoundCatcher(func: () => Promise<void>): Promise<void> {
+    try {
+      await func();
+    } catch (err) {
+      setPageState({...page, notFound: true});
+      console.log(err);
+    }
+  }
 
   async function fetchProduct() {
     const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
@@ -99,7 +113,10 @@ export function ProductPage() {
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent>
-            <Typography variant='h5'>Assigned protocols</Typography>
+            <Stack direction={'row'} justifyContent={'space-between'}>
+              <Typography variant='h5'>Assigned protocols</Typography>
+              <Button onClick={handleClickOpen} variant='contained'>Add protocol</Button>
+            </Stack>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -124,9 +141,6 @@ export function ProductPage() {
               </TableBody>
             </Table>
           </CardContent>
-          <CardActions>
-            <Button onClick={handleClickOpen} variant='contained'>Add protocol</Button>
-          </CardActions>
         </Card>
       </Grid>
       <AddProtocolDialog
