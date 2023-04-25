@@ -48,17 +48,11 @@ export default function AddDefectScreen({route, navigation}: Props) {
 
   const {productId} = route.params;
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
-
   const [rectangle, setRectangle] = useState<Rectangle>(rect1);
 
-  const [imageUri, setImageUri] = useState<string>('');
-
   const [selectedImage, setSelectedImage] = useState<string>(image);
-
   const [visible, setVisible] = React.useState(false);
-
   const [imageWidth, setImageWidth] = useState<number>(405);
-
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
   
   useEffect(() => {
@@ -131,6 +125,9 @@ export default function AddDefectScreen({route, navigation}: Props) {
           width: dx,
           height: dy
         } 
+
+        console.log(rect);
+        
         return rect;
        }));
      },
