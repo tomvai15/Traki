@@ -5,6 +5,7 @@ import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginOAuthRequest } from '../contracts/auth/LoginOAuthRequest';
 import { AuthorisationCodeRequest } from '../contracts/auth/AuthorisationCodeRequest';
 import { ActivateAccountRequest } from 'contracts/auth/ActivateAccountRequest';
+import { GetUserInfoResponse } from 'contracts/auth/GetUserInfoResponse';
 
 const route = 'auth';
 
@@ -23,9 +24,21 @@ class AuthService {
     return response;
   }
 
+  async logout(): Promise<AxiosResponse> {
+    const fullRoute = route + '/logout';
+    const response = await axiosApiInstance.post(fullRoute,{ headers: {} });
+    return response;
+  }
+
   async getUserInfo(): Promise<GetUserResponse> {
-    const fullRoute = route + '/userinfo';
+    const fullRoute = route + '/userstate';
     const response = await axiosApiInstance.get<GetUserResponse>(fullRoute, { headers: {} });
+    return response.data;
+  }
+
+  async getUserFullInfo(): Promise<GetUserInfoResponse> {
+    const fullRoute = route + '/userinfo';
+    const response = await axiosApiInstance.get<GetUserInfoResponse>(fullRoute, { headers: {} });
     return response.data;
   }
 

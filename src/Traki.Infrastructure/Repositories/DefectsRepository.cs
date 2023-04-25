@@ -42,6 +42,7 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Defect> GetDefect(int defectId)
         {
             var defectEntity = await _context.Defects.Where(x => x.Id == defectId)
+                .Include(x => x.Author)
                 .Include(x => x.DefectComments).ThenInclude(x => x.Author)
                 .Include(x => x.StatusChanges).ThenInclude(x => x.Author)
                 .FirstOrDefaultAsync();
@@ -55,7 +56,8 @@ namespace Traki.Infrastructure.Repositories
                 var p = _mapper.Map<Defect>(x);
                 return filter(p);
             };
-            var defects = _context.Defects.Include(x=> x.Drawing)
+            var defects = _context.Defects.Include(x => x.Author)
+                                    .Include(x=> x.Drawing)
                                     .ThenInclude(x=> x.Product)
                                     .Where(func)
                                     .ToList();

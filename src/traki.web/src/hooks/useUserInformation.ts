@@ -8,7 +8,7 @@ export const useUserInformation = () => {
   async function fetchUser() {
     try {
       const getUserResponse = await authService.getUserInfo();
-      setUserInfo({...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign });
+      setUserInfo({...userInfo, ...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign });
       console.log('ok');
     } catch {
       setUserInfo({ id: -1, loggedInDocuSign: false });
@@ -16,5 +16,14 @@ export const useUserInformation = () => {
     }
   }
 
-  return { fetchUser } as const;
+  async function fetchFullUserInformation() {
+    try {
+      const getUserResponse = await authService.getUserFullInfo();
+      setUserInfo((x) => { return  {...x, user: getUserResponse.user};});
+    } catch {
+      setUserInfo({ id: -1, loggedInDocuSign: false });
+    }
+  }
+
+  return { fetchUser, fetchFullUserInformation } as const;
 };

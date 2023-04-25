@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Traki.Api.Contracts.Auth;
+using Traki.Api.Contracts.User;
 using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Handlers;
@@ -23,8 +25,9 @@ namespace Traki.Api.Controllers
         private readonly IAccessTokenProvider _accessTokenProvider;
         private readonly IUsersRepository _usersRepository;
         private readonly IClaimsProvider _claimsProvider;
+        private readonly IMapper _mapper;
 
-        public AuthController(IClaimsProvider claimsProvider, IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IAccessTokenProvider accessTokenProvider, IUserAuthHandler authHandler, IUsersRepository usersRepository)
+        public AuthController(IMapper mapper, IClaimsProvider claimsProvider, IDocuSignService docuSignService, IJwtTokenGenerator jwtTokenGenerator, IAccessTokenProvider accessTokenProvider, IUserAuthHandler authHandler, IUsersRepository usersRepository)
         {
             _authHandler = authHandler;
             _docuSignService = docuSignService;
@@ -32,6 +35,7 @@ namespace Traki.Api.Controllers
             _accessTokenProvider = accessTokenProvider;
             _usersRepository = usersRepository;
             _claimsProvider = claimsProvider;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -66,7 +70,7 @@ namespace Traki.Api.Controllers
             return Ok(new LoginResponse { Email = loginRequest.Email, Token = token });
         }
 
-        [HttpGet("logout")]
+        [HttpPost("logout")]
         [Authorize]
         public async Task<ActionResult> LogOut()
         {
@@ -74,9 +78,9 @@ namespace Traki.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("userinfo")]
+        [HttpGet("userstate")]
         [Authorize]
-        public async Task<ActionResult<GetUserInfoResponse>> GetUserInfo()
+        public async Task<ActionResult<GetUserStateResponse>> GetUserInfo()
         {
             int userId = GetUserId();
 
@@ -92,13 +96,27 @@ namespace Traki.Api.Controllers
 
             var user = await _usersRepository.GetUserById(userId);
 
-            var response = new GetUserInfoResponse { 
+            var response = new GetUserStateResponse { 
                 User = new UserInfoDto { 
                     Id = userId, 
                     Name = user.Name,
                     Email = user.Email,
                 },
                 LoggedInDocuSign = !accessToken.IsNullOrEmpty() 
+            };
+            return Ok(response);
+        }
+
+        [HttpGet("userinfo")]
+        [Authorize]
+        public async Task<ActionResult<GetUserInfoResponse>> GetFullUserInfo()
+        {
+            int userId = GetUserId();
+            var user = await _usersRepository.GetUserById(userId);
+
+            var response = new GetUserInfoResponse
+            {
+                User = _mapper.Map<UserDto>(user),
             };
             return Ok(response);
         }

@@ -18,5 +18,6 @@ namespace Traki.Domain.Models.Drawing
         public Drawing Drawing { get; set; }
         public IEnumerable<DefectComment> DefectComments { get; set; }
         public IEnumerable<StatusChange> StatusChanges { get; set; }
+        public User Author { get; set; }
     }
 }

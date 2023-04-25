@@ -32,7 +32,7 @@ export function Activity ({defectActivity}: Props) {
   return (
     <Paper sx={{padding: '10px', backgroundColor: theme.palette.grey[100] }}>
       <Box sx={{display: 'flex', marginTop: '10px', gap: '10px',  width: '100%'}}>
-        <Avatar src="/static/images/avatar/1.jpg">
+        <Avatar src={ defectActivity.author.userIconBase64 != undefined ? defectActivity.author.userIconBase64  : "/static/images/avatar/1.jpg" }>
           {initials()}
         </Avatar>
         <Box sx={{ width: '100%'}}> 

@@ -17,5 +17,6 @@ namespace Traki.Api.Contracts.Drawing.Defect
         public int DrawingId { get; set; }
         public IEnumerable<DefectCommentDto> DefectComments { get; set; }
         public IEnumerable<StatusChangeDto> StatusChanges { get; set; }
+        public AuthorDto Author { get; set; }
     }
 }

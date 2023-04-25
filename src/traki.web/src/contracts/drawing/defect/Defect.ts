@@ -1,3 +1,4 @@
+import { Author } from "./Author";
 import { DefectComment } from "./DefectComment";
 import { DefectStatus } from "./DefectStatus";
 import { StatusChange } from "./StatusChange";
@@ -14,5 +15,6 @@ export type Defect = {
   width: number,
   height: number,
   defectComments?: DefectComment[]
-  statusChanges?: StatusChange[]
+  statusChanges?: StatusChange[],
+  author?: Author
 }

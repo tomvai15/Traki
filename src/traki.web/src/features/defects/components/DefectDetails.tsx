@@ -15,6 +15,8 @@ import { DefectActivities } from './DefectActivities';
 import ImageWithViewer from 'components/ImageWithViewer';
 import { useUpdateNotifications } from 'hooks/useUpdateNotifications';
 import CustomTab from 'components/CustomTab';
+import { useRecoilState } from 'recoil';
+import { userState } from 'state/user-state';
 
 function a11yProps(index: number) {
   return {
@@ -61,6 +63,8 @@ type DefectDetailsProps = {
 
 export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew, createDefect, tabIndex, setTabIndex, canSubmitDefect}: DefectDetailsProps) {
   const { updateNotifications } = useUpdateNotifications();
+
+  const [userInfo] = useRecoilState(userState);
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -212,9 +216,14 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             <CardContent>
               <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                 <Box>
-                  <Typography variant='h6'>
-                    {selectedDefect.title}
-                  </Typography>
+                  <Stack direction={'row'} spacing={ 1}>
+                    <Avatar src={ selectedDefect.author != undefined ? selectedDefect.author.userIconBase64  : "/static/images/avatar/1.jpg" }>
+                      {selectedDefect.author?.name.toUpperCase()[0] + ' ' + selectedDefect.author?.surname.toUpperCase()[0] }
+                    </Avatar>
+                    <Typography variant='h6'>
+                      {selectedDefect.title}
+                    </Typography>
+                  </Stack>
                   <Typography>
                     {selectedDefect.description}
                   </Typography>
@@ -240,7 +249,9 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
               <Typography>Add new comment</Typography>
               <Stack direction={'row'} spacing={1} sx={{marginTop: '10px'}}>
                 <Box>
-                  <Avatar alt="Ta B" src="/static/images/avatar/1.jpg" />
+                  <Avatar src={ userInfo.user != undefined ? userInfo.user?.userIconBase64  : "/static/images/avatar/1.jpg" }>
+                    {userInfo.user?.name.toUpperCase()[0] + '' + userInfo.user?.surname.toUpperCase()[0]}
+                  </Avatar>
                 </Box>
                 <Box sx={{width: '100%'}}>
                   <Box sx={{display: 'flex', width: '100%'}}>
