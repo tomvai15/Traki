@@ -66,7 +66,7 @@ export function FillItem ({item, updateItem}: Props) {
   function checkType() {
     if (item.question) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={isChecked(item, AnswerType.Yes)}/>} label="Yes" labelPlacement="start"/>
             <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={isChecked(item, AnswerType.No)}/>} label="No" labelPlacement="start"/>

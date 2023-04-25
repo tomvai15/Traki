@@ -95,7 +95,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
   function checkType() {
     if (item.question) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             <FormControlLabel control={<Checkbox disabled />} label="Yes" labelPlacement="start"/>
             <FormControlLabel control={<Checkbox disabled />} label="No" labelPlacement="start"/>
@@ -114,7 +114,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
         </Box>);
     } else if (item.textInput) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
               inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -127,7 +127,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
         </Box>);
     } else if (item.multipleChoice) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             { item.multipleChoice.options.map((value, index) => 
               <FormControlLabel 
@@ -151,7 +151,9 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
                 labelPlacement="start"/>
             )}
           </Box>
-          <Button onClick={() => addOption(item)}>Add</Button>
+          <Box sx={{alignSelf: 'flex-start'}}>
+            <Button onClick={() => addOption(item)}>Add</Button>
+          </Box>
         </Box>);
     }
     return <></>;
@@ -163,6 +165,7 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
         <Box sx={{flex: 1}}>
           <TextField sx={{width: '90%'}}
             id="standard-disabled"
+            multiline
             label="Question"
             variant="standard"
             value={item.name}
