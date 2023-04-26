@@ -3,5 +3,5 @@ export type DefectComment = {
   text: string,
   imageName: string,
   date: string
-  author: string
+  author?: string
 }

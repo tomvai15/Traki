@@ -69,7 +69,7 @@ namespace Traki.UnitTests.Domain.Handlers
             _defectNotificationRepositoryMock.Verify(x => x.CreateDefectNotification(It.IsAny<DefectNotification>()), Times.Once);
             _notificationServiceMock.Verify(x => x.SendNotification(user.DeviceToken, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
-            savedDefect.UserId.Should().Be(userId);
+            savedDefect.AuthorId.Should().Be(userId);
             savedDefect.DrawingId.Should().Be(drawingId);
             savedDefect.Status.Should().Be(DefectStatus.NotFixed);
             savedDefect.Description.Should().Be("Test Defect");

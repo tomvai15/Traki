@@ -21,16 +21,9 @@ import { UserPage } from './admin/UserPage';
 import { CreateUserPage } from './admin/CreateUserPage';
 import RegisterPage from './authentication/RegisterPage';
 import { EditProduct } from './projects/products/EditProduct';
-import { useUserInformation } from 'hooks/useUserInformation';
+import { MyInformation } from './MyInformation';
 
 export function Main() {
-  
-  const { fetchUser } = useUserInformation();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -42,6 +35,7 @@ export function Main() {
             <Route path='create' element={<CreateUserPage/>}/>
           </Route>
           <Route path='home' element={<HomePage/>}/>
+          <Route path='my-information' element={<MyInformation/>}/>
           <Route path='company' element={<CompanyPage/>}/>
           <Route path='checkoauth' element={<CheckOAuth/>}/>
           <Route path='signvalidation' element={<SignValidation/>}/>

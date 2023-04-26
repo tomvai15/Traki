@@ -132,7 +132,7 @@ export default function ProductScreen({route, navigation}: Props) {
 
         <Card mode='outlined' style={{marginTop:10}}>
           <TouchableOpacity onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})}>
-            <Card.Title title="Add defect" subtitle="asd" left={Wrench} />
+            <Card.Title title="Add defect" left={Wrench} />
           </TouchableOpacity >
         </Card>
         <View style={{padding:15, justifyContent: 'space-between', flexDirection: 'row'}}>

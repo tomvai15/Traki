@@ -267,7 +267,9 @@ export function DefectsPage() {
                   { defects.filter(x=> x.status >= Number(!includeFixedDefects)).map((item, index) =>
                     <ListItemButton key={index} alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
                       <ListItemAvatar>
-                        <Avatar alt="Tomas Vainoris" src="/static/images/avatar/1.jpg" />
+                        <Avatar alt="Tomas Vainoris" src={  item.author?.userIconBase64 ? item.author.userIconBase64 :  "/static/images/avatar/1.jpg"}>
+                          { item.author?.name.toUpperCase()[0] + '' +  item.author?.surname.toUpperCase()[0]}
+                        </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={item.title}

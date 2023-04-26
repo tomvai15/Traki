@@ -20,8 +20,8 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<IEnumerable<Drawing>> GetDrawings(int productId)
         {
-            var drawings = await _context.Drawings.Where(x=> x.ProductId == productId)
-                            .Include(x=> x.Defects).ToListAsync();
+            var drawings = await _context.Drawings.Where(x => x.ProductId == productId)
+                            .Include(x => x.Defects).ThenInclude(x => x.Author).ToListAsync();
 
             return _mapper.Map<IEnumerable<Drawing>>(drawings);
         }

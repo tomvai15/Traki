@@ -110,7 +110,7 @@ namespace Traki.Infrastructure.Data
 
             modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.Defects)
-                .WithOne(p => p.User)
+                .WithOne(p => p.Author)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserEntity>()

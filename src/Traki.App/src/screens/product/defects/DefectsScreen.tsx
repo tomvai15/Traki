@@ -28,7 +28,7 @@ type ImageSize = {
   height: number
 }
 
-const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'orange'}}  icon="wrench" />;
+const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="wrench" />;
 
 const images = [image, image2, image];
 
@@ -89,8 +89,12 @@ export default function DefectsScreen({route, navigation}: Props) {
           )}
         </ScrollView>
       </View>
-      <Button style={{marginVertical: 5}} buttonColor='red' onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})} mode='contained'>Add Defect</Button>
-      <ScrollView style={{height: 400}}>
+      <Card mode='outlined' style={{marginTop:10}}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddDefectScreen', {productId: productId})}>
+          <Card.Title title="Add defect" left={Wrench} />
+        </TouchableOpacity >
+      </Card>
+      <ScrollView style={{height: 400, marginTop: 10}}>
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
             <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId, drawingId: item.drawingId, defectId: item.id})}>

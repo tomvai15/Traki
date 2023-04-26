@@ -3,10 +3,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
-import { Chip, Menu, MenuItem, useTheme } from '@mui/material';
+import { Button, Chip, Menu, MenuItem, Stack, useTheme } from '@mui/material';
 import { userState } from 'state/user-state';
 import { useRecoilState } from 'recoil';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { userService } from 'services';
+import authService from 'services/auth-service';
 
 export default function ProfileMenu() {
   const navigate = useNavigate();
@@ -22,7 +24,8 @@ export default function ProfileMenu() {
     setAnchorElUser(event.currentTarget);
   };
 
-  function logOut() {
+  async function logOut() {
+    await authService.logout();
     navigate('/signin');
     setUserInfo({id:-1, loggedInDocuSign: false});
   }
@@ -69,9 +72,20 @@ export default function ProfileMenu() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem key={1} onClick={logOut}>
-          <Typography textAlign="center">Logout</Typography>
-        </MenuItem>
+        <Stack>
+          <MenuItem key={1}>
+            { userInfo.user != undefined && 
+              <Typography textAlign="center">
+                {userInfo.user.name} {userInfo.user.surname}
+              </Typography>}
+          </MenuItem>
+          <MenuItem key={2} onClick={()=> navigate('my-information')}>
+            <Typography textAlign="center">My Information</Typography>
+          </MenuItem>
+          <MenuItem key={3} onClick={logOut}>
+            <Typography color={'error'} textAlign="center">Logout</Typography>
+          </MenuItem>
+        </Stack>
       </Menu>
     </Box>
   );

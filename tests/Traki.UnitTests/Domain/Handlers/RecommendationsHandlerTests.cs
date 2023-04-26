@@ -46,7 +46,7 @@ namespace Traki.UnitTests.Domain.Handlers
                 new Defect
                 {
                     Id = 1,
-                    UserId = userId,
+                    AuthorId = userId,
                     Drawing = new Drawing
                     {
                         Id = 1,
@@ -57,7 +57,7 @@ namespace Traki.UnitTests.Domain.Handlers
                 new Defect
                 {
                     Id = 2,
-                    UserId = userId,
+                    AuthorId = userId,
                     Drawing = new Drawing
                     {
                         Id = 2,

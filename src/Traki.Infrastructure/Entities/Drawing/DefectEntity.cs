@@ -18,7 +18,7 @@ namespace Traki.Infrastructure.Entities.Drawing
         public IEnumerable<DefectCommentEntity> DefectComments { get; set; }
         public IEnumerable<DefectNotificationEntity> DefectNotifications { get; set; }
         public IEnumerable<StatusChangeEntity> StatusChanges { get; set; }
-        public int UserId { get; set; }
-        public UserEntity User { get; set; }
+        public int AuthorId { get; set; }
+        public UserEntity Author { get; set; }
     }
 }

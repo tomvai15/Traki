@@ -8,5 +8,6 @@
         public string Email { get; set; }
         public string Role { get; set; }
         public string Status { get; set; }
+        public string? UserIconBase64 { get; set; }
     }
 }

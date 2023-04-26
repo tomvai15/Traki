@@ -28,23 +28,8 @@ interface Rectangle {
   height: number;
 }
 
-const rect1: Rectangle = {
-  x: 0,
-  y: 0,
-  width: 1,
-  height: 1
-}
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'DefectScreen'>;
-
-type ImageSize = {
-  width: number,
-  height: number
-}
-
-const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'orange'}}  icon="wrench" />;
-
-const images = [image, image2, image];
 
 type DrawingWithImage = {
   drawing: Drawing,
@@ -92,7 +77,7 @@ export default function DefectScreen({route, navigation}: Props) {
   }
 
   async function fetchDrawing() {
-    const response = await drawingService.getDrawing(productId, 1);
+    const response = await drawingService.getDrawing(productId, drawingId);
     const imageBase64 = await pictureService.getPicture('company', response.drawing.imageName);
     const newDrawingImage: DrawingWithImage = {drawing: response.drawing, imageBase64: imageBase64};
     setDrawing(newDrawingImage);
@@ -153,6 +138,9 @@ export default function DefectScreen({route, navigation}: Props) {
   }
 
   async function createComment() {
+    if (!defect) {
+      return;
+    }
 
     let pictureName = '';
     if (imageUri != '') {
@@ -165,7 +153,6 @@ export default function DefectScreen({route, navigation}: Props) {
       text: commentText,
       imageName: pictureName,
       date: '',
-      author: ''
     };
 
     const request: CreateDefectCommentRequest = {
@@ -173,7 +160,17 @@ export default function DefectScreen({route, navigation}: Props) {
     };
 
     await defectService.createDefectComment(drawingId, defectId, request);
-    await fetchDefect();
+
+
+    const response = await defectService.getDefect(drawingId, defectId);
+    const defectWithImage: DefectWithImage = {
+      defect: response.defect,
+      imageBase64: defect?.imageBase64
+    }
+    setDefect(defectWithImage);
+    if (response.defect.defectComments) {
+      await fetchComments(response.defect.defectComments);
+    }
 
     setImageUri('');
     setCommentText('');
@@ -192,18 +189,6 @@ export default function DefectScreen({route, navigation}: Props) {
         <View style={styles.box}>
           { defect && drawing && <ImageWithRegions source={drawing.imageBase64} width={390} rectangles={[defectToRectangle(defect.defect)]}/>}
         </View>
-        <Text>Comments</Text>
-        { comments.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
-          <Card.Title title='' subtitle={item.defectComment.date}
-            left={() => <Avatar.Text size={30} label="TV" />} 
-          />
-          <Card.Content>
-            <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-              <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
-              { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
-            </View>
-          </Card.Content>
-        </Card>)}
         <Text>New comment</Text>
         <Card mode='outlined' style={{marginTop:10}}>
           <Card.Title title=''
@@ -218,6 +203,18 @@ export default function DefectScreen({route, navigation}: Props) {
             <Button disabled={commentText==''} mode='contained' onPress={createComment}>Submit</Button>
           </Card.Content>
         </Card>
+        <Text>Comments</Text>
+        { comments.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
+          <Card.Title title='' subtitle={item.defectComment.date}
+            left={() => <Avatar.Text size={30} label="TV" />} 
+          />
+          <Card.Content>
+            <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
+              <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
+              { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
+            </View>
+          </Card.Content>
+        </Card>)}
       </ScreenView>
     </ScrollView>
   );

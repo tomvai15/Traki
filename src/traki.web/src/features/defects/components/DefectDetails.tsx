@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Divider, InputLabel, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Divider, FormControl, InputLabel, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -15,6 +15,8 @@ import { DefectActivities } from './DefectActivities';
 import ImageWithViewer from 'components/ImageWithViewer';
 import { useUpdateNotifications } from 'hooks/useUpdateNotifications';
 import CustomTab from 'components/CustomTab';
+import { useRecoilState } from 'recoil';
+import { userState } from 'state/user-state';
 
 function a11yProps(index: number) {
   return {
@@ -61,6 +63,8 @@ type DefectDetailsProps = {
 
 export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew, createDefect, tabIndex, setTabIndex, canSubmitDefect}: DefectDetailsProps) {
   const { updateNotifications } = useUpdateNotifications();
+
+  const [userInfo] = useRecoilState(userState);
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -211,27 +215,37 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
           <Box>
             <CardContent>
               <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                <Box>
+                <Box sx={{marginRight: '5px'}}>
+                  <Stack direction={'row'} spacing={ 1}>
+                    <Avatar src={ selectedDefect.author != undefined ? selectedDefect.author.userIconBase64  : "/static/images/avatar/1.jpg" }>
+                      {selectedDefect.author?.name.toUpperCase()[0] + '' + selectedDefect.author?.surname.toUpperCase()[0] }
+                    </Avatar>
+                    <Typography variant='h6'>
+                      {selectedDefect.author?.name + ' ' + selectedDefect.author?.surname}
+                    </Typography>
+                  </Stack>
                   <Typography variant='h6'>
                     {selectedDefect.title}
                   </Typography>
                   <Typography>
                     {selectedDefect.description}
                   </Typography>
-                  <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Status"
-                    value={defect ? defect.defect.status : 1}
-                    onChange={(e) => updateDefectStatus(e.target.value as string)}
-                  >
-                    <MenuItem value={1}>Not Fixed</MenuItem>
-                    <MenuItem value={0}>Fixed</MenuItem>
-                  </Select>
+                  <FormControl sx={{minWidth: 120, marginTop: '10px' }} size="small">
+                    <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Status"
+                      value={defect ? defect.defect.status : 1}
+                      onChange={(e) => updateDefectStatus(e.target.value as string)}
+                    >
+                      <MenuItem value={1}>Not Fixed</MenuItem>
+                      <MenuItem value={0}>Fixed</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Box>
                 <Box>
-                  <ImageWithViewer source={defect?.imageBase64} height={150}/>
+                  <ImageWithViewer source={defect?.imageBase64} height={120}/>
                 </Box>
               </Box>
             </CardContent>
@@ -240,7 +254,9 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
               <Typography>Add new comment</Typography>
               <Stack direction={'row'} spacing={1} sx={{marginTop: '10px'}}>
                 <Box>
-                  <Avatar alt="Ta B" src="/static/images/avatar/1.jpg" />
+                  <Avatar src={ userInfo.user != undefined ? userInfo.user?.userIconBase64  : "/static/images/avatar/1.jpg" }>
+                    {userInfo.user?.name.toUpperCase()[0] + '' + userInfo.user?.surname.toUpperCase()[0]}
+                  </Avatar>
                 </Box>
                 <Box sx={{width: '100%'}}>
                   <Box sx={{display: 'flex', width: '100%'}}>

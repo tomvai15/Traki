@@ -3,6 +3,7 @@
     public class User
     {
         public int Id { get; set; }
+        public string? UserIconBase64 { get; set; }
         public string? RegisterId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

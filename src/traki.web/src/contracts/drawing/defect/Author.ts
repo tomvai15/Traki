@@ -1,4 +1,5 @@
 export type Author = {
   name: string, 
-  surname: string
+  surname: string,
+  userIconBase64?: string
 }
