@@ -6,6 +6,7 @@ import { LoginOAuthRequest } from '../contracts/auth/LoginOAuthRequest';
 import { AuthorisationCodeRequest } from '../contracts/auth/AuthorisationCodeRequest';
 import { ActivateAccountRequest } from 'contracts/auth/ActivateAccountRequest';
 import { GetUserInfoResponse } from 'contracts/auth/GetUserInfoResponse';
+import { UpdateUserInfoRequest } from 'contracts/auth/UpdateUserInfoRequest';
 
 const route = 'auth';
 
@@ -40,6 +41,11 @@ class AuthService {
     const fullRoute = route + '/userinfo';
     const response = await axiosApiInstance.get<GetUserInfoResponse>(fullRoute, { headers: {} });
     return response.data;
+  }
+
+  async updateUserInfo(request: UpdateUserInfoRequest): Promise<void> {
+    const fullRoute = route + '/userinfo';
+    await axiosApiInstance.post(fullRoute, request, { headers: {} });
   }
 
   async loginDocusign(loginOAuthRequest: LoginOAuthRequest): Promise<void> {

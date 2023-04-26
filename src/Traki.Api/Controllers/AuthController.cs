@@ -96,13 +96,15 @@ namespace Traki.Api.Controllers
 
             var user = await _usersRepository.GetUserById(userId);
 
-            var response = new GetUserStateResponse { 
-                User = new UserInfoDto { 
-                    Id = userId, 
+            var response = new GetUserStateResponse
+            {
+                User = new UserInfoDto
+                {
+                    Id = userId,
                     Name = user.Name,
                     Email = user.Email,
                 },
-                LoggedInDocuSign = !accessToken.IsNullOrEmpty() 
+                LoggedInDocuSign = !accessToken.IsNullOrEmpty()
             };
             return Ok(response);
         }
@@ -119,6 +121,18 @@ namespace Traki.Api.Controllers
                 User = _mapper.Map<UserDto>(user),
             };
             return Ok(response);
+        }
+
+        [HttpPost("userinfo")]
+        [Authorize]
+        public async Task<ActionResult> UpdateUserInfo([FromBody] UpdateUserInfoRequest request)
+        {
+            int userId = GetUserId();
+            var user = await _usersRepository.GetUserById(userId);      
+            user.UserIconBase64 = request.User.UserIconBase64;
+
+            await _usersRepository.UpdateUser(user);
+            return Ok();
         }
 
         [HttpPost("registerdevice")]

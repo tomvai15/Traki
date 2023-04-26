@@ -17,6 +17,7 @@ export default function ImageWithViewer({ width, height, source }: ImageWithView
     <Box>
       { source && 
         <img onClick={() => setViewerActive(true)}
+          style={{borderRadius: '10px'}}
           height={height}
           width='auto'
           src={source}

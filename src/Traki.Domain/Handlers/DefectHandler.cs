@@ -36,7 +36,7 @@ namespace Traki.Domain.Handlers
 
         public async Task<Defect> CreateDefect(int userId, int drawingId, Defect defect)
         {
-            defect.UserId = userId;
+            defect.AuthorId = userId;
             defect.DrawingId = drawingId;
             defect.Status = DefectStatus.NotFixed;
             defect = await _defectsRepository.CreateDefect(defect);

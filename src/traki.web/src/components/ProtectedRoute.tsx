@@ -17,13 +17,8 @@ export const ProtectedRoute: React.FC<Props> = ({children}) => {
 
   useEffect(() => {
     fetchUser();
-  //  fetchFullUserInformation();
-  }, [location]);
-
-  useEffect(() => {
     fetchFullUserInformation();
-    console.log('???--++++');
-  }, [userInfo]);
+  }, [location]);
   
   return userInfo && userInfo.id >= 0 ? <>{children}</> : <Navigate to="/login"/>;
 };

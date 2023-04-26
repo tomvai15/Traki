@@ -51,7 +51,7 @@ namespace Traki.Api.Controllers
         {
             var defect = _mapper.Map<Defect>(createDefectRequest.Defect);
             _claimsProvider.TryGetUserId(out int userId);
-            defect.UserId = userId;
+            defect.AuthorId = userId;
 
             var def = await _defectsRepository.GetDefect(defectId);
             var statusChange = new StatusChange
@@ -83,6 +83,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost("{defectId}/comments")]
+        [Authorize]
         public async Task<ActionResult> AddDefectComment(int drawingId, int defectId, [FromBody] CreateDefectCommentRequest createDefectCommentRequest)
         {
             var defectComment = _mapper.Map<DefectComment>(createDefectCommentRequest.DefectComment);

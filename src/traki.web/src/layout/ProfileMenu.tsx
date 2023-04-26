@@ -79,11 +79,11 @@ export default function ProfileMenu() {
                 {userInfo.user.name} {userInfo.user.surname}
               </Typography>}
           </MenuItem>
-          <MenuItem key={2} onClick={logOut}>
-            <Typography textAlign="center">Logout</Typography>
-          </MenuItem>
-          <MenuItem key={3} onClick={()=> navigate('my-information')}>
+          <MenuItem key={2} onClick={()=> navigate('my-information')}>
             <Typography textAlign="center">My Information</Typography>
+          </MenuItem>
+          <MenuItem key={3} onClick={logOut}>
+            <Typography color={'error'} textAlign="center">Logout</Typography>
           </MenuItem>
         </Stack>
       </Menu>

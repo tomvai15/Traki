@@ -21,7 +21,7 @@ namespace Traki.Domain.Handlers
         public async Task<Recommendation> GetRecommendation(int userId)
         {
             var products = await _productsRepository.GetProductByQuery(x => x.UserId == userId);
-            var defects = await _defectsRepository.GetDefectsByQuery(x => x.UserId == userId);
+            var defects = await _defectsRepository.GetDefectsByQuery(x => x.AuthorId == userId);
 
             var defectRecommendations = defects.Select(x => new DefectRecomendation
             {

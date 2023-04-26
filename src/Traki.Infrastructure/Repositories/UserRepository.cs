@@ -60,6 +60,7 @@ namespace Traki.Infrastructure.Repositories
             userEntity.HashedPassword = user.HashedPassword;
             userEntity.RegisterId = user.RegisterId;
             userEntity.DeviceToken = user.DeviceToken;
+            userEntity.UserIconBase64 = user.UserIconBase64;
 
             await _context.SaveChangesAsync();
         }
