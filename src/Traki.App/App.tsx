@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { List, Provider as PaperProvider } from 'react-native-paper';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import './src/extensions/string.extensions';
+import React, { useEffect } from 'react';
+import { View, Text } from 'react-native';
+import { Button, IconButton, List, Provider as PaperProvider } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { theme } from './src/themes/theme';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import ReactNativeRecoilPersist, { ReactNativeRecoilPersistGate } from "react-native-recoil-persist";
@@ -13,6 +14,7 @@ import RecoilNexus from 'recoil-nexus'
 import UserScreen from './src/screens/user/UserScreen';
 import * as Notifications from "expo-notifications";
 import { useNotifications } from './src/hooks/useNotifications';
+import MainHeader from './src/tabs/layout/MainHeader';
 
 const Drawer = createDrawerNavigator();
 
@@ -61,10 +63,10 @@ function Main() {
   return (
     <NavigationContainer>
       { loggedIn() ?
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator screenOptions={{headerRight: () => (<MainHeader/>)}} initialRouteName="Home">
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: 'Projects' }} name={"Company Projects"} component={ProjectTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Products' }} name="Project Products" component={ProductTab} />
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'Templates' }} name="Protocol Templates" component={TemplateTab} />
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'TemplatesLL' }} name="Protocol Templates" component={TemplateTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='account' />, headerTitle: 'Account Information' }} name="Account information" component={UserScreen} />
       </Drawer.Navigator> 
       :

@@ -11,6 +11,7 @@ import { Drawing } from '../../../contracts/drawing/Drawing';
 import drawingService from '../../../services/drawing-service';
 import pictureService from '../../../services/picture-service';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
+import { CustomAvatar } from '../../../components/CustomAvatar';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'DefectsScreen'>;
 
@@ -80,7 +81,7 @@ export default function DefectsScreen({route, navigation}: Props) {
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
             <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId, drawingId: item.drawingId, defectId: item.id})}>
-              <Card.Title title={item.title} subtitle={item.description} left={Wrench} right={() => <CommentIcon text={'0'}/>} />
+              <Card.Title title={item.title} subtitle={item.description} left={() => <CustomAvatar user={item.author} size={50}/>} right={() => <CommentIcon text={'0'}/>} />
             </TouchableOpacity >
           </Card>
         )}

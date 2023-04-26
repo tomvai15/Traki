@@ -6,6 +6,7 @@ import { Avatar } from 'react-native-paper';
 import { formatDate } from '../../../utils/dateHelpers';
 import { DefectActivity } from '../types/DefectActivity';
 import { Comment } from './Comment';
+import { CustomAvatar } from '../../../components/CustomAvatar';
 
 type Props = {
   defectActivity: DefectActivity
@@ -35,7 +36,7 @@ export function Activity ({defectActivity}: Props) {
           <View> 
             <View style={styles.nameContainer}>
               <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                {<Avatar.Image size={50} source={{ uri: defectActivity.author.userIconBase64}}/>}
+                <CustomAvatar user={defectActivity.author} size={50}/>
                 <Text style={{fontSize: 18, marginLeft: 5}}>{formatName()}</Text>
               </View>
               <Text>{formatDate(new Date(defectActivity.date))}</Text>
