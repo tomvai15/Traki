@@ -11,7 +11,7 @@ export default function ProfileMenu() {
   return (
     <Menu
       anchorPosition='bottom'
-      visible={true}
+      visible={visible}
       onDismiss={closeMenu}
       anchor={
         <View style={styles.item}>

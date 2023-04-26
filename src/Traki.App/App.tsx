@@ -66,7 +66,7 @@ function Main() {
       <Drawer.Navigator screenOptions={{headerRight: () => (<MainHeader/>)}} initialRouteName="Home">
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: 'Projects' }} name={"Company Projects"} component={ProjectTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Products' }} name="Project Products" component={ProductTab} />
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'TemplatesLL' }} name="Protocol Templates" component={TemplateTab} />
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'Templates' }} name="Protocol Templates" component={TemplateTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='account' />, headerTitle: 'Account Information' }} name="Account information" component={UserScreen} />
       </Drawer.Navigator> 
       :

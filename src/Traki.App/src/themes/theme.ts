@@ -35,11 +35,11 @@ export const theme = {
     inversePrimary: "rgb(255, 185, 92)",
     elevation: {
       level0: "transparent",
-      level1: "rgb(249, 243, 242)",
-      level2: "rgb(245, 238, 235)",
-      level3: "rgb(242, 233, 227)",
-      level4: "rgb(240, 231, 224)",
-      level5: "rgb(238, 228, 219)"
+      level1: "#F7F7F7",
+      level2: "#F7F7F7",
+      level3: "#F7F7F7",
+      level4: "#F7F7F7",
+      level5: "#F7F7F7",
     },
     surfaceDisabled: "rgba(31, 27, 22, 0.12)",
     onSurfaceDisabled: "rgba(31, 27, 22, 0.38)",
