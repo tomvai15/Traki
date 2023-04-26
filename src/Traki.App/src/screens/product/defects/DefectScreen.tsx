@@ -20,6 +20,7 @@ import { DefectComment } from '../../../contracts/drawing/defect/DefectComment';
 import { CreateDefectCommentRequest } from '../../../contracts/drawing/defect/CreateDefectCommentRequest';
 import uuid from 'react-native-uuid';
 import { ScreenView } from '../../../components/ScreenView';
+import { DefectActivities } from '../../../features/defect/components/DefectActivities';
 
 interface Rectangle {
   x: number;
@@ -204,17 +205,7 @@ export default function DefectScreen({route, navigation}: Props) {
           </Card.Content>
         </Card>
         <Text>Comments</Text>
-        { comments.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
-          <Card.Title title='' subtitle={item.defectComment.date}
-            left={() => <Avatar.Text size={30} label="TV" />} 
-          />
-          <Card.Content>
-            <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-              <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
-              { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
-            </View>
-          </Card.Content>
-        </Card>)}
+        <DefectActivities defectComments={comments} statusChanges={defect?.defect.statusChanges ?? []}/>
       </ScreenView>
     </ScrollView>
   );

@@ -1,16 +1,20 @@
+import { Author } from "./Author";
 import { DefectComment } from "./DefectComment";
 import { DefectStatus } from "./DefectStatus";
+import { StatusChange } from "./StatusChange";
 
 export type Defect = {
   id: number,
+  drawingId: number,
   title: string
-  description: string,
+  description: string
   imageName: string,
   status: DefectStatus,
   x: number,
   y: number,
   width: number,
   height: number,
-  drawingId: number,
   defectComments?: DefectComment[]
+  statusChanges?: StatusChange[],
+  author?: Author
 }

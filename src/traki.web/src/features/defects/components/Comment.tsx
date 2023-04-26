@@ -1,5 +1,5 @@
-import { Avatar, Box, TextField } from '@mui/material';
 import React from 'react';
+import { Box, TextField } from '@mui/material';
 import ImageWithViewer from 'components/ImageWithViewer';
 import { CommentWithImage } from '../types';
 

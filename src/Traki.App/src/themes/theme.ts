@@ -8,7 +8,7 @@ export const theme = {
     onPrimary: "#fffbeb",
     primaryContainer: "#fef3c7",
     onPrimaryContainer: "rgb(42, 23, 0)",
-    secondary: "rgb(112, 91, 65)",
+    secondary: "#BDBAB4",
     onSecondary: "rgb(255, 255, 255)",
     secondaryContainer: "rgb(252, 222, 188)",
     onSecondaryContainer: "rgb(40, 24, 5)",
