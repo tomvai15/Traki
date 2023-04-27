@@ -10,6 +10,7 @@ using TechTalk.SpecFlow;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 using WebDriverManager.Helpers;
+using Selenium.WebDriver.WaitExtensions;
 
 namespace Traki.FunctionalTests
 {
@@ -59,12 +60,13 @@ namespace Traki.FunctionalTests
             options.AddArguments("--ignore-certificate-errors");
 
             var driver = new ChromeDriver(Path.GetDirectoryName(path), options);
-            driver.Navigate().GoToUrl(Config.RootUrl);
+            driver.Navigate().GoToUrl(Config.RootUrl + "login");
 
             // Wait a bit for any element to appear to factor in loading times.
             // Default wait time is 0.
             // When you need to wait for more, use WaitDriver (from Selenium.WaitExtensions NuGet)
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(1000);
+            driver.Wait(5000);
             return driver;
         }
 

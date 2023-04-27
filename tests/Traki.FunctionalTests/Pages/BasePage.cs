@@ -5,7 +5,7 @@ namespace Traki.FunctionalTests.Pages
 {
     public abstract class BasePage
     {
-        protected IWebDriver Driver { get; }
+        public IWebDriver Driver { get; }
 
         protected BasePage(IWebDriver driver)
         {

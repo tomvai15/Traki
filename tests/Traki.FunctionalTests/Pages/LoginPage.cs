@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using Selenium.WebDriver.WaitExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,27 @@ namespace Traki.FunctionalTests.Pages
 
         public void Login(string email, string password)
         {
-            FindEmailInput().SendKeys(email);
-            FindPasswordInput().SendKeys(password);
-            return;
+            EmailInput.SendKeys(email);
+            PasswordInput.SendKeys(password);
+            SubmitButton.Click();
+            Thread.Sleep(2000);
         }
 
-        public IWebElement FindEmailInput()
-             => Driver.FindElement(By.Id(".email"));
+        public string GetErrorMessage()
+        {
+            return ErrorField.Text;
+        }
 
-        public IWebElement FindPasswordInput()
-            => Driver.FindElement(By.Id(".password"));
+        public IWebElement EmailInput
+             => Driver.FindElement(By.Id("email"));
+
+        public IWebElement PasswordInput
+            => Driver.FindElement(By.Id("password"));
+
+        public IWebElement SubmitButton
+            => Driver.FindElement(By.Id("submit"));
+
+        public IWebElement ErrorField
+            => Driver.FindElement(By.Id("error"));
     }
 }

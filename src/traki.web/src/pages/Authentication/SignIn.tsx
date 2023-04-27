@@ -108,10 +108,11 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
           />
-          <Typography fontSize={20} color={'red'}>
+          <Typography id={'error'} fontSize={20} color={'red'}>
             {error}
           </Typography>
           <Button onClick={handleSubmit}
+            id='submit'
             disabled={canSubmit()}
             type="submit"
             fullWidth
