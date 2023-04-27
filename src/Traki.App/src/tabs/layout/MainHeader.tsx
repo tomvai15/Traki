@@ -4,7 +4,12 @@ import { View, StyleSheet  } from 'react-native';
 import ProfileMenu from './ProfileMenu';
 import NotificationsMenu from './NotificationsMenu';
 
-export default function MainHeader() {
+
+type Props = {
+  navigation: any
+}
+
+export default function MainHeader({navigation}: Props) {
 
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -12,8 +17,8 @@ export default function MainHeader() {
 
   return (
     <View style={{display: 'flex', flexDirection: 'row'}}>
-      <NotificationsMenu/>
-      <ProfileMenu/>
+      <NotificationsMenu />
+      <ProfileMenu navigation={navigation}/>
     </View>
   );
 }

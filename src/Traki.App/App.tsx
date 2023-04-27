@@ -15,6 +15,7 @@ import UserScreen from './src/screens/user/UserScreen';
 import * as Notifications from "expo-notifications";
 import { useNotifications } from './src/hooks/useNotifications';
 import MainHeader from './src/tabs/layout/MainHeader';
+import HomeTab from './src/tabs/HomeTab';
 
 const Drawer = createDrawerNavigator();
 
@@ -63,7 +64,8 @@ function Main() {
   return (
     <NavigationContainer>
       { loggedIn() ?
-      <Drawer.Navigator screenOptions={{headerRight: () => (<MainHeader/>)}} initialRouteName="Home">
+      <Drawer.Navigator screenOptions={({navigation}) => ({headerRight: () => (<MainHeader navigation={navigation}/>)})} initialRouteName="Home">
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='home' />, headerTitle: 'Home' }} name={"Home"} component={HomeTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: 'Projects' }} name={"Company Projects"} component={ProjectTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Products' }} name="Project Products" component={ProductTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'Templates' }} name="Protocol Templates" component={TemplateTab} />

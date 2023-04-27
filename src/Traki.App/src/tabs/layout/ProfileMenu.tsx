@@ -2,7 +2,11 @@ import React from 'react';
 import { Badge, Divider, IconButton, Menu, Button } from 'react-native-paper';
 import { View, StyleSheet  } from 'react-native';
 
-export default function ProfileMenu() {
+
+type Props = {
+  navigation: any
+}
+export default function ProfileMenu({navigation}: Props) {
 
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -18,8 +22,7 @@ export default function ProfileMenu() {
           <IconButton onPress={openMenu} icon="account" style={styles.button} />
         </View>
       }>
-      <Menu.Item onPress={() => {}} title="Item 1" />
-      <Menu.Item onPress={() => {}} title="Item 2" />
+      <Menu.Item onPress={() => navigation.navigate('Account information', {screen: 'UserScreen'})} title="My information" />
       <Divider />
       <Menu.Item contentStyle={{borderColor: 'red'}} onPress={() => {}} title='Logout' />
     </Menu>
