@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export  default function HomeScreen({ navigation }: Props) {
+export  default function ProjectHomeScreen({ navigation }: Props) {
 
   const [image, setImage] = useState<string>('');
 

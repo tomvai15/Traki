@@ -7,8 +7,12 @@ import { authService } from '../../services';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
 import { RegisterDeviceRequest } from '../../contracts/auth/RegisterDeviceRequest';
 import { deviceState } from '../../state/device-state';
+import { useUserInformation } from '../../hooks/useUserInformation';
 
 export default function SignInScreen() {
+
+  const { fetchFullUserInformation } = useUserInformation();
+
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const [deviceInfo, setDeviceInfo] = useRecoilState(deviceState);
 
@@ -32,6 +36,7 @@ export default function SignInScreen() {
       const registerDeviceRequest: RegisterDeviceRequest = {
         deviceToken: deviceInfo.token
       };
+      await fetchFullUserInformation();
 
       console.log( '?? ' + registerDeviceRequest);
 

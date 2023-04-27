@@ -1,19 +1,24 @@
 import { RecoilState, atom } from "recoil";
 import ReactNativeRecoilPersist from "react-native-recoil-persist";
+import { UserInfo } from "../contracts/auth/UserInfo";
 
-interface UserInfo {
+interface UserState {
 	id: number,
+  name?: string,
+  email?: string,
   token?: string,
+  user?: UserInfo,
   loggedInDocuSign: boolean
 }
 
-const initialState: UserInfo = {
+const initialState: UserState = {
   id: 1,
   loggedInDocuSign: false
 };
 
-export const userState: RecoilState<UserInfo> = atom({
-  key: 'textState',
+
+export const userState: RecoilState<UserState> = atom({
+  key: 'userState',
   default: initialState,
-  effects_UNSTABLE: [ReactNativeRecoilPersist.persistAtom],
+  effects_UNSTABLE: [ReactNativeRecoilPersist.persistAtom]
 });

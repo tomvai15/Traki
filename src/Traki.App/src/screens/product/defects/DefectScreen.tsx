@@ -20,6 +20,10 @@ import { DefectComment } from '../../../contracts/drawing/defect/DefectComment';
 import { CreateDefectCommentRequest } from '../../../contracts/drawing/defect/CreateDefectCommentRequest';
 import uuid from 'react-native-uuid';
 import { ScreenView } from '../../../components/ScreenView';
+import { DefectActivities } from '../../../features/defect/components/DefectActivities';
+import { userState } from '../../../state/user-state';
+import { useRecoilState } from "recoil";
+import { CustomAvatar } from '../../../components/CustomAvatar';
 
 interface Rectangle {
   x: number;
@@ -47,6 +51,9 @@ type CommentWithImage = {
 }
 
 export default function DefectScreen({route, navigation}: Props) {
+
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+
   const {productId, drawingId, defectId} = route.params;
   const [drawing, setDrawing] = useState<DrawingWithImage>();
   const [defect, setDefect] = useState<DefectWithImage>();
@@ -182,7 +189,7 @@ export default function DefectScreen({route, navigation}: Props) {
         <Card mode='outlined' style={{marginTop:10}}>
           <Card.Title title={defect?.defect.title}
             subtitle={defect?.defect.description} 
-            left={() => <Avatar.Text size={50} label="TV" />} 
+            left={() => <CustomAvatar size={50} user={defect?.defect.author}/>} 
             right={() => { return (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}}
           />
         </Card>
@@ -192,7 +199,7 @@ export default function DefectScreen({route, navigation}: Props) {
         <Text>New comment</Text>
         <Card mode='outlined' style={{marginTop:10}}>
           <Card.Title title=''
-            left={() => <Avatar.Text size={30} label="TV" />} 
+            left={() => <CustomAvatar size={50} user={userInfo.user}/>} 
             right={() => <View style={{margin: 10}}><IconButton onPress={() => pickImage()} size={30} icon='camera' /></View>}
           />
           <Card.Content>
@@ -204,17 +211,7 @@ export default function DefectScreen({route, navigation}: Props) {
           </Card.Content>
         </Card>
         <Text>Comments</Text>
-        { comments.map((item, index) => <Card key={index} mode='outlined' style={{marginTop:10}}>
-          <Card.Title title='' subtitle={item.defectComment.date}
-            left={() => <Avatar.Text size={30} label="TV" />} 
-          />
-          <Card.Content>
-            <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-              <TextInput editable = {false} value={item.defectComment.text} style={{flex: 1, marginRight: 10, backgroundColor: 'white', borderTopColor: 'grey', borderTopWidth: 1, borderBottomColor: 'grey', borderBottomWidth: 0}} multiline={true}></TextInput>
-              { item.imageBase64 != '' && <ImageWithViewer source={item.imageBase64} width={60} height={100} ></ImageWithViewer>}
-            </View>
-          </Card.Content>
-        </Card>)}
+        <DefectActivities defectComments={comments} statusChanges={defect?.defect.statusChanges ?? []}/>
       </ScreenView>
     </ScrollView>
   );

@@ -2,9 +2,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight } from 'react-native';
-import Svg, { Rect } from 'react-native-svg';
+import Svg, { G, Rect, Text } from 'react-native-svg';
 import * as ImagePicker from 'expo-image-picker';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton } from 'react-native-paper';
+import { DefaultTheme, List, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton } from 'react-native-paper';
 import AutoImage from './AutoImage';
 import ImageView from "react-native-image-viewing";
 import { Rectangle } from './types/Rectangle';
@@ -62,15 +62,20 @@ export default function ImageWithRegions({width, height, source, rectangles}: Im
       />
       {transformedRectangles.map((rectangle, index) =>
         <Svg key={index} style={StyleSheet.absoluteFill}>
-          <Rect
-            x={rectangle.x}
-            y={rectangle.y}
-            width={rectangle.width}
-            height={rectangle.height}
-            stroke="black"
-            strokeWidth="2"
-            fill="transparent"
-          />
+          <G  x={rectangle.x}
+              y={rectangle.y}>
+            <Rect
+              rx="5"
+              width={rectangle.width}
+              height={rectangle.height}
+              stroke="black"
+              strokeWidth="2"
+              fill="transparent"
+            />
+            <Text x={50} fontStyle='italic' textAnchor='end' fontSize="16" fill="black">
+              Defect 1
+            </Text>
+          </G>
       </Svg>)}
     </View>
   );

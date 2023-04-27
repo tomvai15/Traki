@@ -1,16 +1,9 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native';
-import Svg, { Rect } from 'react-native-svg';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { ProductStackParamList } from '../ProductStackParamList';
-import { image } from '../test';
-import { image2 } from '../test2';
-import { image3 } from '../test3';
-import * as ImagePicker from 'expo-image-picker';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, Avatar, Card } from 'react-native-paper';
-import AutoImage from '../../../components/AutoImage';
-import ImageView from "react-native-image-viewing";
+import { Title, Avatar, Card } from 'react-native-paper';
 import { CommentIcon } from '../../../components/CommentIcon';
 import ImageWithRegions from '../../../components/ImageWithRegions';
 import { Rectangle } from '../../../components/types/Rectangle';
@@ -18,21 +11,11 @@ import { Drawing } from '../../../contracts/drawing/Drawing';
 import drawingService from '../../../services/drawing-service';
 import pictureService from '../../../services/picture-service';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
-
-const rect1: Rectangle = {height: 5.379220725988574, width: 8.324027355806326, x: 84.9352424527392, y: 23.948985593123503};
+import { CustomAvatar } from '../../../components/CustomAvatar';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'DefectsScreen'>;
 
-type ImageSize = {
-  width: number,
-  height: number
-}
-
 const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="wrench" />;
-
-const images = [image, image2, image];
-
-//const defects = [1,2,3,4,5,6];
 
 type DrawingWithImage = {
   drawing: Drawing,
@@ -98,7 +81,7 @@ export default function DefectsScreen({route, navigation}: Props) {
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
             <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId, drawingId: item.drawingId, defectId: item.id})}>
-              <Card.Title title={item.title} subtitle={item.description} left={Wrench} right={() => <CommentIcon text={'0'}/>} />
+              <Card.Title title={item.title} subtitle={item.description} left={() => <CustomAvatar user={item.author} size={50}/>} right={() => <CommentIcon text={'0'}/>} />
             </TouchableOpacity >
           </Card>
         )}

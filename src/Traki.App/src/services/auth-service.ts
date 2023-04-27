@@ -3,6 +3,7 @@ import { LoginRequest } from '../contracts/auth/LoginRequest';
 import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginResponse } from '../contracts/auth/LoginResponse';
 import { RegisterDeviceRequest } from '../contracts/auth/RegisterDeviceRequest';
+import { GetUserInfoResponse } from '../contracts/auth/GetUserInfoResponse';
 
 const route = 'auth';
 
@@ -20,8 +21,14 @@ class AuthService {
   }
 
   async getUserInfo(): Promise<GetUserResponse> {
-    const fullRoute = route + '/userinfo';
+    const fullRoute = route + '/userstate';
     const response = await axiosApiInstance.get<GetUserResponse>(fullRoute, { headers: {} });
+    return response.data;
+  }
+
+  async getUserFullInfo(): Promise<GetUserInfoResponse> {
+    const fullRoute = route + '/userinfo';
+    const response = await axiosApiInstance.get<GetUserInfoResponse>(fullRoute, { headers: {} });
     return response.data;
   }
 }
