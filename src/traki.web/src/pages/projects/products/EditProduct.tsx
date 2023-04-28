@@ -15,11 +15,13 @@ import { useAlert } from 'hooks/useAlert';
 import { alertInitialState } from 'state/alert-state';
 import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
+import { AuthorBar } from 'components/AuthorBar';
 
 const initialProduct: Product = {
   id: 0,
   name: '',
-  projectId: 0
+  projectId: 0,
+  status: ''
 };
 
 export function EditProduct() {
@@ -169,6 +171,9 @@ export function EditProduct() {
                     <Divider></Divider>
                   </Grid>
                   <Grid item xs={12} md={12}>
+                    <Box sx={{marginBottom: '15px'}}>
+                      <AuthorBar user={product.author}/>
+                    </Box>
                     <TextField 
                       sx={{width: '100%'}}
                       label='Name'
@@ -176,11 +181,11 @@ export function EditProduct() {
                       onChange={(e) => setProduct({...product, name: e.target.value})}
                     />
                   </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Button disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
+                  </Grid>
                 </Grid>
               </CardContent>
-              <CardActions>
-                <Button disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
-              </CardActions>
             </Card>
           </Grid>
           <Grid item xs={12}>

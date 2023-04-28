@@ -12,7 +12,8 @@ import { pageState } from 'state/page-state';
 const initialProduct: Product = {
   id: 0,
   name: '',
-  projectId: 0
+  projectId: 0,
+  status
 };
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];

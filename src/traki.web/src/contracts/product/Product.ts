@@ -1,5 +1,9 @@
+import { Author } from "contracts/drawing/defect/Author";
+
 export type Product = {
   id: number,
   name: string,
-  projectId: number
+  status: string,
+  projectId: number,
+  author?: Author
 }

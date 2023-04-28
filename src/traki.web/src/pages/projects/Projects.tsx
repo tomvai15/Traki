@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Breadcrumbs, Button, Card, CardContent, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Button, Card, CardContent, Chip, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { pictureService, productService, projectService } from '../../services';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
@@ -8,6 +8,10 @@ import { Project } from '../../contracts/projects/Project';
 import { Product } from '../../contracts/product/Product';
 import { useRecoilState } from 'recoil';
 import { pageState } from 'state/page-state';
+import { ProtectedComponent } from 'components/ProtectedComponent';
+import { HideableComponent } from 'components/HideableComponent';
+import { AuthorBar } from 'components/AuthorBar';
+import { CustomAvatar } from 'components/CustomAvatar';
 
 type ProjectWithImage = {
   project: Project,
@@ -57,7 +61,11 @@ export function Projects() {
       </Grid>
       <Button onClick={() => setPageState({...page, notFound: true})}>Press</Button>
       <Grid item xs={12} md={12}>
-        <Button onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Project</Button>
+        <ProtectedComponent role={'ProjectManager'}>
+          <Button onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>
+            Add Project
+          </Button>
+        </ProtectedComponent>
       </Grid>
       <Grid item xs={12} md={12}>
         { projects.map((item, index) =>
@@ -83,12 +91,15 @@ function ProjectProducts({project}: ProjectProductsProps) {
   async function fetchProducts() {
     const getProductsResponse = await productService.getProducts(project.project.id);
     setProducts(getProductsResponse.products);
+    console.log(getProductsResponse.products);
   }
+  
   return (
-    <Card key={project.project.id} sx={{marginBottom: 2, minWidth: '700px', width: '75%', maxWidth: '1000px'}} title='Sample Project'>
+    <Card key={project.project.id} sx={{marginBottom: 2}} title='Sample Project'>
       <CardContent>
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '10px'}}>
           <Box>
+            <AuthorBar user={project.project.author}></AuthorBar>
             <Typography variant="h5" component="div">
               {project.project.name}
             </Typography>
@@ -97,8 +108,14 @@ function ProjectProducts({project}: ProjectProductsProps) {
             </Typography>
           </Box>
           <Box>
-            <Button onClick={() => navigate(`/projects/${project.project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
-            <Button onClick={() => navigate(`/projects/${project.project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>Edit Project</Button>
+            <ProtectedComponent role={'ProductManager'}>
+              <Button onClick={() => navigate(`/projects/${project.project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
+            </ProtectedComponent>
+            <HideableComponent checkIfRender={(user) => user.id == project.project.author?.id}>
+              <Button onClick={() => navigate(`/projects/${project.project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>
+                Edit Project
+              </Button>
+            </HideableComponent>
           </Box>
         </Box>
         <Divider/>
@@ -111,9 +128,17 @@ function ProjectProducts({project}: ProjectProductsProps) {
                   <Divider></Divider>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate(`/projects/${project.project.id}/products/${product.id}`)}>
+                      <ListItemIcon>
+                        <AuthorBar user={product.author} variant={'short'}/>
+                      </ListItemIcon>
                       <ListItemText>
                         <Typography variant='h6'>{product.name}</Typography>
                       </ListItemText>
+                      <ListItemIcon>
+                        {product.status == 'Active' ? 
+                          <Chip color='success' label={product.status} /> :
+                          <Chip variant='outlined' label={product.status} />}
+                      </ListItemIcon>
                     </ListItemButton>
                   </ListItem>
                   <Divider></Divider>

@@ -44,12 +44,12 @@ namespace Traki.UnitTests.Domain.Handlers
             Defect defect = new Defect { Description = "Test Defect" };
 
             var drawing = new Drawing { Id = drawingId, ProductId = 3 };
-            var product = new Product { Id = drawing.ProductId, UserId = 4 };
-            var user = new User { Id = product.UserId, DeviceToken = "TestDeviceToken" };
+            var product = new Product { Id = drawing.ProductId, AuthorId = 4 };
+            var user = new User { Id = product.AuthorId, DeviceToken = "TestDeviceToken" };
 
             _drawingsRepositoryMock.Setup(x => x.GetDrawing(drawingId)).ReturnsAsync(drawing);
             _productsRepositoryMock.Setup(x => x.GetProduct(drawing.ProductId)).ReturnsAsync(product);
-            _usersRepositoryMock.Setup(x => x.GetUserById(product.UserId)).ReturnsAsync(user);
+            _usersRepositoryMock.Setup(x => x.GetUserById(product.AuthorId)).ReturnsAsync(user);
 
             Defect savedDefect = null;
             _defectsRepositoryMock.Setup(x => x.CreateDefect(It.IsAny<Defect>()))

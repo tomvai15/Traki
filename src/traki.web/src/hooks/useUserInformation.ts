@@ -8,7 +8,9 @@ export const useUserInformation = () => {
   async function fetchUser() {
     try {
       const getUserResponse = await authService.getUserInfo();
-      setUserInfo({...userInfo, ...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign });
+      setUserInfo((x) => { 
+        return  {...x, ...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign };
+      });
       console.log('ok');
     } catch {
       setUserInfo({ id: -1, loggedInDocuSign: false });

@@ -3,6 +3,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link as BreadLink, Dialog, DialogTitle, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { Protocol } from '../../../contracts/protocol/Protocol';
 import protocolService from '../../../services/protocol-service';
+import { PaginatedList } from 'components/PaginatedList';
 
 export interface Props {
   open: boolean;
@@ -35,18 +36,16 @@ export default function AddProtocolDialog(props: Props) {
   return (
     <Dialog onClose={onclose} open={open}>
       <DialogTitle>Select protocol</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {protocols.map((protocol, index) => (
-          <ListItem key={index} disableGutters>
-            <ListItemButton onClick={() => handleListItemClick(protocol.id)}>
-              <ListItemAvatar>
-                <AssignmentIcon />
-              </ListItemAvatar>
-              <ListItemText primary={  protocol.id +' ' + protocol.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <PaginatedList height='380px' items={protocols} renderItem={(item) => (
+        <ListItem disableGutters>
+          <ListItemButton onClick={() => handleListItemClick(item.id)}>
+            <ListItemAvatar>
+              <AssignmentIcon />
+            </ListItemAvatar>
+            <ListItemText primary={  item.id +' ' + item.name} />
+          </ListItemButton>
+        </ListItem>
+      )}/>
     </Dialog>
   );
 }

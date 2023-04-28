@@ -120,13 +120,13 @@ namespace Traki.Infrastructure.Data
 
             modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.Projects)
-                .WithOne(p => p.User)
+                .WithOne(p => p.Author)
                 .OnDelete(DeleteBehavior.NoAction);
 
 
             modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.Products)
-                .WithOne(p => p.User)
+                .WithOne(p => p.Author)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserEntity>()

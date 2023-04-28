@@ -11,7 +11,7 @@
         public ICollection<TemplateEntity> Templates { get; set; }
         public int CompanyId { get; set; }
         public CompanyEntity Company { get; set; }
-        public int UserId { get; set; }
-        public UserEntity User { get; set; }
+        public int AuthorId { get; set; }
+        public UserEntity Author { get; set; }
     }
 }

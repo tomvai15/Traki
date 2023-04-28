@@ -291,7 +291,7 @@ namespace Traki.Infrastructure.Data
                 Address = $"Sample Address",
                 ImageName = "5e6669e4-c033-4ded-93e6-f44dccc6a157.png",
                 CompanyId = 1,
-                UserId = 2,
+                AuthorId = 2,
             },
             new ProjectEntity
             {
@@ -300,7 +300,7 @@ namespace Traki.Infrastructure.Data
                 Address = $"Sample Address",
                 ImageName = "02653609-3004-4a48-b2d6-bddab03e778c.png",
                 CompanyId = 1,
-                UserId = 2,
+                AuthorId = 2,
             }
         };
 
@@ -310,19 +310,22 @@ namespace Traki.Infrastructure.Data
             {
                 Name = $"SH.1 / 01.2.21.1.0016",
                 ProjectId = 1,
-                UserId = 1
+                AuthorId = 1,
+                Status = ProductStatus.Active
             },
             new ProductEntity
             {
                 Name = $"SH.2 / 01.2.21.1.0016 GT",
                 ProjectId = 2,
-                UserId = 1
+                AuthorId = 1,
+                Status = ProductStatus.Completed
             },
             new ProductEntity
             {
                 Name = $"SH.1 / 01.2.21.1.0016",
                 ProjectId = 1,
-                UserId = 1
+                AuthorId = 1,
+                Status = ProductStatus.Active
             },
         };
 
