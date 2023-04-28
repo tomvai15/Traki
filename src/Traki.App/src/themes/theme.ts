@@ -39,7 +39,7 @@ export const theme = {
       level2: "#F7F7F7",
       level3: "#F7F7F7",
       level4: "#F7F7F7",
-      level5: "#F7F7F7",
+      level5: "#EAE6DD",
     },
     surfaceDisabled: "rgba(31, 27, 22, 0.12)",
     onSurfaceDisabled: "rgba(31, 27, 22, 0.38)",

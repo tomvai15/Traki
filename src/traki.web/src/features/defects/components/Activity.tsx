@@ -36,9 +36,8 @@ export function Activity ({defectActivity}: Props) {
           {initials()}
         </Avatar>
         <Box sx={{ width: '100%'}}> 
-          <Box sx={{display: 'flex', gap: '10px'}}>
+          <Box sx={{display: 'flex', gap: '10px', justifyContent: 'space-between', alignItems: 'center'}}>
             <Typography>{formatName()}</Typography>
-            <br/>
             <Typography variant='caption'>{formatDate(new Date(defectActivity.date))}</Typography>
           </Box>
           <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%'}}>

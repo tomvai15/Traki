@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Traki.Domain.Constants;
 using Traki.Domain.Models;
 using Traki.Domain.Services;
 using Traki.Domain.Services.DocumentSigning.Models;
@@ -17,13 +18,15 @@ namespace Traki.Infrastructure.Services
 {
     public class DocuSignService : IDocuSignService
     {
+        private readonly WebSettings _webSettings;
         private readonly DocuSignSettings _docuSignSettings;
         private readonly HttpClient _httpClient;
 
-        public DocuSignService(IOptions<DocuSignSettings> docuSignOptions, HttpClient httpClient)
+        public DocuSignService(IOptions<WebSettings> webSettings, IOptions<DocuSignSettings> docuSignOptions, HttpClient httpClient)
         {
             _docuSignSettings = docuSignOptions.Value;
             _httpClient = httpClient;
+            _webSettings = webSettings.Value;
         }
 
         public async Task<OAuthResponse> GetAccessTokenUsingCode(string code)
@@ -86,8 +89,9 @@ namespace Traki.Infrastructure.Services
             return stream;
         }
 
-        public async Task<SignDocumentResult> CreateDocumentSigningRedirectUri(DocuSignUserInfo docuSignUserInfo, string accessToken, string docPdf, string returnUrl, string state)
+        public async Task<SignDocumentResult> CreateDocumentSigningRedirectUri(DocuSignUserInfo docuSignUserInfo, string accessToken, string docPdf, string state)
         {
+            string returnUrl =  _webSettings.Url + "/signvalidation";
             const string pathEnd = "/restapi";
             var signerEmail = docuSignUserInfo.Email;
             var signerName = docuSignUserInfo.Name;
@@ -227,7 +231,7 @@ namespace Traki.Infrastructure.Services
 
         public async Task<string> GetAuthorisationCodeRequest(string state)
         {
-            const string redirectUrl = "http://localhost:3000/checkoauth";
+            string redirectUrl =  _webSettings.Url  + "/checkoauth";
             return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}&state={state}";
         }
 

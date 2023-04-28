@@ -1,13 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/home/HomeScreen';
+import { HomeStackParamList } from '../screens/home/HomeStackParamList';
 
-const HomeStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 export default function HomeTab() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" options={{header: () => <></>}} component={HomeScreen} />
+      <HomeStack.Screen name='HomeScreen' options={{header: () => <></>}} component={HomeScreen} />
     </HomeStack.Navigator>
   );
 }
