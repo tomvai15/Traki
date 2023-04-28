@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Recommendation;
@@ -24,6 +25,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<GetRecommendationResponse>> GetRecommendations()
         {
             _claimsProvider.TryGetUserId(out int userId);

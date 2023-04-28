@@ -45,7 +45,9 @@ namespace Traki.Api.Bootstrapping
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings.Secret)),
                             ValidateIssuer = false,
-                            ValidateAudience = false
+                            ValidateAudience = false,
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.Zero
                         };
                     })
                     .AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>

@@ -15,6 +15,8 @@ namespace Traki.Infrastructure.Entities
         public string Status { get; set; }
         public string? DeviceToken { get; set; }
         public string? EncryptedRefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
         public IEnumerable<ProjectEntity> Projects { get; set; }
         public IEnumerable<ProductEntity> Products { get; set; }
         public IEnumerable<DefectEntity> Defects { get; set; }

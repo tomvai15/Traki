@@ -4,13 +4,14 @@ import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginResponse } from '../contracts/auth/LoginResponse';
 import { RegisterDeviceRequest } from '../contracts/auth/RegisterDeviceRequest';
 import { GetUserInfoResponse } from '../contracts/auth/GetUserInfoResponse';
+import { RefreshTokenRequest } from '../contracts/auth/RefreshTokenRequest';
 
 const route = 'auth';
 
 class AuthService {
   async login(loginRequest: LoginRequest): Promise<LoginResponse> {
     console.log(loginRequest);
-    const fullRoute = route + '/jwtlogin';
+    const fullRoute = route + '/jwt-login';
     const response = await axiosApiInstance.post(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
     return response.data;
   }

@@ -1,4 +1,4 @@
-import  React, { useState } from 'react';
+import  React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { userState } from '../../state/user-state';
@@ -19,6 +19,10 @@ export default function SignInScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  useEffect(() => {
+    fetchFullUserInformation();
+  }, []);
+
   function canLogin() {
     return email != '' && password != '';
   }
@@ -31,7 +35,7 @@ export default function SignInScreen() {
     try {
       const response = await authService.login(request);
       console.log(response);
-      setUserInfo({...userInfo, token: response.token});
+      setUserInfo({...userInfo, token: response.token, refreshToken: response.refreshToken});
 
       const registerDeviceRequest: RegisterDeviceRequest = {
         deviceToken: deviceInfo.token
