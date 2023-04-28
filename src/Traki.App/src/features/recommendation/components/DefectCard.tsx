@@ -41,14 +41,11 @@ export function DefectCard ({defect, navigation}: Props) {
       <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
           <View>
-            <Text>
+            <Text style={{fontSize: 20}}>
               {defect.defect.title}
             </Text>
             <View>
-              <Text>4 Defects</Text>
-            </View>
-            <View>
-              <Text>3 Protocols</Text>
+              <Text>Product: test</Text>
             </View>
           </View>
           <View>

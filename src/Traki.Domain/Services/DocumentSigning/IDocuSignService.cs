@@ -11,6 +11,6 @@ namespace Traki.Domain.Services.Docusign
         Task<OAuthResponse> GetAccessTokenUsingCode(string code);
         Task<OAuthResponse> GetAccessTokenUsingRefreshToken(string refreshToken);
         Task<DocuSignUserInfo> GetUserInformation(string accessToken);
-        Task<SignDocumentResult> CreateDocumentSigningRedirectUri(DocuSignUserInfo docuSignUserInfo, string accessToken,string docPdf, string returnUrl, string state);
+        Task<SignDocumentResult> CreateDocumentSigningRedirectUri(DocuSignUserInfo docuSignUserInfo, string accessToken,string docPdf, string state);
     }
 }

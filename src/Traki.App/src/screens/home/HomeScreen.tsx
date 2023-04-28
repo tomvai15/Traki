@@ -12,7 +12,11 @@ import { DefectCard } from '../../features/recommendation/components/DefectCard'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParamList } from './HomeStackParamList';
 
+
 const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="alert" />;
+
+const FileCad = () => <Avatar.Icon size={50} style={{backgroundColor:'orange'}}  icon="file-cad" />;
+
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>;
 
@@ -34,7 +38,7 @@ export default function HomeScreen({navigation}: Props) {
   return (
     <ScrollView>
       <Card style={{marginBottom: 10}}>
-        <Card.Title  title='Products' left={Wrench}/>
+        <Card.Title  title='Products' left={FileCad}/>
       </Card>
       {products.map((item, index) => <ProductCard navigation={navigation} key={index} product={item} />)}
       <Card style={{marginBottom: 10}}>

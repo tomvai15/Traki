@@ -41,7 +41,7 @@ export function ProductCard ({product, navigation}: Props) {
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
             <View>
-              <Text>
+              <Text style={{fontSize: 20}}>
                 {product.name}
               </Text>
               <View>

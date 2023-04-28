@@ -70,9 +70,8 @@ namespace Traki.Domain.Handlers
             string accessToken = await _accessTokenProvider.GetAccessToken();
 
             var userInfo = await _docuSignService.GetUserInformation(accessToken);
-            string returnUri = "http://localhost:3000/signvalidation";
 
-            var signDocumentResult = await _docuSignService.CreateDocumentSigningRedirectUri(userInfo, accessToken, report, returnUri, state);
+            var signDocumentResult = await _docuSignService.CreateDocumentSigningRedirectUri(userInfo, accessToken, report, state);
 
             await _protocolHandler.SignReport(protocolId, signDocumentResult.EnvelopeId);
             return signDocumentResult.RedirectUri;
