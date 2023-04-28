@@ -14,6 +14,7 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { DefectDetails } from 'features/defects/components/DefectDetails';
 import { drawingService, pictureService, defectService } from 'services';
 import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
+import { PaginatedList } from 'components/PaginatedList';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -264,8 +265,8 @@ export function DefectsPage() {
               <CardContent>
                 <FormControlLabel control={<Checkbox defaultChecked />} onChange={()=> setIncludeFixedDefects(!includeFixedDefects)} checked={includeFixedDefects} label="Include fixed defects" />
                 <List component="nav" sx={{overflow: 'auto', maxHeight: 250}}>
-                  { defects.filter(x=> x.status >= Number(!includeFixedDefects)).map((item, index) =>
-                    <ListItemButton key={index} alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
+                  <PaginatedList items={defects.filter(x=> x.status >= Number(!includeFixedDefects))} renderItem={(item) =>
+                    <ListItemButton alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
                       <ListItemAvatar>
                         <Avatar alt="Tomas Vainoris" src={  item.author?.userIconBase64 ? item.author.userIconBase64 :  "/static/images/avatar/1.jpg"}>
                           { item.author?.name.toUpperCase()[0] + '' +  item.author?.surname.toUpperCase()[0]}
@@ -294,7 +295,7 @@ export function DefectsPage() {
                           <ModeCommentIcon/> 1
                         </ListItemIcon>
                       }
-                    </ListItemButton>)}
+                    </ListItemButton>}/>
                 </List>
               </CardContent>
             </Card>

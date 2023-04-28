@@ -7,6 +7,7 @@ interface UserState {
 	id: number,
   name?: string,
   email?: string,
+  role?: string,
   user?: UserInfo,
   loggedInDocuSign: boolean
 }

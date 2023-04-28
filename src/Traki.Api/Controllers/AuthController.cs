@@ -103,6 +103,7 @@ namespace Traki.Api.Controllers
                     Id = userId,
                     Name = user.Name,
                     Email = user.Email,
+                    Role = user.Role,  
                 },
                 LoggedInDocuSign = !accessToken.IsNullOrEmpty()
             };

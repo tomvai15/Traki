@@ -3,6 +3,7 @@ import { Breadcrumbs, Grid, Stack, Typography } from '@mui/material';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
 import { NewProtocol, ProtocolCard, ProtocolsCard } from 'features/protocols/components';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 export function TemplateProtocols() {
   const [protocols, setProtocols] = useState<Protocol[]>([]);
@@ -35,7 +36,9 @@ export function TemplateProtocols() {
             <ProtocolsCard protocols={protocols} setSelectedProtocol={(protocol) => setSelectedProtocol(protocol)}/>
           </Grid>
           <Grid item xs={12} md={12}>
-            <NewProtocol fetchProtocols={fetchProtocols}/>
+            <ProtectedComponent role='ProjectManager'>
+              <NewProtocol fetchProtocols={fetchProtocols}/>
+            </ProtectedComponent>
           </Grid>
         </Stack>
       </Grid>

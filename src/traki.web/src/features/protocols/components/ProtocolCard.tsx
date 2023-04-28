@@ -6,6 +6,7 @@ import { Protocol } from 'contracts/protocol/Protocol';
 import { UpdateProtocolRequest } from 'contracts/protocol/UpdateProtocolRequest';
 import { protocolService, sectionService } from 'services';
 import { ProtocolSections } from './ProtocolSections';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 type Props = {
   selectedProtocol?: Protocol,
@@ -84,10 +85,16 @@ export function ProtocolCard({selectedProtocol, updateProtocol}: Props) {
             value={protocol.name}
             onChange={(e) => updateName(e.target.value)}
           />
-          <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >Save</Button>
+          <ProtectedComponent role='ProjectManager'>
+            <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >
+              Save
+            </Button>
+          </ProtectedComponent>
         </Stack>
         <ProtocolSections sections={sections} setSections={setSections}/>
-        <Button onClick={() => navigate(`/templates/protocols/${protocol.id}/sections/create`)} variant='contained' >Add Section</Button>
+        <ProtectedComponent role='ProjectManager'>
+          <Button onClick={() => navigate(`/templates/protocols/${protocol.id}/sections/create`)} variant='contained' >Add Section</Button>
+        </ProtectedComponent>
       </CardContent>
     </Card>
   );
