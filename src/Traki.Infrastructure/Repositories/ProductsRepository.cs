@@ -32,7 +32,8 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<Product> GetProduct(int productId)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await _context.Products.Include(x => x.Author)
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             return _mapper.Map<Product>(product);
         }
@@ -42,6 +43,7 @@ namespace Traki.Infrastructure.Repositories
             var project = await _context.Projects
                .Where(x => x.Id == projectId)
                .Include(x => x.Products)
+               .ThenInclude(x=> x.Author)
                .FirstOrDefaultAsync();
 
             project.RequiresToBeNotNullEnity();

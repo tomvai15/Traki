@@ -43,7 +43,7 @@ namespace Traki.Domain.Handlers
 
             var drawing = await _drawingsRepository.GetDrawing(drawingId);
             var product = await _productsRepository.GetProduct(drawing.ProductId);
-            var user = await _usersRepository.GetUserById(product.UserId);
+            var user = await _usersRepository.GetUserById(product.AuthorId);
 
             string data = JsonConvert.SerializeObject(new
             {
@@ -56,7 +56,7 @@ namespace Traki.Domain.Handlers
             var defectNotification = new DefectNotification
             {
                 DefectId = defect.Id,
-                UserId = product.UserId,
+                UserId = product.AuthorId,
                 Title = "New Defect",
                 Body = $"Someone create new defect for product {product.Name}",
                 Data = data

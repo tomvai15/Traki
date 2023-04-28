@@ -9,6 +9,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import { Divider } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 export default function DrawerItems() {
 
@@ -16,37 +17,41 @@ export default function DrawerItems() {
 
   return (
     <React.Fragment>
-      <ListItemButton onClick={() => navigate('home')}>
-        <ListItemIcon>
-          <HomeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Home" />
-      </ListItemButton>
-      <ListItemButton onClick={() => navigate('projects')}>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Projects" />
-      </ListItemButton>
-      <ListItemButton onClick={() => navigate('/templates/protocols')}>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Templates" />
-      </ListItemButton>
+      <ProtectedComponent role={['ProjectManager', 'ProductManager']}>
+        <ListItemButton onClick={() => navigate('home')}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Home" />
+        </ListItemButton>
+        <ListItemButton onClick={() => navigate('projects')}>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Projects" />
+        </ListItemButton>
+        <ListItemButton onClick={() => navigate('/templates/protocols')}>
+          <ListItemIcon>
+            <AssignmentIcon />
+          </ListItemIcon>
+          <ListItemText primary="Templates" />
+        </ListItemButton>
+      </ProtectedComponent>
       <Divider/>
-      <ListItemButton onClick={() => navigate('company')}>
-        <ListItemIcon>
-          <BusinessIcon />
-        </ListItemIcon>
-        <ListItemText primary="Company" />
-      </ListItemButton>
-      <ListItemButton onClick={() => navigate('/admin/users')}>
-        <ListItemIcon>
-          <GroupIcon />
-        </ListItemIcon>
-        <ListItemText primary="Users" />
-      </ListItemButton>
+      <ProtectedComponent role={['Administrator']}>
+        <ListItemButton onClick={() => navigate('company')}>
+          <ListItemIcon>
+            <BusinessIcon />
+          </ListItemIcon>
+          <ListItemText primary="Company" />
+        </ListItemButton>
+        <ListItemButton onClick={() => navigate('/admin/users')}>
+          <ListItemIcon>
+            <GroupIcon />
+          </ListItemIcon>
+          <ListItemText primary="Users" />
+        </ListItemButton>
+      </ProtectedComponent>
     </React.Fragment>
   );
 }

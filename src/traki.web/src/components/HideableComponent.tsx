@@ -1,16 +1,17 @@
+import { UserInfo } from 'contracts/auth/UserInfo';
 import React from 'react';
 import { useRecoilState } from "recoil";
 import { userState } from "state/user-state";
 
 type Props = {
   children?: React.ReactNode,
-  role: string[] | string
+  checkIfRender: (user: UserInfo) =>  boolean
 };
 
-export const ProtectedComponent: React.FC<Props> = ({children, role}) => {
+export const HideableComponent: React.FC<Props> = ({children, checkIfRender}) => {
 
   const [userInfo] = useRecoilState(userState);
   
-  return userInfo && userInfo.role &&  ( Array.isArray(role) ? role.includes(userInfo.role) : userInfo.role == role )  ? 
+  return  userInfo.user && checkIfRender(userInfo.user)  ? 
     <>{children}</> : <></>;
 };

@@ -49,7 +49,7 @@ namespace Traki.Api.Controllers
             var project = _mapper.Map<Project>(createProjectRequest);
             _claimsProvider.TryGetUserId(out int userId);
             project.CompanyId = 1;
-            project.UserId = userId;
+            project.AuthorId = userId;
             var createdProject = await _projectsRepository.CreateProject(project);
 
             return CreatedAtAction("GetProject", new { projectId = createdProject.Id }, createdProject);
@@ -62,7 +62,7 @@ namespace Traki.Api.Controllers
             var project = _mapper.Map<Project>(createProjectRequest);
             _claimsProvider.TryGetUserId(out int userId);
             project.CompanyId = 1;
-            project.UserId = userId;
+            project.AuthorId = userId;
             await _projectsRepository.UpdateProject(project);
             return Ok();
         }

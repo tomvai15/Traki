@@ -6,6 +6,7 @@ import { Author } from 'contracts/drawing/defect/Author';
 import { Activity } from './Activity';
 
 const noneAuthor: Author = {
+  id: 0,
   name: '',
   surname: ''
 };

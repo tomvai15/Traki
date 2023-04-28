@@ -20,7 +20,8 @@ namespace Traki.Infrastructure.Repositories
         }
         public async Task<Project> GetProject(int projectId)
         {
-            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            var project = await _context.Projects.Include(x => x.Author)
+                                .FirstOrDefaultAsync(p => p.Id == projectId);
 
             project.RequiresToBeNotNullEnity();
 
@@ -29,7 +30,7 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            var projects = await _context.Projects.ToListAsync();
+            var projects = await _context.Projects.Include(x => x.Author).ToListAsync();
             return _mapper.Map<IEnumerable<Project>>(projects);
         }
 

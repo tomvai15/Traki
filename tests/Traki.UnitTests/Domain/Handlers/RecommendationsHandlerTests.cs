@@ -33,8 +33,8 @@ namespace Traki.UnitTests.Domain.Handlers
 
             var products = new List<Product>
             {
-                new Product { Id = 1, UserId = userId },
-                new Product { Id = 2, UserId = userId }
+                new Product { Id = 1, AuthorId = userId },
+                new Product { Id = 2, AuthorId = userId }
             };
 
             _productsRepositoryMock
@@ -51,7 +51,7 @@ namespace Traki.UnitTests.Domain.Handlers
                     {
                         Id = 1,
                         ProductId = 1,
-                        Product = new Product { Id = 1, UserId = userId, }
+                        Product = new Product { Id = 1, AuthorId = userId, }
                     }
                 },
                 new Defect
@@ -62,7 +62,7 @@ namespace Traki.UnitTests.Domain.Handlers
                     {
                         Id = 2,
                         ProductId = 2,
-                        Product = new Product { Id = 2, UserId = userId, }
+                        Product = new Product { Id = 2, AuthorId = userId, }
                     }
                 }
             };
