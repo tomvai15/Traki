@@ -8,7 +8,7 @@ import { image } from '../test';
 import { image2 } from '../test2';
 import { image3 } from '../test3';
 import * as ImagePicker from 'expo-image-picker';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton } from 'react-native-paper';
+import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, HelperText } from 'react-native-paper';
 import AutoImage from '../../../components/AutoImage';
 import ImageView from "react-native-image-viewing";
 import defectService from '../../../services/defect-service';
@@ -20,6 +20,7 @@ import pictureService from '../../../services/picture-service';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 import uuid from 'react-native-uuid';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
+import { validate, validationRules } from '../../../utils/textValidation';
 
 interface Rectangle {
   x: number;
@@ -249,7 +250,7 @@ type AddDefectDialogProps = {
 
 function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
 
-  const [imageUri, setImageUri] = useState<string>();
+  const [imageUri, setImageUri] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [viewerActive, setViewerActive] = useState<boolean>(false);
@@ -272,8 +273,7 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
       result.assets[0].uri,
       [],
       { compress: 0.1 }
-    );
-
+    )
     const localUri = manipResult.uri;
     setImageUri(localUri);
   };
@@ -285,6 +285,9 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
       await uploadImage(imageUri, pictureName);
     }
     onSubmit(title, description, pictureName);
+    setDescription('');
+    setTitle('');
+    setImageUri('');
   }
 
   async function uploadImage(imageUri: string, pictureName: string) {
@@ -295,6 +298,12 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
     let formData = new FormData();
     formData.append('photo', JSON.parse(JSON.stringify({ uri: imageUri, name: pictureName, type })));
     await pictureService.uploadPicturesFormData('item', formData)
+  }
+
+  function canSubmit(): boolean {
+    return title!='' && description !='' &&
+            !validate(title, [validationRules.noSpecialSymbols]).message &&
+            !validate(description, [validationRules.noSpecialSymbols]).message;
   }
 
   return (
@@ -310,27 +319,39 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
           <Dialog.Title>Add defect</Dialog.Title>
           <Dialog.Content>
             <TextInput label={'Title'} 
+              maxLength={50}
+              error={validate(title, [validationRules.noSpecialSymbols]).invalid}
               multiline={true} 
               value={title} 
               onChangeText={(value) => setTitle(value)}>
             </TextInput>
-            <TextInput label={'description'} 
+            <HelperText type="error" visible={validate(title, [validationRules.noSpecialSymbols]).invalid}>
+              {validate(title, [validationRules.noSpecialSymbols]).message}
+            </HelperText>
+            <TextInput 
+              maxLength={250}
+              error={validate(description, [validationRules.noSpecialSymbols]).invalid}
+              label={'Description'} 
               multiline={true} 
               value={description} 
               onChangeText={(value) => setDescription(value)}>     
             </TextInput>
+            <HelperText type="error" visible={validate(description, [validationRules.noSpecialSymbols]).invalid}>
+              {validate(description, [validationRules.noSpecialSymbols]).message}
+            </HelperText>
           <View style={{margin: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>  
-            {imageUri != '' && 
+            {imageUri != '' && imageUri != undefined ? 
               <TouchableHighlight onPress={() => setViewerActive(true)}>
                 <Image source={{uri: imageUri}} style={{width: 100, height: 100}} ></Image>
-              </TouchableHighlight>
+              </TouchableHighlight> :
+              <View></View>
             }
             <IconButton onPress={() => pickImage()} size={30} icon='camera' />
           </View>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => onClose()}>Go back</Button>
-            <Button onPress={() => createDefect()}>Submit</Button>
+            <Button disabled={!canSubmit()} mode='contained' onPress={() => createDefect()}>Submit</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

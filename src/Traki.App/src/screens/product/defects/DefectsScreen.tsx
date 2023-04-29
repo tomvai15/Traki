@@ -61,7 +61,7 @@ export default function DefectsScreen({route, navigation}: Props) {
   }
 
   return (
-    <View>
+    <ScrollView>
       <Title>Defects</Title>
       <View style={{ marginVertical: 10 }}>
         <ScrollView horizontal={true}>
@@ -77,7 +77,7 @@ export default function DefectsScreen({route, navigation}: Props) {
           <Card.Title title="Add defect" left={Wrench} />
         </TouchableOpacity >
       </Card>
-      <ScrollView style={{height: 400, marginTop: 10}}>
+      <View style={{height: 400, marginTop: 10}}>
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
             <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId, drawingId: item.drawingId, defectId: item.id})}>
@@ -85,7 +85,7 @@ export default function DefectsScreen({route, navigation}: Props) {
             </TouchableOpacity >
           </Card>
         )}
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };

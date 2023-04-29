@@ -81,17 +81,13 @@ export default function ProtocolScreen({ route, navigation }: Props) {
       <View>
         <Title>{protocol.name}</Title>
       </View>
-      { isLoading ?
-      <View>
-        <ActivityIndicator animating={isLoading}/>
-      </View> :
       <FlatList data={sections} 
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
           <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
         }>
-      </FlatList>}
+      </FlatList>
     </ScreenView>
   );
 }

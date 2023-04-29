@@ -1,14 +1,14 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
 import { image } from '../test';
 import { image2 } from '../test2';
 import { image3 } from '../test3';
 import * as ImagePicker from 'expo-image-picker';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, Avatar, Card } from 'react-native-paper';
+import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, Avatar, Card, HelperText } from 'react-native-paper';
 import ImageWithViewer from '../../../components/ImageWithViewer';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
@@ -24,6 +24,8 @@ import { DefectActivities } from '../../../features/defect/components/DefectActi
 import { userState } from '../../../state/user-state';
 import { useRecoilState } from "recoil";
 import { CustomAvatar } from '../../../components/CustomAvatar';
+import { validate, validationRules } from '../../../utils/textValidation';
+import { useHeaderHeight } from '@react-navigation/elements'
 
 interface Rectangle {
   x: number;
@@ -51,6 +53,8 @@ type CommentWithImage = {
 }
 
 export default function DefectScreen({route, navigation}: Props) {
+
+  const height = useHeaderHeight()
 
   const [userInfo, setUserInfo] = useRecoilState(userState);
 
@@ -183,6 +187,11 @@ export default function DefectScreen({route, navigation}: Props) {
     setCommentText('');
   }
 
+  function canSubmitComment(): boolean {
+    return commentText != '' && 
+            !validate(commentText, [validationRules.noSpecialSymbols]).invalid;
+  }
+
   return (
     <ScrollView>
       <ScreenView>
@@ -204,10 +213,28 @@ export default function DefectScreen({route, navigation}: Props) {
           />
           <Card.Content>
             <View style={{padding: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} >
-              <TextInput value={commentText} onChangeText={setCommentText} style={{flex: 1, marginRight: 10}} label={'Comment...'} multiline={true}></TextInput>
+              <KeyboardAvoidingView 
+                keyboardVerticalOffset={200}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+                enabled>
+                <TextInput 
+                  maxLength={250}
+                  error={validate(commentText, [validationRules.noSpecialSymbols]).invalid}
+                  value={commentText} 
+                  onChangeText={setCommentText} 
+                  style={{flex: 1, marginRight: 10}} 
+                  label={'Comment...'} 
+                  multiline={true}/>
+                <HelperText type="error" visible={validate(commentText, [validationRules.noSpecialSymbols]).invalid}>
+                  {validate(commentText, [validationRules.noSpecialSymbols]).message}
+                </HelperText>
+              </KeyboardAvoidingView>
+              <View>
               {imageUri && <ImageWithViewer source={imageUri} width={60} height={100} ></ImageWithViewer>}
+              </View>
             </View>
-            <Button disabled={commentText==''} mode='contained' onPress={createComment}>Submit</Button>
+            <Button disabled={!canSubmitComment()} mode='contained' onPress={createComment}>Submit</Button>
           </Card.Content>
         </Card>
         <Text>Comments</Text>
