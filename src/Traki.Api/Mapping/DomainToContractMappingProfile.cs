@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Traki.Api.Contracts.Auth;
-using Traki.Api.Contracts.Checklist;
-using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Drawing;
 using Traki.Api.Contracts.Drawing.Defect;
@@ -18,7 +15,6 @@ using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities.Drawing;
-using Traki.Infrastructure.Entities.Section;
 using Question = Traki.Domain.Models.Section.Items.Question;
 
 namespace Traki.Api.Mapping
