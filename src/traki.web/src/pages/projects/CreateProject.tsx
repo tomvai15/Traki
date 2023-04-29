@@ -7,6 +7,7 @@ import pictureService from '../../services/picture-service';
 import { v4 as uuid } from 'uuid';
 import { Project } from '../../contracts/projects/Project';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
+import { validate, validationRules } from 'utils/textValidation';
 
 export function CreateProject() {
 
@@ -18,7 +19,13 @@ export function CreateProject() {
   const [address, setAddress] = useState<string>('');
 
   function canSubmit () {
-    return name && client && address && previewImage && file;
+    return name && client && address && previewImage && file && validateProjectInputs();
+  }
+
+  function validateProjectInputs() {
+    return !validate(name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+            !validate(address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+            !validate(client, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
   }
 
   async function submitProject() {
@@ -69,21 +76,30 @@ export function CreateProject() {
         <Card title='Sample Project'>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <TextField size='medium'
-              id="standard-read-only-input"
+              inputProps={{ maxLength: 50 }}
+              id="project-name"
+              error={validate(name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Project name"
               variant="standard"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <TextField
-              id="standard-read-only-input"
+              inputProps={{ maxLength: 50 }}
+              id="project-name"
+              error={validate(address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Address"
               variant="standard"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
             <TextField
-              id="standard-read-only-input"
+              inputProps={{ maxLength: 50 }}
+              id="project-name"
+              error={validate(client, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(client, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Client name"
               variant="standard"
               value={client}

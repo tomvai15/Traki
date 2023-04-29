@@ -5,6 +5,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import { v4 as uuid } from 'uuid';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { validate, validationRules } from 'utils/textValidation';
 
 const defaultQuestion: Question = {
   id: uuid(), 
@@ -23,12 +24,13 @@ const defaultMultipleChoice: MultipleChoice = {
 };
 
 type TemplateItemProps = {
+  index: number,
   item: Item
   deleteItem: (id: string) => void
   updateItem: (item: Item) => void
 };
 
-export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps) {
+export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateItemProps) {
   const theme = useTheme();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleCloseUserMenu = () => {
@@ -166,7 +168,10 @@ export function TemplateItem ({item, deleteItem, updateItem}: TemplateItemProps)
       <Card sx={{backgroundColor: theme.palette.grey[100], display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
         <Box sx={{flex: 1}}>
           <TextField sx={{width: '90%'}}
-            id="standard-disabled"
+            id={'section-item-' + index}
+            inputProps={{ maxLength: 100 }}
+            error={validate(item.name, [validationRules.noSpecialSymbols]).invalid}
+            helperText={validate(item.name, [validationRules.noSpecialSymbols]).message}
             multiline
             label="Question"
             variant="standard"

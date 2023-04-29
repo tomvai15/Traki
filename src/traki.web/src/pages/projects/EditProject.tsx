@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { Project } from '../../contracts/projects/Project';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 import { useParams } from 'react-router-dom';
+import { validate, validationRules } from 'utils/textValidation';
 
 
 const project: Project = {
@@ -43,7 +44,7 @@ export function EditProject() {
   }
 
   function canSubmit () {
-    return JSON.stringify(initialProject) != initialProjectJson; 
+    return JSON.stringify(initialProject) != initialProjectJson && validateProjectInputs(); 
   }
 
   async function submitProject() {
@@ -84,6 +85,12 @@ export function EditProject() {
     setProject({...initialProject, imageName: '????'});
   }
 
+  function validateProjectInputs() {
+    return !validate(initialProject.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+            !validate(initialProject.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+            !validate(initialProject.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={12}>
@@ -98,21 +105,30 @@ export function EditProject() {
         <Card title='Sample Project'>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <TextField size='medium'
-              id="standard-read-only-input"
+              inputProps={{ maxLength: 50 }}
+              id="project-name"
+              error={validate(initialProject.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(initialProject.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Project name"
               variant="standard"
               value={initialProject.name}
               onChange={(e) => setProject({...initialProject, name: e.target.value})}
             />
             <TextField
-              id="standard-read-only-input"
+              inputProps={{ maxLength: 50 }}
+              id="project-address"
+              error={validate(initialProject.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(initialProject.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Address"
               variant="standard"
               value={initialProject.address}
               onChange={(e) => setProject({...initialProject, address: e.target.value})}
             />
             <TextField
-              id="standard-read-only-input"
+              inputProps={{ maxLength: 50 }}
+              id="project-client"
+              error={validate(initialProject.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(initialProject.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Client name"
               variant="standard"
               value={initialProject.clientName}

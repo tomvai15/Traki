@@ -9,6 +9,7 @@ import { CreateTableCard } from 'features/protocols/components/CreateTableCard';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { Table } from 'contracts/protocol/section/Table';
 import { initialSection, defaulTable, defaultChecklist } from 'features/protocols/data';
+import { validate, validationRules } from 'utils/textValidation';
 
 export function CreateSectionPage() {
   const navigate = useNavigate();
@@ -20,6 +21,24 @@ export function CreateSectionPage() {
 
   const [sectionType, setSectionType] = useState<string>('checklist');
   const [canCreate, setCanCreate] = useState<boolean>(true);
+
+  function validInputs() {
+    return (validSection() && 
+            validChecklist() &&
+            validTable());
+  }
+
+  function validSection() {
+    return !validate(section?.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
+  }
+
+  function validChecklist() {
+    return !checklist?.items.map(x => !validate(x.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid).some((value) => value == false);
+  }
+
+  function validTable() {
+    return !table?.tableRows[0].rowColumns.map(x => !validate(x.value, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid).some((value) => value == false);
+  }
 
   function updateItems (items: Item[]) {
     const newChecklist = {...checklist, items: items};
@@ -58,13 +77,16 @@ export function CreateSectionPage() {
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextField sx={{width: '50%'}}
-                id="standard-disabled"
+                id="section-name"
+                inputProps={{ maxLength: 100 }}
+                error={validate(section?.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+                helperText={validate(section?.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
                 label="Section Name"
                 variant="standard"
                 value={section?.name}
                 onChange={(e) => updateSectionName(e.target.value)}
               />
-              <Button disabled={!canCreate} onClick={() => createSection()} variant='contained'>Create</Button>
+              <Button disabled={!canCreate || !validInputs()} onClick={() => createSection()} variant='contained'>Create</Button>
             </Box>
           </CardContent>    
           <CardContent sx={{paddingTop: 0}}>

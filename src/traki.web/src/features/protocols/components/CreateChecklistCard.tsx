@@ -92,7 +92,7 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
                               ...provided.draggableProps.style
                             }}
                           >
-                            <TemplateItem item={item} deleteItem={deleteItem} updateItem={updateItem}></TemplateItem>
+                            <TemplateItem index={index} item={item} deleteItem={deleteItem} updateItem={updateItem}></TemplateItem>
                           </Box>
                         );
                       }}
