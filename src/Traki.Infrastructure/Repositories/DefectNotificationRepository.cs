@@ -25,6 +25,7 @@ namespace Traki.Infrastructure.Repositories
         public async Task CreateDefectNotification(DefectNotification defectNotification)
         {
             var defectNotificationEntity = _mapper.Map<DefectNotificationEntity>(defectNotification);
+            defectNotificationEntity.CreationDate = DateTime.Now.ToString("s");
 
             _context.DefectNotifications.Add(defectNotificationEntity);
             await _context.SaveChangesAsync();
