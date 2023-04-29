@@ -1,9 +1,10 @@
 import  React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, View, Image, TouchableHighlight} from 'react-native';
-import { Button, Card, Paragraph, Text, Title, TextInput, Divider, Avatar, SegmentedButtons, ActivityIndicator, Checkbox, List, IconButton } from 'react-native-paper';
+import { Button, Card, Paragraph, Text, Title, TextInput, Divider, Avatar, SegmentedButtons, ActivityIndicator, Checkbox, List, IconButton, HelperText } from 'react-native-paper';
 import { Item } from '../../../contracts/protocol/items/Item';
 import { Question } from '../../../contracts/protocol/items/Question';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
+import { validate, validationRules } from '../../../utils/textValidation';
 
 type Props = {
   item: Item,
@@ -43,9 +44,16 @@ export function ProtocolSectionItemQuestion({ item, updateItem }: Props) {
         ]}
       />
       <Paragraph>Comment</Paragraph>
-      <TextInput value={item.question?.comment} 
-        onChangeText={(value)=>  updateQuestionComment(value)}
-        multiline={true}></TextInput>
+      {item.question &&
+        <View>
+          <TextInput 
+            value={item.question.comment} 
+            onChangeText={(value)=>  updateQuestionComment(value)}
+            multiline={true}/>
+          <HelperText type="error" visible={validate(item.question.comment, [validationRules.noSpecialSymbols]).invalid}>
+            {validate(item.question.comment, [validationRules.noSpecialSymbols]).message}
+          </HelperText>
+        </View>}
     </View>
   );
 }

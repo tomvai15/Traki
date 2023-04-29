@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, ActivityIndicator } from 'react-native';
 import { Button, Title, Divider } from 'react-native-paper';
 import { Section } from '../../../contracts/protocol/Section';
 import sectionService from '../../../services/section-service';
@@ -21,6 +21,8 @@ type Props = {
 
 export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Props) {
 
+  const [isLoading, setLoading] = React.useState(false);
+
   const [section, setSection] = useState<Section>(initialSection);
   const [initialSectionJson, setInitialSectionJson] = useState<string>('');
   const [itemImages, setItemImages] = useState<ItemImage[]>([]);
@@ -32,7 +34,8 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
   const [initialTableJson, setInitialTableJson] = useState<string>('');
 
   useEffect(() => {
-    fetchSection();
+    setLoading(true);
+    fetchSection().then(() => setLoading(false));
   }, []);
 
   async function fetchSection() {
@@ -163,6 +166,10 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
   }
 
   return (
+    isLoading ? 
+    <View style={{margin: 50}}>
+      <ActivityIndicator animating={isLoading}/>
+    </View> :
     <View style={{marginBottom: 30}}>
       <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
         <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
