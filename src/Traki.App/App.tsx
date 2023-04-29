@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
+import { StatusBar, StatusBarStyle } from 'react-native'
 import './src/extensions/string.extensions';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { Button, IconButton, List, Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,11 +20,29 @@ import HomeTab from './src/tabs/HomeTab';
 
 const Drawer = createDrawerNavigator();
 
+const STYLES = ['default', 'dark-content', 'light-content'] as const;
+const TRANSITIONS = ['fade', 'slide', 'none'] as const;
+
 export default function App() {
+
+  const [statusBarStyle, setStatusBarStyle] = useState<StatusBarStyle>(
+    STYLES[1],
+  );
+  const [statusBarTransition, setStatusBarTransition] = useState<
+    'fade' | 'slide' | 'none'
+  >(TRANSITIONS[0]);
+
   return (
     <PaperProvider theme={theme}>
       <RecoilRoot>
         <ReactNativeRecoilPersistGate store={ReactNativeRecoilPersist}>
+          <StatusBar
+            animated={true}
+            backgroundColor="#D5D5D5"
+            barStyle={statusBarStyle}
+            showHideTransition={statusBarTransition}
+            hidden={false}
+          />
           <RecoilNexus/>
           <Main/>
         </ReactNativeRecoilPersistGate>
