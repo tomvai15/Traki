@@ -43,6 +43,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Authorize(Roles = Role.ProjectManager)]
         public async Task<ActionResult<GetProjectResponse>> PostProject(CreateProjectRequest createProjectRequest)
         {
@@ -50,6 +51,7 @@ namespace Traki.Api.Controllers
             _claimsProvider.TryGetUserId(out int userId);
             project.CompanyId = 1;
             project.AuthorId = userId;
+            project.Author = null;
             var createdProject = await _projectsRepository.CreateProject(project);
 
             return CreatedAtAction("GetProject", new { projectId = createdProject.Id }, createdProject);
