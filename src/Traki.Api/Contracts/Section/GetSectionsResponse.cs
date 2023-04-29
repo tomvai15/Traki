@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Contracts.Section
 {
-    public class GetSectionsRequest
+    public class GetSectionsResponse
     {
         public IEnumerable<SectionDto> Sections { get; set; }
     }
