@@ -119,6 +119,19 @@ namespace Traki.Api.Controllers
             return Ok();
         }
 
+        [HttpPost("jwt-logout")]
+        [Authorize]
+        public async Task<ActionResult> JwtLogOut()
+        {
+            _claimsProvider.TryGetUserId(out int userId);
+            var user = await _usersRepository.GetUserById(userId);
+
+            user.RefreshToken = "";
+            user.RefreshTokenExpiryTime = DateTime.Now;
+            user.DeviceToken = "";
+            return Ok();
+        }
+
         [HttpGet("userstate")]
         [Authorize]
         public async Task<ActionResult<GetUserStateResponse>> GetUserInfo()

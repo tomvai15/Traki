@@ -4,7 +4,6 @@ import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginResponse } from '../contracts/auth/LoginResponse';
 import { RegisterDeviceRequest } from '../contracts/auth/RegisterDeviceRequest';
 import { GetUserInfoResponse } from '../contracts/auth/GetUserInfoResponse';
-import { RefreshTokenRequest } from '../contracts/auth/RefreshTokenRequest';
 
 const route = 'auth';
 
@@ -14,6 +13,11 @@ class AuthService {
     const fullRoute = route + '/jwt-login';
     const response = await axiosApiInstance.post(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
     return response.data;
+  }
+
+  async logout(): Promise<void> {
+    const fullRoute = route + '/jwt-logout';
+    await axiosApiInstance.post(fullRoute, { headers: {} });
   }
 
   async registerDevice(request: RegisterDeviceRequest): Promise<void> {

@@ -25,5 +25,15 @@ export const useUserInformation = () => {
     }
   }
 
-  return { fetchUser, fetchFullUserInformation } as const;
+  async function clearToken() {
+    console.log('logout');
+    try {
+      await authService.logout();
+      setUserInfo((x) => { return  {...x, token: '', refreshToken: ''};});
+    } catch {
+      setUserInfo((x) => { return  {...x, token: '', refreshToken: ''};});
+    }
+  }
+
+  return { fetchUser, fetchFullUserInformation, clearToken } as const;
 };

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Badge, Divider, IconButton, Menu, Button } from 'react-native-paper';
 import { View, StyleSheet  } from 'react-native';
+import { useUserInformation } from '../../hooks/useUserInformation';
 
 
 type Props = {
   navigation: any
 }
 export default function ProfileMenu({navigation}: Props) {
+
+  const {clearToken} = useUserInformation();
 
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -24,7 +27,7 @@ export default function ProfileMenu({navigation}: Props) {
       }>
       <Menu.Item onPress={() => navigation.navigate('Account information', {screen: 'UserScreen'})} title="My information" />
       <Divider />
-      <Menu.Item contentStyle={{borderColor: 'red'}} onPress={() => {}} title='Logout' />
+      <Menu.Item contentStyle={{borderColor: 'red'}} onPress={() => clearToken()} title='Logout' />
     </Menu>
   );
 }
