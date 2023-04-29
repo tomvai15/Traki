@@ -29,7 +29,9 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<Defect> UpdateDefect(Defect defect)
         {
-            var defectEntity = await _context.Defects.Where(x => x.Id == defect.Id).FirstOrDefaultAsync();
+            var defectEntity = await _context.Defects.Where(x => x.Id == defect.Id)
+                                        .Include(x=> x.Author)
+                                        .FirstOrDefaultAsync();
 
             defectEntity.RequiresToBeNotNullEnity();
 
