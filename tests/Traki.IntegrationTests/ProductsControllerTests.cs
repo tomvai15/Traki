@@ -1,14 +1,14 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
 using System.Net;
 using Traki.Api.Contracts.Product;
 using Traki.Infrastructure.Data;
+using Traki.IntegrationTests.Extensions;
 
 namespace Traki.IntegrationTests
 {
     [Collection("Sequential")]
-    public class ProductsControllerTests : IClassFixture<WebApplicationFactory<Program>>
+    public class ProductsControllerTests
     {
         private readonly WebApplicationFactory<Program> _factory;
 
@@ -22,22 +22,22 @@ namespace Traki.IntegrationTests
         public async Task Get_ExistingProject_ReturnSuccess(string url)
         {
             // Arrange
-            HttpClient client = _factory.CreateClient();
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProductManager();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.Get<GetProductResponse>(url);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var expectedResponse = ExampleData.Products.First();
 
-            string body = await response.Content.ReadAsStringAsync();
-            GetProductResponse getProductResponse = JsonConvert.DeserializeObject<GetProductResponse>(body);
-            getProductResponse.Product.Should().BeEquivalentTo(expectedResponse, options => 
-                                                                                    options.Excluding(x => x.Project)
-                                                                                           .Excluding(x => x.CheckLists)
-                                                                                           .Excluding(x=> x.Id));
+            GetProductResponse getProductResponse = response.Data;
+
+            expectedResponse.Should().BeEquivalentTo(getProductResponse.Product,
+                options => options.Excluding(x => x.Author)
+                                  .Excluding(x=> x.Id));
         }
 
         [Theory]
@@ -46,13 +46,14 @@ namespace Traki.IntegrationTests
         public async Task Get_ReturnSuccess(string url)
         {
             // Arrange
-            HttpClient client = _factory.CreateClient();
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProductManager();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.Get<ProductDto>(url);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Theory]
@@ -60,13 +61,13 @@ namespace Traki.IntegrationTests
         public async Task Get_NotExistingProject_Return404Response(string url)
         {
             // Arrange
-            HttpClient client = _factory.CreateClient();
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProductManager();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.Get<ProductDto>(url);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeFalse();
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
