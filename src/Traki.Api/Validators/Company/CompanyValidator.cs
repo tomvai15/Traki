@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
-using Traki.Api.Contracts.Project;
+using Traki.Api.Contracts.Company;
 
-namespace Traki.Api.Validators.Project
+namespace Traki.Api.Validators.Company
 {
-    public class ProjectValidator : AbstractValidator<ProjectDto>
+    public class CompanyValidator : AbstractValidator<CompanyDto>
     {
-        public ProjectValidator()
+        public CompanyValidator()
         {
             RuleFor(p => p.Name).NotEmpty().NoSpecialSymbols();
-            RuleFor(p => p.ClientName).NotEmpty().NoSpecialSymbols();
             RuleFor(p => p.Address).NotEmpty().NoSpecialSymbols();
             RuleFor(p => p.ImageName).ValidFileName();
         }

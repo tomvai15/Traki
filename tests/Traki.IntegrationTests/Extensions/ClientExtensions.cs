@@ -1,12 +1,6 @@
-﻿using DocuSign.eSign.Model;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Traki.Api.Contracts.Auth;
 using Traki.IntegrationTests.Shared;
 
@@ -17,6 +11,10 @@ namespace Traki.IntegrationTests.Extensions
         public static async Task LoginAsProductManager(this CustomHttpClient client)
         {
             await client.AddJwtToken("vainoristomas@gmail.com", "password");
+        }
+        public static async Task LoginAsProjectManager(this CustomHttpClient client)
+        {
+            await client.AddJwtToken("vainoristomas9@gmail.com", "password");
         }
 
         public static async Task AddJwtToken(this CustomHttpClient client, string email, string password)

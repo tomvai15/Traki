@@ -20,6 +20,56 @@ namespace Traki.IntegrationTests
             _factory = factory;
         }
 
+        [Fact]
+        public async Task CreateProject_ValidFields_ReturnsOk()
+        {
+            // Arrange
+            string url = "/api/projects";
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProjectManager();
+            var request = new CreateProjectRequest
+            {
+                Project = new ProjectDto
+                {
+                    Name = "Name",
+                    ClientName = "client",
+                    Address = "address",
+                    ImageName= "ima.ge.png",
+                }
+            };
+
+            // Act
+            var response = await client.Post<CreateProjectRequest, GetProjectResponse>(url, request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
+
+        [Fact]
+        public async Task CreateProject_InvalidFields_ReturnsOk()
+        {
+            // Arrange
+            string url = "/api/projects";
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProjectManager();
+            var request = new CreateProjectRequest
+            {
+                Project = new ProjectDto
+                {
+                    Name = "<><>",
+                    ClientName = "<><>",
+                    Address = "<><>",
+                    ImageName = "<><>",
+                }
+            };
+
+            // Act
+            var response = await client.Post<CreateProjectRequest, GetProjectResponse>(url, request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
         [Theory]
         [InlineData("/api/projects/1")]
         public async Task Get_ExistingProject_ReturnSuccess(string url)
@@ -37,14 +87,14 @@ namespace Traki.IntegrationTests
             var expectedResponse = ExampleData.Projects.First();
 
             GetProjectResponse getProjectResponse = response.Data;
-            getProjectResponse.Project.Should().BeEquivalentTo(expectedResponse, 
+            getProjectResponse.Project.Should().BeEquivalentTo(expectedResponse,
                 options => options.Excluding(x => x.Products)
                 .Excluding(x => x.CompanyId)
                 .Excluding(x => x.Company)
                 .Excluding(x => x.AuthorId)
                 .Excluding(x => x.Author)
                 .Excluding(x => x.Templates)
-                .Excluding(x=> x.Id));
+                .Excluding(x => x.Id));
         }
 
         [Theory]
