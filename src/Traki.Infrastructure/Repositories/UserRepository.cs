@@ -61,6 +61,8 @@ namespace Traki.Infrastructure.Repositories
             userEntity.RegisterId = user.RegisterId;
             userEntity.DeviceToken = user.DeviceToken;
             userEntity.UserIconBase64 = user.UserIconBase64;
+            userEntity.RefreshToken = user.RefreshToken;
+            userEntity.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
 
             await _context.SaveChangesAsync();
         }

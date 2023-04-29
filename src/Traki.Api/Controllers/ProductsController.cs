@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Protocol;
@@ -25,6 +26,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet("{productId}")]
+        [Authorize]
         public async Task<ActionResult<GetProductResponse>> GetProduct(int projectId, int productId)
         {
             var product = await _productsRepository.GetProduct(productId);
@@ -38,6 +40,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPut("{productId}")]
+        [Authorize]
         public async Task<ActionResult> UpdateProduct(int projectId, int productId, [FromBody]UpdateProductRequest updateProductRequest)
         {
             var product = _mapper.Map<Product>(updateProductRequest.Product);
@@ -47,6 +50,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<GetProductsResponse>> GetProducts(int projectId)
         {
             var products = await _productsRepository.GetProducts(projectId);
@@ -55,6 +59,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost("{productId}/protocols")]
+        [Authorize]
         public async Task<ActionResult> AddProtocol(int productId, AddProtocolRequest addProtocolRequest)
         {
             await _productHandler.AddProtocolToProduct(productId, addProtocolRequest.ProtocolId);
@@ -62,6 +67,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet("{productId}/protocols")]
+        [Authorize]
         public async Task<ActionResult<GetProductProtocolsResponse>> GetProtocols(int productId)
         {
             var protocols = await _productHandler.GetProtocols(productId);
@@ -74,6 +80,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<GetProductResponse>> PostProduct(int projectId, CreateProductRequest createProjectRequest)
         {
             var product = _mapper.Map<Product>(createProjectRequest);

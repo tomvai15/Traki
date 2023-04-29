@@ -10,9 +10,14 @@ const route = 'auth';
 class AuthService {
   async login(loginRequest: LoginRequest): Promise<LoginResponse> {
     console.log(loginRequest);
-    const fullRoute = route + '/jwtlogin';
+    const fullRoute = route + '/jwt-login';
     const response = await axiosApiInstance.post(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
     return response.data;
+  }
+
+  async logout(): Promise<void> {
+    const fullRoute = route + '/jwt-logout';
+    await axiosApiInstance.post(fullRoute, { headers: {} });
   }
 
   async registerDevice(request: RegisterDeviceRequest): Promise<void> {

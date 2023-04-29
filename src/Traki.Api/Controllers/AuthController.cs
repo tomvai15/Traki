@@ -9,6 +9,7 @@ using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.User;
 using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
+using Traki.Domain.Exceptions;
 using Traki.Domain.Handlers;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
@@ -58,7 +59,7 @@ namespace Traki.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("jwtlogin")]
+        [HttpPost("jwt-login")]
         public async Task<ActionResult<LoginResponse>> JWTLogin([FromBody] LoginRequest loginRequest)
         {
             var user = await _authHandler.GetUser(loginRequest.Email, loginRequest.Password);
@@ -67,7 +68,47 @@ namespace Traki.Api.Controllers
 
             var token = _jwtTokenGenerator.GenerateJWTToken(claims);
 
-            return Ok(new LoginResponse { Email = loginRequest.Email, Token = token });
+            var refreshToken = _jwtTokenGenerator.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+            await _usersRepository.UpdateUser(user);
+
+            return Ok(new LoginResponse { 
+                Email = loginRequest.Email, 
+                Token = token,
+                RefreshToken = refreshToken,
+            });
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<LoginResponse>> RefreshJwtToken([FromBody] RefreshTokenRequest request)
+        {
+            var userId = _jwtTokenGenerator.GetPrincipalFromExpiredToken(request.Token);
+
+            var user = await _usersRepository.GetUserById(userId);
+
+            if (user.RefreshTokenExpiryTime < DateTime.Now || user.RefreshToken != request.RefreshToken)
+            {
+                throw new UnauthorizedException();
+            }
+
+            var claims = await _authHandler.CreateClaimsForUser(user);
+
+            var token = _jwtTokenGenerator.GenerateJWTToken(claims);
+            var refreshToken = _jwtTokenGenerator.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+            await _usersRepository.UpdateUser(user);
+
+            return Ok(new LoginResponse { 
+                Email = user.Email, 
+                Token = token,
+                RefreshToken = refreshToken
+            });
         }
 
         [HttpPost("logout")]
@@ -75,6 +116,19 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();
+            return Ok();
+        }
+
+        [HttpPost("jwt-logout")]
+        [Authorize]
+        public async Task<ActionResult> JwtLogOut()
+        {
+            _claimsProvider.TryGetUserId(out int userId);
+            var user = await _usersRepository.GetUserById(userId);
+
+            user.RefreshToken = "";
+            user.RefreshTokenExpiryTime = DateTime.Now;
+            user.DeviceToken = "";
             return Ok();
         }
 
@@ -147,7 +201,6 @@ namespace Traki.Api.Controllers
             await _usersRepository.UpdateUser(user);
             return Ok();
         }
-
 
         [HttpPost("code")]
         [Authorize]

@@ -7,13 +7,15 @@ interface UserState {
   name?: string,
   email?: string,
   token?: string,
+  refreshToken?: string,
   user?: UserInfo,
   loggedInDocuSign: boolean
 }
 
 const initialState: UserState = {
   id: 1,
-  loggedInDocuSign: false
+  loggedInDocuSign: false,
+  refreshToken: 'dsaasdasd'
 };
 
 
