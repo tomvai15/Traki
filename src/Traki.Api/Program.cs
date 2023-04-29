@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using Serilog;
 using Traki.Api;
@@ -13,6 +15,9 @@ IConfiguration configuration = builder.Configuration;
 services.AddControllers();
 services.AddEndpointsApiExplorer()
         .AddSwaggerGen();
+
+services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
 // Custom services registration
 Startup.ConfigureServices(services, configuration);

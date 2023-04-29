@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.User;
@@ -11,6 +12,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [Authorize(Roles = Role.Administrator)]
     public class UsersController : ControllerBase
     {
         private readonly IUserAuthHandler _userAuthHandler;
@@ -98,27 +100,5 @@ namespace Traki.Api.Controllers
             }
             return NoContent();
         }
-
-
-        /*
-        [HttpPost("token")]
-        public async Task<ActionResult<LoginResponse>> GetCredentials(LoginRequest loginRequest)
-        {
-            try
-            {
-                LoginResponse loginResponse = await _userAuthHandler.LoginUser(loginRequest);
-
-                if (loginResponse == null)
-                {
-                    return Unauthorized();
-                }
-
-                return Ok(loginResponse);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }*/
     }
 }

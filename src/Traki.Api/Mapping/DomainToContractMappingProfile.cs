@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Traki.Api.Contracts.Auth;
-using Traki.Api.Contracts.Checklist;
-using Traki.Api.Contracts.ChecklistQuestion;
 using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Drawing;
 using Traki.Api.Contracts.Drawing.Defect;
@@ -18,7 +15,6 @@ using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities.Drawing;
-using Traki.Infrastructure.Entities.Section;
 using Question = Traki.Domain.Models.Section.Items.Question;
 
 namespace Traki.Api.Mapping
@@ -35,10 +31,6 @@ namespace Traki.Api.Mapping
             AddUserMappings();
             AddTemplateMappings();
             AddSectionMapping();
-           // AddQuestionMappings();
-            AddChecklistMappings();
-            AddChecklistQuestionMappings();
-            AddChecklistQuestionMappings();
         }
 
         public void AddRecommendationMappings()
@@ -147,27 +139,5 @@ namespace Traki.Api.Mapping
 
             CreateMap<UpdateQuestionRequest, Question>();
         }*/
-
-        public void AddChecklistMappings()
-        {
-            CreateMap<CheckList, GetChecklistResponse>()
-                .ForMember(x => x.Checklist, opt => opt.MapFrom(x => x));
-
-            CreateMap<IEnumerable<CheckList>, GetChecklistsResponse>()
-                .ForMember(x => x.Checklists, opt => opt.MapFrom(x => x));
-
-            CreateMap<CheckList, OldChecklistDto>().ReverseMap();
-        }
-
-        public void AddChecklistQuestionMappings()
-        {
-            CreateMap<ChecklistQuestion, GetChecklistQuestionResponse>()
-                .ForMember(x => x.ChecklistQuestion, opt => opt.MapFrom(x => x));
-
-            CreateMap<IEnumerable<ChecklistQuestion>, GetChecklistQuestionsResponse>()
-                .ForMember(x => x.ChecklistQuestions, opt => opt.MapFrom(x => x));
-
-            CreateMap<ChecklistQuestion, ChecklistQuestionDto>().ReverseMap();
-        }
     }
 }

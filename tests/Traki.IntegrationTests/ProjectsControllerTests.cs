@@ -1,14 +1,17 @@
-﻿using FluentAssertions;
+﻿using DocuSign.eSign.Model;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using System.Security.Policy;
 using Traki.Api.Contracts.Project;
 using Traki.Infrastructure.Data;
+using Traki.IntegrationTests.Extensions;
 
 namespace Traki.IntegrationTests
 {
     [Collection("Sequential")]
-    public class ProjectsControllerTests : IClassFixture<WebApplicationFactory<Program>>
+    public class ProjectsControllerTests
     {
         private readonly WebApplicationFactory<Program> _factory;
 
@@ -17,27 +20,81 @@ namespace Traki.IntegrationTests
             _factory = factory;
         }
 
+        [Fact]
+        public async Task CreateProject_ValidFields_ReturnsOk()
+        {
+            // Arrange
+            string url = "/api/projects";
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProjectManager();
+            var request = new CreateProjectRequest
+            {
+                Project = new ProjectDto
+                {
+                    Name = "Name",
+                    ClientName = "client",
+                    Address = "address",
+                    ImageName= "ima.ge.png",
+                }
+            };
+
+            // Act
+            var response = await client.Post<CreateProjectRequest, GetProjectResponse>(url, request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
+
+        [Fact]
+        public async Task CreateProject_InvalidFields_ReturnsOk()
+        {
+            // Arrange
+            string url = "/api/projects";
+            var client = _factory.GetCustomHttpClient();
+            await client.LoginAsProjectManager();
+            var request = new CreateProjectRequest
+            {
+                Project = new ProjectDto
+                {
+                    Name = "<><>",
+                    ClientName = "<><>",
+                    Address = "<><>",
+                    ImageName = "<><>",
+                }
+            };
+
+            // Act
+            var response = await client.Post<CreateProjectRequest, GetProjectResponse>(url, request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
         [Theory]
         [InlineData("/api/projects/1")]
         public async Task Get_ExistingProject_ReturnSuccess(string url)
         {
             // Arrange
-            HttpClient client = _factory.CreateClient();
+            var client = _factory.GetCustomHttpClient();
+            await client.AddJwtToken("vainoristomas@gmail.com", "password");
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.Get<GetProjectResponse>(url);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
 
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var expectedResponse = ExampleData.Projects.First();
 
-            string body = await response.Content.ReadAsStringAsync();
-            GetProjectResponse getProjectResponse = JsonConvert.DeserializeObject<GetProjectResponse>(body);
-            getProjectResponse.Project.Should().BeEquivalentTo(expectedResponse, 
+            GetProjectResponse getProjectResponse = response.Data;
+            getProjectResponse.Project.Should().BeEquivalentTo(expectedResponse,
                 options => options.Excluding(x => x.Products)
+                .Excluding(x => x.CompanyId)
+                .Excluding(x => x.Company)
+                .Excluding(x => x.AuthorId)
+                .Excluding(x => x.Author)
                 .Excluding(x => x.Templates)
-                .Excluding(x=> x.Id));
+                .Excluding(x => x.Id));
         }
 
         [Theory]
@@ -46,13 +103,14 @@ namespace Traki.IntegrationTests
         public async Task Get_ReturnSuccess(string url)
         {
             // Arrange
-            HttpClient client = _factory.CreateClient();
+            var client = _factory.GetCustomHttpClient();
+            await client.AddJwtToken("vainoristomas@gmail.com", "password");
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.Get<GetProjectResponse>(url);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Theory]
@@ -60,14 +118,29 @@ namespace Traki.IntegrationTests
         public async Task Get_NotExistingProject_Return404Response(string url)
         {
             // Arrange
-            HttpClient client = _factory.CreateClient();
+            var client = _factory.GetCustomHttpClient();
+            await client.AddJwtToken("vainoristomas@gmail.com", "password");
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.Get<GetProjectResponse>(url);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeFalse();
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Theory]
+        [InlineData("/api/projects/1")]
+        public async Task Get_UnauthorizedUser_Return401(string url)
+        {
+            // Arrange
+            var client = _factory.GetCustomHttpClient();
+
+            // Act
+            var response = await client.Get<GetProjectResponse>(url);
+
+            // Assert
+
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
     }
 }

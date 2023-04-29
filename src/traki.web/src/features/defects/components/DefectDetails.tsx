@@ -17,6 +17,7 @@ import { useUpdateNotifications } from 'hooks/useUpdateNotifications';
 import CustomTab from 'components/CustomTab';
 import { useRecoilState } from 'recoil';
 import { userState } from 'state/user-state';
+import { validate, validationRules } from 'utils/textValidation';
 
 function a11yProps(index: number) {
   return {
@@ -71,6 +72,8 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   const [comment, setComment] = useState<string>('');
   const [defect, setDefect] = useState<DefectWithImage>();
   const [comments, setComments] = useState<CommentWithImage[]>([]);
+
+  const [submitDefectError, setSubmitDefectError] = useState<boolean>(false);
 
   const [previewImage, setPreviewImage] = useState<string>('');
   const [file, setFile] = useState<File>();
@@ -153,6 +156,14 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     }
   }
 
+  function canSubmitComment (): boolean {
+    return comment != '' && validateCommentsFields();
+  }
+
+  function validateCommentsFields (): boolean {
+    return !validate(comment, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
+  }
+
   async function submitComment() {
     if (!selectedDefect) {
       return;
@@ -184,7 +195,13 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   }
 
   function canSubmit() {
-    return canSubmitDefect && title && description;
+    console.log(validateDefectFields());
+    return canSubmitDefect && title && description && validateDefectFields();
+  }
+
+  function validateDefectFields (): boolean {
+    return !validate(title, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+           !validate(description, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
   }
 
   async function updateDefectStatus(value: string) {
@@ -260,7 +277,14 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                 </Box>
                 <Box sx={{width: '100%'}}>
                   <Box sx={{display: 'flex', width: '100%'}}>
-                    <TextField value={comment} onChange={(e) => setComment(e.target.value)} sx={{width: '90%'}} multiline={true}></TextField>
+                    <TextField 
+                      inputProps={{ maxLength: 250 }}
+                      error={validate(comment, [validationRules.noSpecialSymbols]).invalid}
+                      helperText={validate(comment, [validationRules.noSpecialSymbols]).message}
+                      value={comment} 
+                      onChange={(e) => setComment(e.target.value)} 
+                      sx={{width: '90%'}} 
+                      multiline={true}/>
                     <IconButton color="secondary" aria-label="upload picture" component="label">
                       <input hidden accept="image/*" type="file" onChange={selectFileComment} />
                       <PhotoCamera />
@@ -268,7 +292,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                   </Box>
                   <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between', marginTop: '10px'}}>
                     <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                      <Button disabled={!comment} onClick={submitComment} sx={{height: 40}} variant='contained'>
+                      <Button disabled={!canSubmitComment()} onClick={submitComment} sx={{height: 40}} variant='contained'>
                           Submit
                       </Button>
                     </Box>
@@ -289,9 +313,25 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       <CustomTab value={tabIndex} index={1}>
         <CardContent>
           <Typography sx={{marginBottom: '10px'}}>{'Add defect\'s information'}</Typography>
-          <TextField value={title} onChange={(e) => setTitle(e.target.value)} label='Title' multiline={false} sx={{width: '90%', marginBottom: '10px'}} ></TextField>
+          <TextField 
+            inputProps={{ maxLength: 20 }}
+            error={validate(title, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+            helperText={validate(title, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)} 
+            label='Title' 
+            multiline={false} 
+            sx={{width: '90%', marginBottom: '10px'}}/>
           <Box sx={{display: 'flex', width: '100%'}}>
-            <TextField value={description} onChange={(e) => setDescription(e.target.value)} label='Description' multiline={true} sx={{width: '90%'}}></TextField>
+            <TextField 
+              inputProps={{ maxLength: 250 }}
+              error={validate(description, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(description, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              value={description} 
+              onChange={(e) => setDescription(e.target.value)} 
+              label='Description' 
+              multiline={true} 
+              sx={{width: '90%'}}/>
             <IconButton color="secondary" aria-label="upload picture" component="label">
               <input hidden accept="image/*" type="file" onChange={selectFile} />
               <PhotoCamera />

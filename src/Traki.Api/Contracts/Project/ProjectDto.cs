@@ -9,6 +9,6 @@ namespace Traki.Api.Contracts.Project
         public string ClientName { get; set; }
         public string Address { get; set; }
         public string ImageName { get; set; }
-        public AuthorDto Author { get; set; }
+        public AuthorDto? Author { get; set; }
     }
 }

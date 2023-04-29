@@ -11,6 +11,7 @@ import { Table } from 'contracts/protocol/section/Table';
 import { CreateTableCard } from 'features/protocols/components/CreateTableCard';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
+import { validate, validationRules } from 'utils/textValidation';
 
 const initialSection: Section = {
   id: 1,
@@ -63,9 +64,25 @@ export function EditSectionPage() {
   }
 
   function canUpdate() {
-    return  JSON.stringify(section) != initialSectionJson || 
+    console.log(checklist == undefined ? true : validChecklist());
+    return  (JSON.stringify(section) != initialSectionJson || 
             JSON.stringify(checklist) != initialChecklistJson ||
-            JSON.stringify(table) != initialTableJson;
+            JSON.stringify(table) != initialTableJson) && 
+            (validSection() && 
+            (checklist == undefined ? true : validChecklist()) && 
+            (table && validTable()));
+  }
+
+  function validSection() {
+    return !validate(section?.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
+  }
+
+  function validChecklist() {
+    return !checklist?.items.map(x => !validate(x.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid).some((value) => value == false);
+  }
+
+  function validTable() {
+    return !table?.tableRows[0].rowColumns.map(x => !validate(x.value, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid).some((value) => value == false);
   }
 
   function orderAndSetTable(table?: Table) {
@@ -151,7 +168,10 @@ export function EditSectionPage() {
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextField sx={{width: '50%'}}
-                id="standard-disabled"
+                id="section-name"
+                inputProps={{ maxLength: 100 }}
+                error={validate(section?.name, [validationRules.noSpecialSymbols]).invalid}
+                helperText={validate(section?.name, [validationRules.noSpecialSymbols]).message}
                 label="Section Name"
                 variant="standard"
                 value={section?.name}
