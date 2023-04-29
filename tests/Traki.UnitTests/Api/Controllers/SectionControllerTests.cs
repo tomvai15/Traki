@@ -88,7 +88,7 @@ namespace Traki.UnitTests.Api.Controllers
             var sectionId = 1;
             var section = new Section();
             var sectionDto = new SectionDto();
-            var getSectionRequest = new GetSectionRequest { Section = sectionDto };
+            var getSectionRequest = new GetSectionResponse { Section = sectionDto };
 
             _mockSectionHandler.Setup(x => x.GetSection(sectionId))
                 .ReturnsAsync(section);
@@ -98,7 +98,7 @@ namespace Traki.UnitTests.Api.Controllers
 
             // Assert
 
-            var data = result.ShouldBeOfType<GetSectionRequest>();
+            var data = result.ShouldBeOfType<GetSectionResponse>();
             data.Should().BeEquivalentTo(getSectionRequest);
         }
 

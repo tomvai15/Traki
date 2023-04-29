@@ -46,11 +46,11 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet("{sectionId}")]
-        public async Task<ActionResult<GetSectionRequest>> GetSection(int sectionId)
+        public async Task<ActionResult<GetSectionResponse>> GetSection(int sectionId)
         {
             var section = await _sectionHandler.GetSection(sectionId);
 
-            var getSectionRequest = new GetSectionRequest { Section = _mapper.Map<SectionDto>(section) };
+            var getSectionRequest = new GetSectionResponse { Section = _mapper.Map<SectionDto>(section) };
 
             return Ok(getSectionRequest);
         }
@@ -63,12 +63,12 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<GetSectionsRequest>> GetSections(int protocolId)
+        public async Task<ActionResult<GetSectionsResponse>> GetSections(int protocolId)
         {
 
             var sections = await _sectionHandler.GetSections(protocolId);
 
-            var getSectionRequest = new GetSectionsRequest { Sections = _mapper.Map<IEnumerable<SectionDto>>(sections) };
+            var getSectionRequest = new GetSectionsResponse { Sections = _mapper.Map<IEnumerable<SectionDto>>(sections) };
 
             return Ok(getSectionRequest);
         }

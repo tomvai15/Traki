@@ -9,6 +9,9 @@ namespace Traki.Api.Validators
         public static IRuleBuilderOptions<T, string> NoSpecialSymbols<T>(this IRuleBuilder<T, string> ruleBuilder)
             => ruleBuilder.Matches("^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ0-9\\s.,:;?!%()_&+={}\\[\\]|\\\\/~$^+-]*$").WithMessage("Specials symbols are not allowed");
 
+        public static IRuleBuilderOptions<T, string> OnlyAlphabetSymbols<T>(this IRuleBuilder<T, string> ruleBuilder)
+            => ruleBuilder.Matches("^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]*$").WithMessage("Non alphabet symbols are not allowed");
+
         public static IRuleBuilderOptions<T, string> ValidFileName<T>(this IRuleBuilder<T, string> ruleBuilder)
             => ruleBuilder.NotEmpty()
                 .Must(BeAValidFileName)
