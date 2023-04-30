@@ -1,11 +1,24 @@
 import React, { useEffect } from 'react';
 import { Badge, Divider, IconButton, Menu, Button } from 'react-native-paper';
-import { View, StyleSheet  } from 'react-native';
+import { View, StyleSheet, Text, Pressable  } from 'react-native';
 import { useUpdateNotifications } from '../../hooks/useUpdateNotifications';
 import { useRecoilState } from 'recoil';
 import { notificationsState } from '../../state/notification-state';
+import { DefectNotification } from '../../contracts/drawing/defect/DefectNotification';
+import { CommonActions } from '@react-navigation/native';
 
-export default function NotificationsMenu() {
+type NotificationData = {
+  projectId: number,
+  productId: number,
+  drawingId: number,
+  defectId: number
+}
+
+type Props = {
+  navigation: any
+}
+
+export default function NotificationsMenu({navigation}: Props) {
 
   const { updateNotifications } = useUpdateNotifications();
   const [notifications, setNotifications] = useRecoilState(notificationsState);
@@ -17,6 +30,17 @@ export default function NotificationsMenu() {
   useEffect(() => {
     updateNotifications();
   }, []);
+
+  function handleNotification(item: DefectNotification) {
+    const data: NotificationData = JSON.parse(item.data);
+    console.log(data);
+
+    //navigation.navigate('Project Products', { screen: 'Products', params: {}}); 
+    navigation.navigate('Project Products', { screen: 'DefectScreen', params: { productId: data.productId, drawingId: data.drawingId, defectId: data.defectId}}); 
+    //navigation.navigate('Product', {productId: data.productId});
+    //navigation.navigate('Project Products', { screen: 'DefectScreen', params: { productId: data.productId, drawingId: data.drawingId, defectId: data.defectId }}) 
+    closeMenu();
+  }
 
   return (
     <Menu
@@ -31,10 +55,23 @@ export default function NotificationsMenu() {
           </Badge>
         </View>
       }>
-      <Menu.Item onPress={() => {}} title="No notifications" />
-      <Menu.Item onPress={() => {}} title="Item 2" />
-      <Divider />
-      <Menu.Item onPress={() => {}} title="Item 3" />
+      <Menu.Item title="Notifications" />
+      {notifications.length == 0 ?
+        <Menu.Item onPress={() => {}} title="No notifications" /> :
+        notifications.map((item, index) => 
+        <Pressable key={index} onPress={() => handleNotification(item)}
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
+            },
+          ]}>
+          
+          <View style={{width: 200, paddingHorizontal: 15, marginVertical: 5}}>
+            <Text style={{fontSize: 18}}>{item.title}</Text>
+            <Text style={{fontSize: 15}}>{item.body}</Text>
+          </View>
+          <Divider/>
+        </Pressable>)}
     </Menu>
   );
 }

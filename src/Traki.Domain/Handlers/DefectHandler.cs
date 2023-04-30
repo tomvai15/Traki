@@ -5,15 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.Notifications;
+using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Domain.Handlers
 {
     public interface IDefectHandler
     {
         Task<Defect> CreateDefect(int userId, int drawingId, Defect defect);
+        Task<Defect> CreateDefectStatusChange(int userId, Defect defect);
+        Task CreateDefectComment(int userId, DefectComment defectComment);
     }
     public class DefectHandler : IDefectHandler
     {
@@ -23,9 +27,13 @@ namespace Traki.Domain.Handlers
         private readonly IProductsRepository _productsRepository;
         private readonly IUsersRepository _usersRepository;
         private readonly IDefectNotificationRepository _defectNotificationRepository;
+        private readonly IStatusChangeRepository _statusChangeRepository;
+        private readonly IDefectCommentRepository _defectCommentRepository;
 
-        public DefectHandler(IDefectsRepository defectsRepository, INotificationService notificationService, IDrawingsRepository drawingsRepository, IProductsRepository productsRepository, IUsersRepository usersRepository, IDefectNotificationRepository defectNotificationRepository)
+        public DefectHandler(IDefectCommentRepository defectCommentRepository, IStatusChangeRepository statusChangeRepository, IDefectsRepository defectsRepository, INotificationService notificationService, IDrawingsRepository drawingsRepository, IProductsRepository productsRepository, IUsersRepository usersRepository, IDefectNotificationRepository defectNotificationRepository)
         {
+            _defectCommentRepository = defectCommentRepository;
+            _statusChangeRepository = statusChangeRepository;
             _defectsRepository = defectsRepository;
             _notificationService = notificationService;
             _drawingsRepository = drawingsRepository;
@@ -36,6 +44,7 @@ namespace Traki.Domain.Handlers
 
         public async Task<Defect> CreateDefect(int userId, int drawingId, Defect defect)
         {
+            var defectAuthor = await _usersRepository.GetUserById(userId);
             defect.AuthorId = userId;
             defect.DrawingId = drawingId;
             defect.Status = DefectStatus.NotFixed;
@@ -57,8 +66,8 @@ namespace Traki.Domain.Handlers
             {
                 DefectId = defect.Id,
                 UserId = product.AuthorId,
-                Title = "New Defect",
-                Body = $"Someone create new defect for product {product.Name}",
+                Title = "New defect",
+                Body = $"{defectAuthor.Name} {defectAuthor.Surname} create new defect for product {product.Name}",
                 Data = data
             };
 
@@ -73,6 +82,94 @@ namespace Traki.Domain.Handlers
 
             await _notificationService.SendNotification(deviceToken, defectNotification.Title, defectNotification.Body);
             return defect;
+        }
+
+        public async Task CreateDefectComment(int userId, DefectComment defectComment)
+        {
+            var defect = await _defectsRepository.GetDefect(defectComment.DefectId);
+            defectComment.AuthorId = userId;
+            defectComment.Date = DateTime.Now.ToString("s");
+            await _defectCommentRepository.CreateDefectComment(defectComment);
+            var commentAuthor = await _usersRepository.GetUserById(userId);
+
+            string data = await CreateData(defect.Id, defect.DrawingId);
+
+            var defectNotification = new DefectNotification
+            {
+                DefectId = defectComment.DefectId,
+                UserId = defect.AuthorId,
+                Title = "New comment",
+                Body = $"{commentAuthor.Name} {commentAuthor.Surname} commented on defect {defect.Title}",
+                Data = data
+            };
+
+            await _defectNotificationRepository.CreateDefectNotification(defectNotification);
+
+            var author = await _usersRepository.GetUserById(defect.AuthorId);
+
+            string deviceToken = author.DeviceToken;
+
+            if (deviceToken.IsNullOrEmpty())
+            {
+                return;
+            }
+            await _notificationService.SendNotification(deviceToken, defectNotification.Title, defectNotification.Body);
+        }
+
+        public async Task<Defect> CreateDefectStatusChange(int userId, Defect defect)
+        {
+            var def = await _defectsRepository.GetDefect(defect.Id);
+            var statusChange = new StatusChange
+            {
+                From = def.Status,
+                To = defect.Status,
+                Date = DateTime.Now.ToString("s"),
+                AuthorId = userId,
+                DefectId = defect.Id,
+            };
+
+            defect = await _defectsRepository.UpdateDefect(defect);
+            await _statusChangeRepository.CreateStatusChange(statusChange);
+
+            string data = await CreateData(defect.Id, defect.DrawingId);
+            var statusChangeAuthor = await _usersRepository.GetUserById(userId);
+
+            var defectNotification = new DefectNotification
+            {
+                DefectId = defect.Id,
+                UserId = def.AuthorId,
+                Title = "New comment",
+                Body = $"{statusChangeAuthor.Name} {statusChangeAuthor.Surname} changed status for defect {defect.Title} to {statusChange.To}",
+                Data = data
+            };
+
+            await _defectNotificationRepository.CreateDefectNotification(defectNotification);
+
+            var author = await _usersRepository.GetUserById(defect.AuthorId);
+
+            string deviceToken = author.DeviceToken;
+
+            if (deviceToken.IsNullOrEmpty())
+            {
+                return defect;
+            }
+            await _notificationService.SendNotification(deviceToken, defectNotification.Title, defectNotification.Body);
+
+            return defect;
+        }
+
+        private async Task<string> CreateData(int defectId, int drawingId)
+        {
+            var drawing = await _drawingsRepository.GetDrawing(drawingId);
+            var product = await _productsRepository.GetProduct(drawing.ProductId);
+
+            return JsonConvert.SerializeObject(new
+            {
+                projectId = product.ProjectId,
+                productId = product.Id,
+                drawingId = drawing.Id,
+                defectId = defectId
+            });
         }
     }
 }

@@ -10,14 +10,9 @@ type Props = {
 }
 
 export default function MainHeader({navigation}: Props) {
-
-  const [visible, setVisible] = React.useState(false);
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
-
   return (
     <View style={{display: 'flex', flexDirection: 'row'}}>
-      <NotificationsMenu />
+      <NotificationsMenu  navigation={navigation}/>
       <ProfileMenu navigation={navigation}/>
     </View>
   );

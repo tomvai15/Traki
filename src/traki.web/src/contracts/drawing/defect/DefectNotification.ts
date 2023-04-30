@@ -3,6 +3,7 @@ export type DefectNotification = {
   title: string,
   body: string,
   data: string,
+  creationDate: string,
   userId: number
   defectId: number
 }

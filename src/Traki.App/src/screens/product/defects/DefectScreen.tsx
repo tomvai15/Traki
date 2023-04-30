@@ -26,6 +26,8 @@ import { useRecoilState } from "recoil";
 import { CustomAvatar } from '../../../components/CustomAvatar';
 import { validate, validationRules } from '../../../utils/textValidation';
 import { useHeaderHeight } from '@react-navigation/elements'
+import { notificationService } from '../../../services';
+import { useUpdateNotifications } from '../../../hooks/useUpdateNotifications';
 
 interface Rectangle {
   x: number;
@@ -53,8 +55,7 @@ type CommentWithImage = {
 }
 
 export default function DefectScreen({route, navigation}: Props) {
-
-  const height = useHeaderHeight()
+  const { updateNotifications } = useUpdateNotifications();
 
   const [userInfo, setUserInfo] = useRecoilState(userState);
 
@@ -67,12 +68,18 @@ export default function DefectScreen({route, navigation}: Props) {
   const [commentText, setCommentText] = useState<string>('');
 
   useEffect(() => {
-    fetchDefect();
-    fetchDrawing();
-  }, []);
+    const focusHandler = navigation.addListener('focus', () => {
+      fetchDefect();
+      fetchDrawing();
+    });
+    return focusHandler;
+  }, [navigation]);
 
   async function fetchDefect() {
     const response = await defectService.getDefect(drawingId, defectId);
+    await notificationService.deleteNotifications(defectId);
+    await updateNotifications();
+
     let imageBase64 = '';
     if (response.defect.imageName != '') {
       imageBase64 = await pictureService.getPicture('item', response.defect.imageName);
