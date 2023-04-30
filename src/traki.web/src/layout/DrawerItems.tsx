@@ -18,19 +18,19 @@ export default function DrawerItems() {
   return (
     <React.Fragment>
       <ProtectedComponent role={['ProjectManager', 'ProductManager']}>
-        <ListItemButton onClick={() => navigate('home')}>
+        <ListItemButton id='home-drawer' onClick={() => navigate('home')}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItemButton>
-        <ListItemButton onClick={() => navigate('projects')}>
+        <ListItemButton id='projects-drawer' onClick={() => navigate('projects')}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Projects" />
         </ListItemButton>
-        <ListItemButton onClick={() => navigate('/templates/protocols')}>
+        <ListItemButton id='protocols-drawer' onClick={() => navigate('/templates/protocols')}>
           <ListItemIcon>
             <AssignmentIcon />
           </ListItemIcon>

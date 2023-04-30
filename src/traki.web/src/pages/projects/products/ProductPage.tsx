@@ -29,7 +29,7 @@ const emails = ['username@gmail.com', 'user02@gmail.com'];
 export function ProductPage() {
   const navigate = useNavigate();
   const { projectId, productId } = useParams();
-  const [product, setProduct] = useState<Product>(initialProduct);
+  const [product, setProduct] = useState<Product>();
 
   const [page, setPageState] = useRecoilState(pageState);
 
@@ -99,7 +99,6 @@ export function ProductPage() {
   }
 
   const [defects, setDefects] = useState<Defect[]>([]);
-  
 
   return (
     <Grid container spacing={2}>
@@ -114,43 +113,44 @@ export function ProductPage() {
       <Grid container spacing={2} item xs={12} md={12} >
         <Grid item xs={5} >
           <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
-            <CardContent>
-              <Typography variant='h5'>{product.name}</Typography>
-              <AuthorBar user={product.author}></AuthorBar>           
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell><Typography>Creation date</Typography></TableCell>
-                    <TableCell align="right">{formatDate( new Date(product.creationDate))}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                        <WarningIcon/>
-                        <Typography>Unfixed defects</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">{defects.length}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                        <AssignmentIcon/>
-                        <Typography>Protocold to fill</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">{protocols.length}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><Typography>Status</Typography></TableCell>
-                    <TableCell align="right"> {product.status == 'Active' ? 
-                      <Chip color='info' label={product.status} /> :
-                      <Chip variant='outlined' label={product.status} />}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
+            {product && 
+              <CardContent>
+                <Typography id={'product-name'} variant='h5'>{product.name}</Typography>
+                <AuthorBar user={product.author}></AuthorBar>           
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><Typography id='date-label'>Creation date</Typography></TableCell>
+                      <TableCell align="right">{formatDate( new Date(product.creationDate))}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                          <WarningIcon/>
+                          <Typography id='unfixed-defect-label'>Unfixed defects</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="right">{defects.length}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                          <AssignmentIcon/>
+                          <Typography id='protocol-to-fill-label'>Protocold to fill</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="right">{protocols.length}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><Typography id='status-label'>Status</Typography></TableCell>
+                      <TableCell align="right"> {product.status == 'Active' ? 
+                        <Chip color='info' label={product.status} /> :
+                        <Chip variant='outlined' label={product.status} />}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </CardContent>}
             <CardActions>
               <Button onClick={() => navigate('edit')} variant='contained' color='primary'>Edit information</Button>
             </CardActions>

@@ -24,5 +24,5 @@ export const ProtectedRoute: React.FC<Props> = ({children}) => {
     fetchFullUserInformation();
   }, []);
   
-  return userInfo && userInfo.id >= 0 ? <>{children}</> : <Navigate to="/login"/>;
+  return <>{children}</>;
 };
