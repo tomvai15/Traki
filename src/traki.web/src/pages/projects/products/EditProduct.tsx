@@ -17,14 +17,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 import { AuthorBar } from 'components/AuthorBar';
 
-const initialProduct: Product = {
-  id: 0,
-  name: '',
-  projectId: 0,
-  status: '',
-  creationDate: ''
-};
-
 export function EditProduct() {
   const navigate = useNavigate();
   const { displaySuccess  } = useAlert();
@@ -34,7 +26,7 @@ export function EditProduct() {
   const [previewImage, setPreviewImage] = useState<string>();
   const [file, setFile] = useState<File>();
 
-  const [product, setProduct] = useState<Product>(initialProduct);
+  const [product, setProduct] = useState<Product>();
   const [initialProductJson, setInitialProductJson] = useState<string>('');
 
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
@@ -110,6 +102,10 @@ export function EditProduct() {
   }
 
   async function updateProduct() {
+    if (!product) {
+      return true;
+    }
+
     const request: UpdateProductRequest = {
       product: product
     };
@@ -151,11 +147,17 @@ export function EditProduct() {
   }
 
   async function completeProduct() {
+    if (!product) {
+      return true;
+    }
     await productService.updateProductStatus(product.projectId, product.id);
     await fetchProduct();
   }
 
   async function deleteProduct() {
+    if (!product) {
+      return true;
+    }
     await productService.deleteProduct(product.projectId, product.id);
     navigate(`/projects`);
     handleProductDialogClose();
@@ -167,9 +169,12 @@ export function EditProduct() {
   
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12}>
+      <Grid item xs={12} md={12} sx={{height: 50}}>
         <Breadcrumbs aria-label="breadcrumb">
           <BreadLink color="inherit" href="/projects">
+            Projects
+          </BreadLink>
+          <BreadLink id='product-link' color="inherit" href={ product ? `/projects/${product.projectId}/products/${product.id}` : ''}>
             Projects
           </BreadLink>
           <Typography color="text.primary">Product</Typography>
@@ -179,7 +184,7 @@ export function EditProduct() {
         <Grid item container xs={5} spacing={2}>
           <Grid item xs={12} >
             <Card sx={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
-              <CardContent>
+              { product && <CardContent>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={12}>
                     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
@@ -195,7 +200,8 @@ export function EditProduct() {
                       <Box sx={{marginBottom: '15px'}}>
                         <AuthorBar user={product.author}/>
                       </Box>
-                      <TextField 
+                      <TextField
+                        id={'product-name'} 
                         sx={{width: '100%'}}
                         label='Name'
                         value={product.name}
@@ -211,10 +217,10 @@ export function EditProduct() {
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
-                    <Button disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
+                    <Button id="update-product" disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
                   </Grid>
                 </Grid>
-              </CardContent>
+              </CardContent>}
             </Card>
           </Grid>
           <Grid item xs={12}>
@@ -292,7 +298,7 @@ export function EditProduct() {
         <DialogTitle>Delete product</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete product {product.name}?
+            Are you sure you want to delete product {product?.name}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
