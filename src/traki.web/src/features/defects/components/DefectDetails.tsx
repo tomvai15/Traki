@@ -18,6 +18,8 @@ import CustomTab from 'components/CustomTab';
 import { useRecoilState } from 'recoil';
 import { userState } from 'state/user-state';
 import { validate, validationRules } from 'utils/textValidation';
+import { DefectStatus } from 'contracts/drawing/defect/DefectStatus';
+import DisabledComponent from 'components/DisabledComponent';
 
 function a11yProps(index: number) {
   return {
@@ -26,37 +28,11 @@ function a11yProps(index: number) {
   };
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
 type DefectDetailsProps = {
   selectedDefect?: Defect,
   onSelectInformation: () => void,
   onSelectNew: () => void,
-  createDefect: (title: string, description: string, imageName?: string, image?: FormData) => void
+  createDefect: (title: string, description: string, imageName?: string, image?: FormData) => Promise<void>
   tabIndex: number,
   setTabIndex: (value: number) => void,
   canSubmitDefect: boolean
@@ -72,8 +48,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   const [comment, setComment] = useState<string>('');
   const [defect, setDefect] = useState<DefectWithImage>();
   const [comments, setComments] = useState<CommentWithImage[]>([]);
-
-  const [submitDefectError, setSubmitDefectError] = useState<boolean>(false);
 
   const [previewImage, setPreviewImage] = useState<string>('');
   const [file, setFile] = useState<File>();
@@ -143,17 +117,19 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
     setComments(commentsWithImage);
   }
 
-  function onSubmit() {
+  async function onSubmit() {
     if (file) {
       const pictureName = `${uuid()}${file.type.replace('image/','.')}`;
 
       const formData = new FormData();
       formData.append(pictureName, file, pictureName);
   
-      createDefect(title, description, pictureName, formData);
+      await createDefect(title, description, pictureName, formData);
     } else {
-      createDefect(title, description, undefined, undefined);
+      await createDefect(title, description, undefined, undefined);
     }
+    setDescription('');
+    setTitle('');
   }
 
   function canSubmitComment (): boolean {
@@ -249,16 +225,23 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                   </Typography>
                   <FormControl sx={{minWidth: 120, marginTop: '10px' }} size="small">
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      label="Status"
-                      value={defect ? defect.defect.status : 1}
-                      onChange={(e) => updateDefectStatus(e.target.value as string)}
-                    >
-                      <MenuItem value={1}>Not Fixed</MenuItem>
-                      <MenuItem value={0}>Fixed</MenuItem>
-                    </Select>
+                    <DisabledComponent 
+                      disabled={defect.defect.status != DefectStatus.NotFixed && defect.defect.author?.id != userInfo.id} 
+                      title='Only defect author can change status'>
+                      <Select
+                        disabled={defect.defect.status != DefectStatus.NotFixed && defect.defect.author?.id != userInfo.id}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Status"
+                        value={defect ? defect.defect.status : 1}
+                        onChange={(e) => updateDefectStatus(e.target.value as string)}
+                      >
+                        <MenuItem value={1}>Not fixed</MenuItem>
+                        <MenuItem value={0}>Fixed</MenuItem>
+                        <MenuItem value={2}>Not a defect</MenuItem>
+                        <MenuItem value={3}>Unfixable</MenuItem>
+                      </Select>
+                    </DisabledComponent>
                   </FormControl>
                 </Box>
                 <Box>
@@ -315,8 +298,8 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
           <Typography sx={{marginBottom: '10px'}}>{'Add defect\'s information'}</Typography>
           <TextField 
             inputProps={{ maxLength: 20 }}
-            error={validate(title, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-            helperText={validate(title, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+            error={validate(title, [validationRules.noSpecialSymbols]).invalid}
+            helperText={validate(title, [validationRules.noSpecialSymbols]).message}
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
             label='Title' 
@@ -325,8 +308,8 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
           <Box sx={{display: 'flex', width: '100%'}}>
             <TextField 
               inputProps={{ maxLength: 250 }}
-              error={validate(description, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(description, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(description, [ validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(description, [ validationRules.noSpecialSymbols]).message}
               value={description} 
               onChange={(e) => setDescription(e.target.value)} 
               label='Description' 

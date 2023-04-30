@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';
 import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles({
+  headerCell: {
+    fontWeight: 'bold',
+  },
+});
 
 export function UsersPage() {
-
+  const classes = useStyles();
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
 
@@ -28,15 +35,18 @@ export function UsersPage() {
       </Grid>
       <Grid item xs={12} md={12}>
         <Card>
+          <CardHeader title="Company Users"/>
+          <Divider/>
           <CardContent>
             <TableContainer>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="left">Name</TableCell>
-                    <TableCell align="left">Surname</TableCell>
-                    <TableCell align="left">Email</TableCell>
-                    <TableCell align="left">Role</TableCell>
+                    <TableCell className={classes.headerCell} align="left">Name</TableCell>
+                    <TableCell className={classes.headerCell} align="left">Surname</TableCell>
+                    <TableCell className={classes.headerCell} align="left">Email</TableCell>
+                    <TableCell className={classes.headerCell} align="left">Role</TableCell>
+                    <TableCell className={classes.headerCell} align="left"></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -54,13 +64,7 @@ export function UsersPage() {
                 </TableBody>
               </Table>
             </TableContainer>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item xs={2} md={2}>
-        <Card>
-          <CardContent>
-            <Button onClick={()=> navigate(`/admin/users/create`)}>Create User</Button>
+            <Button variant='contained' onClick={()=> navigate(`/admin/users/create`)}>Create User</Button>
           </CardContent>
         </Card>
       </Grid>

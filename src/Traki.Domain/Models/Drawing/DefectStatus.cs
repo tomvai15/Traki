@@ -3,6 +3,8 @@
     public enum DefectStatus
     {
         Fixed,
-        NotFixed
+        NotFixed,
+        NotDefect,
+        Unfixable,
     }
 }

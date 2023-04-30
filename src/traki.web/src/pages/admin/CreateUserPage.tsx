@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';
 import { Role } from 'contracts/user/Roles';
@@ -37,14 +37,10 @@ export function CreateUserPage() {
       </Grid>
       <Grid item xs={6} md={6}>
         <Card>
+          <CardHeader title="User Information"/>
+          <Divider/>
           <CardContent>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
-                <Typography>Create User</Typography>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Divider></Divider>
-              </Grid>
               <Grid item xs={12} md={12}>
                 <TextField 
                   sx={{width: '100%'}}

@@ -14,6 +14,8 @@ namespace Traki.Api.Bootstrapping
 
             services.AddProblemsMapping<EntityNotFoundException>(HttpStatusCode.NotFound, e => e.Message);
             services.AddProblemsMapping<UnauthorizedException>(HttpStatusCode.Unauthorized, e => e.Message);
+            services.AddProblemsMapping<ForbbidenOperationException>(HttpStatusCode.Forbidden, e => e.Message);
+            services.AddProblemsMapping<BadOperationException>(HttpStatusCode.BadRequest, e => e.Message);
 
             return services;
         }
