@@ -18,6 +18,7 @@ namespace Traki.Infrastructure.Repositories
             _context = context;
             _mapper = mapper;
         }
+
         public async Task<Project> GetProject(int projectId)
         {
             var project = await _context.Projects.Include(x => x.Author)

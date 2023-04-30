@@ -19,8 +19,29 @@ namespace Traki.UnitTests.Infrastructure.Fixture
             contextOptionsBuilder.UseInMemoryDatabase(databaseName: "TestDb");
             Options = contextOptionsBuilder.Options;
 
-            using var context = new TrakiDbContext(Options);
-            context.SaveChanges();
+            using var dbContext = new TrakiDbContext(Options);
+
+            dbContext.AddUsers();
+
+            dbContext.AddCompanies();
+            dbContext.AddProjects();
+            dbContext.AddProducts();
+            dbContext.AddTemplates();
+            dbContext.AddQuestions();
+            dbContext.AddChecklists();
+            dbContext.AddChecklistQuestions();
+
+            dbContext.AddProtocols();
+            dbContext.AddSections();
+            dbContext.AddCheclists();
+            dbContext.AddItems();
+            dbContext.AddNewQuestions();
+            dbContext.AddTextInputs();
+            dbContext.AddMultipleChoices();
+
+            dbContext.AddDrawings();
+            dbContext.AddDefects();
+            dbContext.SaveChanges();
         }
     }
 }

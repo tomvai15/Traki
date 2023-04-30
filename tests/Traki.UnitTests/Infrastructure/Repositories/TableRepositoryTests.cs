@@ -4,7 +4,9 @@ using Traki.UnitTests.Infrastructure.Fixture;
 
 namespace Traki.UnitTests.Infrastructure.Repositories
 {
-    public class TableRepositoryTests: IClassFixture<TrakiDbFixture>
+
+    [Collection("Sequential")]
+    public class TableRepositoryTests
     {
         private readonly TrakiDbFixture _trakiDbFixture;
         private readonly IMapper mapper;
