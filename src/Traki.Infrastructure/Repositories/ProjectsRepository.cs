@@ -37,6 +37,9 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Project> CreateProject(Project project)
         {
             var projectToAdd = _mapper.Map<ProjectEntity>(project);
+
+            projectToAdd.CreationDate = DateTime.Now.ToString("s");
+
             var createdProject = _context.Projects.Add(projectToAdd);
             await _context.SaveChangesAsync();
 

@@ -1,4 +1,4 @@
-import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -21,7 +21,8 @@ const initialProduct: Product = {
   id: 0,
   name: '',
   projectId: 0,
-  status: ''
+  status: '',
+  creationDate: ''
 };
 
 export function EditProduct() {
@@ -149,6 +150,11 @@ export function EditProduct() {
     setFile(undefined);
   }
 
+  async function completeProduct() {
+    await productService.updateProductStatus(product.projectId, product.id);
+    await fetchProduct();
+  }
+
   async function deleteProduct() {
     await productService.deleteProduct(product.projectId, product.id);
     navigate(`/projects`);
@@ -185,15 +191,24 @@ export function EditProduct() {
                     <Divider></Divider>
                   </Grid>
                   <Grid item xs={12} md={12}>
-                    <Box sx={{marginBottom: '15px'}}>
-                      <AuthorBar user={product.author}/>
-                    </Box>
-                    <TextField 
-                      sx={{width: '100%'}}
-                      label='Name'
-                      value={product.name}
-                      onChange={(e) => setProduct({...product, name: e.target.value})}
-                    />
+                    <Stack spacing={1}>
+                      <Box sx={{marginBottom: '15px'}}>
+                        <AuthorBar user={product.author}/>
+                      </Box>
+                      <TextField 
+                        sx={{width: '100%'}}
+                        label='Name'
+                        value={product.name}
+                        onChange={(e) => setProduct({...product, name: e.target.value})}
+                      />
+                      <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                        <Typography>Status</Typography>
+                        {product.status == 'Active' ? 
+                          <Chip color='info' label={product.status} /> :
+                          <Chip variant='outlined' label={product.status} />}
+                        { product.status == 'Active' && <Button onClick={completeProduct}>Complete</Button>}
+                      </Stack>
+                    </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
                     <Button disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>

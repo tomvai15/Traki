@@ -69,11 +69,13 @@ namespace Traki.Infrastructure.Data
             {
                 Name= "Welding Procedures - Checklist",
                 IsTemplate= true,
+                CreationDate = DateTime.Now.ToString("s"),
             },
             new ProtocolEntity
             {
                 Name= "Leakage test - Protocol",
                 IsTemplate= true,
+                CreationDate = DateTime.Now.ToString("s"),
             }
         };
 
@@ -268,9 +270,7 @@ namespace Traki.Infrastructure.Data
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.ProjectManager,
                 Status = UserStatus.Active
-            },
-
-            /*
+            },         
             new UserEntity
             {
                 Email = "tipotomas9@gmail.com",
@@ -279,7 +279,7 @@ namespace Traki.Infrastructure.Data
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.Administrator,
                 Status = UserStatus.Active
-            }*/
+            }
         };
 
         public static IEnumerable<ProjectEntity> Projects => new[]
@@ -290,6 +290,7 @@ namespace Traki.Infrastructure.Data
                 ClientName = $"Sample Client",
                 Address = $"Sample Address",
                 ImageName = "5e6669e4-c033-4ded-93e6-f44dccc6a157.png",
+                CreationDate = DateTime.Now.ToString("s"),
                 CompanyId = 1,
                 AuthorId = 2,
             },
@@ -301,6 +302,7 @@ namespace Traki.Infrastructure.Data
                 ImageName = "02653609-3004-4a48-b2d6-bddab03e778c.png",
                 CompanyId = 1,
                 AuthorId = 2,
+                CreationDate = DateTime.Now.ToString("s"),
             }
         };
 
@@ -311,21 +313,24 @@ namespace Traki.Infrastructure.Data
                 Name = $"SH.1 / 01.2.21.1.0016",
                 ProjectId = 1,
                 AuthorId = 1,
-                Status = ProductStatus.Active
+                Status = ProductStatus.Active,
+                CreationDate = DateTime.Now.ToString("s"),
             },
             new ProductEntity
             {
                 Name = $"SH.2 / 01.2.21.1.0016 GT",
                 ProjectId = 2,
                 AuthorId = 1,
-                Status = ProductStatus.Completed
+                Status = ProductStatus.Completed,
+                CreationDate = DateTime.Now.ToString("s"),
             },
             new ProductEntity
             {
                 Name = $"SH.1 / 01.2.21.1.0016",
                 ProjectId = 1,
                 AuthorId = 1,
-                Status = ProductStatus.Active
+                Status = ProductStatus.Active,
+                CreationDate = DateTime.Now.ToString("s"),
             },
         };
 

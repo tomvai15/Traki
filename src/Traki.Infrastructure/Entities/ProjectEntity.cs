@@ -7,6 +7,7 @@
         public string ClientName { get; set; }
         public string Address { get; set; }
         public string ImageName { get; set; }
+        public string CreationDate { get; set; }
         public ICollection<ProductEntity> Products { get; set; }
         public ICollection<TemplateEntity> Templates { get; set; }
         public int CompanyId { get; set; }

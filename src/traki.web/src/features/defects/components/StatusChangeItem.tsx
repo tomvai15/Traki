@@ -12,6 +12,8 @@ function defectStatusToText(defectStatus: DefectStatus): string {
   switch (defectStatus) {
   case DefectStatus.Fixed: return 'Fixed';
   case DefectStatus.NotFixed: return 'Not fixed';
+  case DefectStatus.NotDefect: return 'Not a defect';
+  case DefectStatus.Unfixable: return 'Unfixable';
   }
 }
 

@@ -45,7 +45,8 @@ export function CreateProject() {
       name: name,
       clientName: client,
       address: address,
-      imageName: pictureName
+      imageName: pictureName,
+      creationDate: ''
     };
 
     const request: CreateProjectRequest = {

@@ -6,6 +6,7 @@ using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
 using Traki.Domain.Extensions;
 using System.Linq;
+using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -26,6 +27,7 @@ namespace Traki.Infrastructure.Repositories
 
             productEntity.RequiresToBeNotNullEnity();
             productEntity.Name = product.Name;
+            productEntity.Status = product.Status;
 
             await _context.SaveChangesAsync();
         }
@@ -65,6 +67,9 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Product> CreateProduct(Product product)
         {
             var productToAdd = _mapper.Map<ProductEntity>(product);
+
+            productToAdd.CreationDate = DateTime.Now.ToString("s");
+
             var createdProduct = _context.Products.Add(productToAdd);
             await _context.SaveChangesAsync();
 

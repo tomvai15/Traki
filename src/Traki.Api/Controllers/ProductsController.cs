@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Protocol;
+using Traki.Domain.Constants;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
@@ -34,8 +35,12 @@ namespace Traki.Api.Controllers
             {
                 return NotFound();
             }
+            var response = new GetProductResponse
+            {
+                Product = _mapper.Map<ProductDto>(product)
+            };
 
-            return _mapper.Map<GetProductResponse>(product);
+            return Ok(response);
         }
 
         [HttpPut("{productId}")]
@@ -43,6 +48,11 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> UpdateProduct(int projectId, int productId, [FromBody]UpdateProductRequest updateProductRequest)
         {
             var product = _mapper.Map<Product>(updateProductRequest.Product);
+
+            var productFromDb = await _productsRepository.GetProduct(productId);
+
+            productFromDb.Name = product.Name;
+
             await _productsRepository.UpdateProduct(product);
 
             return Ok();
@@ -70,6 +80,18 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> AddProtocol(int productId, AddProtocolRequest addProtocolRequest)
         {
             await _productHandler.AddProtocolToProduct(productId, addProtocolRequest.ProtocolId);
+            return Ok();
+        }
+
+        [HttpPost("{productId}/status")]
+        [Authorize]
+        public async Task<ActionResult> UpdateProductStatus(int productId)
+        {
+            var product = await _productsRepository.GetProduct(productId);
+
+            product.Status = ProductStatus.Completed;
+            await _productsRepository.UpdateProduct(product);
+
             return Ok();
         }
 

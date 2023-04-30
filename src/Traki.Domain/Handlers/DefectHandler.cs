@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Traki.Domain.Exceptions;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
@@ -119,6 +120,17 @@ namespace Traki.Domain.Handlers
         public async Task<Defect> CreateDefectStatusChange(int userId, Defect defect)
         {
             var def = await _defectsRepository.GetDefect(defect.Id);
+
+            if (def.Status == defect.Status)
+            {
+                throw new BadOperationException("Cannot change status to the same");
+            }
+
+            if (userId != def.AuthorId && def.Status != DefectStatus.NotFixed)
+            {
+                throw new ForbbidenOperationException("Only defect author can change defect status, when it's not in Fixed state");
+            }
+
             var statusChange = new StatusChange
             {
                 From = def.Status,

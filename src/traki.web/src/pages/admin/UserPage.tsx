@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';
 import { useParams } from 'react-router-dom';
@@ -56,14 +56,10 @@ export function UserPage() {
       </Grid>
       <Grid item xs={6} md={6}>
         <Card>
+          <CardHeader title="User Information"/>
+          <Divider/>
           <CardContent>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
-                <Typography>User Information</Typography>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Divider></Divider>
-              </Grid>
               <Grid item xs={12} md={12}>
                 <TextField 
                   sx={{width: '100%'}}
@@ -106,7 +102,7 @@ export function UserPage() {
                 <TextField 
                   focused
                   label='Status'
-                  color={user.status == UserStatus.active ? 'success' : 'error' }
+                  color={user.status == UserStatus.active ? 'success' : ( user.status == UserStatus.created ? 'info' : 'error') }
                   value={user.status}
                   InputProps={{
                     readOnly: true

@@ -17,7 +17,8 @@ const initialProject: Project = {
   name: '',
   clientName: '',
   address: '',
-  imageName: ''
+  imageName: '',
+  creationDate: ''
 };
 
 export function EditProject() {
@@ -47,7 +48,7 @@ export function EditProject() {
     setInitialProjectJson(JSON.stringify(response.project));
     setInitialImage(response.project.imageName);
 
-    const imageBase64 = await pictureService.getPicture('item', response.project.imageName);
+    const imageBase64 = await pictureService.getPicture('company', response.project.imageName);
     setPreviewImage(imageBase64);
   }
 
@@ -74,7 +75,8 @@ export function EditProject() {
       name: project.name,
       clientName: project.clientName,
       address: project.address,
-      imageName: pictureName
+      imageName: pictureName,
+      creationDate: project.creationDate
     };
 
     const request: CreateProjectRequest = {
@@ -165,8 +167,6 @@ export function EditProject() {
           <CardContent>
             <img style={{maxHeight: '300px', width: 'auto', borderRadius: '2%',}} 
               src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}></img>
-          </CardContent>  
-          <CardContent>
             <IconButton color="secondary" aria-label="upload picture" component="label">
               <input hidden accept="image/*" type="file" onChange={selectFile} />
               <PhotoCamera />

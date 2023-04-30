@@ -5,5 +5,6 @@ export type Product = {
   name: string,
   status: string,
   projectId: number,
-  author?: Author
+  author?: Author,
+  creationDate: string
 }

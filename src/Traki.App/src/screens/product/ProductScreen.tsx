@@ -64,23 +64,22 @@ export default function ProductScreen({route, navigation}: Props) {
     const getProductProtocolsResponse = await protocolService.getProtocols(projectId, productId);
     setProtocols(getProductProtocolsResponse.protocols);
   }
+  
+  const [templateProtocols, setTemplateProtocols] = useState<Protocol[]>([]);
 
   async function fetchTemplates() {
-    const getTemplatesResponse = await templateService.getTemplates().catch(err =>console.log(err));
-    if (!getTemplatesResponse) {
-      return;
-    }
-    setTemplates(getTemplatesResponse.templates);
+    const getProtocolsResponse = await protocolService.getTemplateProtocols();
+    setTemplateProtocols(getProtocolsResponse.protocols);
+  }
+
+  async function addProtocol(protocolId: number) {
+    await productService.addProtocol(Number(projectId), Number(productId), protocolId);
+    await fetchProduct();
   }
 
   async function createChecklist() {
-    try {
-      await checklistService.createChecklist(productId, {templateId: templateToAdd});
-      await fetchProduct();
-      hideDialog();
-    } catch (err) {
-      console.log(err);
-    }
+    addProtocol(templateToAdd);
+    hideDialog();
   }
 
   return (
@@ -96,11 +95,13 @@ export default function ProductScreen({route, navigation}: Props) {
                 value={searchQuery}
               />
               <Card mode='outlined' style={{ height: 100, marginTop: 10 }}>
-                <FlatList data={templates.filter(x=> x.name.toLowerCase().includes(searchQuery.toLowerCase()))} 
+                <FlatList data={templateProtocols.filter(x=> x.name.toLowerCase().includes(searchQuery.toLowerCase()))} 
                   keyExtractor={item => item.id.toString()}
                   renderItem={({item}) => 
                     <View style={{margin:5, backgroundColor: item.id==templateToAdd ? '#e4ae3f' : 'white' }}>
-                      <Text onPress={()=> setTemplateToAdd(templateToAdd == item.id ? -1 : item.id)} variant="titleMedium">{item.name}</Text>
+                      <Text onPress={()=> setTemplateToAdd(templateToAdd == item.id ? -1 : item.id)} variant="titleMedium">
+                        {item.name}
+                      </Text>
                       <Divider bold={true}></Divider>
                     </View>}></FlatList>     
               </Card>

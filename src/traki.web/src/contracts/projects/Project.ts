@@ -6,5 +6,6 @@ export type Project = {
   clientName: string,
   address: string,
   imageName: string,
-  author?: Author
+  author?: Author,
+  creationDate: string
 }

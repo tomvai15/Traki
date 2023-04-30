@@ -1,4 +1,4 @@
-import { Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -10,12 +10,18 @@ import { useRecoilState } from 'recoil';
 import { pageState } from 'state/page-state';
 import { DeleteItemDialog } from 'components/DeleteItemDialog';
 import { protocolService } from 'services';
+import { Defect } from 'contracts/drawing/defect/Defect';
+import { formatDate } from 'utils/dateHelpers';
+import { AuthorBar } from 'components/AuthorBar';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import WarningIcon from '@mui/icons-material/Warning';
 
 const initialProduct: Product = {
   id: 0,
   name: '',
   projectId: 0,
-  status
+  status,
+  creationDate: ''
 };
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
@@ -91,7 +97,10 @@ export function ProductPage() {
   if (!productId) {
     return (<></>);
   }
+
+  const [defects, setDefects] = useState<Defect[]>([]);
   
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={12}>
@@ -107,12 +116,40 @@ export function ProductPage() {
           <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
             <CardContent>
               <Typography variant='h5'>{product.name}</Typography>
-              <Typography>Author: {product.name}</Typography>
-              <Typography>Creation date: {product.name}</Typography>
-              <Typography>In progress</Typography>
-              <Typography>6 not fixed defects</Typography>
-              <Typography>2 protocols to fill</Typography>
-              <></>
+              <AuthorBar user={product.author}></AuthorBar>           
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell><Typography>Creation date</Typography></TableCell>
+                    <TableCell align="right">{formatDate( new Date(product.creationDate))}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                        <WarningIcon/>
+                        <Typography>Unfixed defects</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">{defects.length}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                        <AssignmentIcon/>
+                        <Typography>Protocold to fill</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">{protocols.length}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><Typography>Status</Typography></TableCell>
+                    <TableCell align="right"> {product.status == 'Active' ? 
+                      <Chip color='info' label={product.status} /> :
+                      <Chip variant='outlined' label={product.status} />}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </CardContent>
             <CardActions>
               <Button onClick={() => navigate('edit')} variant='contained' color='primary'>Edit information</Button>
@@ -122,7 +159,7 @@ export function ProductPage() {
         <Grid item xs={7} >
           <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
             <CardContent>
-              <DrawingDefectsViewer productId={Number(productId)}/>
+              <DrawingDefectsViewer defectsCallback={setDefects} productId={Number(productId)}/>
               <Button onClick={() => navigate('defects')} variant='contained' color='primary'>Defect details</Button>
             </CardContent>
           </Card>
@@ -135,29 +172,33 @@ export function ProductPage() {
               <Typography variant='h5'>Assigned protocols</Typography>
               <Button onClick={handleClickOpen} variant='contained'>Add protocol</Button>
             </Stack>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Protocol Name</TableCell>
-                  <TableCell align="right"></TableCell>
-                  <TableCell align="right"></TableCell>
-                  <TableCell align="right"></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {protocols.map((item, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">{item.name}</TableCell>
-                    <TableCell align="right"><Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button></TableCell>
-                    <TableCell align="right"><Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button></TableCell>
-                    <TableCell align="right"><Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Fill</Button></TableCell>
+            { protocols.length == 0 ?
+              <Box sx={{marginTop: '10px'}}>
+                <Typography>No Protocols</Typography>
+              </Box> : 
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Protocol Name</TableCell>
+                    <TableCell align="right"></TableCell>
+                    <TableCell align="right"></TableCell>
+                    <TableCell align="right"></TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {protocols.map((item, index) => (
+                    <TableRow
+                      key={index}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">{item.name}</TableCell>
+                      <TableCell align="right"><Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button></TableCell>
+                      <TableCell align="right"><Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button></TableCell>
+                      <TableCell align="right"><Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Fill</Button></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>}
           </CardContent>
         </Card>
       </Grid>

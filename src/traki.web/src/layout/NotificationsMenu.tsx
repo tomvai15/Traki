@@ -62,7 +62,7 @@ export default function NotificationsMenu() {
         </Badge>
       </IconButton>
       <Menu
-        sx={{ mt: '45px' }}
+        sx={{ mt: '45px', height: '500px' }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{

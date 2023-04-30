@@ -136,7 +136,7 @@ function ProjectProducts({project}: ProjectProductsProps) {
                       </ListItemText>
                       <ListItemIcon>
                         {product.status == 'Active' ? 
-                          <Chip color='success' label={product.status} /> :
+                          <Chip color='info' label={product.status} /> :
                           <Chip variant='outlined' label={product.status} />}
                       </ListItemIcon>
                     </ListItemButton>

@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CreateIcon from '@mui/icons-material/Create';
-import { Button, Card, CardActions, CardContent, Checkbox, CircularProgress, Divider, FormControlLabel, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Checkbox, CircularProgress, Divider, FormControlLabel, IconButton, Stack, Table, TableBody, TableCell, TableRow, TextField, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
@@ -21,6 +21,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import InputIcon from '@mui/icons-material/Input';
 import { sectionService } from 'services';
 import { Section } from 'contracts/protocol';
+import { AuthorBar } from 'components/AuthorBar';
 
 type SectionWithFlag = {
   section: Section,
@@ -120,7 +121,7 @@ export function ProtocolReport() {
     const { data } = await reportService.getReportPdf(Number(protocolId));
     console.log(data);
     const blob = new Blob([data], { type: 'application/pdf' });
-    saveAs(blob, "ataskaita.pdf");
+    saveAs(blob, `${protocol?.name}.pdf`);
   }
 
   async function  updateSectionWithFlag(id: number, include: boolean) {
@@ -134,14 +135,30 @@ export function ProtocolReport() {
         <Box sx={{padding: 3, flex: 2, display: 'flex', flexDirection: 'column', backgroundColor: (theme) => theme.palette.grey[100]}}>
           <Box sx={{flex: 3, padding: 3, display: 'flex',  flexDirection: 'column',  backgroundColor: (theme) => theme.palette.grey[100]}}>
             <Card>
-              { !(protocol && !protocol.isSigned) && 
-                  <CardContent sx={{paddingTop: 0}}>
+              <CardHeader title="Report information"/>
+              <Divider/>
+              { protocol && protocol.isSigned && 
+                <CardContent sx={{paddingTop: 0}}>
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>
+                          <Typography>Document signed by</Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <AuthorBar user={protocol.signer}></AuthorBar>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                  <Stack justifyContent={'flex-end'} direction={'row'}>
                     <Tooltip title="Download report" placement="top">
                       <IconButton onClick={downloadPDF}>
                         <DownloadIcon />
                       </IconButton>
                     </Tooltip>
-                  </CardContent>}
+                  </Stack>
+                </CardContent>}
               {
                 protocol && !protocol.isSigned && 
                 <Box>
@@ -177,14 +194,17 @@ export function ProtocolReport() {
                     <Card color='secondary' sx={{marginTop: '20px'}}>
                       <Stack direction={'column'} spacing={1}>
                         <Stack direction={'row'} spacing={1}>
-                          <Button sx={{width: '100%'}} disabled={!userInfo.loggedInDocuSign} onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
-                            Sign document with DocuSign
-                          </Button> 
-                          { !userInfo.loggedInDocuSign && <Tooltip title="You need to sign to DocuSign first" placement="top">
-                            <IconButton>
-                              <InfoIcon />
-                            </IconButton>
-                          </Tooltip>}
+                          { userInfo.loggedInDocuSign ? 
+                            <Button sx={{width: '100%'}} disabled={!userInfo.loggedInDocuSign} onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
+                              Sign document with DocuSign
+                            </Button> :
+                            <Tooltip sx={{width: '100%'}} title="You need to sign to DocuSign first" placement="top">
+                              <span style={{width: '100%'}}>
+                                <Button sx={{width: '100%'}} disabled={!userInfo.loggedInDocuSign} onClick={signDocument} variant="contained" endIcon={ loadingSignIn ? <CircularProgress size={20} color='secondary' /> : <CreateIcon />}>
+                                  Sign document with DocuSign
+                                </Button>
+                              </span>
+                            </Tooltip>}
                         </Stack>
                         { !userInfo.loggedInDocuSign && <Button onClick={getCodeUrl} variant="contained" endIcon={<InputIcon />}>
                           Login to DocuSign

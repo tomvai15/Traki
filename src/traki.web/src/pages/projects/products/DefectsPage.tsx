@@ -264,8 +264,8 @@ export function DefectsPage() {
             <Card>
               <CardContent>
                 <FormControlLabel control={<Checkbox defaultChecked />} onChange={()=> setIncludeFixedDefects(!includeFixedDefects)} checked={includeFixedDefects} label="Include fixed defects" />
-                <List component="nav" sx={{overflow: 'auto', maxHeight: 250}}>
-                  <PaginatedList items={defects.filter(x=> x.status >= Number(!includeFixedDefects))} renderItem={(item) =>
+                <List component="nav">
+                  <PaginatedList heightPerItem={80} items={defects.filter(x=> x.status >= Number(!includeFixedDefects))} renderItem={(item) =>
                     <ListItemButton alignItems="flex-start" onClick={() => setSelectedDefectAndDrawing(item)}>
                       <ListItemAvatar>
                         <Avatar alt="Tomas Vainoris" src={  item.author?.userIconBase64 ? item.author.userIconBase64 :  "/static/images/avatar/1.jpg"}>

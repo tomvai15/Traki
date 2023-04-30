@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Card, CardContent, IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import { Card, CardContent, IconButton, ImageList, ImageListItem, ImageListItemBar, Tooltip, Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
@@ -8,6 +8,7 @@ import { Drawing } from '../../../contracts/drawing/Drawing';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { drawingService, pictureService } from 'services';
 import { DrawingWithImage } from '../types/DrawingWithImage';
+import CustomTooltip from 'components/CustomTooltip';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -17,14 +18,14 @@ export interface SimpleDialogProps {
 }
 
 type Props = {
-  productId: number
+  productId: number,
+  defectsCallback: (defect: Defect[]) => void
 }
 
-export function DrawingDefectsViewer({productId}: Props) {
+export function DrawingDefectsViewer({productId, defectsCallback}: Props) {
   const {state} = useLocation();
 
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
-  const [defects, setDefects] = useState<Defect[]>([]);
 
   const [selectedDefect, setSelectedDefect] = useState<Defect>();
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
@@ -66,8 +67,9 @@ export function DrawingDefectsViewer({productId}: Props) {
         setSelectedDrawing(drawingsWithImage[0]);
       }
     }
-
-    setDefects(newDefects);
+    const defects = drawingsWithImage.map( x=> x.drawing.defects).flat(1);
+    defectsCallback(defects);
+    console.log(defects);
     setDrawings(drawingsWithImage);
   }
 
@@ -87,22 +89,16 @@ export function DrawingDefectsViewer({productId}: Props) {
   const customRender = (areaProps: IAreaRendererProps) => {
     if (!areaProps.isChanging) {
       return (
-        <div key={areaProps.areaNumber} 
+        <Box key={areaProps.areaNumber} 
           style={{width: '100%', height: '100%', borderColor: 'grey', borderWidth: 2, borderStyle: 'dashed'}}>
-        </div>
+          <CustomTooltip 
+            title={selectedDrawing ? selectedDrawing.drawing.defects[areaProps.areaNumber-1].title : ''}>
+            <Box sx={{width: '100%', height: '100%'}}></Box>
+          </CustomTooltip>
+        </Box>
       );
     }
   };
-
-  function isSelectedRegion(areaNumber: number) {
-    const foundDefect = selectedDrawing?.drawing.defects[areaNumber-1];
-    return selectedDefect?.id == foundDefect?.id;
-  }
-
-  function setSelectedDefectById(defectIndex: number) {
-    const foundDefect = selectedDrawing?.drawing.defects[defectIndex-1];
-    setSelectedDefect(foundDefect);
-  }
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'row'}}>
@@ -117,7 +113,7 @@ export function DrawingDefectsViewer({productId}: Props) {
         </AreaSelector>}
       </Box>
       <Box sx={{padding: '5px'}}>
-        <ImageList sx={{ width: 180, height: 370 }} cols={1}>
+        <ImageList sx={{ width: 180, height: 350 }} cols={1}>
           {drawings.map((item, index) => (
             <ImageListItem key={index}>
               <img
