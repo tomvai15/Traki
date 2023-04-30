@@ -34,8 +34,12 @@ namespace Traki.Api.Controllers
             {
                 return NotFound();
             }
+            var response = new GetProductResponse
+            {
+                Product = _mapper.Map<ProductDto>(product)
+            };
 
-            return _mapper.Map<GetProductResponse>(product);
+            return Ok(response);
         }
 
         [HttpPut("{productId}")]

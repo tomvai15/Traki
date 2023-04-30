@@ -17,7 +17,8 @@ const initialProject: Project = {
   name: '',
   clientName: '',
   address: '',
-  imageName: ''
+  imageName: '',
+  creationDate: ''
 };
 
 export function EditProject() {
@@ -74,7 +75,8 @@ export function EditProject() {
       name: project.name,
       clientName: project.clientName,
       address: project.address,
-      imageName: pictureName
+      imageName: pictureName,
+      creationDate: project.creationDate
     };
 
     const request: CreateProjectRequest = {

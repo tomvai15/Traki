@@ -8,6 +8,7 @@ namespace Traki.Api.Contracts.Product
         public string Name { get; set; }
         public int ProjectId { get; set; }
         public string Status { get; set; }
+        public string CreationDate { get; set; }
         public AuthorDto? Author { get; set; }
     }
 }

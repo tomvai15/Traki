@@ -21,7 +21,8 @@ const initialProduct: Product = {
   id: 0,
   name: '',
   projectId: 0,
-  status: ''
+  status: '',
+  creationDate: ''
 };
 
 export function EditProduct() {
