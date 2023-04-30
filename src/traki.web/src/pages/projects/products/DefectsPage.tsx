@@ -229,7 +229,7 @@ export function DefectsPage() {
                       </AreaSelector>)}
                   </Box>
                   <Box sx={{padding: '5px'}}>
-                    <ImageList sx={{ width: 180, height: 300 }} cols={1}>
+                    <ImageList sx={{ width: 180, height: 340 }} cols={1}>
                       {drawings.map((item, index) => (
                         <ImageListItem key={index}>
                           <img

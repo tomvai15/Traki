@@ -4,15 +4,16 @@ import { Image } from 'react-native';
 type AutoImageProps = {
   width?: number,
   height?: number,
-  source: string
+  source: string,
+  sizeCallback?: (x: number, y: number) => void
 }
 
 type ImageSize = {
   width: number,
-  height: number
+  height: number,
 }
 
-function AutoImage ({width, height, source}: AutoImageProps) {
+function AutoImage ({width, height, source, sizeCallback}: AutoImageProps) {
   const [imageSize, setImageSize] = useState<ImageSize>();
 
   useEffect(() => {
@@ -27,7 +28,10 @@ function AutoImage ({width, height, source}: AutoImageProps) {
         newWidth = width;
         newHeight = (imageHeight*width)/imageWidth;;
       }
-
+      
+      if (sizeCallback) {
+        sizeCallback(newWidth, newHeight);
+      }
       setImageSize({width: newWidth, height: newHeight})}
     );
   }, [width, height, source]);

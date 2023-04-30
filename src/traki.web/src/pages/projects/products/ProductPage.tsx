@@ -123,10 +123,8 @@ export function ProductPage() {
           <Card sx={{height: '100%', display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
             <CardContent>
               <DrawingDefectsViewer productId={Number(productId)}/>
-            </CardContent>
-            <CardActions>
               <Button onClick={() => navigate('defects')} variant='contained' color='primary'>Defect details</Button>
-            </CardActions>
+            </CardContent>
           </Card>
         </Grid>
       </Grid>

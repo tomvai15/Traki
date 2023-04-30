@@ -55,10 +55,19 @@ export default function AddDefectScreen({route, navigation}: Props) {
   const [visible, setVisible] = React.useState(false);
   const [imageWidth, setImageWidth] = useState<number>(405);
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
+
+  const [selectedX, setSelectedX] = useState(0);
+  const [selectedY, setSelectedY] = useState(0);
   
   useEffect(() => {
     fetchDrawings();
   }, [])
+
+  function updateSelectedXY(x: number, y: number) {
+    console.log(' ---- ' + x + '  ' + y )
+    setSelectedX(x);
+    setSelectedY(y);
+  }
 
   async function fetchDrawings() {
     const response = await drawingService.getDrawings(Number(productId));
@@ -79,7 +88,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
       const newDrawingImage: DrawingWithImage = {drawing: item, imageBase64: imageBase64};
       drawingsWithImage.push(newDrawingImage);
     };
-    setSelectedDrawing(drawingsWithImage[0]);
+    setSelectedDrawing(drawingsWithImage[1]);
     setDrawings(drawingsWithImage);
   }
 
@@ -156,52 +165,44 @@ export default function AddDefectScreen({route, navigation}: Props) {
       return;
     }
 
-    Image.getSize(selectedImage, async (sourceImageWidth, sourceImageHeight) => {
+    const newWidth = selectedX;
+    const newHeight = selectedY;
+  
+    const xPerc = rectangle.x/newWidth;
+    const yPerc = rectangle.y/newHeight;
+    const widthPerc = rectangle.width/newWidth;
+    const heightPerc = rectangle.height/newHeight;
 
-       console.log(sourceImageWidth + ' ' + sourceImageHeight);
-       const newWidth = imageWidth;
-       // TODO: investigate  reason behind -20
-       const newHeight = ((sourceImageHeight*imageWidth)/sourceImageWidth) - 20;
+    const rectPerc: Rectangle  = {
+    x: xPerc * 100,
+    y: yPerc * 100,
+    width: widthPerc * 100,
+    height: heightPerc * 100,
+    }
 
-       console.log(newWidth + ' ' + newHeight);
-       console.log(rectangle.x + ' ' + rectangle.y);
-      
-       const xPerc = rectangle.x/newWidth;
-       const yPerc = rectangle.y/newHeight;
-       const widthPerc = rectangle.width/newWidth;
-       const heightPerc = rectangle.height/newHeight;
+    const newDefect: Defect = {
+      id: 0,
+      title: title,
+      description: description,
+      imageName: pictureName,
+      status: DefectStatus.NotFixed,
+      x: rectPerc.x,
+      y: rectPerc.y,
+      width: rectPerc.width,
+      height: rectPerc.height,
+      drawingId: 0
+    };
 
-       const rectPerc: Rectangle  = {
-        x: xPerc * 100,
-        y: yPerc * 100,
-        width: widthPerc * 100,
-        height: heightPerc * 100,
-       }
+    console.log(rectPerc);
+    console.log(newDefect);
 
-       const newDefect: Defect = {
-        id: 0,
-        title: title,
-        description: description,
-        imageName: pictureName,
-        status: DefectStatus.NotFixed,
-        x: rectPerc.x,
-        y: rectPerc.y,
-        width: rectPerc.width,
-        height: rectPerc.height,
-        drawingId: 0
-       };
-
-       console.log(rectPerc);
-       console.log(newDefect);
-
-       const request: CreateDefectRequest = {
-        defect: newDefect
-       }
-       const response = await defectService.createDefect(selectedDrawing.drawing.id, request);
-       const createdDefect = response.defect;
-       setVisible(false);
-       navigation.navigate('DefectScreen', {productId: productId, drawingId: createdDefect.drawingId, defectId: createdDefect.id});
-    });
+    const request: CreateDefectRequest = {
+      defect: newDefect
+    }
+    const response = await defectService.createDefect(selectedDrawing.drawing.id, request);
+    const createdDefect = response.defect;
+    setVisible(false);
+    navigation.navigate('DefectScreen', {productId: productId, drawingId: createdDefect.drawingId, defectId: createdDefect.id});
   }
 
   return (
@@ -212,6 +213,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
         <AutoImage
           source={selectedDrawing.imageBase64}
           width={imageWidth}
+          sizeCallback={updateSelectedXY}
         />
         <Svg style={StyleSheet.absoluteFill} color={'red'}>
           <Rect
@@ -280,7 +282,7 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
 
   async function createDefect() {
     let pictureName = '';
-    if (imageUri != null) {
+    if (imageUri) {
       pictureName = `${uuid.v4().toString()}.jpeg`;
       await uploadImage(imageUri, pictureName);
     }
