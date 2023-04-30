@@ -16,6 +16,10 @@ class ProjectService {
     return response.data;
   }
 
+  async deleteProject(id: number): Promise<void> {
+    await axiosApiInstance.delete(`${route}/${id}`, { headers: {} });
+  }
+
   async createProject(createProjectRequest: CreateProjectRequest): Promise<boolean> {
     await axiosApiInstance.post(route, createProjectRequest, { headers: {} });
     return true;

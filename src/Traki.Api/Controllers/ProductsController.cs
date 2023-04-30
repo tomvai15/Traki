@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Product;
@@ -46,6 +45,14 @@ namespace Traki.Api.Controllers
             var product = _mapper.Map<Product>(updateProductRequest.Product);
             await _productsRepository.UpdateProduct(product);
 
+            return Ok();
+        }
+
+        [HttpDelete("{productId}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteProduct(int projectId, int productId)
+        {
+            await _productsRepository.DeleteProduct(productId);
             return Ok();
         }
 

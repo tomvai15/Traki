@@ -10,10 +10,11 @@ import { ProtectedComponent } from 'components/ProtectedComponent';
 
 type Props = {
   selectedProtocol?: Protocol,
-  updateProtocol: (protocol: Protocol) => void
+  updateProtocol: (protocol: Protocol) => void,
+  deleteProtocol: () => void
 }
 
-export function ProtocolCard({selectedProtocol, updateProtocol}: Props) {
+export function ProtocolCard({selectedProtocol, updateProtocol, deleteProtocol}: Props) {
   const navigate = useNavigate();
 
   const [protocol, setProtocol] = useState<Protocol>();
@@ -86,9 +87,14 @@ export function ProtocolCard({selectedProtocol, updateProtocol}: Props) {
             onChange={(e) => updateName(e.target.value)}
           />
           <ProtectedComponent role='ProjectManager'>
-            <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >
-              Save
-            </Button>
+            <Stack direction={'row'} justifyContent={'center'} spacing={1}>
+              <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >
+                Save
+              </Button>
+              <Button onClick={() => deleteProtocol()} color='error' variant='contained' >
+                Delete
+              </Button>
+            </Stack>
           </ProtectedComponent>
         </Stack>
         <ProtocolSections sections={sections} setSections={setSections}/>

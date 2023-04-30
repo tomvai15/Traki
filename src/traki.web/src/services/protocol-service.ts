@@ -13,6 +13,11 @@ class ProtocolService {
     return response.data;
   }
 
+  async deleteProtocol(protocolId: number): Promise<void> {
+    const fullRoute = route + '/' + protocolId;
+    await axiosApiInstance.delete(fullRoute, { headers: {} });
+  }
+
   async updateProtocol(protocolId: number, updateProtocolRequest: UpdateProtocolRequest): Promise<void> {
     const fullRoute = route + '/' + protocolId;
     console.log(updateProtocolRequest);

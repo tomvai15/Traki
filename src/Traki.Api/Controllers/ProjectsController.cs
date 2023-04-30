@@ -68,5 +68,13 @@ namespace Traki.Api.Controllers
             await _projectsRepository.UpdateProject(project);
             return Ok();
         }
+
+        [HttpDelete("{projectId}")]
+        [Authorize(Roles = Role.ProjectManager)]
+        public async Task<ActionResult<GetProjectResponse>> DeleteProject(int projectId)
+        {
+            await _projectsRepository.DeleteProject(projectId);
+            return Ok();
+        }
     }
 }
