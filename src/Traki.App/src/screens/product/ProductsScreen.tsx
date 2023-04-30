@@ -47,8 +47,6 @@ export default function ProductsScreen({ navigation }: Props) {
         />}
         keyExtractor={item => item.id.toString()}
       />
-
-      <Button>Product</Button>
     </View>
   );
 }

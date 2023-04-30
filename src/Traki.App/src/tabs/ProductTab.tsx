@@ -7,12 +7,14 @@ import ProtocolScreen from '../screens/product/checklist/ProtocolScreen';
 import AddDefectScreen from '../screens/product/defects/AddDefectScreen';
 import DefectsScreen from '../screens/product/defects/DefectsScreen';
 import DefectScreen from '../screens/product/defects/DefectScreen';
+import ProjectsScreen from '../screens/product/ProjectsScreen';
 
 const ProductStack = createNativeStackNavigator<ProductStackParamList>();
 
 export default function ProductTab() {
   return (
     <ProductStack.Navigator screenOptions={{ header: ()=> <></>}}>
+      <ProductStack.Screen name="ProjectsScreen" options={{title: 'Projects',}} component={ProjectsScreen} />
       <ProductStack.Screen name="Products" options={{title: 'Products',}} component={ProductsScreen} />
       <ProductStack.Screen name="Product" options={{title: '',}} component={ProductScreen} />
       <ProductStack.Screen name="Protocol" options={{animation:'slide_from_right', title: ''}} component={ProtocolScreen} />

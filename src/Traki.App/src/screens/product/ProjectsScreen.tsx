@@ -2,13 +2,13 @@ import  React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import projectService from '../../services/project-service';
 import { Project } from '../../contracts/projects/Project';
-import { List, Button, Portal, Text, Modal } from 'react-native-paper';
+import { List, Button, Portal, Text, Modal, Searchbar } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from './RootStackPatamList';
+import { ProductStackParamList } from './ProductStackParamList';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Projects'>;
+type Props = NativeStackScreenProps<ProductStackParamList, 'ProjectsScreen'>;
 
-export default function ProjectsScreens({ navigation }: Props) {
+export default function ProjectsScreen({ navigation }: Props) {
 
   const currentSelectedProject = 1;
 
@@ -45,6 +45,9 @@ export default function ProjectsScreens({ navigation }: Props) {
     showModal();
   }
 
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const onChangeSearch = (query: string) => setSearchQuery(query);
+
   return (
     <View style={{ flex: 1}}>
       <Portal>
@@ -55,22 +58,20 @@ export default function ProjectsScreens({ navigation }: Props) {
           </Button>
         </Modal>
       </Portal>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
       <FlatList
-        data={projects}
+        data={projects.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={({item}) => <List.Item
-          onPress={() => openChangeProjectModal(item.id)}
+          onPress={() => navigation.navigate('Products')}
           title={item.name}
-          description='Item description'
           left={props => <List.Icon {...props} icon='folder' />}
-          right={item.id == currentSelectedProject ? 
-            (props => <List.Icon {...props} icon='check' />) :
-            (() => <></>)}
         />}
         keyExtractor={item => item.id.toString()}
       />
-      <Button style={{ width: 200, alignSelf: 'center', marginBottom: 10}} mode="contained" onPress={() => navigation.navigate('CreateProject')}>
-        Naujas projektas
-      </Button>
     </View>
   );
 }

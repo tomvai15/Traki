@@ -2,6 +2,7 @@ import { GetProductsResponse } from '../contracts/product/GetProductsResponse';
 import { GetProductResponse } from '../contracts/product/GetProductResponse';
 import { CreateProductRequest } from '../contracts/product/CreateProductRequest';
 import axiosApiInstance from './axios-instance';
+import { AddProtocolRequest } from '../contracts/product/AddProtocolRequest';
 
 const route = 'projects/{projectId}/products/{productId}';
 
@@ -25,6 +26,14 @@ class ProductService {
     const fullRoute = route.format({ projectId: projectId.toString(), productId: ''}); 
     await axiosApiInstance.post(fullRoute, createProductRequest, { headers: {} });
     return true;
+  }
+
+  async addProtocol( projectId: number, productId: number, protocolId: number): Promise<void> {
+    const fullRoute = `projects/${projectId}/products/${productId}/protocols`;
+    const addProtocolRequest: AddProtocolRequest = {
+      protocolId: protocolId
+    };
+    await axiosApiInstance.post(fullRoute, addProtocolRequest, { headers: {} });
   }
 }
 export default new ProductService ();

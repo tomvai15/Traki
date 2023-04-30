@@ -10,7 +10,7 @@ import { theme } from './src/themes/theme';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import ReactNativeRecoilPersist, { ReactNativeRecoilPersistGate } from "react-native-recoil-persist";
 import { userState } from './src/state/user-state';
-import { ProjectTab, ProductTab, TemplateTab, AuthTab } from './src/tabs';
+import { ProductTab, TemplateTab, AuthTab } from './src/tabs';
 import RecoilNexus from 'recoil-nexus'
 import UserScreen from './src/screens/user/UserScreen';
 import * as Notifications from "expo-notifications";
@@ -83,10 +83,12 @@ function Main() {
   return (
     <NavigationContainer>
       { loggedIn() ?
-      <Drawer.Navigator screenOptions={({navigation}) => ({headerRight: () => (<MainHeader navigation={navigation}/>)})} initialRouteName="Home">
+      <Drawer.Navigator screenOptions={
+        ({navigation, route}) => ({
+          headerRight: () => (<MainHeader navigation={navigation}/>)
+        })} initialRouteName="Home">
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='home' />, headerTitle: 'Home' }} name={"Home"} component={HomeTab} />
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='folder' />, headerTitle: 'Projects' }} name={"Company Projects"} component={ProjectTab} />
-        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Products' }} name="Project Products" component={ProductTab} />
+        <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='file-cad' />, headerTitle: 'Projects' }} name="Projects" component={ProductTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='format-list-checks' />, headerTitle: 'Templates' }} name="Protocol Templates" component={TemplateTab} />
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='account' />, headerTitle: 'Account Information' }} name="Account information" component={UserScreen} />
       </Drawer.Navigator> 
