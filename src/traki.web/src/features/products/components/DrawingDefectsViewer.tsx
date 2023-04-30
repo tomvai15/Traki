@@ -117,7 +117,7 @@ export function DrawingDefectsViewer({productId}: Props) {
         </AreaSelector>}
       </Box>
       <Box sx={{padding: '5px'}}>
-        <ImageList sx={{ width: 180, height: 300 }} cols={1}>
+        <ImageList sx={{ width: 180, height: 370 }} cols={1}>
           {drawings.map((item, index) => (
             <ImageListItem key={index}>
               <img
