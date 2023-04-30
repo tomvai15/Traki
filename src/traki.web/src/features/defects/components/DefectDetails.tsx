@@ -260,7 +260,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                 </Box>
                 <Box sx={{width: '100%'}}>
                   <Box sx={{display: 'flex', width: '100%'}}>
-                    <TextField 
+                    <TextField id='comment-field'
                       inputProps={{ maxLength: 250 }}
                       error={validate(comment, [validationRules.noSpecialSymbols]).invalid}
                       helperText={validate(comment, [validationRules.noSpecialSymbols]).message}
@@ -275,7 +275,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                   </Box>
                   <Box sx={{display: 'flex', flexDirection: 'row',  justifyContent: 'space-between', marginTop: '10px'}}>
                     <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                      <Button disabled={!canSubmitComment()} onClick={submitComment} sx={{height: 40}} variant='contained'>
+                      <Button id='submit-comment' disabled={!canSubmitComment()} onClick={submitComment} sx={{height: 40}} variant='contained'>
                           Submit
                       </Button>
                     </Box>

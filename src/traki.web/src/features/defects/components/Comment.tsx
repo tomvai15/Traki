@@ -10,7 +10,7 @@ type CommentProps = {
 export function Comment ({defectComment}: CommentProps) {
   return (
     <Box sx={{display: 'flex', marginTop: '10px', width: '100%'}}>
-      <TextField value={defectComment.defectComment.text} 
+      <TextField id='activity-comment-field' value={defectComment.defectComment.text} 
         sx={{padding: 0,  width: '100%', marginRight: '10px'}}
         multiline={true}
         focused={false}

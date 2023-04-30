@@ -17,5 +17,12 @@ namespace Traki.FunctionalTestsNunit.Common
                 .KeyUp(Keys.Control)
                 .SendKeys(Keys.Delete).Perform();
         }
+
+        public static void WriteNewText(this IWebDriver webDriver, By by, string text)
+        {
+            webDriver.FindElement(by).Click();
+            webDriver.ClearText();
+            webDriver.FindElement(by).SendKeys(text);
+        }
     }
 }
