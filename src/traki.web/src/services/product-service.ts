@@ -23,6 +23,11 @@ class ProductService {
     return response.data;
   }
 
+  async deleteProduct(projectId: number, id: number): Promise<void> {
+    const fullRoute = route.format({projectId: projectId.toString(), productId: id.toString()}); 
+    await axiosApiInstance.delete(fullRoute, { headers: {} });
+  }
+
   async updateProduct(projectId: number, productId: number, request: UpdateProductRequest): Promise<void> {
     const fullRoute = route.format({projectId: projectId.toString(), productId: productId.toString()}); 
     await axiosApiInstance.put(fullRoute, request, { headers: {} });

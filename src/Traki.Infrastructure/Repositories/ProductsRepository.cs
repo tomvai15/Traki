@@ -30,6 +30,16 @@ namespace Traki.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteProduct(int productId)
+        {
+            var productEntity = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
+            productEntity.RequiresToBeNotNullEnity();
+
+            _context.Products.Remove(productEntity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Product> GetProduct(int productId)
         {
             var product = await _context.Products.Include(x => x.Author)

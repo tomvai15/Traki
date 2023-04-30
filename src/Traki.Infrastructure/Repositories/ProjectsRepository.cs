@@ -59,5 +59,15 @@ namespace Traki.Infrastructure.Repositories
             var addedProject = _mapper.Map<Project>(projectEntity);
             return addedProject;
         }
+
+        public async Task DeleteProject(int projectId)
+        {
+            var project = await _context.Projects.Include(x => x.Author)
+                                .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            project.RequiresToBeNotNullEnity();
+            _context.Remove(project);
+            await _context.SaveChangesAsync();
+        }
     }
 }

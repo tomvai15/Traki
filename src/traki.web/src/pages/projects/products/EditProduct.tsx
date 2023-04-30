@@ -41,6 +41,7 @@ export function EditProduct() {
   const [selectedDrawing, setSelectedDrawing] = useState<number>();
 
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openProductDialog, setOpenProductDialog] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -48,6 +49,10 @@ export function EditProduct() {
 
   const handleClose = () => {
     setOpenDialog(false);
+  };
+
+  const handleProductDialogClose = () => {
+    setOpenProductDialog(false);
   };
 
   useEffect(() => {
@@ -144,6 +149,12 @@ export function EditProduct() {
     setFile(undefined);
   }
 
+  async function deleteProduct() {
+    await productService.deleteProduct(product.projectId, product.id);
+    navigate(`/projects`);
+    handleProductDialogClose();
+  }
+
   if (!productId) {
     return (<></>);
   }
@@ -165,7 +176,10 @@ export function EditProduct() {
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={12}>
-                    <Typography>Product Information</Typography>
+                    <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                      <Typography>Product Information</Typography>
+                      <Button onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
+                    </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
                     <Divider></Divider>
@@ -214,9 +228,10 @@ export function EditProduct() {
                   </Grid>
                   <Grid item xs={12} md={12}>
                     <Stack direction={'column'}  alignItems={'flex-start'}>
+                      { previewImage &&
                       <img style={{maxHeight: '200px', width: 'auto', borderRadius: '2%',}} 
                         src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}> 
-                      </img>
+                      </img>}
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
@@ -250,12 +265,24 @@ export function EditProduct() {
         <DialogTitle color={'error'}>Delete drawing</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete drawing? {selectedDrawing}
+            Are you sure you want to delete drawing?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button color='error' onClick={() => {handleClose(); deletedDrawing();}}>Delete</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openProductDialog} onClose={handleProductDialogClose}>
+        <DialogTitle>Delete product</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete product {product.name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color='inherit' onClick={handleProductDialogClose}>Cancel</Button>
+          <Button color='error' onClick={() => deleteProduct()}>Delete</Button>
         </DialogActions>
       </Dialog>
     </Grid>

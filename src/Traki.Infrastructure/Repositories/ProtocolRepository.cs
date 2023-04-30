@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PuppeteerSharp;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
@@ -60,6 +61,16 @@ namespace Traki.Infrastructure.Repositories
             var protocols = await _context.Protocols.Where(p =>p.IsTemplate == true).ToListAsync();
 
             return _mapper.Map<IEnumerable<Protocol>>(protocols);
+        }
+
+        public async Task DeleteProtocol(int protocolId)
+        {
+            var protocol = await _context.Protocols.FirstOrDefaultAsync(p => p.Id == protocolId);
+
+            protocol.RequiresToBeNotNullEnity();
+
+            _context.Protocols.Remove(protocol);
+            await _context.SaveChangesAsync();
         }
     }
 }

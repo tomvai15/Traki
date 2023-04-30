@@ -4,10 +4,21 @@ import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
 import { NewProtocol, ProtocolCard, ProtocolsCard } from 'features/protocols/components';
 import { ProtectedComponent } from 'components/ProtectedComponent';
+import { DeleteItemDialog } from 'components/DeleteItemDialog';
 
 export function TemplateProtocols() {
   const [protocols, setProtocols] = useState<Protocol[]>([]);
   const [selectedProtocol, setSelectedProtocol] = useState<Protocol>();
+
+  const [openProductDialog, setOpenProductDialog] = React.useState(false);
+
+  const openDialog = () => {
+    setOpenProductDialog(true);
+  };
+
+  const handleProductDialogClose = () => {
+    setOpenProductDialog(false);
+  };
 
   useEffect(() => {
     fetchProtocols();
@@ -21,6 +32,15 @@ export function TemplateProtocols() {
 
   function updateProtocol(protocol: Protocol) {
     setProtocols([...protocols.filter(x => x.id != protocol.id), protocol]);
+  }
+
+  async function deleteProtocol() {
+    if (!selectedProtocol){
+      return;
+    }
+    await protocolService.deleteProtocol(selectedProtocol.id);
+    handleProductDialogClose();
+    await fetchProtocols();
   }
 
   return (
@@ -43,8 +63,15 @@ export function TemplateProtocols() {
         </Stack>
       </Grid>
       <Grid item xs={7} md={7}>
-        <ProtocolCard selectedProtocol={selectedProtocol} updateProtocol={updateProtocol}/>
+        <ProtocolCard deleteProtocol={openDialog} selectedProtocol={selectedProtocol} updateProtocol={updateProtocol}/>
       </Grid>
+      <DeleteItemDialog
+        open={openProductDialog}
+        handleClose={handleProductDialogClose}
+        title={'Delete protocol'}
+        body={`Are you sure you want to delete protocol ${selectedProtocol?.name}?`}
+        action={deleteProtocol}  
+      />
     </Grid>
   );
 }

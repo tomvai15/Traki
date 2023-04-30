@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Breadcrumbs, Button, Card, CardContent, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 import projectService from '../../services/project-service';
 import { Link as BreadLink } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
@@ -7,11 +7,12 @@ import pictureService from '../../services/picture-service';
 import { v4 as uuid } from 'uuid';
 import { Project } from '../../contracts/projects/Project';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { validate, validationRules } from 'utils/textValidation';
+import { DeleteItemDialog } from 'components/DeleteItemDialog';
 
 
-const project: Project = {
+const initialProject: Project = {
   id: 0,
   name: '',
   clientName: '',
@@ -20,6 +21,7 @@ const project: Project = {
 };
 
 export function EditProject() {
+  const navigate = useNavigate();
   const { projectId } = useParams();
 
   const [previewImage, setPreviewImage] = useState<string>();
@@ -27,7 +29,13 @@ export function EditProject() {
 
   const [initialImage, setInitialImage] = useState<string>('');  
   const [initialProjectJson, setInitialProjectJson] = useState<string>('');
-  const [initialProject, setProject] = useState<Project>(project);
+  const [project, setProject] = useState<Project>(initialProject);
+
+  const [openProductDialog, setOpenProductDialog] = React.useState(false);
+
+  const handleProductDialogClose = () => {
+    setOpenProductDialog(false);
+  };
 
   useEffect(() => {
     fetchProject();
@@ -44,7 +52,7 @@ export function EditProject() {
   }
 
   function canSubmit () {
-    return JSON.stringify(initialProject) != initialProjectJson && validateProjectInputs(); 
+    return JSON.stringify(project) != initialProjectJson && validateProjectInputs(); 
   }
 
   async function submitProject() {
@@ -52,7 +60,7 @@ export function EditProject() {
       return;
     }
     let pictureName = initialImage;
-    if (initialImage != initialProject.imageName) {
+    if (initialImage != project.imageName) {
       if (previewImage != '' && file) {
         pictureName = `${uuid()}${file.type.replace('image/','.')}`;
         const formData = new FormData();
@@ -61,16 +69,16 @@ export function EditProject() {
       } 
     }
 
-    const project: Project = {
-      id: initialProject.id,
-      name: initialProject.name,
-      clientName: initialProject.clientName,
-      address: initialProject.address,
+    const updateProject: Project = {
+      id: project.id,
+      name: project.name,
+      clientName: project.clientName,
+      address: project.address,
       imageName: pictureName
     };
 
     const request: CreateProjectRequest = {
-      project: project
+      project: updateProject
     };
 
     await projectService.updateProject(Number(projectId), request);
@@ -82,13 +90,19 @@ export function EditProject() {
     const selectedFiles = files as FileList;
     setFile(selectedFiles?.[0]);
     setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
-    setProject({...initialProject, imageName: '????'});
+    setProject({...project, imageName: '????'});
   }
 
   function validateProjectInputs() {
-    return !validate(initialProject.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
-            !validate(initialProject.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
-            !validate(initialProject.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
+    return !validate(project.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+            !validate(project.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
+            !validate(project.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
+  }
+
+  async function deleteProject() {
+    await projectService.deleteProject(project.id);
+    navigate(`/projects`);
+    handleProductDialogClose();
   }
 
   return (
@@ -104,35 +118,39 @@ export function EditProject() {
       <Grid item xs={6} md={6}>
         <Card title='Sample Project'>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+            <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+              <Typography>Project Information</Typography>
+              <Button onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
+            </Stack>       
             <TextField size='medium'
               inputProps={{ maxLength: 50 }}
               id="project-name"
-              error={validate(initialProject.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(initialProject.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(project.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(project.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Project name"
               variant="standard"
-              value={initialProject.name}
-              onChange={(e) => setProject({...initialProject, name: e.target.value})}
+              value={project.name}
+              onChange={(e) => setProject({...project, name: e.target.value})}
             />
             <TextField
               inputProps={{ maxLength: 50 }}
               id="project-address"
-              error={validate(initialProject.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(initialProject.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(project.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(project.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Address"
               variant="standard"
-              value={initialProject.address}
-              onChange={(e) => setProject({...initialProject, address: e.target.value})}
+              value={project.address}
+              onChange={(e) => setProject({...project, address: e.target.value})}
             />
             <TextField
               inputProps={{ maxLength: 50 }}
               id="project-client"
-              error={validate(initialProject.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(initialProject.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(project.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(project.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
               label="Client name"
               variant="standard"
-              value={initialProject.clientName}
-              onChange={(e) => setProject({...initialProject, clientName: e.target.value})}
+              value={project.clientName}
+              onChange={(e) => setProject({...project, clientName: e.target.value})}
             />
           </CardContent>  
           <CardContent>    
@@ -156,6 +174,13 @@ export function EditProject() {
           </CardContent>  
         </Card>
       </Grid>
+      <DeleteItemDialog
+        open={openProductDialog}
+        handleClose={handleProductDialogClose}
+        title={'Delete project'}
+        body={`Are you sure you want to delete project ${project.name}?`}
+        action={deleteProject}  
+      />
     </Grid>
   );
 }

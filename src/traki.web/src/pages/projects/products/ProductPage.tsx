@@ -8,6 +8,8 @@ import { DrawingDefectsViewer } from 'features/products/components/DrawingDefect
 import AddProtocolDialog from 'features/products/components/AddProtocolDialog';
 import { useRecoilState } from 'recoil';
 import { pageState } from 'state/page-state';
+import { DeleteItemDialog } from 'components/DeleteItemDialog';
+import { protocolService } from 'services';
 
 const initialProduct: Product = {
   id: 0,
@@ -27,8 +29,16 @@ export function ProductPage() {
 
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(emails[1]);
+
+
+  const [openProductDialog, setOpenProductDialog] = useState(false);
+  const [selectedProtocol, setSelectedProtocol] = useState<Protocol>();
+
+  const handleProductDialogClose = () => {
+    setOpenProductDialog(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -68,6 +78,15 @@ export function ProductPage() {
     addProtocol(protocolId);
     closeDialog();
   };
+
+  async function deleteProtocol() {
+    if (!selectedProtocol) {
+      return;
+    }
+    await protocolService.deleteProtocol(selectedProtocol.id);
+    await fetchProduct();
+    handleProductDialogClose();
+  }
 
   if (!productId) {
     return (<></>);
@@ -122,7 +141,7 @@ export function ProductPage() {
               <TableHead>
                 <TableRow>
                   <TableCell>Protocol Name</TableCell>
-                  <TableCell align="right">Due Date</TableCell>
+                  <TableCell align="right"></TableCell>
                   <TableCell align="right"></TableCell>
                   <TableCell align="right"></TableCell>
                 </TableRow>
@@ -134,7 +153,7 @@ export function ProductPage() {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">{item.name}</TableCell>
-                    <TableCell align="right">2021-04-06</TableCell>
+                    <TableCell align="right"><Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button></TableCell>
                     <TableCell align="right"><Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button></TableCell>
                     <TableCell align="right"><Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Fill</Button></TableCell>
                   </TableRow>
@@ -149,6 +168,13 @@ export function ProductPage() {
         open={open}
         addProtocol={handleClose}
         onclose={closeDialog}
+      />
+      <DeleteItemDialog
+        open={openProductDialog}
+        handleClose={handleProductDialogClose}
+        title={'Delete protocol'}
+        body={`Are you sure you want to delete protocol ${selectedProtocol?.name}?`}
+        action={deleteProtocol}  
       />
     </Grid>
   );

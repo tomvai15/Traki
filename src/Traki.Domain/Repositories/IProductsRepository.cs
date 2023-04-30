@@ -9,5 +9,7 @@ namespace Traki.Domain.Repositories
         Task<Product> CreateProduct(Product product);
         Task UpdateProduct(Product product);
         Task<IEnumerable<Product>> GetProductByQuery(Func<Product, bool> filter);
+
+        Task DeleteProduct(int productId);
     }
 }

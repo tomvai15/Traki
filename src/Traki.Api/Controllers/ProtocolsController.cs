@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Protocol;
@@ -10,6 +11,7 @@ using Traki.Domain.Repositories;
 namespace Traki.Api.Controllers
 {
     [Route("api/protocols")]
+    [Authorize]
     public class ProtocolsController : ControllerBase
     {
         private readonly IProtocolRepository _protocolRepository;
@@ -40,6 +42,13 @@ namespace Traki.Api.Controllers
             var sections = _mapper.Map<IEnumerable<Section>>(updateProtocolRequest.Sections);
             await _protocolRepository.UpdateProtocol(protocol);
             await _sectionHandler.UpdateSections(sections);
+            return Ok();
+        }
+
+        [HttpDelete("{protocolId}")]
+        public async Task<ActionResult> DeleteProtocol(int protocolId)
+        {
+            await _protocolRepository.DeleteProtocol(protocolId);
             return Ok();
         }
 
