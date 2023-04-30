@@ -27,6 +27,7 @@ namespace Traki.Infrastructure.Repositories
 
             productEntity.RequiresToBeNotNullEnity();
             productEntity.Name = product.Name;
+            productEntity.Status = product.Status;
 
             await _context.SaveChangesAsync();
         }

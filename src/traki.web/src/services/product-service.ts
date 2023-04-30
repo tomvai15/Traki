@@ -33,6 +33,11 @@ class ProductService {
     await axiosApiInstance.put(fullRoute, request, { headers: {} });
   }
 
+  async updateProductStatus(projectId: number, productId: number): Promise<void> {
+    const fullRoute = route.format({projectId: projectId.toString(), productId: productId.toString()}) + '/status'; 
+    await axiosApiInstance.post(fullRoute, { headers: {} });
+  }
+
   async createProduct(projectId: number, createProductRequest: CreateProductRequest): Promise<boolean> {
     const fullRoute = route.format({ projectId: projectId.toString(), productId: ''}); 
     await axiosApiInstance.post(fullRoute, createProductRequest, { headers: {} });

@@ -124,13 +124,6 @@ export function ProductPage() {
                     <TableCell align="right">{formatDate( new Date(product.creationDate))}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell><Typography>Status</Typography></TableCell>
-                    <TableCell align="right"> {product.status == 'Active' ? 
-                      <Chip color='info' label={product.status} /> :
-                      <Chip variant='outlined' label={product.status} />}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
                     <TableCell>
                       <Stack direction={'row'} alignItems={'center'} spacing={1}>
                         <WarningIcon/>
@@ -147,6 +140,13 @@ export function ProductPage() {
                       </Stack>
                     </TableCell>
                     <TableCell align="right">{protocols.length}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><Typography>Status</Typography></TableCell>
+                    <TableCell align="right"> {product.status == 'Active' ? 
+                      <Chip color='info' label={product.status} /> :
+                      <Chip variant='outlined' label={product.status} />}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
