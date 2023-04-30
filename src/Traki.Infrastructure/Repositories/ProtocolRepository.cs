@@ -37,12 +37,15 @@ namespace Traki.Infrastructure.Repositories
             protocolEntity.ReportName = protocol.ReportName;
             protocolEntity.EnvelopeId = protocol.EnvelopeId;
             protocolEntity.IsSigned = protocol.IsSigned;
+            protocolEntity.SignerId = protocol.SignerId;
+            protocolEntity.IsCompleted = protocol.IsCompleted;
             await _context.SaveChangesAsync();
         }
 
         public async Task<Protocol> GetProtocol(int protocolId)
         {
-            var protocol = await _context.Protocols.FirstOrDefaultAsync(p => p.Id == protocolId);
+            var protocol = await _context.Protocols.Include(x=> x.Signer)
+                .FirstOrDefaultAsync(p => p.Id == protocolId);
 
             protocol.RequiresToBeNotNullEnity();
 

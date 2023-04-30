@@ -1,3 +1,4 @@
+import { Author } from "contracts/drawing/defect/Author";
 import { Section } from "./Section";
 
 export type Protocol = {
@@ -6,5 +7,6 @@ export type Protocol = {
   isSigned: boolean,
   isTemplate: boolean,
   sections: Section[],
-  modifiedDate: string
+  modifiedDate: string,
+  signer?: Author
 }

@@ -69,11 +69,13 @@ namespace Traki.Infrastructure.Data
             {
                 Name= "Welding Procedures - Checklist",
                 IsTemplate= true,
+                CreationDate = DateTime.Now.ToString("s"),
             },
             new ProtocolEntity
             {
                 Name= "Leakage test - Protocol",
                 IsTemplate= true,
+                CreationDate = DateTime.Now.ToString("s"),
             }
         };
 

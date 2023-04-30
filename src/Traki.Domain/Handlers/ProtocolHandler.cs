@@ -1,8 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.IdentityModel.Tokens;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
+using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;
 
@@ -16,6 +18,7 @@ namespace Traki.Domain.Handlers
 
     public class ProtocolHandler: IProtocolHandler
     {
+        private readonly IClaimsProvider _claimsProvider;
         private readonly ICompaniesRepository _companiesRepository;
         private readonly IProjectsRepository _projectsRepository;
         private readonly IProductsRepository _productsRepository;
@@ -23,13 +26,15 @@ namespace Traki.Domain.Handlers
         private readonly ISectionHandler _sectionHandler;
         private readonly IStorageService _storageService;
 
-        public ProtocolHandler(ICompaniesRepository companiesRepository,
+        public ProtocolHandler(IClaimsProvider claimsProvider,
+            ICompaniesRepository companiesRepository,
             IProjectsRepository projectsRepository,
             IProductsRepository productsRepository,
             IProtocolRepository protocolRepository,
             ISectionHandler sectionHandler,
             IStorageService storageService)
         {
+            _claimsProvider = claimsProvider;
             _companiesRepository = companiesRepository;
             _projectsRepository = projectsRepository;
             _productsRepository = productsRepository;
@@ -41,7 +46,9 @@ namespace Traki.Domain.Handlers
         public async Task SignReport(int protocolId, string envelopeId)
         {
             var protocol = await _protocolRepository.GetProtocol(protocolId);
+            _claimsProvider.TryGetUserId(out int userId);
             protocol.EnvelopeId = envelopeId;
+            protocol.SignerId = userId;
             await _protocolRepository.UpdateProtocol(protocol);
         }
 
