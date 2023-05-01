@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, CardActions, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, Checkbox, FormControlLabel, Grid, Stack, TextField, Typography, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
 import { Item } from '../../../contracts/protocol/items/Item';
 import { Question } from '../../../contracts/protocol/items/Question';
 import { TextInput } from '../../../contracts/protocol/items/TextInput';
+import { validate, validationRules } from 'utils/textValidation';
 
 type Props = {
   item: Item,
@@ -12,6 +13,8 @@ type Props = {
 }
 
 export function FillItem ({item, updateItem}: Props) {
+
+  const theme = useTheme();
 
   function updateQuestionComment(newValue: string) {
     if (!item.question) {
@@ -66,7 +69,7 @@ export function FillItem ({item, updateItem}: Props) {
   function checkType() {
     if (item.question) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
+        <Box sx={{display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
             <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={isChecked(item, AnswerType.Yes)}/>} label="Yes" labelPlacement="start"/>
             <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={isChecked(item, AnswerType.No)}/>} label="No" labelPlacement="start"/>
@@ -75,7 +78,11 @@ export function FillItem ({item, updateItem}: Props) {
           </Box>
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
+              multiline={true}
+              inputProps={{ maxLength: 250 }}
               id="standard-disabled"
+              error={validate(item.question.comment, [validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(item.question.comment, [validationRules.noSpecialSymbols]).message}
               label="Comment"
               variant="standard"
               value={item.question.comment}
@@ -85,10 +92,14 @@ export function FillItem ({item, updateItem}: Props) {
         </Box>);
     } else if (item.textInput) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
-              id="standard-disabled"
+              multiline={true}
+              inputProps={{ maxLength: 250 }}
+              id="question-textinput"
+              error={validate(item.textInput.value, [validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(item.textInput.value, [validationRules.noSpecialSymbols]).message}
               label="Comment"
               variant="standard"
               value={item.textInput.value}
@@ -98,7 +109,7 @@ export function FillItem ({item, updateItem}: Props) {
         </Box>);
     } else if (item.multipleChoice) {
       return (
-        <Box sx={{flex: 3, display: 'flex', flexDirection:'row'}}> 
+        <Box sx={{display: 'flex', flexDirection:'row'}}> 
           <Box sx={{flex: 3}}>
             { item.multipleChoice.options.map((value, index) => 
               <FormControlLabel 
@@ -114,13 +125,17 @@ export function FillItem ({item, updateItem}: Props) {
   }
 
   return (
-    <Card sx={{margin:2}}>
-      <CardActions>
-        <Box sx={{flex: 1}}>
-          <Typography variant='h6'>{item.name}</Typography>
-        </Box>
-        {checkType()}
-      </CardActions>
+    <Card sx={{backgroundColor: theme.palette.grey[100], marginBottom: '10px' }}>
+      <CardContent sx={{padding: '10px'}}>
+        <Stack direction={'row'}>
+          <Box sx={{flex: 1}}>
+            <Typography variant='h6'>{item.name}</Typography>
+          </Box>
+          <Box sx={{flex: 3}}>
+            {checkType()}
+          </Box>
+        </Stack>
+      </CardContent>
     </Card>
   );
 }

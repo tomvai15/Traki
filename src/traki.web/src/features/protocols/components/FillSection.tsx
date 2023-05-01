@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardActions, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Checklist } from '../../../contracts/protocol/Checklist';
 import { Section } from '../../../contracts/protocol/Section';
@@ -12,6 +12,7 @@ import { Table } from 'contracts/protocol/section/Table';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { FillTable } from './FillTable';
+import { validate, validationRules } from 'utils/textValidation';
 
 type Props = {
   protocolId: number,
@@ -81,8 +82,19 @@ export function FillSection({protocolId, sectionId}: Props) {
   }
 
   function canUpdate(): boolean {
-    return  initialSectionJson != JSON.stringify(section) ||
-            initialTableJson != JSON.stringify(table) ;
+    return  (initialSectionJson != JSON.stringify(section) ||
+            initialTableJson != JSON.stringify(table)) &&
+            isValid() ;
+  }
+
+
+  function isValid(): boolean {
+    return !section.checklist?.items.map(x => { 
+      return ( 
+        (x.textInput == undefined ? true : !validate(x.textInput.value, [validationRules.noSpecialSymbols]).invalid) &&
+        (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
+      );
+    }).some((value) => value == false);
   }
 
   async function updateSection() {
@@ -96,24 +108,20 @@ export function FillSection({protocolId, sectionId}: Props) {
 
   return (
     <Box>
-      <Card sx={{margin:2}}>
-        <CardActions>
-          <Box sx={{display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Box>
-              <Typography variant='h6'>{section.name}</Typography>
-            </Box>
-            <Box>
-              <Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>
-            </Box>
-          </Box>
-        </CardActions>
+      <Card>
+        <CardHeader title={section.name}
+          action={<Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>}>
+        </CardHeader>
+        <Divider/>
+        <CardContent>
+          {sectionType == 'checklist' &&
+          <Box>
+            {section.checklist?.items.map((item, index) => 
+              <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
+            )}
+          </Box>}
+        </CardContent>
       </Card>
-      {sectionType == 'checklist' &&
-        <Box sx={{marginLeft:3}}>
-          {section.checklist?.items.map((item, index) => 
-            <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
-          )}
-        </Box>}
       {sectionType == 'table' && table &&
         <Box sx={{marginLeft:3}}>
           <FillTable table={table} updateTable={setTable}/>

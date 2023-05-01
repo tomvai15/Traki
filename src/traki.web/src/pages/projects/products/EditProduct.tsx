@@ -16,6 +16,7 @@ import { alertInitialState } from 'state/alert-state';
 import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 import { AuthorBar } from 'components/AuthorBar';
+import { validate, validationRules } from 'utils/textValidation';
 
 export function EditProduct() {
   const navigate = useNavigate();
@@ -54,11 +55,12 @@ export function EditProduct() {
   }, []);
 
   function canUpdateProduct(): boolean {
-    return initialProductJson != JSON.stringify(product);
+    return initialProductJson != JSON.stringify(product) && 
+            ( product != undefined && !validate(product.name, [validationRules.noSpecialSymbols]).invalid);
   }
 
   function canCreateDrawing(): boolean {
-    return drawingName != '' && file != undefined;
+    return drawingName != '' && file != undefined && (!validate(drawingName, [validationRules.noSpecialSymbols]).invalid);
   }
 
   async function fetchProduct() {
@@ -202,6 +204,8 @@ export function EditProduct() {
                       </Box>
                       <TextField
                         id={'product-name'} 
+                        error={validate(product.name, [validationRules.noSpecialSymbols]).invalid}
+                        helperText={validate(product.name, [validationRules.noSpecialSymbols]).message}
                         sx={{width: '100%'}}
                         label='Name'
                         value={product.name}
@@ -236,6 +240,8 @@ export function EditProduct() {
                   <Grid item xs={12} md={12}>
                     <Stack direction={'row'}>
                       <TextField 
+                        error={validate(drawingName, [validationRules.noSpecialSymbols]).invalid}
+                        helperText={validate(drawingName, [validationRules.noSpecialSymbols]).message}
                         sx={{width: '100%'}}
                         label='Drawing name'
                         value={drawingName}

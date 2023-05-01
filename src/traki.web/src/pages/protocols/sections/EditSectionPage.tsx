@@ -70,7 +70,7 @@ export function EditSectionPage() {
             JSON.stringify(table) != initialTableJson) && 
             (validSection() && 
             (checklist == undefined ? true : validChecklist()) && 
-            (table && validTable()));
+            (table == undefined ? true : validTable()));
   }
 
   function validSection() {
