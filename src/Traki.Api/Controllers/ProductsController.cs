@@ -116,7 +116,13 @@ namespace Traki.Api.Controllers
 
             var createdProduct = await _productsRepository.CreateProduct(product);
 
-            return CreatedAtAction("GetProduct", new { productId = createdProduct.Id }, createdProduct);
+
+            var response = new GetProductResponse
+            {
+                Product = _mapper.Map<ProductDto>(createdProduct)
+            };
+
+            return Ok(response);
         }
     }
 }
