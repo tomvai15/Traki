@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Traki.Infrastructure.Repositories
 {
-    public class UsersHandler : IUsersRepository
+    public class UserRepository : IUsersRepository
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public UsersHandler(TrakiDbContext context, IMapper mapper)
+        public UserRepository(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

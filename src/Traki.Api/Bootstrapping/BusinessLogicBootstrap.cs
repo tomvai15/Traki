@@ -18,7 +18,7 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IUserHandler, UserHandler>()
                 .AddTransient<IDefectHandler, DefectHandler>()
                 .AddTransient<IUserAuthHandler, UserAuthHandler>()
-                .AddTransient<IUsersRepository, UsersHandler>()
+                .AddTransient<IUsersRepository, UserRepository>()
                 .AddTransient<IReportHandler, ReportHandler>()
                 .AddTransient<ISectionHandler, SectionHandler>()
                 .AddTransient<IProductHandler, ProductHandler>()
@@ -36,7 +36,7 @@ namespace Traki.Api.Bootstrapping
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddTransient<IUsersRepository, UsersHandler>()
+                .AddTransient<IUsersRepository, UserRepository>()
                 .AddTransient<IDefectNotificationRepository, DefectNotificationRepository>()
                 .AddTransient<ICompaniesRepository, CompaniesRepository>()
                 .AddTransient<IProjectsRepository, ProjectsRepository>()
