@@ -4,7 +4,7 @@ namespace Traki.Domain.Repositories
 {
     public interface IProtocolRepository
     {
-        Task UpdateProtocol(Protocol protocol);
+        Task<Protocol> UpdateProtocol(Protocol protocol);
         Task<Protocol> GetProtocol(int protocolId);
         Task DeleteProtocol(int protocolId);
         Task<IEnumerable<Protocol>> GetProtocols(int productId);

@@ -98,15 +98,15 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         public async Task GetDefectsByQuery_ReturnsDefects()
         {
             // Arrange
-            Func<Defect, bool> query = (x) => x.Status == DefectStatus.NotDefect;
+            Func<Defect, bool> query = (x) => x.Title == "query";
 
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
             var repository = new DefectsRepository(context, _mapper);
 
             var expectedDefects = new DefectEntity[]
             {
-                await CreateDefect(context),
-                await CreateDefect(context)
+                await CreateDefect(context, "query"),
+                await CreateDefect(context, "query")
             };
 
             // Act
@@ -119,11 +119,11 @@ namespace Traki.UnitTests.Infrastructure.Repositories
                     .Excluding(x => x.StatusChanges));
         }
 
-        private async  Task<DefectEntity> CreateDefect (TrakiDbContext context)
+        private async  Task<DefectEntity> CreateDefect (TrakiDbContext context, string title = "test")
         {
             var defectEntity = new DefectEntity
             {
-                Title = Any<string>(),
+                Title = title,
                 Description = Any<string>(),
                 Status = DefectStatus.NotDefect,
                 ImageName = Any<string>(),

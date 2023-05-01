@@ -29,7 +29,7 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<Protocol>(protocolEntity);
         }
 
-        public async Task UpdateProtocol(Protocol protocol)
+        public async Task<Protocol> UpdateProtocol(Protocol protocol)
         {
             var protocolEntity = await _context.Protocols.FirstOrDefaultAsync(p => p.Id == protocol.Id);
 
@@ -40,6 +40,7 @@ namespace Traki.Infrastructure.Repositories
             protocolEntity.SignerId = protocol.SignerId;
             protocolEntity.IsCompleted = protocol.IsCompleted;
             await _context.SaveChangesAsync();
+            return _mapper.Map<Protocol>(protocolEntity);
         }
 
         public async Task<Protocol> GetProtocol(int protocolId)
