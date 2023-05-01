@@ -77,12 +77,5 @@ namespace Traki.Api.Controllers
             await _defectHandler.CreateDefectComment(userId, defectComment);
             return Ok();
         }
-
-        [HttpPost("{defectId}/statuschanges")]
-        public async Task<ActionResult> AddStatusChange(int drawingId, int defectId, [FromBody] CreateStatusChangeRequest createStatusChangeRequest)
-        {
-           // TODO: reconsider usingthis endpoint
-            return Ok();
-        }
     }
 }
