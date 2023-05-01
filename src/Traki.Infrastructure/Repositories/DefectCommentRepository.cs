@@ -17,7 +17,7 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task CreateDefectComment(DefectComment defectComment)
+        public async Task<DefectComment> CreateDefectComment(DefectComment defectComment)
         {
             var defectCommentEntity = _mapper.Map<DefectCommentEntity>(defectComment);
 
@@ -25,6 +25,7 @@ namespace Traki.Infrastructure.Repositories
             defectCommentEntity.AuthorId = defectComment.AuthorId;
             _context.Add(defectCommentEntity);
             await _context.SaveChangesAsync();
+            return _mapper.Map<DefectComment>(defectCommentEntity);
         }
     }
 }

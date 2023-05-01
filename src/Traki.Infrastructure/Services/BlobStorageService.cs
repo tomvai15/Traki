@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 using Traki.Domain.Services.BlobStorage;
+using Traki.Domain.Services.FileStorage;
 
 namespace Traki.Infrastructure.Services
 {
@@ -28,13 +29,16 @@ namespace Traki.Infrastructure.Services
             return;
         }
 
-        public async Task<BlobDownloadResult> GetFile(string containerName, string fileName)
+        public async Task<GetFileResult> GetFile(string containerName, string fileName)
         {
             BlobContainerClient blobContainerClient = new BlobContainerClient(_blobStorageSettings.ConnectionString, containerName);
             BlobClient blobClient = blobContainerClient.GetBlobClient(fileName);
 
             BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
-            return downloadResult;
+            return new GetFileResult { 
+                Content = downloadResult.Content.ToArray(),
+                ContentType = downloadResult.Details.ContentType
+            };
         }
     }
 }

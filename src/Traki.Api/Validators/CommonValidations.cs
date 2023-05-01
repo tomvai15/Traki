@@ -1,9 +1,11 @@
 ﻿using FluentValidation.Validators;
 using FluentValidation;
 using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Traki.Api.Validators
 {
+    [ExcludeFromCodeCoverage]
     public static class CommonValidations
     {
         public static IRuleBuilderOptions<T, string> NoSpecialSymbols<T>(this IRuleBuilder<T, string> ruleBuilder)

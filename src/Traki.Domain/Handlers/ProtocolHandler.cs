@@ -67,7 +67,7 @@ namespace Traki.Domain.Handlers
             var itemImages = await GetItemImages(fullSections);
 
             var companyLogo = await _storageService.GetFile("company", company.ImageName);
-            var companyLogoBase64 = Convert.ToBase64String(companyLogo.Content.ToArray());
+            var companyLogoBase64 = Convert.ToBase64String(companyLogo.Content);
 
             var protocolReport = new ProtocolReport
             {

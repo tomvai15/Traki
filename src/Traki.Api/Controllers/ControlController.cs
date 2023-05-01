@@ -85,9 +85,7 @@ namespace Traki.Api.Controllers
         {
             var file = await _storageService.GetFile(folderName, fileName);
 
-            var bytes = file.Content.ToStream();
-
-            return File(bytes, file.Details.ContentType);
+            return File(file.Content, file.ContentType);
         }
     }
 }

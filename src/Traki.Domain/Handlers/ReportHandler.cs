@@ -37,7 +37,7 @@ namespace Traki.Domain.Handlers
             }
             var reportResult = await _storageService.GetFile("company", protocol.ReportName);
 
-            return reportResult.Content.ToArray();
+            return reportResult.Content;
         }
 
         public async Task<byte[]> GenerateProtocolReport(int protocolId, string protocolName, bool useColors, IEnumerable<int> sectionsToNotInclude)

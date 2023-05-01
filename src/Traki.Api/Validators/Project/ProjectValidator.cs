@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
+using System.Diagnostics.CodeAnalysis;
 using Traki.Api.Contracts.Project;
 
 namespace Traki.Api.Validators.Project
 {
+    [ExcludeFromCodeCoverage]
     public class ProjectValidator : AbstractValidator<ProjectDto>
     {
         public ProjectValidator()

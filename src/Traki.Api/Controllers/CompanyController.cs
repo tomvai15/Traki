@@ -24,7 +24,7 @@ namespace Traki.Api.Controllers
         {
             var project = await _companiesRepository.GetCompany(companyId);
 
-            return _mapper.Map<GetCompanyResponse>(project);
+            return Ok(_mapper.Map<GetCompanyResponse>(project));
         }
 
         [HttpPatch(("{companyId}"))]

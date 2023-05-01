@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Traki.Infrastructure.Repositories
 {
-    public class UsersHandler : IUsersRepository
+    public class UserRepository : IUsersRepository
     {
         private readonly TrakiDbContext _context;
         private readonly IMapper _mapper;
 
-        public UsersHandler(TrakiDbContext context, IMapper mapper)
+        public UserRepository(TrakiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -51,7 +51,7 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<User>(userEntity);
         }
 
-        public async Task UpdateUser(User user)
+        public async Task<User> UpdateUser(User user)
         {
             var userEntity = _context.Users.FirstOrDefault(u => u.Id == user.Id);
 
@@ -65,6 +65,7 @@ namespace Traki.Infrastructure.Repositories
             userEntity.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
 
             await _context.SaveChangesAsync();
+            return _mapper.Map<User>(userEntity);
         }
 
         public async Task<IEnumerable<User>> GetUsers()

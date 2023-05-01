@@ -76,7 +76,6 @@ export function Main() {
         </Route>
         <Route path='/login' element={<SignIn/>}/>
         <Route path='/auth/register' element={<RegisterPage/>}/>
-        <Route path='*' element={<Navigate to='/'/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -26,8 +26,8 @@ export default function ProfileMenu() {
 
   async function logOut() {
     await authService.logout();
-    navigate('/signin');
     setUserInfo({id:-1, loggedInDocuSign: false});
+    navigate('/login');
   }
 
   return (

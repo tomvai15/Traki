@@ -4,8 +4,8 @@ namespace Traki.Domain.Repositories
 {
     public interface ITableRowRepository
     {
-        Task CreateTableRow(TableRow tableRow);
-        Task DeleteTableRow(TableRow tableRow);
+        Task<TableRow> CreateTableRow(TableRow tableRow);
+        Task DeleteTableRow(int tableRowId);
         Task<IEnumerable<TableRow>> GetTableRows(int tableId);
     }
 }

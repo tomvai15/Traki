@@ -89,7 +89,7 @@ namespace Traki.Api.Controllers
 
             var user = await _usersRepository.GetUserById(userId);
 
-            if (user.RefreshTokenExpiryTime < DateTime.Now || user.RefreshToken != request.RefreshToken)
+            if (user.RefreshTokenExpiryTime.CompareTo(DateTime.Now) < 0 || user.RefreshToken != request.RefreshToken)
             {
                 throw new UnauthorizedException();
             }
@@ -129,6 +129,7 @@ namespace Traki.Api.Controllers
             user.RefreshToken = "";
             user.RefreshTokenExpiryTime = DateTime.Now;
             user.DeviceToken = "";
+            await _usersRepository.UpdateUser(user);
             return Ok();
         }
 
@@ -136,7 +137,7 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult<GetUserStateResponse>> GetUserInfo()
         {
-            int userId = GetUserId();
+            _claimsProvider.TryGetUserId(out int userId);
 
             string accessToken;
             try
@@ -168,7 +169,7 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult<GetUserInfoResponse>> GetFullUserInfo()
         {
-            int userId = GetUserId();
+            _claimsProvider.TryGetUserId(out int userId);
             var user = await _usersRepository.GetUserById(userId);
 
             var response = new GetUserInfoResponse
@@ -182,7 +183,7 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult> UpdateUserInfo([FromBody] UpdateUserInfoRequest request)
         {
-            int userId = GetUserId();
+            _claimsProvider.TryGetUserId(out int userId);
             var user = await _usersRepository.GetUserById(userId);      
             user.UserIconBase64 = request.User.UserIconBase64;
 
@@ -192,7 +193,7 @@ namespace Traki.Api.Controllers
 
         [HttpPost("registerdevice")]
         [Authorize]
-        public async Task<ActionResult> GetAuthorisationCodeRequestUrl([FromBody] RegisterDeviceRequest request)
+        public async Task<ActionResult> RegisterDevice([FromBody] RegisterDeviceRequest request)
         {
             _claimsProvider.TryGetUserId(out int userId);
             var user = await _usersRepository.GetUserById(userId);
@@ -204,7 +205,7 @@ namespace Traki.Api.Controllers
 
         [HttpPost("code")]
         [Authorize]
-        public async Task<ActionResult> RegisterDevice([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
+        public async Task<ActionResult<string>> GetAuthorisationCode([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
         {
             var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State);
             return Ok(url);
@@ -218,13 +219,8 @@ namespace Traki.Api.Controllers
 
             await _accessTokenProvider.AddAccessToken(oauthResponse);
 
-            // create new cookie?
             return Ok();
         }
 
-        private int GetUserId()
-        {
-            return int.Parse(User.Claims.FirstOrDefault(x => x.Type == Claims.UserId).Value);
-        }
     }
 }

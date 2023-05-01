@@ -8,15 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Traki.Api.Contracts.Product;
+using Traki.Api.Contracts.Project;
+using Traki.Api.Contracts.Protocol;
 using Traki.Api.Controllers;
 using Traki.Api.Mapping;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
+using Traki.UnitTests.Helpers;
 
 namespace Traki.UnitTests.Api.Controllers
 {
-    
     public class ProductsControllerTests
     {
         private readonly Mock<IProductsRepository> _productsRepositoryMock;
@@ -53,30 +55,37 @@ namespace Traki.UnitTests.Api.Controllers
             result.Result.Should().BeOfType<NotFoundResult>();
         }
 
-        [Fact(Skip = "sdasad")]
+        [Fact]
         public async Task GetProduct_ReturnsMappedProduct_WhenProductIsNotNull()
         {
             // Arrange
             int projectId = 1;
             int productId = 2;
             var product = new Product { Id = productId };
-            var getProductResponse = new GetProductResponse { Product = _mapper.Map<ProductDto>(product) };
+            var response = new GetProductResponse 
+            { 
+                Product = _mapper.Map<ProductDto>(product) 
+            };
             _productsRepositoryMock.Setup(x => x.GetProduct(productId)).ReturnsAsync(product);
 
             // Act
             var result = await _productsController.GetProduct(projectId, productId);
 
             // Assert
-            result.Value.Should().BeEquivalentTo(getProductResponse);
+            var data = result.ShouldBeOfType<GetProductResponse>();
+            response.Should().BeEquivalentTo(data);
         }
 
-        [Fact(Skip = "sdasad")]
+        [Fact]
         public async Task UpdateProduct_ReturnsOkResult_WhenUpdateProductRequestIsValid()
         {
             // Arrange
             int projectId = 1;
             int productId = 2;
+            var product = new Product();
             var updateProductRequest = new UpdateProductRequest { Product = new ProductDto() };
+
+            _productsRepositoryMock.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(product);
 
             // Act
             var result = await _productsController.UpdateProduct(projectId, productId, updateProductRequest);
@@ -99,6 +108,114 @@ namespace Traki.UnitTests.Api.Controllers
 
             // Assert
             result.Value.Should().BeEquivalentTo(getProductsResponse);
+        }
+
+        [Fact]
+        public async Task DeleteProduct()
+        {
+            // Arrange
+            int projectId = 1;
+            int productId = 1;
+
+            // Act
+            var result = await _productsController.DeleteProduct(projectId, productId);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [Fact]
+        public async Task AddProtocol()
+        {
+            // Arrange
+            int projectId = 1;
+            int productId = 1;
+
+            var request = new AddProtocolRequest
+            {
+                ProtocolId = 1,
+            };
+
+            // Act
+            var result = await _productsController.AddProtocol(projectId, request);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [Fact]
+        public async Task UpdateProductStatus()
+        {
+            // Arrange
+            int projectId = 1;
+            int productId = 1;
+            var item = new Product();
+            var request = new AddProtocolRequest
+            {
+                ProtocolId = 1,
+            };
+
+            _productsRepositoryMock.Setup(x => x.GetProduct(productId)).ReturnsAsync(item);
+
+            // Act
+            var result = await _productsController.UpdateProductStatus(productId);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [Fact]
+        public async Task GetProtocols()
+        {
+            // Arrange
+            int projectId = 1;
+            int productId = 1;
+            var items = new List<Protocol> { 
+                new Protocol(),
+                new Protocol()
+            };
+            var response = new GetProductProtocolsResponse
+            {
+                Protocols = _mapper.Map<IEnumerable<ProtocolDto>>(items)
+            };
+
+            _productHandlerMock.Setup(x => x.GetProtocols(It.IsAny<int>())).ReturnsAsync(items);
+
+            // Act
+            var result = await _productsController.GetProtocols(productId);
+
+            // Assert
+            var data = result.ShouldBeOfType<GetProductProtocolsResponse>();
+            response.Should().BeEquivalentTo(data);
+        }
+
+
+        [Fact]
+        public async Task PostProduct()
+        {
+            // Arrange
+            int projectId = 1;
+            int productId = 1;
+            var item = new Product();
+
+            var request = new CreateProductRequest
+            {
+                Product = _mapper.Map<ProductDto>(item)
+            };
+
+            var response = new GetProductResponse
+            {
+                Product = _mapper.Map<ProductDto>(item)
+            };
+
+            _productsRepositoryMock.Setup(x => x.CreateProduct(It.IsAny<Product>())).ReturnsAsync(item);
+
+            // Act
+            var result = await _productsController.PostProduct(projectId, request);
+
+            // Assert
+            var data = result.ShouldBeOfType<GetProductResponse>();
+            response.Should().BeEquivalentTo(data);
         }
     }
 }

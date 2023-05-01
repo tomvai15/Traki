@@ -11,16 +11,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { validate, validationRules } from 'utils/textValidation';
 import { DeleteItemDialog } from 'components/DeleteItemDialog';
 
-
-const initialProject: Project = {
-  id: 0,
-  name: '',
-  clientName: '',
-  address: '',
-  imageName: '',
-  creationDate: ''
-};
-
 export function EditProject() {
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -30,7 +20,7 @@ export function EditProject() {
 
   const [initialImage, setInitialImage] = useState<string>('');  
   const [initialProjectJson, setInitialProjectJson] = useState<string>('');
-  const [project, setProject] = useState<Project>(initialProject);
+  const [project, setProject] = useState<Project>();
 
   const [openProductDialog, setOpenProductDialog] = React.useState(false);
 
@@ -57,6 +47,9 @@ export function EditProject() {
   }
 
   async function submitProject() {
+    if (!project) {
+      return;
+    }
     if (!canSubmit()) {
       return;
     }
@@ -88,6 +81,9 @@ export function EditProject() {
   }
 
   function selectFile (event: React.ChangeEvent<HTMLInputElement>) {
+    if (!project) {
+      return;
+    }
     const { files } = event.target;
     const selectedFiles = files as FileList;
     setFile(selectedFiles?.[0]);
@@ -95,13 +91,19 @@ export function EditProject() {
     setProject({...project, imageName: '????'});
   }
 
-  function validateProjectInputs() {
+  function validateProjectInputs(): boolean {
+    if (!project) {
+      return false;
+    }
     return !validate(project.name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
             !validate(project.address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid &&
             !validate(project.clientName, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid;
   }
 
   async function deleteProject() {
+    if (!project) {
+      return;
+    }
     await projectService.deleteProject(project.id);
     navigate(`/projects`);
     handleProductDialogClose();
@@ -119,7 +121,7 @@ export function EditProject() {
       </Grid>
       <Grid item xs={6} md={6}>
         <Card title='Sample Project'>
-          <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
+          { project && <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
               <Typography>Project Information</Typography>
               <Button onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
@@ -154,7 +156,7 @@ export function EditProject() {
               value={project.clientName}
               onChange={(e) => setProject({...project, clientName: e.target.value})}
             />
-          </CardContent>  
+          </CardContent>}
           <CardContent>    
             <Button disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
               Edit Project
@@ -178,7 +180,7 @@ export function EditProject() {
         open={openProductDialog}
         handleClose={handleProductDialogClose}
         title={'Delete project'}
-        body={`Are you sure you want to delete project ${project.name}?`}
+        body={`Are you sure you want to delete project ${project?.name}?`}
         action={deleteProject}  
       />
     </Grid>

@@ -5,7 +5,7 @@ namespace Traki.Domain.Repositories
     public interface IDefectNotificationRepository
     {
         Task<IEnumerable<DefectNotification>> GetUserDefectNotifications(int userId);
-        Task CreateDefectNotification(DefectNotification defectNotification);
+        Task<DefectNotification> CreateDefectNotification(DefectNotification defectNotification);
         Task DeleteDefectNotification(int userId, int defectId);
     }
 }

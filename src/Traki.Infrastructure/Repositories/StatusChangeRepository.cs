@@ -25,6 +25,9 @@ namespace Traki.Infrastructure.Repositories
         public async Task CreateStatusChange(StatusChange statusChange)
         {
             var statusChangeEntity = _mapper.Map<StatusChangeEntity>(statusChange);
+
+            statusChangeEntity.Date = DateTime.Now.ToString("s");
+
             _context.StatusChanges.Add(statusChangeEntity);
             await _context.SaveChangesAsync();
         }

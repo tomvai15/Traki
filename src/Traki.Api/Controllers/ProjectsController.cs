@@ -30,7 +30,7 @@ namespace Traki.Api.Controllers
         {
             var project = await _projectsRepository.GetProject(projectId);
 
-            return _mapper.Map<GetProjectResponse>(project);
+            return Ok(_mapper.Map<GetProjectResponse>(project));
         }
 
         [HttpGet]
@@ -39,7 +39,8 @@ namespace Traki.Api.Controllers
         {
             var projects = await _projectsRepository.GetProjects();
 
-            return _mapper.Map<GetProjectsResponse>(projects);
+
+            return Ok(_mapper.Map<GetProjectsResponse>(projects));
         }
 
         [HttpPost]
@@ -54,12 +55,16 @@ namespace Traki.Api.Controllers
             project.Author = null;
             var createdProject = await _projectsRepository.CreateProject(project);
 
-            return CreatedAtAction("GetProject", new { projectId = createdProject.Id }, createdProject);
+            var reponse = new GetProjectResponse {
+                Project = _mapper.Map<ProjectDto>(createdProject)
+            };
+
+            return Ok(reponse);
         }
 
         [HttpPut("{projectId}")]
         [Authorize(Roles = Role.ProjectManager)]
-        public async Task<ActionResult<GetProjectResponse>> UpdateProject(int projectId, CreateProjectRequest createProjectRequest)
+        public async Task<ActionResult> UpdateProject(int projectId, CreateProjectRequest createProjectRequest)
         {
             var project = _mapper.Map<Project>(createProjectRequest);
             _claimsProvider.TryGetUserId(out int userId);
@@ -71,7 +76,7 @@ namespace Traki.Api.Controllers
 
         [HttpDelete("{projectId}")]
         [Authorize(Roles = Role.ProjectManager)]
-        public async Task<ActionResult<GetProjectResponse>> DeleteProject(int projectId)
+        public async Task<ActionResult> DeleteProject(int projectId)
         {
             await _projectsRepository.DeleteProject(projectId);
             return Ok();

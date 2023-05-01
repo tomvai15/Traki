@@ -29,7 +29,7 @@ namespace Traki.Api.Controllers
         }
 
         [HttpGet("pending/{registerId}")]
-        public async Task<ActionResult<GetUserResponse>> GetUser(string registerId)
+        public async Task<ActionResult<GetUserResponse>> GetUserByRegisterId(string registerId)
         {
             var users = await _usersRepository.GetUsersByQuery(x => x.RegisterId == registerId);
             var response = new GetUserResponse
@@ -89,6 +89,8 @@ namespace Traki.Api.Controllers
             return Ok(response);
         }
 
+
+        /*
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser(RegisterUserRequest createUserRequest)
         {
@@ -99,6 +101,6 @@ namespace Traki.Api.Controllers
                 return BadRequest(new { message = "Email is already taken" });
             }
             return NoContent();
-        }
+        }*/
     }
 }

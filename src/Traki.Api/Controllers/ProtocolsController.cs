@@ -32,7 +32,7 @@ namespace Traki.Api.Controllers
 
             var response = new GetProtocolResponse { Protocol = _mapper.Map<ProtocolDto>(protocol) };
 
-            return response;
+            return Ok(response);
         }
 
         [HttpPut("{protocolId}")]
@@ -67,7 +67,7 @@ namespace Traki.Api.Controllers
 
             var response = new GetProtocolsResponse { Protocols = _mapper.Map<IEnumerable<ProtocolDto>>(protocols) };
 
-            return response;
+            return Ok(response);
         }
     }
 }

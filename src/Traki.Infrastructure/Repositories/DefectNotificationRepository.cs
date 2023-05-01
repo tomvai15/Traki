@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
@@ -22,13 +17,14 @@ namespace Traki.Infrastructure.Repositories
             _context = context;
             _mapper = mapper;
         }
-        public async Task CreateDefectNotification(DefectNotification defectNotification)
+        public async Task<DefectNotification> CreateDefectNotification(DefectNotification defectNotification)
         {
             var defectNotificationEntity = _mapper.Map<DefectNotificationEntity>(defectNotification);
             defectNotificationEntity.CreationDate = DateTime.Now.ToString("s");
 
             _context.DefectNotifications.Add(defectNotificationEntity);
             await _context.SaveChangesAsync();
+            return _mapper.Map<DefectNotification>(defectNotificationEntity);
         }
 
         public async Task DeleteDefectNotification(int userId, int defectId)

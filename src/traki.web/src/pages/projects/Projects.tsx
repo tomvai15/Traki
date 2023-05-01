@@ -69,7 +69,7 @@ export function Projects() {
       </Grid>
       <Grid item xs={12} md={12}>
         { projects.map((item, index) =>
-          <ProjectProducts key={index} project={item}></ProjectProducts>
+          <ProjectProducts key={index} index={index} project={item}></ProjectProducts>
         )}
       </Grid>
     </Grid>
@@ -77,10 +77,11 @@ export function Projects() {
 }
 
 type ProjectProductsProps = {
-  project: ProjectWithImage
+  project: ProjectWithImage,
+  index: number
 }
 
-function ProjectProducts({project}: ProjectProductsProps) {
+function ProjectProducts({project, index}: ProjectProductsProps) {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -112,7 +113,7 @@ function ProjectProducts({project}: ProjectProductsProps) {
               <Button onClick={() => navigate(`/projects/${project.project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
             </ProtectedComponent>
             <HideableComponent checkIfRender={(user) => user.id == project.project.author?.id}>
-              <Button onClick={() => navigate(`/projects/${project.project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>
+              <Button id={`${index}-edit-project`} onClick={() => navigate(`/projects/${project.project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>
                 Edit Project
               </Button>
             </HideableComponent>
@@ -132,7 +133,7 @@ function ProjectProducts({project}: ProjectProductsProps) {
                         <AuthorBar user={product.author} variant={'short'}/>
                       </ListItemIcon>
                       <ListItemText>
-                        <Typography variant='h6'>{product.name}</Typography>
+                        <Typography id={`${project.project.id}-products-${index}`} variant='h6'>{product.name}</Typography>
                       </ListItemText>
                       <ListItemIcon>
                         {product.status == 'Active' ? 
