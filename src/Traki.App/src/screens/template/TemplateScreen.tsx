@@ -1,6 +1,6 @@
 import  React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, Text, ActivityIndicator, TextInput, TouchableHighlight, Image } from 'react-native';
-import { Button, Card, Checkbox, Divider, IconButton, List, Paragraph, SegmentedButtons, Title } from 'react-native-paper';
+import { StyleSheet, View, FlatList, Text, ActivityIndicator,TouchableHighlight, Image } from 'react-native';
+import { Button, Card, Checkbox, Divider, IconButton, List, Paragraph, SegmentedButtons, Title, TextInput } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
 import protocolService from '../../services/protocol-service';
@@ -11,6 +11,7 @@ import { Section } from '../../contracts/protocol/Section';
 import { ScreenView } from '../../components/ScreenView';
 import ImageView from "react-native-image-viewing";
 import { Item } from '../../contracts/protocol/items/Item';
+import { ProtocolTable } from '../../features/protocol/components/ProtocolTable';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'Template'>;
 
@@ -120,15 +121,17 @@ function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSe
   return (
     <View>
       <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-        <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
+        <Title style={{fontSize: 15, width: '100%'}}>{section.name}</Title>
       </View>
-      <FlatList data={section.checklist?.items} 
+      { section.checklist ? <FlatList data={section.checklist?.items} 
         keyExtractor={item => item.id.toString()}
         renderItem={ ({item}) =>   
           <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
         }>
-        </FlatList>
-        <Divider bold></Divider>
+      </FlatList> :
+        (section.table && <ProtocolTable buttonVisible={false} table={section.table} updateTable={(t) => {return;}}/>)
+      }
+      <Divider bold></Divider>
     </View>
   );
 }
@@ -181,7 +184,7 @@ type ProtocolSectionItemCompProps = {
 
 function ProtocolSectionItemTextInput({ item }: ProtocolSectionItemCompProps) {
   return (
-    <TextInput value={item.textInput?.value} 
+    <TextInput disabled value={item.textInput?.value} 
             multiline={true}></TextInput>
   );
 }
@@ -196,11 +199,11 @@ function ProtocolSectionItemQuestion({ item }: ProtocolSectionItemCompProps) {
           { value: '0', label: 'Yes' },
           { value: '1', label: 'No'},
           { value: '2', label: 'Other' },
-          { value: '3', label: 'Not applicable' },
+          { value: '3', label: 'N.A.' },
         ]}
       />
       <Paragraph>Comment</Paragraph>
-      <TextInput
+      <TextInput disabled
         multiline={true}></TextInput>
     </View>
   );

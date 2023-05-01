@@ -12,6 +12,8 @@ import { initialSection } from '../data/initialSection';
 import { ProtocolSectionItem } from './ProtocolSectionItem';
 import { Table } from '../../../contracts/protocol/section/Table';
 import { ProtocolTable } from './ProtocolTable';
+import { validate, validationRules } from '../../../utils/textValidation';
+import { TableRow } from '../../../contracts/protocol/section/TableRow';
 
 type Props = {
   protocolId: number,
@@ -160,10 +162,48 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
     if (sectionType == 'table') {
       console.log(JSON.stringify(itemImages));
     }
-    return initialSectionJson != JSON.stringify(section) || 
+    return (initialSectionJson != JSON.stringify(section) || 
            initialItemImagesJson != JSON.stringify(itemImages) ||
-           initialTableJson != JSON.stringify(table);
+           initialTableJson != JSON.stringify(table)) &&
+           ((section.checklist == undefined ? true : isValidChecklist()) && isValidTable());
   }
+
+  /*
+  function canUpdate(): boolean {
+    return  ((section.checklist == undefined ? true : isValidChecklist()) && isValidTable()) &&  
+      (initialSectionJson != JSON.stringify(section) ||
+      initialTableJson != JSON.stringify(table));
+  }*/
+
+
+  function isValidChecklist(): boolean {
+    
+    const a = !section.checklist?.items.map(x => { 
+      return ( 
+        (x.textInput == undefined ? true : !validate(x.textInput.value, [validationRules.noSpecialSymbols]).invalid) &&
+        (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
+      );
+    }).some((value) => value == false);
+    console.log(a);
+    return a;
+  }
+
+  function isValidTable(): boolean {
+    if (!table) {
+      return true;
+    }
+    return !table?.tableRows.map(x => { 
+      console.log(isValidTableRow(x));
+      return isValidTableRow(x);
+    }).some((value) => value == false);
+  }
+
+  function isValidTableRow(tableRow: TableRow): boolean {
+    return !tableRow.rowColumns.map(x => { 
+      return (x.value == undefined ? true : !validate(x.value, [validationRules.noSpecialSymbols]).invalid);
+    }).some((value) => value == false);
+  }
+
 
   return (
     isLoading ? 
@@ -184,7 +224,7 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
             <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
           }>
         </FlatList> :
-        <ProtocolTable table={table} updateTable={setTable} />}
+        <ProtocolTable buttonVisible={true} table={table} updateTable={setTable} />}
       <Divider bold></Divider>
     </View>
   );
