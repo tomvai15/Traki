@@ -16,7 +16,6 @@ using Traki.Domain.Repositories;
 
 namespace Traki.UnitTests.Api.Controllers
 {
-    
     public class ProductsControllerTests
     {
         private readonly Mock<IProductsRepository> _productsRepositoryMock;
