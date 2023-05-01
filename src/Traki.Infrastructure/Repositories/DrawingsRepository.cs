@@ -32,12 +32,13 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<Drawing>(drawing);
         }
 
-        public async Task CreateDrawing(Drawing drawing)
+        public async Task<Drawing> CreateDrawing(Drawing drawing)
         {
             var drawingEntity = _mapper.Map<DrawingEntity>(drawing);
 
             _context.Drawings.Add(drawingEntity);
             await _context.SaveChangesAsync();
+            return _mapper.Map<Drawing>(drawingEntity);
         }
 
         public async Task DeleteDrawing(int drawingId)

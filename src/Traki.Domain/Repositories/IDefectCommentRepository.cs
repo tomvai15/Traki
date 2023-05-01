@@ -9,6 +9,6 @@ namespace Traki.Domain.Repositories
 {
     public interface IDefectCommentRepository
     {
-        Task CreateDefectComment(DefectComment defectComment);
+        Task<DefectComment> CreateDefectComment(DefectComment defectComment);
     }
 }

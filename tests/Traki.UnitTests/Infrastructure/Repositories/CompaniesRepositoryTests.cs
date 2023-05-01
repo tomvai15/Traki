@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Traki.Domain.Models;
 using Traki.Infrastructure.Data;
-using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Infrastructure.Fixture;
 
