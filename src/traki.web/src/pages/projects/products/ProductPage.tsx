@@ -1,4 +1,4 @@
-import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, CardHeader, Chip, Divider, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -167,38 +167,31 @@ export function ProductPage() {
       </Grid>
       <Grid item xs={12} md={12} >
         <Card>
+          <CardHeader title={'Assigned protocols'}
+            action={<Button onClick={handleClickOpen} variant='contained'>Add protocol</Button>}>
+          </CardHeader>
+          <Divider></Divider>
           <CardContent>
-            <Stack direction={'row'} justifyContent={'space-between'}>
-              <Typography variant='h5'>Assigned protocols</Typography>
-              <Button onClick={handleClickOpen} variant='contained'>Add protocol</Button>
-            </Stack>
             { protocols.length == 0 ?
               <Box sx={{marginTop: '10px'}}>
                 <Typography>No Protocols</Typography>
               </Box> : 
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Protocol Name</TableCell>
-                    <TableCell align="right"></TableCell>
-                    <TableCell align="right"></TableCell>
-                    <TableCell align="right"></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {protocols.map((item, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">{item.name}</TableCell>
-                      <TableCell align="right"><Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button></TableCell>
-                      <TableCell align="right"><Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button></TableCell>
-                      <TableCell align="right"><Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Fill</Button></TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>}
+              (<Box sx={{marginTop: '10px'}}>
+                <Typography></Typography>
+                {protocols.map((item, index) => (
+                  <Box key={index} sx={{marginBottom: '10px'}}>
+                    <Stack sx={{marginBottom: '5px'}} key={index} direction={'row'} justifyContent={'space-between'} alignItems={'center'}> 
+                      <Typography>{item.name}</Typography>
+                      <Stack direction={'row'} spacing={1}>
+                        <Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Details</Button>
+                        <Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button>
+                        <Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button>
+                      </Stack>                          
+                    </Stack>
+                    <Divider/> 
+                  </Box>
+                ))}
+              </Box>)}
           </CardContent>
         </Card>
       </Grid>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Protocol } from '../../../contracts/protocol/Protocol';
 import { Section } from '../../../contracts/protocol/Section';
@@ -8,6 +8,7 @@ import sectionService from '../../../services/section-service';
 import { FillSection } from 'features/protocols/components';
 import { validate, validationRules } from 'utils/textValidation';
 import { UpdateProtocolRequest } from 'contracts/protocol/UpdateProtocolRequest';
+import { Link as BreadLink } from '@mui/material';
 
 const initialProtocol: Protocol = {
   id: 1,
@@ -75,8 +76,16 @@ export function FillProtocolPage() {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12} >
-        <Button onClick={() => navigate(`/projects/${projectId}/products/${productId}`)} variant='contained' >Go back</Button>
+      <Grid item xs={12} md={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <BreadLink color="inherit" href="/projects">
+            Projects
+          </BreadLink>
+          <BreadLink color="inherit" href={`/projects/${projectId}/products/${productId}`}>
+            Product
+          </BreadLink>
+          <Typography color="text.primary">Defects</Typography>
+        </Breadcrumbs>
       </Grid>
       <Grid item xs={12} md={12} >
         <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
