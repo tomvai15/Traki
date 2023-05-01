@@ -22,5 +22,12 @@ class DefectService {
     const response = await axiosApiInstance.get<GetDefectResponse>(fullRoute, { headers: {} });
     return response.data;
   }
+
+  async updateDefect(drawingId: number, defectId: number, createDefectRequest: CreateDefectRequest): Promise<GetDefectResponse> {
+    const fullRoute = route.format({drawingId: drawingId.toString(), defectId: defectId.toString()});
+    const response = await axiosApiInstance.put<GetDefectResponse>(fullRoute, createDefectRequest, { headers: {} });
+    return response.data;
+  }
+
 }
 export default new DefectService ();

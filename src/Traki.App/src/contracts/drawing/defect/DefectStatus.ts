@@ -1,4 +1,6 @@
 export enum DefectStatus {
   Fixed,
-  NotFixed
+  NotFixed,
+  NotDefect,
+  Unfixable,
 }

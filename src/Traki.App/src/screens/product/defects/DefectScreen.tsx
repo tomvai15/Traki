@@ -1,14 +1,14 @@
 /* eslint-disable */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Image, StyleSheet, PanResponder, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
 import { image } from '../test';
 import { image2 } from '../test2';
 import { image3 } from '../test3';
 import * as ImagePicker from 'expo-image-picker';
-import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, Avatar, Card, HelperText } from 'react-native-paper';
+import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, Avatar, Card, HelperText, Divider } from 'react-native-paper';
 import ImageWithViewer from '../../../components/ImageWithViewer';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
@@ -28,6 +28,9 @@ import { validate, validationRules } from '../../../utils/textValidation';
 import { useHeaderHeight } from '@react-navigation/elements'
 import { notificationService } from '../../../services';
 import { useUpdateNotifications } from '../../../hooks/useUpdateNotifications';
+import DropDown, { DropDownPropsInterface } from 'react-native-paper-dropdown';
+import { Loading } from '../../../components/Loading';
+import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 
 interface Rectangle {
   x: number;
@@ -55,6 +58,8 @@ type CommentWithImage = {
 }
 
 export default function DefectScreen({route, navigation}: Props) {
+
+
   const { updateNotifications } = useUpdateNotifications();
 
   const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -63,13 +68,16 @@ export default function DefectScreen({route, navigation}: Props) {
   const [drawing, setDrawing] = useState<DrawingWithImage>();
   const [defect, setDefect] = useState<DefectWithImage>();
 
+  const [loadingDefect, setLoadingDefect] = useState<boolean>(false);
+
   const [comments, setComments] = useState<CommentWithImage[]>([]);
 
   const [commentText, setCommentText] = useState<string>('');
 
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
-      fetchDefect();
+      setLoadingDefect(true);
+      fetchDefect().then(() => setLoadingDefect(false));
       fetchDrawing();
     });
     return focusHandler;
@@ -199,15 +207,77 @@ export default function DefectScreen({route, navigation}: Props) {
             !validate(commentText, [validationRules.noSpecialSymbols]).invalid;
   }
 
+  const [defectStatusList, setDefectStausList] = useState([
+    {
+      label: 'Fixed',
+      value: 0,
+    },
+    {
+      label: 'Not fixed',
+      value: 1,
+    },
+    {
+      label: 'Not a defect',
+      value: 2,
+    },
+    {
+      label: 'Unfixable',
+      value: 3,
+    }
+  ]);
+
+  async function updateDefectStatus(value: number) {
+    if (!defect) {
+      return;
+    }
+
+    const request: CreateDefectRequest = {
+      defect: {...defect.defect, status: Number(value)}
+    };
+
+    await defectService.updateDefect(defect.defect.drawingId, defect.defect.id, request);
+    await fetchDefect();
+  }
+
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [value, setValue] = useState(0);
+
   return (
     <ScrollView>
       <ScreenView>
         <Card mode='outlined' style={{marginTop:10}}>
-          <Card.Title title={defect?.defect.title}
-            subtitle={defect?.defect.description} 
-            left={() => <CustomAvatar size={50} user={defect?.defect.author}/>} 
-            right={() => { return (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}}
-          />
+          <Card.Content>
+            <Loading loading={loadingDefect}>
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View>
+                  <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <CustomAvatar size={50} user={defect?.defect.author}/>
+                    <Text style={{fontSize: 20, marginLeft: 5}}>{defect?.defect.author?.name} {defect?.defect.author?.surname}</Text>
+                  </View>
+                  <Divider bold style={{marginTop: 10}}></Divider>
+                  <View>
+                    <Text style={{fontSize: 20, marginLeft: 5}}>{defect?.defect.title}</Text>
+                    <Text style={{fontSize: 15, marginLeft: 5, marginBottom: 10}}>{defect?.defect.description}</Text>
+                    <View style={{borderColor: 'grey', borderWidth: 1, borderRadius: 5}}>
+                      <DropDown
+                        label={'Status'}
+                        mode={'outlined'}
+                        visible={showDropDown}
+                        showDropDown={() => setShowDropDown(true)}
+                        onDismiss={() => setShowDropDown(false)}
+                        value={defect?.defect.status}
+                        setValue={updateDefectStatus}
+                        list={defectStatusList}
+                      />  
+                    </View>
+                  </View>
+                </View>
+                <View>
+                  { (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}
+                </View>
+              </View>
+            </Loading>
+          </Card.Content>
         </Card>
         <View style={styles.box}>
           { defect && drawing && <ImageWithRegions source={drawing.imageBase64} width={390} rectangles={[defectToRectangle(defect.defect)]}/>}
