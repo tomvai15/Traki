@@ -3,6 +3,7 @@ import { Divider, Stack, TextField, TableRow as MuiTableRow, TableCell } from '@
 import Box from '@mui/material/Box';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
+import { validate, validationRules } from 'utils/textValidation';
 
 type Props = {
   tableRow: TableRow,
@@ -25,6 +26,8 @@ export function FillTableRow ({tableRow, updateTableRow}: Props) {
             sx={{marginLeft: '10px'}}
             size='small'
             id="standard-disabled"
+            error={validate(column.value, [validationRules.noSpecialSymbols]).invalid}
+            helperText={validate(column.value, [validationRules.noSpecialSymbols]).message}
             label={null}
             variant="standard"
             value={column.value}

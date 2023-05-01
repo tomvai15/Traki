@@ -4,6 +4,7 @@ import { Section } from "./Section";
 export type Protocol = {
   id: number,
   name: string,
+  isCompleted: boolean,
   isSigned: boolean,
   isTemplate: boolean,
   sections: Section[],

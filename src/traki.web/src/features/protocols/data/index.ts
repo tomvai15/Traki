@@ -13,7 +13,7 @@ export const question: Question = {
 
 export const defaultItem: Item ={
   id: uuid(), 
-  name: 'Item Name', 
+  name: 'New question', 
   priority: 1, 
   question: question, 
   multipleChoice: undefined, 
@@ -22,7 +22,7 @@ export const defaultItem: Item ={
 
 export const defaultColumn: RowColumn = {
   id: 0, 
-  value: '',
+  value: 'New column',
   columnIndex: 0
 };
 
@@ -44,7 +44,7 @@ export const defaultChecklist: Checklist ={
 
 export const initialSection: Section = {
   id: 0,
-  name: 'Section Name',
+  name: 'New section',
   priority: 1,
   checklist: undefined,
   table: undefined,

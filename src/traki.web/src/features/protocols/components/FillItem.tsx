@@ -10,9 +10,10 @@ import { validate, validationRules } from 'utils/textValidation';
 type Props = {
   item: Item,
   updateItem: (item: Item) => void
+  completed: boolean
 }
 
-export function FillItem ({item, updateItem}: Props) {
+export function FillItem ({item, updateItem, completed}: Props) {
 
   const theme = useTheme();
 
@@ -71,10 +72,10 @@ export function FillItem ({item, updateItem}: Props) {
       return (
         <Box sx={{display: 'flex', flexDirection:'row', alignItems: 'flex-end'}}> 
           <Box sx={{flex: 3}}>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={isChecked(item, AnswerType.Yes)}/>} label="Yes" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={isChecked(item, AnswerType.No)}/>} label="No" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.Other)} checked={isChecked(item, AnswerType.Other)}/>} label="Other" labelPlacement="start"/>
-            <FormControlLabel control={<Checkbox onChange={()=>updateQuestionAnswer(AnswerType.NotApplicable)} checked={isChecked(item, AnswerType.NotApplicable)}/>} label="Not applicable" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox disabled={completed} onChange={()=>updateQuestionAnswer(AnswerType.Yes)}  checked={isChecked(item, AnswerType.Yes)}/>} label="Yes" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox disabled={completed} onChange={()=>updateQuestionAnswer(AnswerType.No)} checked={isChecked(item, AnswerType.No)}/>} label="No" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox disabled={completed} onChange={()=>updateQuestionAnswer(AnswerType.Other)} checked={isChecked(item, AnswerType.Other)}/>} label="Other" labelPlacement="start"/>
+            <FormControlLabel control={<Checkbox disabled={completed} onChange={()=>updateQuestionAnswer(AnswerType.NotApplicable)} checked={isChecked(item, AnswerType.NotApplicable)}/>} label="Not applicable" labelPlacement="start"/>
           </Box>
           <Box sx={{flex: 3}}>
             <TextField sx={{width: '100%'}}
@@ -87,6 +88,7 @@ export function FillItem ({item, updateItem}: Props) {
               variant="standard"
               value={item.question.comment}
               onChange={(e) => updateQuestionComment(e.target.value)}
+              disabled={completed}
             />
           </Box>
         </Box>);
@@ -104,6 +106,7 @@ export function FillItem ({item, updateItem}: Props) {
               variant="standard"
               value={item.textInput.value}
               onChange={(e) => updateTextInput(e.target.value)}
+              disabled={completed}
             />
           </Box>
         </Box>);
@@ -114,7 +117,7 @@ export function FillItem ({item, updateItem}: Props) {
             { item.multipleChoice.options.map((value, index) => 
               <FormControlLabel 
                 key={index} 
-                control={<Checkbox checked={value.selected ? value.selected : false} onClick={(e) => updateMultipleChoice(value.name)}/>} 
+                control={<Checkbox disabled={completed} checked={value.selected ? value.selected : false} onClick={(e) => updateMultipleChoice(value.name)}/>} 
                 label={value.name} 
                 labelPlacement="start"/>
             )}

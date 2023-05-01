@@ -16,10 +16,11 @@ import { validate, validationRules } from 'utils/textValidation';
 
 type Props = {
   protocolId: number,
-  sectionId: number
+  sectionId: number,
+  completed: boolean
 }
 
-export function FillSection({protocolId, sectionId}: Props) {
+export function FillSection({protocolId, sectionId, completed}: Props) {
 
   const [section, setSection] = useState<Section>(initialSection);
   const [table, setTable] = useState<Table>();
@@ -44,6 +45,8 @@ export function FillSection({protocolId, sectionId}: Props) {
       setInitialTableJson(JSON.stringify(undefined));
       return;
     }
+
+    console.log(table);
 
     setSectionType('table');
     setTable(table);
@@ -82,18 +85,38 @@ export function FillSection({protocolId, sectionId}: Props) {
   }
 
   function canUpdate(): boolean {
-    return  (initialSectionJson != JSON.stringify(section) ||
-            initialTableJson != JSON.stringify(table)) &&
-            isValid() ;
+    return  ((section.checklist == undefined ? true : isValidChecklist()) && isValidTable()) &&  
+      (initialSectionJson != JSON.stringify(section) ||
+      initialTableJson != JSON.stringify(table));
   }
 
 
-  function isValid(): boolean {
-    return !section.checklist?.items.map(x => { 
+  function isValidChecklist(): boolean {
+    
+    const a = !section.checklist?.items.map(x => { 
       return ( 
         (x.textInput == undefined ? true : !validate(x.textInput.value, [validationRules.noSpecialSymbols]).invalid) &&
         (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
       );
+    }).some((value) => value == false);
+    console.log(a);
+    return a;
+  }
+
+  function isValidTable(): boolean {
+    if (!table) {
+      return true;
+    }
+    return !table?.tableRows.map(x => { 
+      console.log(isValidTableRow(x));
+      return isValidTableRow(x);
+    }).some((value) => value == false);
+  }
+
+
+  function isValidTableRow(tableRow: TableRow): boolean {
+    return !tableRow.rowColumns.map(x => { 
+      return (x.value == undefined ? true : !validate(x.value, [validationRules.noSpecialSymbols]).invalid);
     }).some((value) => value == false);
   }
 
@@ -110,22 +133,22 @@ export function FillSection({protocolId, sectionId}: Props) {
     <Box>
       <Card>
         <CardHeader title={section.name}
-          action={<Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>}>
+          action={ !completed && <Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>}>
         </CardHeader>
         <Divider/>
         <CardContent>
           {sectionType == 'checklist' &&
           <Box>
             {section.checklist?.items.map((item, index) => 
-              <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
+              <FillItem key={index} item={item} completed={completed} updateItem={updateItem}></FillItem>
             )}
           </Box>}
+          {sectionType == 'table' && table &&
+            <Box>
+              <FillTable table={table} updateTable={setTable}/>
+            </Box>}
         </CardContent>
       </Card>
-      {sectionType == 'table' && table &&
-        <Box sx={{marginLeft:3}}>
-          <FillTable table={table} updateTable={setTable}/>
-        </Box>}
     </Box>
   );
 }
