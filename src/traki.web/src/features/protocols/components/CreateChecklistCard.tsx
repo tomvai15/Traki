@@ -7,6 +7,7 @@ import { Item, Question } from 'contracts/protocol/items';
 import { Button } from '@mui/material';
 import { v4 as uuid } from 'uuid';
 import { defaultItem } from '../data';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 type Props = {
   checklist: Checklist
@@ -105,7 +106,9 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
           }}
         </Droppable>
       </DragDropContext>
-      <Button sx={{marginLeft: '10px'}} onClick={() => addItem()} variant='contained'>Add new question</Button>
+      <ProtectedComponent role={"ProejctManager"}>
+        <Button sx={{marginLeft: '10px'}} onClick={() => addItem()} variant='contained'>Add new question</Button>
+      </ProtectedComponent>
     </Box>
   );
 }

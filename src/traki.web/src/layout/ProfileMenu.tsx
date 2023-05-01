@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { userService } from 'services';
 import authService from 'services/auth-service';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function ProfileMenu() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function ProfileMenu() {
         }}
         onClick={handleOpenUserMenu}
         label={userInfo.name} 
-        icon={<SettingsIcon/>}
+        icon={<PersonIcon/>}
       />
       <Menu
         sx={{ mt: '45px' }}

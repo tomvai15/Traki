@@ -45,14 +45,12 @@ export function DefectCard ({defect, navigation}: Props) {
               {defect.defect.title}
             </Text>
             <View>
-              <Text>Product: test</Text>
+              <Text style={{fontSize: 17}}>Product: test</Text>
             </View>
           </View>
           <View>
             <Button mode='contained' onPress={() => {
-              navigation.navigate('Project Products', {screen: 'Products'}); 
-              navigation.navigate('Project Products', { screen: 'DefectScreen', params: { productId: defect.productId, drawingId: defect.defect.drawingId, defectId: defect.defect.id }}) 
-              navigation.navigate('Product', {productId: defect.productId});
+              navigation.navigate('Projects', { screen: 'DefectScreen', params: { productId: defect.productId, drawingId: defect.defect.drawingId, defectId: defect.defect.id }}) 
             }}>
               Details
             </Button>

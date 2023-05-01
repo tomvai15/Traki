@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Grid, Card, CardContent, Box, TextField, Button, ToggleButtonGroup, ToggleButton, } from '@mui/material';
+import { Grid, Link as BreadLink, Card, CardContent, Box, TextField, Button, ToggleButtonGroup, ToggleButton, Breadcrumbs, Typography, } from '@mui/material';
 import { Checklist, Section, UpdateSectionRequest } from 'contracts/protocol';
 import { Item } from 'contracts/protocol/items';
 import { sectionService } from 'services';
@@ -69,9 +69,12 @@ export function CreateSectionPage() {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12} >
-        <Button onClick={() => navigate('/templates/protocols/' + protocolId)} variant='contained' >Go back</Button>
-      </Grid>
+      <Breadcrumbs aria-label="breadcrumb">
+        <BreadLink color="inherit" href="/templates/protocols">
+          Protocol Templates
+        </BreadLink>
+        <Typography color="text.primary">Section</Typography>
+      </Breadcrumbs>
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>

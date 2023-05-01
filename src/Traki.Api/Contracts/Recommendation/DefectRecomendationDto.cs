@@ -7,5 +7,6 @@ namespace Traki.Api.Contracts.Recommendation
         public DefectDto Defect { get; set; }
         public int ProjectId { get; set; }
         public int ProductId { get; set; }
+        public string ProductName { get; set; }
     }
 }

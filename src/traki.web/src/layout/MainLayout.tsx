@@ -127,13 +127,11 @@ export default function MainLayout() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-start',
             px: [1],
           }}
         >
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeftIcon />
-          </IconButton>
+          <Typography sx={{fontSize: 26}}>Traki</Typography>
         </Toolbar>
         <Divider />
         <List component="nav">
