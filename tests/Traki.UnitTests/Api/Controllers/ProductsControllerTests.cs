@@ -62,14 +62,18 @@ namespace Traki.UnitTests.Api.Controllers
             int projectId = 1;
             int productId = 2;
             var product = new Product { Id = productId };
-            var getProductResponse = new GetProductResponse { Product = _mapper.Map<ProductDto>(product) };
+            var response = new GetProductResponse 
+            { 
+                Product = _mapper.Map<ProductDto>(product) 
+            };
             _productsRepositoryMock.Setup(x => x.GetProduct(productId)).ReturnsAsync(product);
 
             // Act
             var result = await _productsController.GetProduct(projectId, productId);
 
             // Assert
-            result.Value.Should().BeEquivalentTo(getProductResponse);
+            var data = result.ShouldBeOfType<GetProductResponse>();
+            response.Should().BeEquivalentTo(data);
         }
 
         [Fact]
