@@ -14,7 +14,7 @@ namespace Traki.UnitTests.Helpers
 {
     public static class Dummy
     {
-        private static IFixture fixture = new Fixture().Customize(new IgnoreObjectsCustomization());
+        private static IFixture fixture = new Fixture();
 
         public static T Any<T>() => fixture.Create<T>();
         public static IEnumerable<T> AnyMany<T>(int count) => fixture.CreateMany<T>(count);

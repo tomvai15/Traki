@@ -84,7 +84,7 @@ namespace Traki.Domain.Handlers
 
                 foreach (var row in tableRows.Skip(1))
                 {
-                    await _tableRowRepository.DeleteTableRow(row);
+                    await _tableRowRepository.DeleteTableRow(row.Id);
                 }
 
                 var tablesToAdd = section.Table.TableRows.Skip(1);

@@ -91,14 +91,16 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         public async Task DeleteDefectNotification_DeletesDefectNotification()
         {
             // Arrange
+            int userId = 2;
+            int defectId = 1;
             var notification = new DefectNotificationEntity
             {
                 Title = "test",
                 Body = "test",
                 Data = "test",
                 CreationDate = "Test",
-                UserId = 1,
-                DefectId = 1
+                UserId = userId,
+                DefectId = defectId
             };
 
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
@@ -108,7 +110,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
             var createdEntity = context.SaveChangesAsync();
 
             // Act
-            await repository.DeleteDefectNotification(1, notification.Id);
+            await repository.DeleteDefectNotification(userId, defectId);
 
             // Assert
             var foundEntity = await context.DefectNotifications.FirstOrDefaultAsync(x => x.Id == notification.Id);

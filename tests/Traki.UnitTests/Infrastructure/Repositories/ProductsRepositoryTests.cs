@@ -73,6 +73,25 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         }
 
         [Fact]
+        public async Task UpdateProducts_UpdatesProducts()
+        {
+            var product = new Product
+            {
+                Id = 1,
+                Name = Any<string>(),
+                Status = Any<string>(),
+            };
+
+            using var context = new TrakiDbContext(_trakiDbFixture.Options);
+            var repository = new ProductsRepository(context, _mapper);
+
+            var updatedProduct = await repository.UpdateProduct(product);
+
+            updatedProduct.Name.Should().Be(product.Name);
+            updatedProduct.Status.Should().Be(product.Status);
+        }
+
+        [Fact]
         public async Task DeleteProduct_DeletesProduct()
         {
             // Arrange

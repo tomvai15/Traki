@@ -18,9 +18,9 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task DeleteTableRow(TableRow tableRow)
+        public async Task DeleteTableRow(int tableRowId)
         {
-            var tableRowEntity = _context.TableRows.Where(x => x.Id == tableRow.Id).First();
+            var tableRowEntity = _context.TableRows.Where(x => x.Id == tableRowId).First();
 
             if (tableRowEntity == null)
             {
@@ -31,7 +31,7 @@ namespace Traki.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateTableRow(TableRow tableRow)
+        public async Task<TableRow> CreateTableRow(TableRow tableRow)
         {
             var tableRowEntity = _mapper.Map<TableRowEntity>(tableRow);
 
@@ -44,6 +44,7 @@ namespace Traki.Infrastructure.Repositories
 
             _context.TableRows.Add(tableRowEntity);
             await _context.SaveChangesAsync();
+            return _mapper.Map<TableRow>(tableRow);
         }
 
         public async Task<IEnumerable<TableRow>> GetTableRows(int tableId)

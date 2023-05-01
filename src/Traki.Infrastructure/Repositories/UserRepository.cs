@@ -51,7 +51,7 @@ namespace Traki.Infrastructure.Repositories
             return _mapper.Map<User>(userEntity);
         }
 
-        public async Task UpdateUser(User user)
+        public async Task<User> UpdateUser(User user)
         {
             var userEntity = _context.Users.FirstOrDefault(u => u.Id == user.Id);
 
@@ -65,6 +65,7 @@ namespace Traki.Infrastructure.Repositories
             userEntity.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
 
             await _context.SaveChangesAsync();
+            return _mapper.Map<User>(userEntity);
         }
 
         public async Task<IEnumerable<User>> GetUsers()

@@ -21,7 +21,7 @@ namespace Traki.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        public async Task UpdateProduct(Product product)
+        public async Task<Product> UpdateProduct(Product product)
         {
             var productEntity = await _context.Products.FirstOrDefaultAsync(p => p.Id == product.Id);
 
@@ -30,6 +30,7 @@ namespace Traki.Infrastructure.Repositories
             productEntity.Status = product.Status;
 
             await _context.SaveChangesAsync();
+            return _mapper.Map<Product>(productEntity);
         }
 
         public async Task DeleteProduct(int productId)

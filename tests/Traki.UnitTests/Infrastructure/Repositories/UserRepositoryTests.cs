@@ -3,6 +3,7 @@ using DocuSign.eSign.Model;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using PuppeteerSharp;
+using Traki.Domain.Constants;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Infrastructure.Data;
@@ -27,94 +28,92 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task GetProducts_ReturnsProducts()
+        public async Task GetUsers_ReturnsUsers()
         {
-            int projectId = 1;
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
-            var repository = new ProductsRepository(context, _mapper);
-            var expectedProducts = await context.Products.Where(x => x.ProjectId == projectId).ToListAsync();
+            var repository = new UserRepository(context, _mapper);
+            var expectedUsers = await context.Users.ToListAsync();
 
-            var products = await repository.GetProducts(projectId);
+            var users = await repository.GetUsers();
 
-            expectedProducts.Should().BeEquivalentTo(products, options => options.Excluding(x => x.Author));
+            expectedUsers.Should().BeEquivalentTo(users);
+        }
+
+        [Fact]
+        public async Task GetUserById_ReturnsUser()
+        {
+            int userId = 1;
+            using var context = new TrakiDbContext(_trakiDbFixture.Options);
+            var repository = new UserRepository(context, _mapper);
+            var expectedUser = await context.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+
+            var user = await repository.GetUserById(userId);
+
+            expectedUser.Should().BeEquivalentTo(user);
         }
 
         [Fact]
         public async Task GetUserByEmail_ReturnsUser()
         {
-            int productId = 1;
+            string email = "vainoristomas@gmail.com";
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
-            var repository = new ProductsRepository(context, _mapper);
-            var expectedProduct = await context.Products.Where(x => x.Id == productId).FirstOrDefaultAsync();
+            var repository = new UserRepository(context, _mapper);
+            var expectedUser = await context.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
 
-            var product = await repository.GetProduct(productId);
+            var user = await repository.GetUserByEmail(email);
 
-            expectedProduct.Should().BeEquivalentTo(product, options => options.Excluding(x => x.Author));
+            expectedUser.Should().BeEquivalentTo(user);
         }
 
         [Fact]
-        public async Task CreateProduct_CreatesProduct()
+        public async Task AddNewUser_CreatesUser()
         {
-            var product = new Product
+            var user = Any<Traki.Domain.Models.User>();
+            user.Id = 0;
+            
+            using var context = new TrakiDbContext(_trakiDbFixture.Options);
+            var repository = new UserRepository(context, _mapper);
+
+            var cratedUser = await repository.AddNewUser(user);
+
+            cratedUser.Should().BeEquivalentTo(user, options => options.Excluding(x => x.Id));
+        }
+
+        [Fact]
+        public async Task GetUsersByQuery_ReturnsSelectedUsers()
+        {
+            // Arrange
+            Func<Traki.Domain.Models.User, bool> query = (x) => x.Status == UserStatus.Active;
+
+            using var context = new TrakiDbContext(_trakiDbFixture.Options);
+            var repository = new UserRepository(context, _mapper);
+
+            var expectedUsers = await context.Users.Where(x => x.Status == "Active").ToListAsync();
+
+            // Act
+            var users = await repository.GetUsersByQuery(query);
+
+            // Assert
+            expectedUsers.Should().BeEquivalentTo(users);
+        }
+
+        [Fact]
+        public async Task UpdateUser_UpdatesUser()
+        {
+            var user = new Traki.Domain.Models.User
             {
-                Name = Any<string>(),
+                Id = 1,
                 Status = Any<string>(),
-                CreationDate = Any<string>(),
-                ProjectId = 1,
-                AuthorId = 1,
+                EncryptedRefreshToken = Any<string>(),
             };
 
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
-            var repository = new ProductsRepository(context, _mapper);
+            var repository = new UserRepository(context, _mapper);
 
-            var cratedProduct = await repository.CreateProduct(product);
+            var updatedUser = await repository.UpdateUser(user);
 
-            cratedProduct.Should().BeEquivalentTo(product, options => options.Excluding(x => x.Id).Excluding(x => x.CreationDate));
-        }
-
-        [Fact]
-        public async Task DeleteProduct_DeletesProduct()
-        {
-            // Arrange
-            var product = new ProductEntity
-            {
-                Name = Any<string>(),
-                Status = Any<string>(),
-                CreationDate = Any<string>(),
-                ProjectId = 1,
-                AuthorId = 1,
-            };
-
-            using var context = new TrakiDbContext(_trakiDbFixture.Options);
-            var repository = new ProductsRepository(context, _mapper);
-
-            context.Products.Add(product);
-            var createdEntity = context.SaveChangesAsync();
-
-            // Act
-            await repository.DeleteProduct(product.Id);
-
-            // Assert
-            var foundEntity = await context.Projects.FirstOrDefaultAsync(x => x.Id == product.Id);
-            foundEntity.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task GetProductByQuery_ReturnsSelectedProducts()
-        {
-            // Arrange
-            Func<Product, bool> query = (x) => x.Status == "Active";
-
-            using var context = new TrakiDbContext(_trakiDbFixture.Options);
-            var repository = new ProductsRepository(context, _mapper);
-
-            var expectedProducts = await context.Products.Where(x => x.Status == "Active").ToListAsync();
-
-            // Act
-            var products = await repository.GetProductByQuery(query);
-
-            // Assert
-            expectedProducts.Should().BeEquivalentTo(products, options => options.Excluding(x => x.Author));
+            updatedUser.Status.Should().Be(user.Status);
+            updatedUser.EncryptedRefreshToken.Should().Be(user.EncryptedRefreshToken);
         }
     }
 }
