@@ -12,6 +12,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/projects/{projectId}/products")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductsRepository _productsRepository;

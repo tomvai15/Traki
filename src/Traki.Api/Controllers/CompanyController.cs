@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Company;
 using Traki.Domain.Models;
@@ -8,6 +9,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/companies")]
     [ApiController]
+    [Authorize]
     public class CompanyController: ControllerBase
     {
         private readonly ICompaniesRepository _companiesRepository;

@@ -11,6 +11,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/notifications")]
     [ApiController]
+    [Authorize]
     public class NotificationsController : ControllerBase
     {
         private readonly IDefectNotificationRepository _defectNotificationRepository;

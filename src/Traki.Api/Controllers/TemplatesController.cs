@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Template;
 using Traki.Domain.Repositories;
@@ -6,6 +7,7 @@ using Traki.Domain.Repositories;
 namespace Traki.Api.Controllers
 {
     [Route("api/projects/{projectId}/templates")]
+    [Authorize]
     public class TemplatesController : ControllerBase
     {
         private readonly ITemplatesRepository _templatesHandler;

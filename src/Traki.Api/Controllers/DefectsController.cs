@@ -10,6 +10,7 @@ using Traki.Domain.Repositories;
 namespace Traki.Api.Controllers
 {
     [Route("api/drawings/{drawingId}/defects")]
+    [Authorize]
     public class DefectsController : ControllerBase
     {
         private readonly IDefectHandler _defectHandler;

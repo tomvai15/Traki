@@ -11,6 +11,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/recommendations")]
     [ApiController]
+    [Authorize]
     public class RecommendationsController: ControllerBase
     {
         private readonly IRecommendationsHandler _recommendationsHandler;
