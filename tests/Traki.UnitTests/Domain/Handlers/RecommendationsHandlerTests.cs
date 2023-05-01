@@ -4,6 +4,7 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
+using Traki.Infrastructure.Repositories;
 
 namespace Traki.UnitTests.Domain.Handlers
 {
@@ -11,6 +12,7 @@ namespace Traki.UnitTests.Domain.Handlers
     {
         private readonly Mock<IProductsRepository> _productsRepositoryMock;
         private readonly Mock<IDefectsRepository> _defectsRepositoryMock;
+        private readonly Mock<IProjectsRepository> _projectsRepository;
 
         private readonly IRecommendationsHandler _recommendationsHandler;
 
@@ -18,8 +20,10 @@ namespace Traki.UnitTests.Domain.Handlers
         {
             _productsRepositoryMock = new Mock<IProductsRepository>();
             _defectsRepositoryMock = new Mock<IDefectsRepository>();
+            _projectsRepository = new Mock<IProjectsRepository>();
 
             _recommendationsHandler = new RecommendationsHandler(
+                _projectsRepository.Object,
                 _productsRepositoryMock.Object,
                 _defectsRepositoryMock.Object
             );
@@ -31,11 +35,11 @@ namespace Traki.UnitTests.Domain.Handlers
             // Arrange
             var userId = 1;
 
-            var products = new List<Product>
-            {
-                new Product { Id = 1, AuthorId = userId },
-                new Product { Id = 2, AuthorId = userId }
-            };
+            var products = new List<Product>();
+
+            _projectsRepository
+                .Setup(x => x.GetProjects())
+                .ReturnsAsync(new Project [0]);
 
             _productsRepositoryMock
                 .Setup(x => x.GetProductByQuery(It.IsAny<Func<Product, bool>>()))

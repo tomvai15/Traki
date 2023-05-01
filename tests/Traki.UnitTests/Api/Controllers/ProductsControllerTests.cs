@@ -14,6 +14,7 @@ using Traki.Api.Controllers;
 using Traki.Api.Mapping;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
+using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.UnitTests.Helpers;
 
@@ -23,6 +24,7 @@ namespace Traki.UnitTests.Api.Controllers
     {
         private readonly Mock<IProductsRepository> _productsRepositoryMock;
         private readonly Mock<IProductHandler> _productHandlerMock;
+        private readonly Mock<IClaimsProvider> _claimsProvider;
         private readonly IMapper _mapper;
         private readonly ProductsController _productsController;
 
@@ -35,9 +37,10 @@ namespace Traki.UnitTests.Api.Controllers
             });
 
             _mapper = new Mapper(configuration);
+            _claimsProvider = new Mock<IClaimsProvider>();
             _productsRepositoryMock = new Mock<IProductsRepository>();
             _productHandlerMock = new Mock<IProductHandler>();
-            _productsController = new ProductsController(_productsRepositoryMock.Object, _productHandlerMock.Object, _mapper);
+            _productsController = new ProductsController(_claimsProvider.Object, _productsRepositoryMock.Object, _productHandlerMock.Object, _mapper);
         }
 
         [Fact]

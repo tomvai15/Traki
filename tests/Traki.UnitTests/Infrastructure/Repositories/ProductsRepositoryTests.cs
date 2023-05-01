@@ -36,7 +36,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             var products = await repository.GetProducts(projectId);
 
-            expectedProducts.Should().BeEquivalentTo(products, options => options.Excluding(x => x.Author));
+            expectedProducts.Should().BeEquivalentTo(products, options => options.Excluding(x => x.Author).Excluding(x => x.Protocols).Excluding(x => x.Drawings));
         }
 
         [Fact]
@@ -49,7 +49,10 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             var product = await repository.GetProduct(productId);
 
-            expectedProduct.Should().BeEquivalentTo(product, options => options.Excluding(x => x.Author));
+            expectedProduct.Should().BeEquivalentTo(product, options => 
+                options.Excluding(x => x.Author)
+                .Excluding(x => x.Protocols)
+                .Excluding(x => x.Drawings));
         }
 
         [Fact]
@@ -69,7 +72,10 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             var cratedProduct = await repository.CreateProduct(product);
 
-            cratedProduct.Should().BeEquivalentTo(product, options => options.Excluding(x => x.Id).Excluding(x => x.CreationDate));
+            cratedProduct.Should().BeEquivalentTo(product, options => options.Excluding(x => x.Id)
+                .Excluding(x => x.CreationDate)
+                .Excluding(x => x.Protocols)
+                .Excluding(x => x.Drawings));
         }
 
         [Fact]

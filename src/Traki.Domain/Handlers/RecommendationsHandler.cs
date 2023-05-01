@@ -42,12 +42,13 @@ namespace Traki.Domain.Handlers
                 ProductName = x.Drawing.Product.Name,
             });
 
+            
             var productRecommendations = products.Select(x => new ProductRecomendation
             {
                 Product = x,
                 ProtocolsCount = x.Protocols.Count(),
                 DefectCount = x.Drawings.SelectMany(x=> x.Defects).Count(),
-            }).OrderByDescending(x => x.DefectCount);
+            }).OrderByDescending(x => x.DefectCount).ToList();
 
 
             var recommendation = new Recommendation
