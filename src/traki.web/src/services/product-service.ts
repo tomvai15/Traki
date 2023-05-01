@@ -38,10 +38,10 @@ class ProductService {
     await axiosApiInstance.post(fullRoute, { headers: {} });
   }
 
-  async createProduct(projectId: number, createProductRequest: CreateProductRequest): Promise<boolean> {
+  async createProduct(projectId: number, createProductRequest: CreateProductRequest): Promise<GetProductResponse> {
     const fullRoute = route.format({ projectId: projectId.toString(), productId: ''}); 
-    await axiosApiInstance.post(fullRoute, createProductRequest, { headers: {} });
-    return true;
+    const  response = await axiosApiInstance.post<GetProductResponse>(fullRoute, createProductRequest, { headers: {} });
+    return response.data;
   }
 
   async addProtocol( projectId: number, productId: number, protocolId: number): Promise<void> {

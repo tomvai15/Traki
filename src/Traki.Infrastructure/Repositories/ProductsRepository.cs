@@ -83,8 +83,7 @@ namespace Traki.Infrastructure.Repositories
                 var p = _mapper.Map<Product>(x);
                 return filter(p);
             }; 
-            var products = _context.Products.Include(x=> x.Drawings).ThenInclude(x=>x.Defects)
-                .Include(x=> x.Protocols)
+            var products = _context.Products.Include(x=> x.Drawings).ThenInclude(x=>x.Defects).Include(x=> x.Protocols)
                 .Where(func).ToList();
 
             return _mapper.Map<IEnumerable<Product>>(products);

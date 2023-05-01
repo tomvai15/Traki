@@ -177,7 +177,7 @@ export function EditProduct() {
             Projects
           </BreadLink>
           <BreadLink id='product-link' color="inherit" href={ product ? `/projects/${product.projectId}/products/${product.id}` : ''}>
-            Projects
+            Product
           </BreadLink>
           <Typography color="text.primary">Product</Typography>
         </Breadcrumbs>

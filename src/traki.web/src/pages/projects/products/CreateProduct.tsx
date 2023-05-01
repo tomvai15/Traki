@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Breadcrumbs, Button, Card, CardContent, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, IconButton, TextField, Typography } from '@mui/material';
 import projectService from '../../../services/project-service';
 import { Link as BreadLink } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
@@ -7,53 +7,42 @@ import pictureService from '../../../services/picture-service';
 import { v4 as uuid } from 'uuid';
 import { Project } from '../../../contracts/projects/Project';
 import { CreateProjectRequest } from '../../../contracts/projects/CreateProjectRequest';
+import { CreateProductRequest } from 'contracts/product/CreateProductRequest';
+import { useNavigate, useParams } from 'react-router-dom';
+import { productService } from 'services';
 
 export function CreateProduct() {
 
+  const navigate = useNavigate();
+  const { projectId } = useParams();
   const [previewImage, setPreviewImage] = useState<string>();
   const [file, setFile] = useState<File>();
 
   const [name, setName] = useState<string>('');
-  const [client, setClient] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
 
   function canSubmit () {
-    return name && client && address && previewImage && file;
+    return name;
   }
 
   async function submitProject() {
     if (!canSubmit()) {
       return;
     }
-    let pictureName = '';
-    if (previewImage != '' && file) {
-      pictureName = `${uuid()}${file.type.replace('image/','.')}`;
-      const formData = new FormData();
-      formData.append(pictureName, file, pictureName);
-      await pictureService.uploadPicturesFormData('item', formData);
-    }
-
-    const project: Project = {
-      id: 0,
-      name: name,
-      clientName: client,
-      address: address,
-      imageName: pictureName,
-      creationDate: ''
+    
+    const request: CreateProductRequest = {
+      product: {
+        id: 0,
+        name: name,
+        status: 'Active',
+        projectId: Number(projectId),
+        creationDate: ''
+      }
     };
 
-    const request: CreateProjectRequest = {
-      project: project
-    };
+    const response = await productService.createProduct(Number(projectId), request);
+    console.log('??????');
 
-    await projectService.createProject(request);
-  }
-
-  function selectFile (event: React.ChangeEvent<HTMLInputElement>) {
-    const { files } = event.target;
-    const selectedFiles = files as FileList;
-    setFile(selectedFiles?.[0]);
-    setPreviewImage(URL.createObjectURL(selectedFiles?.[0]));
+    navigate(`/projects/${projectId}/products/${response.product.id}`);
   }
   
   return (
@@ -68,47 +57,22 @@ export function CreateProduct() {
       </Grid>
       <Grid item xs={6} md={6}>
         <Card title='Sample Project'>
+          <CardHeader title={'Product information'}>
+          </CardHeader>
+          <Divider/>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <TextField size='medium'
-              id="standard-read-only-input"
-              label="Project name"
+              id="propduct-name"
+              label="Propduct name"
               variant="standard"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <TextField
-              id="standard-read-only-input"
-              label="Address"
-              variant="standard"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            <TextField
-              id="standard-read-only-input"
-              label="Client name"
-              variant="standard"
-              value={client}
-              onChange={(e) => setClient(e.target.value)}
-            />
           </CardContent>  
           <CardContent>    
             <Button disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
-              Create Project
+              Create product
             </Button>
-          </CardContent>  
-        </Card>
-      </Grid>
-      <Grid item xs={6} md={6}>
-        <Card sx={{height: "100%", padding: 5, paddingBottom: 0}}>
-          <CardContent>
-            <img style={{maxHeight: '300px', width: 'auto', borderRadius: '2%',}} 
-              src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}></img>
-          </CardContent>  
-          <CardContent>
-            <IconButton color="secondary" aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" onChange={selectFile} />
-              <PhotoCamera />
-            </IconButton>
           </CardContent>  
         </Card>
       </Grid>
