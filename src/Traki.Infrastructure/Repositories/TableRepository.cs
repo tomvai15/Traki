@@ -31,7 +31,7 @@ namespace Traki.Infrastructure.Repositories
         {
             var table = await _context.Tables.Where(x=> x.Id == tableId).FirstOrDefaultAsync();
 
-            if (table == null){return;}
+            if (table == null) {return;}
 
             _context.Tables.Remove(table);
             await _context.SaveChangesAsync();
