@@ -141,12 +141,14 @@ namespace Traki.UnitTests.Helpers
                 Name= "Welding Procedures - Checklist",
                 IsTemplate= true,
                 CreationDate = DateTime.Now.ToString("s"),
+                ProductId = 1,
             },
             new Protocol
             {
                 Name= "Leakage test - Protocol",
                 IsTemplate= true,
                 CreationDate = DateTime.Now.ToString("s"),
+                ProductId = 1,
             }
         };
 
@@ -326,9 +328,9 @@ namespace Traki.UnitTests.Helpers
             },
         };
 
-        public static IEnumerable<CompanyEntity> Companies => new[]
+        public static IEnumerable<Company> Companies => new[]
         {
-            new CompanyEntity
+            new Company
             {
                 Name = "Preftek",
                 Address = "Vydūno alėja",
@@ -373,9 +375,9 @@ namespace Traki.UnitTests.Helpers
             }
         };
 
-        public static IEnumerable<ProjectEntity> Projects => new[]
+        public static IEnumerable<Project> Projects => new[]
         {
-            new ProjectEntity
+            new Project
             {
                 Name = $"Sample Project",
                 ClientName = $"Sample Client",
@@ -385,7 +387,7 @@ namespace Traki.UnitTests.Helpers
                 CompanyId = 1,
                 AuthorId = 2,
             },
-            new ProjectEntity
+            new Project
             {
                 Name = $"Other Project",
                 ClientName = $"Sample Client",

@@ -135,7 +135,5 @@ namespace Traki.UnitTests.Domain.Handlers
 
             Assert.True(true);
         }
-
-
     }
 }
