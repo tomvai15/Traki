@@ -6,6 +6,7 @@ using Traki.Domain.Handlers;
 namespace Traki.Api.Controllers
 {
     [Route("api/protocols/{protocolId}/reports")]
+    [Authorize]
     public class ReportsController : ControllerBase
     {
         private readonly IReportHandler _reportsHandler;

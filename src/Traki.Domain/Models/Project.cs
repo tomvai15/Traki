@@ -12,5 +12,6 @@ namespace Traki.Domain.Models
         public string CreationDate { get; set; }
         public int AuthorId { get; set; }
         public User Author { get; set; }
+        public IEnumerable<Product> Products { get; set; }
     }
 }

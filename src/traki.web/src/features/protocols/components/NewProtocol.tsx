@@ -20,7 +20,8 @@ export function NewProtocol({fetchProtocols}: Props) {
       isTemplate: true,
       modifiedDate: '',
       sections: [],
-      isSigned: false
+      isSigned: false,
+      isCompleted: false
     };
     const createProtocolRequest: CreateProtocolRequest = {
       protocol: newProtocol

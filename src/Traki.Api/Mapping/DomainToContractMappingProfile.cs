@@ -37,6 +37,7 @@ namespace Traki.Api.Mapping
         {
             CreateMap<Recommendation, RecommendationDto>().ReverseMap();
             CreateMap<DefectRecomendation, DefectRecomendationDto>().ReverseMap();
+            CreateMap<ProductRecomendation, ProductRecomendationDto>().ReverseMap();
         }
 
         public void AddDrawingMappings()

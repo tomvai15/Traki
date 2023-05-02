@@ -43,7 +43,8 @@ const initialProtocol: Protocol = {
   sections: [{...initialSection, name: 'General check 1' , priority: 1},{...initialSection, name: 'General check 2', priority: 2}],
   isTemplate: true,
   modifiedDate: 'sa',
-  isSigned: false
+  isSigned: false,
+  isCompleted: false
 };
 
 export function ProtocolPage() {

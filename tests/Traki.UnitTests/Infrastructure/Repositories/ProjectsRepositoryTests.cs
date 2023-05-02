@@ -56,7 +56,13 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         [Fact]
         public async Task CreateProject_ReturnsCreatedProjects()
         {
-            var project = Any<Project>();
+            var project = new Project {
+                Name = "test",
+                ClientName = "test",
+                Address = "test",
+                ImageName = "test",
+                CreationDate = "test",
+            };
 
             project.Id = 0;
 
@@ -71,7 +77,14 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         [Fact]
         public async Task UpdateProject_UpdatesProject()
         {
-            var project = Any<Project>();
+            var project = new Project
+            {
+                Name = "test",
+                ClientName = "test",
+                Address = "test",
+                ImageName = "test",
+                CreationDate = "test",
+            };
 
             project.Id = 1;
 

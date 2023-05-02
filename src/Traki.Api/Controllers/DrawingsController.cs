@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing;
 using Traki.Domain.Models.Drawing;
@@ -7,6 +8,7 @@ using Traki.Domain.Repositories;
 namespace Traki.Api.Controllers
 {
     [Route("api/products/{productId}/drawings")]
+    [Authorize]
     public class DrawingsController : ControllerBase
     {
         private readonly IDrawingsRepository _drawingsRepository;

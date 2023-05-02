@@ -27,8 +27,8 @@ export function ProtocolSectionCard ({section}: SectionItemProps) {
                   {item.name}
                 </Typography>
                 <Divider></Divider>
-              </Box>)}
-            <Button onClick={() => navigate(`/templates/protocols/${section.protocolId}/sections/${section.id}`)} variant='contained'>Edit</Button>
+              </Box>)}             
+            <Button onClick={() => navigate(`/templates/protocols/${section.protocolId}/sections/${section.id}`)} variant='contained'>Details</Button>
           </AccordionDetails>
         </Accordion>
       </Card>

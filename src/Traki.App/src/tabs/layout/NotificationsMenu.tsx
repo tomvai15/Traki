@@ -36,7 +36,7 @@ export default function NotificationsMenu({navigation}: Props) {
     console.log(data);
 
     //navigation.navigate('Project Products', { screen: 'Products', params: {}}); 
-    navigation.navigate('Project Products', { screen: 'DefectScreen', params: { productId: data.productId, drawingId: data.drawingId, defectId: data.defectId}}); 
+    navigation.navigate('Projects', { screen: 'DefectScreen', params: { productId: data.productId, drawingId: data.drawingId, defectId: data.defectId}}); 
     //navigation.navigate('Product', {productId: data.productId});
     //navigation.navigate('Project Products', { screen: 'DefectScreen', params: { productId: data.productId, drawingId: data.drawingId, defectId: data.defectId }}) 
     closeMenu();

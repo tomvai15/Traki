@@ -13,6 +13,7 @@ namespace Traki.Api.Controllers
     [Route("api/users")]
     [ApiController]
     [Authorize(Roles = Role.Administrator)]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserAuthHandler _userAuthHandler;

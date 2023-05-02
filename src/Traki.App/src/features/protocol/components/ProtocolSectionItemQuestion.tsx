@@ -40,7 +40,7 @@ export function ProtocolSectionItemQuestion({ item, updateItem }: Props) {
           { value: '0', label: 'Yes' },
           { value: '1', label: 'No'},
           { value: '2', label: 'Other' },
-          { value: '3', label: 'Not applicable' },
+          { value: '3', label: 'N.A.' },
         ]}
       />
       <Paragraph>Comment</Paragraph>

@@ -12,6 +12,7 @@ import { CreateTableCard } from 'features/protocols/components/CreateTableCard';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { validate, validationRules } from 'utils/textValidation';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 const initialSection: Section = {
   id: 1,
@@ -70,7 +71,7 @@ export function EditSectionPage() {
             JSON.stringify(table) != initialTableJson) && 
             (validSection() && 
             (checklist == undefined ? true : validChecklist()) && 
-            (table && validTable()));
+            (table == undefined ? true : validTable()));
   }
 
   function validSection() {
@@ -154,12 +155,6 @@ export function EditSectionPage() {
           <BreadLink color="inherit" href="/templates/protocols">
             Protocol Templates
           </BreadLink>
-          <BreadLink
-            color="inherit"
-            href={"/templates/protocols/"+protocolId}
-          >
-            Protocol
-          </BreadLink>
           <Typography color="text.primary">Section</Typography>
         </Breadcrumbs>
       </Grid>
@@ -178,8 +173,10 @@ export function EditSectionPage() {
                 onChange={(e) => updateSectionName(e.target.value)}
               />
               <Box>
-                <Button sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
-                <Button onClick={() => deleteSection()} color='error' variant='contained'>Delete</Button>
+                <ProtectedComponent role={"ProejctManager"}>
+                  <Button sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
+                  <Button onClick={() => deleteSection()} color='error' variant='contained'>Delete</Button>
+                </ProtectedComponent>
               </Box>
             </Box>
           </CardContent>    

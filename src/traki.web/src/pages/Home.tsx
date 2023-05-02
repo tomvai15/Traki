@@ -10,12 +10,13 @@ import BuildIcon from '@mui/icons-material/Build';
 import { useNavigate } from 'react-router-dom';
 import { DefectRecomendation } from 'contracts/recommendation/DefectRecomendation';
 import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
+import { ProductRecomendation } from 'contracts/recommendation/ProductRecomendation';
 
 const notFoundImage = 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1';
 
 export function HomePage() {
   const [defects, setDefects] = useState<DefectRecomendation[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductRecomendation[]>([]);
 
   useEffect(() => {
     fetchRecommendations();
@@ -41,7 +42,7 @@ export function HomePage() {
           </CardContent>    
         </Card>
       </Grid>
-      { products.map((item, index) => <ProductCard product={item} key={index}></ProductCard>)}
+      { products.slice(0, 3).map((item, index) => <ProductCard product={item} key={index}></ProductCard>)}
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
@@ -49,13 +50,13 @@ export function HomePage() {
           </CardContent>    
         </Card>
       </Grid>
-      { defects.map((item, index) => <DefectCard defect={item} key={index}></DefectCard>)}
+      { defects.slice(0, 3).map((item, index) => <DefectCard defect={item} key={index}></DefectCard>)}
     </Grid>
   );
 }
 
 type ProductCardProps = {
-  product: Product
+  product: ProductRecomendation
 }
 
 function ProductCard ({product}: ProductCardProps) {
@@ -67,7 +68,7 @@ function ProductCard ({product}: ProductCardProps) {
   }, []);
 
   async function fetchDrawings() {
-    const response = await drawingService.getDrawings(Number(product.id));
+    const response = await drawingService.getDrawings(Number(product.product.id));
     await fetchDrawingPictures(response.drawings[0]);
   }
 
@@ -94,21 +95,21 @@ function ProductCard ({product}: ProductCardProps) {
         />
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography gutterBottom variant="h5" component="h2">
-            {product.name}
+            {product.product.name}
           </Typography>
           <Stack direction='row' spacing={2} justifyContent='space-around'>
             <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center'}}>
               <BuildIcon />
-              <Typography>4 Defects</Typography>
+              <Typography>{product.defectCount} Defects</Typography>
             </Box>
             <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center'}}>
               <AssignmentIcon />
-              <Typography>3 Protocols</Typography>
+              <Typography>{product.protocolsCount} Protocols</Typography>
             </Box>
           </Stack>
         </CardContent>
         <CardActions>
-          <Button onClick={() => navigate(`/projects/${product.projectId}/products/${product.id}`)} variant='contained' size="small">Details</Button>
+          <Button onClick={() => navigate(`/projects/${product.product.projectId}/products/${product.product.id}`)} variant='contained' size="small">Details</Button>
         </CardActions>
       </Card>
     </Grid>
@@ -167,7 +168,7 @@ function DefectCard ({defect}: DefectCardProps) {
             WebkitBoxOrient: 'vertical',
             WebkitLineClamp: 3,
           }}>
-            Product: test
+            Product: {defect.productName}
           </Typography>
         </CardContent>
         <CardActions>

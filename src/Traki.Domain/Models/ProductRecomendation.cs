@@ -7,9 +7,10 @@ using Traki.Domain.Models.Drawing;
 
 namespace Traki.Domain.Models
 {
-    public class Recommendation
+    public class ProductRecomendation
     {
-        public IEnumerable<DefectRecomendation> Defects { get; set; }
-        public IEnumerable<ProductRecomendation> Products { get; set; }
+        public Product Product { get; set; }
+        public int DefectCount { get; set; }
+        public int ProtocolsCount { get; set; }
     }
 }

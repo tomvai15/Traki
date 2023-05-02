@@ -31,7 +31,8 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            var projects = await _context.Projects.Include(x => x.Author).ToListAsync();
+            var projects = await _context.Projects.Include(x=> x.Products).ThenInclude(x=> x.Drawings).ThenInclude(x=> x.Defects)
+                .Include(x => x.Author).ToListAsync();
             return _mapper.Map<IEnumerable<Project>>(projects);
         }
 

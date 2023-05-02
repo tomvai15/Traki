@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Stack, Table as MuiTable, TableRow as MuiTableRow, TableCell, TableHead, TextField, TableContainer, Paper, TableBody } from '@mui/material';
+import { Button, Divider, Stack, Table as MuiTable, TableRow as MuiTableRow, TableCell, TableHead, TextField, TableContainer, Paper, TableBody, Typography, Card, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Table } from 'contracts/protocol/section/Table';
 import { FillTableRow } from './FillTableRow';
@@ -12,7 +12,7 @@ type Props = {
 }
 
 export function FillTable ({table, updateTable}: Props) {
-
+  const theme = useTheme();
   function updateTableRow(tableRow: TableRow) {
     const updatedRows = table.tableRows.map( row => row.id == tableRow.id ? tableRow : row);
     updateTable({...table, tableRows: updatedRows});
@@ -37,13 +37,13 @@ export function FillTable ({table, updateTable}: Props) {
   }
 
   return (
-    <Box sx={{marginRight: 2, marginLeft: 2}}>
-      <TableContainer component={Paper}>
+    <Box>
+      <TableContainer component={Paper} sx={{backgroundColor: theme.palette.grey[100], marginBottom: '10px' }}>
         <MuiTable aria-label="simple table">
           <TableHead>
             <MuiTableRow>
               {table.tableRows[0].rowColumns.map((column, index) => 
-                <TableCell key={index}>{column.value}</TableCell>
+                <TableCell key={index}><Typography sx={{ fontWeight: 'bold' }}>{column.value}</Typography></TableCell>
               )}
             </MuiTableRow>
           </TableHead>
@@ -54,7 +54,7 @@ export function FillTable ({table, updateTable}: Props) {
           </TableBody>
         </MuiTable>
       </TableContainer>
-      <Button onClick={addTableRow}>Add Row</Button>
+      <Button variant='contained' onClick={addTableRow}>Add Row</Button>
     </Box>
   );
 }

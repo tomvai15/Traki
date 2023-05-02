@@ -6,20 +6,24 @@ using Traki.Api.Contracts.Protocol;
 using Traki.Domain.Constants;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
+using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 
 namespace Traki.Api.Controllers
 {
     [Route("api/projects/{projectId}/products")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductsRepository _productsRepository;
         private readonly IProductHandler _productHandler;
+        private readonly IClaimsProvider _claimsProvider;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductsRepository productsRepository, IProductHandler productHandler, IMapper mapper)
+        public ProductsController(IClaimsProvider claimsProvider, IProductsRepository productsRepository, IProductHandler productHandler, IMapper mapper)
         {
+            _claimsProvider = claimsProvider;
             _productsRepository = productsRepository;
             _productHandler = productHandler;
             _mapper = mapper;
@@ -114,8 +118,10 @@ namespace Traki.Api.Controllers
         {
             var product = _mapper.Map<Product>(createProjectRequest);
 
+            _claimsProvider.TryGetUserId(out var userId);
+            product.Status = "Active";
+            product.AuthorId = userId;
             var createdProduct = await _productsRepository.CreateProduct(product);
-
 
             var response = new GetProductResponse
             {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardActions, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Checklist } from '../../../contracts/protocol/Checklist';
 import { Section } from '../../../contracts/protocol/Section';
@@ -12,13 +12,15 @@ import { Table } from 'contracts/protocol/section/Table';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { FillTable } from './FillTable';
+import { validate, validationRules } from 'utils/textValidation';
 
 type Props = {
   protocolId: number,
-  sectionId: number
+  sectionId: number,
+  completed: boolean
 }
 
-export function FillSection({protocolId, sectionId}: Props) {
+export function FillSection({protocolId, sectionId, completed}: Props) {
 
   const [section, setSection] = useState<Section>(initialSection);
   const [table, setTable] = useState<Table>();
@@ -43,6 +45,8 @@ export function FillSection({protocolId, sectionId}: Props) {
       setInitialTableJson(JSON.stringify(undefined));
       return;
     }
+
+    console.log(table);
 
     setSectionType('table');
     setTable(table);
@@ -81,8 +85,39 @@ export function FillSection({protocolId, sectionId}: Props) {
   }
 
   function canUpdate(): boolean {
-    return  initialSectionJson != JSON.stringify(section) ||
-            initialTableJson != JSON.stringify(table) ;
+    return  ((section.checklist == undefined ? true : isValidChecklist()) && isValidTable()) &&  
+      (initialSectionJson != JSON.stringify(section) ||
+      initialTableJson != JSON.stringify(table));
+  }
+
+
+  function isValidChecklist(): boolean {
+    
+    const a = !section.checklist?.items.map(x => { 
+      return ( 
+        (x.textInput == undefined ? true : !validate(x.textInput.value, [validationRules.noSpecialSymbols]).invalid) &&
+        (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
+      );
+    }).some((value) => value == false);
+    console.log(a);
+    return a;
+  }
+
+  function isValidTable(): boolean {
+    if (!table) {
+      return true;
+    }
+    return !table?.tableRows.map(x => { 
+      console.log(isValidTableRow(x));
+      return isValidTableRow(x);
+    }).some((value) => value == false);
+  }
+
+
+  function isValidTableRow(tableRow: TableRow): boolean {
+    return !tableRow.rowColumns.map(x => { 
+      return (x.value == undefined ? true : !validate(x.value, [validationRules.noSpecialSymbols]).invalid);
+    }).some((value) => value == false);
   }
 
   async function updateSection() {
@@ -96,28 +131,24 @@ export function FillSection({protocolId, sectionId}: Props) {
 
   return (
     <Box>
-      <Card sx={{margin:2}}>
-        <CardActions>
-          <Box sx={{display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+      <Card>
+        <CardHeader title={section.name}
+          action={ !completed && <Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>}>
+        </CardHeader>
+        <Divider/>
+        <CardContent>
+          {sectionType == 'checklist' &&
+          <Box>
+            {section.checklist?.items.map((item, index) => 
+              <FillItem key={index} item={item} completed={completed} updateItem={updateItem}></FillItem>
+            )}
+          </Box>}
+          {sectionType == 'table' && table &&
             <Box>
-              <Typography variant='h6'>{section.name}</Typography>
-            </Box>
-            <Box>
-              <Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>
-            </Box>
-          </Box>
-        </CardActions>
+              <FillTable table={table} updateTable={setTable}/>
+            </Box>}
+        </CardContent>
       </Card>
-      {sectionType == 'checklist' &&
-        <Box sx={{marginLeft:3}}>
-          {section.checklist?.items.map((item, index) => 
-            <FillItem key={index} item={item} updateItem={updateItem}></FillItem>
-          )}
-        </Box>}
-      {sectionType == 'table' && table &&
-        <Box sx={{marginLeft:3}}>
-          <FillTable table={table} updateTable={setTable}/>
-        </Box>}
     </Box>
   );
 }

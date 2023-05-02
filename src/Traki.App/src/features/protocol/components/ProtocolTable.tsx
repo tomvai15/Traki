@@ -1,5 +1,5 @@
 import  React, { useState } from 'react';
-import { View, Image, TouchableHighlight} from 'react-native';
+import { View, Image, TouchableHighlight, KeyboardAvoidingView, Platform} from 'react-native';
 import { Card, Text, Title, TextInput, Divider, IconButton, DataTable, Button } from 'react-native-paper';
 import { Item } from '../../../contracts/protocol/items/Item';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,13 +10,14 @@ import { RowColumn } from '../../../contracts/protocol/section/RowColumn';
 
 type Props = {
   table: Table,
-  updateTable: (table: Table) => void
+  updateTable: (table: Table) => void,
+  buttonVisible: boolean
 }
 
 const optionsPerPage = [2, 3, 4];
 const cellsPerPage = 3;
 
-export function ProtocolTable({ table, updateTable }: Props) {
+export function ProtocolTable({ table, updateTable, buttonVisible }: Props) {
   
   const [page, setPage] = React.useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
@@ -55,13 +56,13 @@ export function ProtocolTable({ table, updateTable }: Props) {
   return (
     <Card
       mode='outlined'
-      style={{ borderWidth:0, marginHorizontal:5, marginVertical:10 }}>
+      style={{ borderWidth:0, marginHorizontal:5, marginVertical:10, marginBottom: 50 }}>
       <View style={{display: 'flex', padding: 10, justifyContent: 'space-around', flexDirection: 'row'}}>
       <ScrollView horizontal={true}>
         <DataTable style={{width: table.tableRows[0].rowColumns.length*170}}>
           <DataTable.Header>
             {table.tableRows[0].rowColumns.map((item, index) => 
-              <DataTable.Title key={index}>{item.value}</DataTable.Title>
+              <DataTable.Title textStyle={{fontWeight: '900', color: 'black', fontSize: 12}} key={index}>{item.value}</DataTable.Title>
             )}
           </DataTable.Header>
           <Divider style={{ height: 2 }} />
@@ -70,19 +71,25 @@ export function ProtocolTable({ table, updateTable }: Props) {
             <DataTable.Row key={index}>
               {row.rowColumns.map((collumn, index) => 
                 <DataTable.Cell key={index}>
+                <KeyboardAvoidingView 
+                  keyboardVerticalOffset={200}
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  style={{ flex: 1 }}
+                  enabled>
                   <TextInput 
                     value={collumn.value} 
                     onChangeText={(value) => updateColumn(row, collumn, value)}
                     style={{borderBottomColor: 'black', borderBottomWidth: 0, backgroundColor: 'white', width: 150}}/>
+                </KeyboardAvoidingView>
                 </DataTable.Cell>
                 )}
           </DataTable.Row>)}
         </DataTable>
       </ScrollView>
       </View>
-      <Card.Content>
-        <Button onPress={addTableRow}>Add row</Button>
-      </Card.Content>
+      { buttonVisible == true && <Card.Content>
+        <Button mode='contained' onPress={addTableRow}>Add row</Button>
+      </Card.Content>}
     </Card>
   );
 }

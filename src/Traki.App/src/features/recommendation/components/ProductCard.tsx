@@ -45,16 +45,16 @@ export function ProductCard ({product, navigation}: Props) {
                 {product.name}
               </Text>
               <View>
-                <Text>4 Defects</Text>
+                <Text style={{fontSize: 15}}>4 Defects</Text>
               </View>
               <View>
-                <Text>3 Protocols</Text>
+                <Text style={{fontSize: 15}}>3 Protocols</Text>
               </View>
             </View>
             <View>
               <Button style={{width: 100}} onPress={() => {
-                navigation.navigate('Project Products', {screen: 'Products'}); 
-                navigation.navigate('Project Products', { screen: 'Product', params: {productId: product.id}}) 
+                //navigation.navigate('Project Products', {screen: 'Products'}); 
+                navigation.navigate('Projects', { screen: 'Product', params: {productId: product.id}}) 
               }} mode='contained'>Details</Button>
             </View>
           </View>

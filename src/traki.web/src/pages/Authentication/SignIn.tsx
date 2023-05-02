@@ -120,11 +120,6 @@ export default function SignIn() {
           <Grid container>
             <Grid item xs>
             </Grid>
-            <Grid item>
-              <Link href="/sign-up" variant="body2">
-                {'Forgot password?'}
-              </Link>
-            </Grid>
           </Grid>
         </Box>
       </Card>

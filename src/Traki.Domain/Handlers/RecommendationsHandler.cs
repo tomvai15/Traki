@@ -9,30 +9,51 @@ namespace Traki.Domain.Handlers
     }
     public class RecommendationsHandler: IRecommendationsHandler
     {
+        private readonly IProjectsRepository _projectsRepository;
         private readonly IProductsRepository _productsRepository;
         private readonly IDefectsRepository _defectsRepository;
 
-        public RecommendationsHandler(IProductsRepository productsRepository, IDefectsRepository defectsRepository)
+        public RecommendationsHandler(IProjectsRepository projectsRepository, IProductsRepository productsRepository, IDefectsRepository defectsRepository)
         {
+            _projectsRepository = projectsRepository;
             _productsRepository = productsRepository;
             _defectsRepository = defectsRepository;
         }
 
         public async Task<Recommendation> GetRecommendation(int userId)
         {
-            var products = await _productsRepository.GetProductByQuery(x => x.AuthorId == userId);
-            var defects = await _defectsRepository.GetDefectsByQuery(x => x.AuthorId == userId);
+            var projects = (await _projectsRepository.GetProjects()).Where(x=> x.AuthorId == userId);
+
+            var productsFromProject = projects.SelectMany(x => x.Products);
+
+            var products = (await _productsRepository.GetProductByQuery(x => x.AuthorId == userId)).ToList();
+
+            products.AddRange(productsFromProject);
+
+            products = products.DistinctBy(x => x.Id).ToList();
+
+            var defects = (await _defectsRepository.GetDefectsByQuery(x => x.AuthorId == userId)).ToList();
 
             var defectRecommendations = defects.Select(x => new DefectRecomendation
             {
                 Defect = x,
                 ProductId = x.Drawing.ProductId,
-                ProjectId = x.Drawing.Product.ProjectId
+                ProjectId = x.Drawing.Product.ProjectId,
+                ProductName = x.Drawing.Product.Name,
             });
+
+            
+            var productRecommendations = products.Select(x => new ProductRecomendation
+            {
+                Product = x,
+                ProtocolsCount = x.Protocols.Count(),
+                DefectCount = x.Drawings.SelectMany(x=> x.Defects).Count(),
+            }).OrderByDescending(x => x.DefectCount).ToList();
+
 
             var recommendation = new Recommendation
             {
-                Products = products,
+                Products = productRecommendations,
                 Defects = defectRecommendations
             };
 

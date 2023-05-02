@@ -9,5 +9,7 @@
         public int ProjectId { get; set; }
         public int AuthorId { get; set; }
         public User Author { get; set; }
+        public IEnumerable<Protocol> Protocols { get; set; }
+        public IEnumerable<Traki.Domain.Models.Drawing.Drawing> Drawings { get; set; }
     }
 }

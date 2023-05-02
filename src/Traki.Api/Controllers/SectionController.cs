@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Section;
 using Traki.Domain.Handlers;
@@ -8,6 +9,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/protocols/{protocolId}/sections")]
     [ApiController]
+    [Authorize]
     public class SectionController : ControllerBase
     {
         private readonly ISectionHandler _sectionHandler;
