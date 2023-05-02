@@ -14,6 +14,9 @@ import productService from '../../services/product-service';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import protocolService from '../../services/protocol-service';
 import { ScreenView } from '../../components/ScreenView';
+import { DrawingWithImage } from '../../features/products/types/DrawingWithImage';
+import { drawingService, pictureService } from '../../services';
+import { Drawing } from '../../contracts/drawing/Drawing';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Product'>;
 
@@ -22,8 +25,7 @@ const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  ico
 
 export default function ProductScreen({route, navigation}: Props) {
 
-  const projectId = 1;
-  const {productId} = route.params;
+  const { projectId, productId} = route.params;
 
   const [visible, setVisible] = React.useState(false);
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -51,13 +53,30 @@ export default function ProductScreen({route, navigation}: Props) {
   }, [navigation]);
 
   async function fetchProduct() {
-    const getProductResposne = await productService.getProduct(productId).catch(err =>console.log(err));
+    const getProductResposne = await productService.getProduct(projectId, productId).catch(err =>console.log(err));
     if (!getProductResposne) {
       return;
     }
     setProduct(getProductResposne.product);
-
+    await fetchDrawings(productId);
     await fetchProtocols();
+  }
+
+  const [drawing, setDrawing] = useState<DrawingWithImage>();
+
+  async function fetchDrawings(productId: number) {
+    const response = await drawingService.getDrawings(productId);
+    await fetchDrawingPictures(response.drawings[0]);
+  }
+
+  async function fetchDrawingPictures(drawing: Drawing) {
+    if (!drawing.imageName) {
+      return;
+    }
+    const imageBase64 = await pictureService.getPicture('company', drawing.imageName);
+    const newDrawingImage: DrawingWithImage = {drawing: drawing, imageBase64: imageBase64};
+
+    setDrawing(newDrawingImage);
   }
 
   async function fetchProtocols() {
@@ -125,7 +144,7 @@ export default function ProductScreen({route, navigation}: Props) {
           <Card.Content >
             <Text variant="titleLarge">{product?.name}</Text>
           </Card.Content>
-          <Card.Cover style={{height:300}} source={{ uri: image }} />
+          <Card.Cover style={{height:300}} source={{ uri: drawing?.imageBase64 }} />
           <Card.Actions>
             <Button onPress={() => navigation.navigate('DefectsScreen', {productId: productId})}>View defects</Button>
           </Card.Actions>

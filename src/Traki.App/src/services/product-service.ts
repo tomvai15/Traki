@@ -7,15 +7,13 @@ import { AddProtocolRequest } from '../contracts/product/AddProtocolRequest';
 const route = 'projects/{projectId}/products/{productId}';
 
 class ProductService {
-  async getProducts(): Promise<GetProductsResponse> {
-    const projectId = 1;
+  async getProducts(projectId: number): Promise<GetProductsResponse> {
     const fullRoute = route.format({ projectId: projectId.toString(), productId: ''}); 
     const response = await axiosApiInstance.get<GetProductsResponse>(fullRoute, { headers: {} });
     return response.data;
   }
 
-  async getProduct(id: number): Promise<GetProductResponse> {
-    const projectId = 1;
+  async getProduct(projectId: number, id: number): Promise<GetProductResponse> {
     const fullRoute = route.format({projectId: projectId.toString(), productId: id.toString()}); 
     const response = await axiosApiInstance.get<GetProductResponse>(fullRoute, { headers: {} });
     return response.data;

@@ -40,16 +40,16 @@ export function DefectCard ({defect, navigation}: Props) {
       <Card.Content>
       <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-          <View>
+          <View style={{marginRight: 5}}>
             <Text style={{fontSize: 20}}>
               {defect.defect.title}
             </Text>
             <View>
-              <Text style={{fontSize: 17}}>Product: test</Text>
+              <Text style={{fontSize: 17}}>Product: {defect.productName}</Text>
             </View>
           </View>
           <View>
-            <Button mode='contained' onPress={() => {
+            <Button mode='contained' style={{width: 100}} onPress={() => {
               navigation.navigate('Projects', { screen: 'DefectScreen', params: { productId: defect.productId, drawingId: defect.defect.drawingId, defectId: defect.defect.id }}) 
             }}>
               Details

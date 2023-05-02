@@ -8,7 +8,9 @@ import productService from '../../services/product-service';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Products'>;
 
-export default function ProductsScreen({ navigation }: Props) {
+export default function ProductsScreen({route, navigation }: Props) {
+
+  const { projectId } = route.params;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -21,7 +23,7 @@ export default function ProductsScreen({ navigation }: Props) {
   }, [navigation]);
 
   async function fetchProjects() {
-    const getProductsResposne = await productService.getProducts().catch(err =>console.log(err));
+    const getProductsResposne = await productService.getProducts(projectId).catch(err =>console.log(err));
     if (!getProductsResposne) {
       return;
     }
@@ -40,7 +42,7 @@ export default function ProductsScreen({ navigation }: Props) {
       <FlatList
         data={products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={({item}) => <List.Item
-          onPress={() => navigation.navigate('Product', { productId: item.id })}
+          onPress={() => navigation.navigate('Product', {projectId: projectId, productId: item.id })}
           title={item.name}
           description='Item description'
           left={props => <List.Icon {...props} icon='folder' />}

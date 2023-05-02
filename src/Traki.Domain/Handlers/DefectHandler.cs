@@ -150,7 +150,7 @@ namespace Traki.Domain.Handlers
             {
                 DefectId = defect.Id,
                 UserId = def.AuthorId,
-                Title = "New comment",
+                Title = "Defect status change",
                 Body = $"{statusChangeAuthor.Name} {statusChangeAuthor.Surname} changed status for defect {defect.Title} to {statusChange.To}",
                 Data = data
             };

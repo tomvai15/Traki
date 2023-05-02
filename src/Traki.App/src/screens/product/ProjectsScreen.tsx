@@ -66,7 +66,7 @@ export default function ProjectsScreen({ navigation }: Props) {
       <FlatList
         data={projects.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={({item}) => <List.Item
-          onPress={() => navigation.navigate('Products')}
+          onPress={() => navigation.navigate('Products', {projectId: item.id})}
           title={item.name}
           left={props => <List.Icon {...props} icon='folder' />}
         />}

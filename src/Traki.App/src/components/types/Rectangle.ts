@@ -3,4 +3,5 @@ export interface Rectangle {
   y: number;
   width: number;
   height: number;
+  name: string;
 }

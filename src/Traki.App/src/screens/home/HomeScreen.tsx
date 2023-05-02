@@ -11,6 +11,7 @@ import { ProductCard } from '../../features/recommendation/components/ProductCar
 import { DefectCard } from '../../features/recommendation/components/DefectCard';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParamList } from './HomeStackParamList';
+import { ProductRecomendation } from '../../contracts/recommendation/ProductRecomendation';
 
 
 const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="alert" />;
@@ -23,7 +24,7 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>;
 export default function HomeScreen({navigation}: Props) {
   
   const [defects, setDefects] = useState<DefectRecomendation[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductRecomendation[]>([]);
 
   useEffect(() => {
     fetchRecommendations();

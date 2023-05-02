@@ -6,6 +6,7 @@ import { Button, Card, Divider, IconButton, Stack, Table, TableBody, TableCell, 
 import ClearIcon from '@mui/icons-material/Clear';
 import { defaultColumn } from '../data';
 import { validate, validationRules } from 'utils/textValidation';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 type Props = {
   row: TableRow
@@ -68,7 +69,9 @@ export function CreateTableCard ({row, setRow}:Props) {
             </Stack>
           </Stack>
         </Card>
-        <Button sx={{marginTop: '10px'}} variant='contained' onClick={addColumn}>Add column</Button>
+        <ProtectedComponent role={'ProjectManager'}>
+          <Button sx={{marginTop: '10px'}} variant='contained' onClick={addColumn}>Add column</Button>
+        </ProtectedComponent>
       </Box>
     </Box>
 

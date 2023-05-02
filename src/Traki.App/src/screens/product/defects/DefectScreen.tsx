@@ -280,12 +280,12 @@ export default function DefectScreen({route, navigation}: Props) {
           </Card.Content>
         </Card>
         <View style={styles.box}>
-          { defect && drawing && <ImageWithRegions source={drawing.imageBase64} width={390} rectangles={[defectToRectangle(defect.defect)]}/>}
+          { defect && drawing && <ImageWithRegions source={drawing.imageBase64} width={390} defects={[defect.defect]}/>}
         </View>
         <Text>New comment</Text>
         <Card mode='outlined' style={{marginTop:10}}>
           <Card.Title title=''
-            left={() => <CustomAvatar size={50} user={userInfo.user}/>} 
+            left={() => <CustomAvatar size={40} user={userInfo.user}/>} 
             right={() => <View style={{margin: 10}}><IconButton onPress={() => pickImage()} size={30} icon='camera' /></View>}
           />
           <Card.Content>

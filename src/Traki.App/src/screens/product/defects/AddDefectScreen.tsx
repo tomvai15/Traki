@@ -21,6 +21,7 @@ import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDef
 import uuid from 'react-native-uuid';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 import { validate, validationRules } from '../../../utils/textValidation';
+import { Loading } from '../../../components/Loading';
 
 interface Rectangle {
   x: number;
@@ -47,6 +48,7 @@ const images = [image, image2, image];
 
 export default function AddDefectScreen({route, navigation}: Props) {
 
+  const [loading, setLoading] = useState(false);
   const {productId} = route.params;
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
   const [rectangle, setRectangle] = useState<Rectangle>(rect1);
@@ -60,7 +62,8 @@ export default function AddDefectScreen({route, navigation}: Props) {
   const [selectedY, setSelectedY] = useState(0);
   
   useEffect(() => {
-    fetchDrawings();
+    setLoading(true);
+    fetchDrawings().then(() => setLoading(false));
   }, [])
 
   function updateSelectedXY(x: number, y: number) {
@@ -88,7 +91,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
       const newDrawingImage: DrawingWithImage = {drawing: item, imageBase64: imageBase64};
       drawingsWithImage.push(newDrawingImage);
     };
-    setSelectedDrawing(drawingsWithImage[1]);
+    setSelectedDrawing(drawingsWithImage[0]);
     setDrawings(drawingsWithImage);
   }
 
@@ -136,7 +139,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
           height: dy
         } 
 
-        console.log(rect);
+        //console.log(rect);
         
         return rect;
        }));
@@ -207,39 +210,41 @@ export default function AddDefectScreen({route, navigation}: Props) {
 
   return (
     <View>
-      <AddDefectDialog onSubmit={createDefect} onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
-      <Title>Select Region</Title>
-      { selectedDrawing && <View {...panResponder.panHandlers} style={{ display: 'flex', borderColor: 'red', borderWidth: 2}}>
-        <AutoImage
-          source={selectedDrawing.imageBase64}
-          width={imageWidth}
-          sizeCallback={updateSelectedXY}
-        />
-        <Svg style={StyleSheet.absoluteFill} color={'red'}>
-          <Rect
-            x={rectangle.x}
-            y={rectangle.y}
-            width={rectangle.width}
-            height={rectangle.height}
-            stroke="black"
-            strokeWidth="2"
-            fill="transparent"
+      <Loading marginTop={100} loading={loading}>
+        <AddDefectDialog onSubmit={createDefect} onClose={() => setVisible(false)} visible={visible}></AddDefectDialog>
+        <Title>Select Region</Title>
+        { selectedDrawing && <View {...panResponder.panHandlers} style={{ display: 'flex', borderColor: 'grey', borderWidth: 2}}>
+          <AutoImage
+            source={selectedDrawing.imageBase64}
+            width={imageWidth}
+            sizeCallback={updateSelectedXY}
           />
-        </Svg>
-      </View>}
-      <View>
-        <ScrollView horizontal={true}>
-          {drawings.map((drawing, index) => 
-            <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedDrawing(drawing)}>
-              <AutoImage
-                source={drawing.imageBase64}
-                height={150}
-              />
-            </TouchableHighlight >
-          )}
-        </ScrollView>
-      </View>
-      <Button onPress={() => setVisible(true)} mode='contained'>Confirm Region</Button>
+          <Svg style={StyleSheet.absoluteFill} color={'red'}>
+            <Rect
+              x={rectangle.x}
+              y={rectangle.y}
+              width={rectangle.width}
+              height={rectangle.height}
+              stroke="black"
+              strokeWidth="2"
+              fill="transparent"
+            />
+          </Svg>
+        </View>}
+        <View style={{marginVertical: 10}}>
+          <ScrollView horizontal={true}>
+            {drawings.map((drawing, index) => 
+              <TouchableHighlight key={index} style={{margin: 5}} onPress={() => setSelectedDrawing(drawing)}>
+                <AutoImage
+                  source={drawing.imageBase64}
+                  height={150}
+                />
+              </TouchableHighlight >
+            )}
+          </ScrollView>
+        </View>
+        <Button onPress={() => setVisible(true)} mode='contained'>Confirm Region</Button>
+      </Loading>
     </View>
   );
 };

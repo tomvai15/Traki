@@ -52,14 +52,6 @@ export default function DefectsScreen({route, navigation}: Props) {
     setDrawings(drawingsWithImage);
   }
 
-  function defectsToRectangles(defects: Defect[]): Rectangle[] {
-    return defects.map(x=> defectToRectangle(x));
-  }
-
-  function defectToRectangle(defect: Defect) : Rectangle {
-    return {x: defect.x, y: defect.y, width: defect.width, height: defect.height};
-  }
-
   return (
     <ScrollView>
       <Title>Defects</Title>
@@ -67,7 +59,7 @@ export default function DefectsScreen({route, navigation}: Props) {
         <ScrollView horizontal={true}>
           {drawings.map((img, index) => 
             <TouchableHighlight key={index} style={{margin: 5}}>
-              <ImageWithRegions source={img.imageBase64} height={300} rectangles={defectsToRectangles(img.drawing.defects)}/>
+              <ImageWithRegions source={img.imageBase64} height={300} defects={img.drawing.defects}/>
             </TouchableHighlight >
           )}
         </ScrollView>
@@ -81,7 +73,7 @@ export default function DefectsScreen({route, navigation}: Props) {
         {defects.map((item, index) => 
           <Card key={index} mode='outlined' style={{marginTop:10}}>
             <TouchableOpacity onPress={() => navigation.navigate('DefectScreen', {productId: productId, drawingId: item.drawingId, defectId: item.id})}>
-              <Card.Title title={item.title} subtitle={item.description} left={() => <CustomAvatar user={item.author} size={50}/>} right={() => <CommentIcon text={'0'}/>} />
+              <Card.Title title={item.title} subtitle={item.description} left={() => <CustomAvatar user={item.author} size={50}/>} />
             </TouchableOpacity >
           </Card>
         )}
