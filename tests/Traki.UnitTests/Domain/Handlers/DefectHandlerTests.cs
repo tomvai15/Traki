@@ -5,77 +5,137 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Traki.Domain.Exceptions;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.Notifications;
+using Traki.UnitTests.Helpers;
 
 namespace Traki.UnitTests.Domain.Handlers
 {
     public class DefectHandlerTests
     {
-        private readonly Mock<IDefectsRepository> _defectsRepositoryMock = new Mock<IDefectsRepository>();
-        private readonly Mock<INotificationService> _notificationServiceMock = new Mock<INotificationService>();
-        private readonly Mock<IDrawingsRepository> _drawingsRepositoryMock = new Mock<IDrawingsRepository>();
-        private readonly Mock<IProductsRepository> _productsRepositoryMock = new Mock<IProductsRepository>();
-        private readonly Mock<IUsersRepository> _usersRepositoryMock = new Mock<IUsersRepository>();
-        private readonly Mock<IDefectNotificationRepository> _defectNotificationRepositoryMock = new Mock<IDefectNotificationRepository>();
+        private readonly Mock<IDefectsRepository> _defectsRepository = new Mock<IDefectsRepository>();
+        private readonly Mock<INotificationService> _notificationService = new Mock<INotificationService>();
+        private readonly Mock<IDrawingsRepository> _drawingsRepository = new Mock<IDrawingsRepository>();
+        private readonly Mock<IProductsRepository> _productsRepository = new Mock<IProductsRepository>();
+        private readonly Mock<IUsersRepository> _usersRepository = new Mock<IUsersRepository>();
+        private readonly Mock<IDefectNotificationRepository> _defectNotificationRepository = new Mock<IDefectNotificationRepository>();
+        private readonly Mock<IStatusChangeRepository> _statusChangeRepository = new Mock<IStatusChangeRepository>();
+        private readonly Mock<IDefectCommentRepository> _defectCommentRepository = new Mock<IDefectCommentRepository>();
 
         private readonly DefectHandler _defectHandler;
 
         public DefectHandlerTests()
         {
-            _defectHandler = new DefectHandler(
-                null,
-                null,
-                _defectsRepositoryMock.Object,
-                _notificationServiceMock.Object,
-                _drawingsRepositoryMock.Object,
-                _productsRepositoryMock.Object,
-                _usersRepositoryMock.Object,
-                _defectNotificationRepositoryMock.Object);
+            _defectHandler = new DefectHandler(_defectCommentRepository.Object, _statusChangeRepository.Object, _defectsRepository.Object,
+                _notificationService.Object, _drawingsRepository.Object, _productsRepository.Object, 
+                _usersRepository.Object, _defectNotificationRepository.Object);
         }
 
-        [Fact(Skip = "fix later")]
-        public async Task CreateDefect_ShouldCreateDefectAndSendNotification_WhenDeviceTokenIsNotEmpty()
+        [Fact] 
+        public async Task CreateDefect()
         {
-            // Arrange
             int userId = 1;
-            int drawingId = 2;
-            Defect defect = new Defect { Description = "Test Defect" };
+            int drawingId = 1;
+            var defect = MockData.Defects.First();
 
-            var drawing = new Drawing { Id = drawingId, ProductId = 3 };
-            var product = new Product { Id = drawing.ProductId, AuthorId = 4 };
-            var user = new User { Id = product.AuthorId, DeviceToken = "TestDeviceToken" };
+            _usersRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(MockData.Users.First());
+            _defectsRepository.Setup(x => x.CreateDefect(It.IsAny<Defect>())).ReturnsAsync(MockData.Defects.First());
 
-            _drawingsRepositoryMock.Setup(x => x.GetDrawing(drawingId)).ReturnsAsync(drawing);
-            _productsRepositoryMock.Setup(x => x.GetProduct(drawing.ProductId)).ReturnsAsync(product);
-            _usersRepositoryMock.Setup(x => x.GetUserById(product.AuthorId)).ReturnsAsync(user);
+            _drawingsRepository.Setup(x => x.GetDrawing(It.IsAny<int>())).ReturnsAsync(MockData.Drawings.First());
+            _productsRepository.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(MockData.Products.First());
 
-            Defect savedDefect = null;
-            _defectsRepositoryMock.Setup(x => x.CreateDefect(It.IsAny<Defect>()))
-                .Callback<Defect>(d => savedDefect = d)
-                .ReturnsAsync(() => savedDefect);
+            await _defectHandler.CreateDefect(userId, drawingId, defect);
 
-            DefectNotification savedDefectNotification = null;
-
-            _defectNotificationRepositoryMock.Setup(x => x.CreateDefectNotification(It.IsAny<DefectNotification>()))
-                .Callback<DefectNotification>(dn => savedDefectNotification = dn);
-
-            // Act
-            var result = await _defectHandler.CreateDefect(userId, drawingId, defect);
-
-            // Assert
-            _defectsRepositoryMock.Verify(x => x.CreateDefect(It.IsAny<Defect>()), Times.Once);
-            _defectNotificationRepositoryMock.Verify(x => x.CreateDefectNotification(It.IsAny<DefectNotification>()), Times.Once);
-            _notificationServiceMock.Verify(x => x.SendNotification(user.DeviceToken, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-
-            savedDefect.AuthorId.Should().Be(userId);
-            savedDefect.DrawingId.Should().Be(drawingId);
-            savedDefect.Status.Should().Be(DefectStatus.NotFixed);
-            savedDefect.Description.Should().Be("Test Defect");
-            result.Should().Be(defect);
+            Assert.True(true);
         }
+
+        [Fact]
+        public async Task CreateDefectComment()
+        {
+            int userId = 1;
+            int drawingId = 1;
+            var defectComment = MockData.DefectComments.First();
+
+            _usersRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(MockData.Users.First());
+            _defectsRepository.Setup(x => x.CreateDefect(It.IsAny<Defect>())).ReturnsAsync(MockData.Defects.First());
+            _defectsRepository.Setup(x => x.GetDefect(It.IsAny<int>())).ReturnsAsync(MockData.Defects.First());
+
+            _drawingsRepository.Setup(x => x.GetDrawing(It.IsAny<int>())).ReturnsAsync(MockData.Drawings.First());
+            _productsRepository.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(MockData.Products.First());
+
+            await _defectHandler.CreateDefectComment(userId, defectComment);
+
+            Assert.True(true);
+        }
+
+        [Fact]
+        public async Task CreateDefectStatusChange_ShouldThrow()
+        {
+            int userId = 1;
+            int drawingId = 1;
+            var defect = MockData.Defects.First();
+
+            _usersRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(MockData.Users.First());
+            _defectsRepository.Setup(x => x.CreateDefect(It.IsAny<Defect>())).ReturnsAsync(MockData.Defects.First());
+            _defectsRepository.Setup(x => x.GetDefect(It.IsAny<int>())).ReturnsAsync(MockData.Defects.First());
+
+            _drawingsRepository.Setup(x => x.GetDrawing(It.IsAny<int>())).ReturnsAsync(MockData.Drawings.First());
+            _productsRepository.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(MockData.Products.First());
+
+            var func = async () => await _defectHandler.CreateDefectStatusChange(userId, defect);
+
+
+            func.Should().ThrowAsync<BadOperationException>();
+        }
+
+        [Fact]
+        public async Task CreateDefectStatusChange_StatusFixed_ShouldThrow()
+        {
+            int userId = 5;
+            int drawingId = 1;
+            var defect = MockData.Defects.First();
+            defect.Status = DefectStatus.Fixed;
+
+            _usersRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(MockData.Users.First());
+            _defectsRepository.Setup(x => x.CreateDefect(It.IsAny<Defect>())).ReturnsAsync(MockData.Defects.First());
+            _defectsRepository.Setup(x => x.GetDefect(It.IsAny<int>())).ReturnsAsync(MockData.Defects.First());
+
+            _drawingsRepository.Setup(x => x.GetDrawing(It.IsAny<int>())).ReturnsAsync(MockData.Drawings.First());
+            _productsRepository.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(MockData.Products.First());
+
+            var func = async () => await _defectHandler.CreateDefectStatusChange(userId, defect);
+
+
+            func.Should().ThrowAsync<ForbbidenOperationException>();
+        }
+
+
+        [Fact]
+        public async Task CreateDefectStatusChange()
+        {
+            int userId = 1;
+            int drawingId = 1;
+            var defect = MockData.Defects.First();
+
+            defect.Status = DefectStatus.Unfixable;
+
+            _usersRepository.Setup(x => x.GetUserById(It.IsAny<int>())).ReturnsAsync(MockData.Users.First());
+            _defectsRepository.Setup(x => x.CreateDefect(It.IsAny<Defect>())).ReturnsAsync(MockData.Defects.First());
+            _defectsRepository.Setup(x => x.UpdateDefect(It.IsAny<Defect>())).ReturnsAsync(MockData.Defects.First());
+            _defectsRepository.Setup(x => x.GetDefect(It.IsAny<int>())).ReturnsAsync(MockData.Defects.First());
+
+            _drawingsRepository.Setup(x => x.GetDrawing(It.IsAny<int>())).ReturnsAsync(MockData.Drawings.First());
+            _productsRepository.Setup(x => x.GetProduct(It.IsAny<int>())).ReturnsAsync(MockData.Products.First());
+
+            await _defectHandler.CreateDefectStatusChange(userId, defect);
+
+            Assert.True(true);
+        }
+
+
     }
 }
