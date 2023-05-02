@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Company;
+using Traki.Domain.Constants;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 
@@ -9,7 +10,7 @@ namespace Traki.Api.Controllers
 {
     [Route("api/companies")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = Role.Administrator)]
     public class CompanyController: ControllerBase
     {
         private readonly ICompaniesRepository _companiesRepository;

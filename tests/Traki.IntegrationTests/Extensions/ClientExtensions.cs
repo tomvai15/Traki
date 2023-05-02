@@ -12,6 +12,12 @@ namespace Traki.IntegrationTests.Extensions
         {
             await client.AddJwtToken("vainoristomas@gmail.com", "password");
         }
+
+        public static async Task LoginAsAdministrator(this CustomHttpClient client)
+        {
+            await client.AddJwtToken("tipotomas9@gmail.com", "password");
+        }
+
         public static async Task LoginAsProjectManager(this CustomHttpClient client)
         {
             await client.AddJwtToken("vainoristomas9@gmail.com", "password");

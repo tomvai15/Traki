@@ -67,7 +67,6 @@ namespace Traki.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<GetSectionsResponse>> GetSections(int protocolId)
         {
-
             var sections = await _sectionHandler.GetSections(protocolId);
 
             var getSectionRequest = new GetSectionsResponse { Sections = _mapper.Map<IEnumerable<SectionDto>>(sections) };
