@@ -15,6 +15,7 @@ import { formatDate } from 'utils/dateHelpers';
 import { AuthorBar } from 'components/AuthorBar';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import WarningIcon from '@mui/icons-material/Warning';
+import { DefectStatus } from 'contracts/drawing/defect/DefectStatus';
 
 const initialProduct: Product = {
   id: 0,
@@ -130,13 +131,13 @@ export function ProductPage() {
                           <Typography id='unfixed-defect-label'>Unfixed defects</Typography>
                         </Stack>
                       </TableCell>
-                      <TableCell align="right">{defects.length}</TableCell>
+                      <TableCell align="right">{defects.filter(x=> x.status == DefectStatus.NotFixed).length}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <Stack direction={'row'} alignItems={'center'} spacing={1}>
                           <AssignmentIcon/>
-                          <Typography id='protocol-to-fill-label'>Protocold to fill</Typography>
+                          <Typography id='protocol-to-fill-label'>Protocols</Typography>
                         </Stack>
                       </TableCell>
                       <TableCell align="right">{protocols.length}</TableCell>
