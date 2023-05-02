@@ -7,9 +7,10 @@ import drawingService from '../../../services/drawing-service';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import { pictureService } from '../../../services';
 import AutoImage from '../../../components/AutoImage';
+import { ProductRecomendation } from '../../../contracts/recommendation/ProductRecomendation';
 
 type Props = {
-  product: Product,
+  product: ProductRecomendation,
   navigation: any
 }
 
@@ -21,7 +22,7 @@ export function ProductCard ({product, navigation}: Props) {
   }, []);
 
   async function fetchDrawings() {
-    const response = await drawingService.getDrawings(Number(product.id));
+    const response = await drawingService.getDrawings(Number(product.product.id));
     await fetchDrawingPictures(response.drawings[0]);
   }
 
@@ -40,21 +41,21 @@ export function ProductCard ({product, navigation}: Props) {
       <Card.Content style={{ flexGrow: 1 }}>
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-            <View>
+            <View style={{marginRight: 5}}>
               <Text style={{fontSize: 20}}>
-                {product.name}
+                {product.product.name}
               </Text>
               <View>
-                <Text style={{fontSize: 15}}>4 Defects</Text>
+                <Text style={{fontSize: 15}}>{product.defectCount} Defects</Text>
               </View>
               <View>
-                <Text style={{fontSize: 15}}>3 Protocols</Text>
+                <Text style={{fontSize: 15}}>{product.defectCount} Protocols</Text>
               </View>
             </View>
             <View>
               <Button style={{width: 100}} onPress={() => {
                 //navigation.navigate('Project Products', {screen: 'Products'}); 
-                navigation.navigate('Projects', { screen: 'Product', params: {productId: product.id}}) 
+                navigation.navigate('Projects', { screen: 'Product', params: {projectId: product.product.projectId, productId: product.product.id}}) 
               }} mode='contained'>Details</Button>
             </View>
           </View>

@@ -15,6 +15,7 @@ import { DefectDetails } from 'features/defects/components/DefectDetails';
 import { drawingService, pictureService, defectService } from 'services';
 import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
 import { PaginatedList } from 'components/PaginatedList';
+import { useAlert } from 'hooks/useAlert';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -26,6 +27,7 @@ export interface SimpleDialogProps {
 export function DefectsPage() {
   const navigate = useNavigate();
   const {state} = useLocation();
+  const { displaySuccess  } = useAlert();
   const { projectId, productId } = useParams();
 
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
@@ -180,6 +182,7 @@ export function DefectsPage() {
 
     setIsNewDefect(false);
     setTabIndex(0);
+    displaySuccess(`Defect ${newDefect.title} was created successfully`);
 
     if (response.defect) {
       setSelectedDefect(response.defect);

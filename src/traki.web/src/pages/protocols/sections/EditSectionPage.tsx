@@ -13,6 +13,7 @@ import { TableRow } from 'contracts/protocol/section/TableRow';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { validate, validationRules } from 'utils/textValidation';
 import { ProtectedComponent } from 'components/ProtectedComponent';
+import { useAlert } from 'hooks/useAlert';
 
 const initialSection: Section = {
   id: 1,
@@ -25,6 +26,7 @@ const initialSection: Section = {
 
 export function EditSectionPage() {
   const navigate = useNavigate();
+  const { displaySuccess  } = useAlert();
 
   const { protocolId, sectionId } = useParams();
   const [section, setSection] = useState<Section>(initialSection);
@@ -137,6 +139,7 @@ export function EditSectionPage() {
       setInitialTableJson(JSON.stringify(table));
     }
     setInitialSectionJson(JSON.stringify(section));
+    displaySuccess("Section was updated successfully");
   }
 
   async function deleteSection() {
@@ -173,7 +176,7 @@ export function EditSectionPage() {
                 onChange={(e) => updateSectionName(e.target.value)}
               />
               <Box>
-                <ProtectedComponent role={"ProejctManager"}>
+                <ProtectedComponent role={"ProjectManager"}>
                   <Button sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
                   <Button onClick={() => deleteSection()} color='error' variant='contained'>Delete</Button>
                 </ProtectedComponent>

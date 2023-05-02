@@ -36,8 +36,8 @@ export function Activity ({defectActivity}: Props) {
           <View> 
             <View style={styles.nameContainer}>
               <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                <CustomAvatar user={defectActivity.author} size={50}/>
-                <Text style={{fontSize: 18, marginLeft: 5}}>{formatName()}</Text>
+                <CustomAvatar user={defectActivity.author} size={40}/>
+                <Text style={{fontSize: 16, marginLeft: 5}}>{formatName()}</Text>
               </View>
               <Text>{formatDate(new Date(defectActivity.date))}</Text>
             </View>

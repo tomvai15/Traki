@@ -1,14 +1,16 @@
 import { Box, List, Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import SearchBar from './SearchBar';
 
 interface Props<T> {
   items: T[],
   renderItem: (item: T) => React.ReactNode,
   height?: string,
   heightPerItem?: number
+  selector?: (item: T) => string 
 }
 
-export function PaginatedList<T extends { id: number}>({items, renderItem, height, heightPerItem}: Props<T>) {
+export function PaginatedList<T extends { id: number}>({items, renderItem, height, heightPerItem, selector}: Props<T>) {
 
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [pageCount, setPageCount] = useState(1);
@@ -17,6 +19,9 @@ export function PaginatedList<T extends { id: number}>({items, renderItem, heigh
   const [listHeight, setListHeight] = useState<string>();
 
   useEffect(() => {
+
+
+
     console.log(items.length/itemsPerPage);
     console.log(Math.ceil(items.length/itemsPerPage));
     setPageCount(Math.ceil(items.length/itemsPerPage));
@@ -32,12 +37,15 @@ export function PaginatedList<T extends { id: number}>({items, renderItem, heigh
 
   }, [items, itemsPerPage]);
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <Box>
-      <Pagination onChange={(e, value) => setCurrentPage(value-1)} count={pageCount} />
+      { selector && <SearchBar value={searchQuery} setValue={setSearchQuery}></SearchBar> }
       <List component="nav" style={{height: listHeight}}>
-        {items.filter((item, index) => currentPage * itemsPerPage <= index && index < (currentPage + 1 ) * itemsPerPage).map((item, index) => <Box key={index}>{renderItem(item)}</Box>)}
+        {items.filter((item) => selector == undefined ? true : selector(item).toLowerCase().includes(searchQuery.toLowerCase()) ) .filter((item, index) => currentPage * itemsPerPage <= index && index < (currentPage + 1 ) * itemsPerPage).map((item, index) => <Box key={index}>{renderItem(item)}</Box>)}
       </List>
+      <Pagination onChange={(e, value) => setCurrentPage(value-1)} count={pageCount} />
     </Box>
   );
 }

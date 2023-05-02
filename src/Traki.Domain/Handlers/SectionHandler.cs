@@ -36,7 +36,6 @@ namespace Traki.Domain.Handlers
             _tableRowRepository = tableRowRepository;
         }
 
-        // todo: move to repository?
         public async Task<Section> GetSection(int sectionId)
         {
             var section = await _sectionRepository.GetSection(sectionId);
@@ -49,10 +48,6 @@ namespace Traki.Domain.Handlers
             section.Checklist = checklist;
 
             var table = await _tableRepository.GetSectionTable(section.Id);
-            if (table != null)
-            {
-
-            }
             section.Table = table;
             return section;
         }

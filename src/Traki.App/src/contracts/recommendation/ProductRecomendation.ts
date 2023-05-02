@@ -1,4 +1,5 @@
-import { Product } from "contracts/product/Product";
+import { Product } from "../product/Product"
+
 
 export type ProductRecomendation = {
   product: Product,

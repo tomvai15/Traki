@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, List, ListItemButton, ListItemText, useTheme } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, List, ListItemButton, ListItemText, useTheme } from '@mui/material';
 import { Protocol } from 'contracts/protocol/Protocol';
 import { PaginatedList } from 'components/PaginatedList';
 
@@ -13,8 +13,11 @@ export function ProtocolsCard({protocols, setSelectedProtocol}: Props) {
 
   return (
     <Card>
+      <CardHeader title={'Template protocols'}>
+      </CardHeader>
+      <Divider/>
       <CardContent>
-        <PaginatedList items={protocols} renderItem={(item) => 
+        <PaginatedList selector={x=> x.name} items={protocols} renderItem={(item) => 
           <Card sx={{margin: '5px'}} >
             <ListItemButton onClick={() => setSelectedProtocol(item)} alignItems="flex-start" sx={{backgroundColor: theme.palette.grey[100]}}>
               <ListItemText
