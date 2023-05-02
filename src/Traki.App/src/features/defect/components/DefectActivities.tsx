@@ -62,3 +62,4 @@ export function DefectActivities ({defectComments, statusChanges}: DefectActivit
     </View>
   );
 }
+

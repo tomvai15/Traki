@@ -13,6 +13,7 @@ import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { FillTable } from './FillTable';
 import { validate, validationRules } from 'utils/textValidation';
+import { useAlert } from 'hooks/useAlert';
 
 type Props = {
   protocolId: number,
@@ -22,6 +23,7 @@ type Props = {
 
 export function FillSection({protocolId, sectionId, completed}: Props) {
 
+  const { displaySuccess  } = useAlert();
   const [section, setSection] = useState<Section>(initialSection);
   const [table, setTable] = useState<Table>();
   const [sectionType, setSectionType] = useState<string>('checklist');
@@ -127,6 +129,7 @@ export function FillSection({protocolId, sectionId, completed}: Props) {
     await sectionService.updateSectionAnswers(protocolId, sectionId, request);
     setInitialTableJson(JSON.stringify(table));
     setInitialSectionJson(JSON.stringify(section));
+    displaySuccess(`Section ${section.name} was updated`);
   }
 
   return (

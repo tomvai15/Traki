@@ -10,9 +10,11 @@ import { TableRow } from 'contracts/protocol/section/TableRow';
 import { Table } from 'contracts/protocol/section/Table';
 import { initialSection, defaulTable, defaultChecklist } from 'features/protocols/data';
 import { validate, validationRules } from 'utils/textValidation';
+import { useAlert } from 'hooks/useAlert';
 
 export function CreateSectionPage() {
   const navigate = useNavigate();
+  const { displaySuccess  } = useAlert();
   const { protocolId } = useParams();
 
   const [section, setSection] = useState<Section>(initialSection);
@@ -61,6 +63,7 @@ export function CreateSectionPage() {
 
     await sectionService.createSection(Number(protocolId), updateSectionRequest);
     setCanCreate(false);
+    displaySuccess(`Section ${section.name} was created successfully`);
   }
 
   function updateSectionName(newName: string) {
@@ -69,12 +72,14 @@ export function CreateSectionPage() {
 
   return (
     <Grid container spacing={2}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <BreadLink color="inherit" href="/templates/protocols">
-          Protocol Templates
-        </BreadLink>
-        <Typography color="text.primary">Section</Typography>
-      </Breadcrumbs>
+      <Grid item xs={12} md={12} >
+        <Breadcrumbs aria-label="breadcrumb">
+          <BreadLink color="inherit" href="/templates/protocols">
+            Protocol Templates
+          </BreadLink>
+          <Typography color="text.primary">Section</Typography>
+        </Breadcrumbs>
+      </Grid>
       <Grid item xs={12} md={12} >
         <Card>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
