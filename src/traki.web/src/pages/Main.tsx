@@ -28,7 +28,7 @@ export function Main() {
     <BrowserRouter>
       <Routes>
         <Route path='' element={<ProtectedRoute><MainLayout/></ProtectedRoute>}>
-          <Route index element={<Navigate to='/home'/>}/>
+          <Route index element={<Navigate to='/login'/>}/>
           <Route path='admin/users' element={<Outlet/>}>
             <Route index element={<UsersPage/>}/>
             <Route path=':userId' element={<UserPage/>}/>
@@ -76,6 +76,7 @@ export function Main() {
         </Route>
         <Route path='/login' element={<SignIn/>}/>
         <Route path='/auth/register' element={<RegisterPage/>}/>
+        <Route path='*' element={<Navigate to={'/login'}/>}/>
       </Routes>
     </BrowserRouter>
   );

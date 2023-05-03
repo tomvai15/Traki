@@ -8,10 +8,12 @@ import pictureService from '../../services/picture-service';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { useAlert } from 'hooks/useAlert';
 
 // TODO: allow only specific resolution
 
 export function CompanyPage() {
+  const { displaySuccess  } = useAlert();
   const [previewImage, setPreviewImage] = useState<string>();
   const [company, setCompany] = useState<Company>();
   const [canEdit, setCanEdit] = useState<boolean>(false);
@@ -20,7 +22,7 @@ export function CompanyPage() {
   const [image, setImage] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
+  const [phone, setPhone] = useState<string>('sadsadsa');
 
   useEffect(() => {
     fetchCompany();
@@ -62,6 +64,7 @@ export function CompanyPage() {
     
     await companyService.updateCompany(updateCompanyRequest);
     setCanEdit(false);
+    displaySuccess("Company information was updated successfully");
   }
 
   async function updateLogo() {
@@ -106,17 +109,6 @@ export function CompanyPage() {
               }}
               variant="standard"
             />
-            <TextField
-              id="standard-read-only-input"
-              label="Phone number"
-              defaultValue='...'
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              InputProps={{
-                readOnly: !canEdit,
-              }}
-              variant="standard"
-            />
           </CardContent>    
           {canEdit ?     
             <CardActions>
@@ -150,7 +142,13 @@ export function CompanyPage() {
           </CardContent>    
         </Card>
       </Grid>
-      <Grid item xs={12} md={6}>
+    </Grid>
+  );
+}
+
+/*
+
+<Grid item xs={12} md={6}>
         <Card sx={{padding: 5}}>
           <Grid container spacing={2}>
             <Grid item xs={6} md={4}>
@@ -174,6 +172,5 @@ export function CompanyPage() {
           </Grid>
         </Card>
       </Grid>
-    </Grid>
-  );
-}
+
+*/

@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 
 function formatDate(date: Date): string {
-  return date.toLocaleString();
+  return date.toDateString();
 }
 
 function formatTimeDifference(pastDate: Date): string {

@@ -290,14 +290,6 @@ export function DefectsPage() {
                           </React.Fragment>
                         }
                       />
-                      { item.status == DefectStatus.Fixed ? 
-                        <ListItemIcon>
-                          <DoneIcon sx={{color: 'green'}}/>
-                        </ListItemIcon> :
-                        <ListItemIcon>
-                          <ModeCommentIcon/> 1
-                        </ListItemIcon>
-                      }
                     </ListItemButton>}/>
                 </List>
               </CardContent>

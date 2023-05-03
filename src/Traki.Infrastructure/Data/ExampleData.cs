@@ -14,21 +14,27 @@ namespace Traki.Infrastructure.Data
         {
             new DrawingEntity
             {
-                Title= "Drawing 1",
+                Title= "Front view",
                 ImageName = "back.png",
                 ProductId = 1
             },
             new DrawingEntity
             {
-                Title= "Drawing 2",
+                Title= "Side view",
                 ImageName = "front.png",
                 ProductId = 1
             },
             new DrawingEntity
             {
-                Title= "Drawing 1",
-                ImageName = "front.png",
+                Title= "Front view",
+                ImageName = "naujas.png",
                 ProductId = 2
+            },
+            new DrawingEntity
+            {
+                Title= "Front view",
+                ImageName = "kitas.png",
+                ProductId = 3
             }
         };
 
@@ -36,25 +42,25 @@ namespace Traki.Infrastructure.Data
         {
             new DefectEntity
             {
-                Title  = "Defect 1",
-                Description= "Defect 1",
+                Title  = "Bad weld",
+                Description= "There are cracks in the weld, it's a sign that the welding was not done correctly.",
                 ImageName = "ce388de4-8c6b-45b0-ab12-85f78cfa900c.png",
                 Status= DefectStatus.NotFixed,
                 X = 50,
                 Y = 50,
                 Width = 10,
-                Height = 20,
+                Height = 10,
                 DrawingId = 1,
                 AuthorId = 1,
             },
             new DefectEntity
             {
-                Title  = "Defect 2",
-                Description= "Defect 2",
-                ImageName = "99696138-0e26-4815-9982-40b575269336.png",
+                Title  = "Incorrectly drilled threads",
+                Description= "Thread diameter should be 20mm",
+                ImageName = "hole.png",
                 Status= DefectStatus.NotFixed,
-                X = 10,
-                Y = 10,
+                X = 50,
+                Y = 30,
                 Width = 20,
                 Height = 10,
                 DrawingId = 2,
@@ -273,7 +279,7 @@ namespace Traki.Infrastructure.Data
             },         
             new UserEntity
             {
-                Email = "tipotomas9@gmail.com",
+                Email = "admin@gmail.com",
                 Name = "Romas",
                 Surname = "Fainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
@@ -318,7 +324,7 @@ namespace Traki.Infrastructure.Data
             },
             new ProductEntity
             {
-                Name = $"SH.2 / 01.2.21.1.0016 GT",
+                Name = $"SH.2",
                 ProjectId = 2,
                 AuthorId = 1,
                 Status = ProductStatus.Completed,
@@ -326,7 +332,7 @@ namespace Traki.Infrastructure.Data
             },
             new ProductEntity
             {
-                Name = $"SH.1 / 01.2.21.1.0016",
+                Name = $"TH.1 - 0016",
                 ProjectId = 1,
                 AuthorId = 1,
                 Status = ProductStatus.Active,

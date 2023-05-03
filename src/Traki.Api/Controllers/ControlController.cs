@@ -9,7 +9,7 @@ using Traki.Infrastructure.Data;
 namespace Traki.Api.Controllers
 {
     [Route("api/control")]
-    [Authorize]
+   // [Authorize]
     public class ControlController : ControllerBase
     {
         private readonly TrakiDbContext _trakiDbContext;

@@ -59,7 +59,6 @@ export function Projects() {
           <Typography color="text.primary">Projects</Typography>
         </Breadcrumbs>
       </Grid>
-      <Button onClick={() => setPageState({...page, notFound: true})}>Press</Button>
       <Grid item xs={12} md={12}>
         <ProtectedComponent role={'ProjectManager'}>
           <Button onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>
@@ -105,7 +104,7 @@ function ProjectProducts({project, index}: ProjectProductsProps) {
               {project.project.name}
             </Typography>
             <Typography variant="subtitle1" component="div">
-              Client: Sample Client
+              Client: {project.project.clientName}
             </Typography>
           </Box>
           <Box>

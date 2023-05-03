@@ -13,6 +13,7 @@ import { Card } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../state/user-state';
+import { Role } from 'contracts/user/Roles';
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useRecoilState(userState);
@@ -61,9 +62,14 @@ export default function SignIn() {
     return !(email && password);
   }
 
-  function loginUser() {
+  async function loginUser() {
+    const response = await authService.getUserInfo();
     setUserInfo({id: 1, loggedInDocuSign: false});
-    navigate('/');
+
+    if (response.user.role == 'Administrator') {
+      navigate('/admin/users');
+    }
+    navigate('/home');
   }
   return (
     <Box component="main" style={{height: '100vh', width: '100vw', backgroundImage: `url("/img/image.svg")`, paddingTop: 100 }}>
