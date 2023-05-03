@@ -13,7 +13,7 @@ namespace Traki.Infrastructure.Data
 
             //return;
             var users = ExampleData.Users.ToList();
-            /*
+            
             try
             {
                 users = await dbContext.Users.ToListAsync();
@@ -31,7 +31,7 @@ namespace Traki.Infrastructure.Data
             {
 
             }
-            */
+            
 
             if (isDevelopment)
             {

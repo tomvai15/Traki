@@ -10,10 +10,12 @@ import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequ
 import { useNavigate, useParams } from 'react-router-dom';
 import { validate, validationRules } from 'utils/textValidation';
 import { DeleteItemDialog } from 'components/DeleteItemDialog';
+import { useAlert } from 'hooks/useAlert';
 
 export function EditProject() {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const { displaySuccess  } = useAlert();
 
   const [previewImage, setPreviewImage] = useState<string>();
   const [file, setFile] = useState<File>();
@@ -59,7 +61,7 @@ export function EditProject() {
         pictureName = `${uuid()}${file.type.replace('image/','.')}`;
         const formData = new FormData();
         formData.append(pictureName, file, pictureName);
-        await pictureService.uploadPicturesFormData('item', formData);
+        await pictureService.uploadPicturesFormData('company', formData);
       } 
     }
 
@@ -78,6 +80,7 @@ export function EditProject() {
 
     await projectService.updateProject(Number(projectId), request);
     await fetchProject();
+    displaySuccess("Project information was updated successfully");
   }
 
   function selectFile (event: React.ChangeEvent<HTMLInputElement>) {

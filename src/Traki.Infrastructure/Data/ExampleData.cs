@@ -149,7 +149,6 @@ namespace Traki.Infrastructure.Data
                 ChecklistId = 1,
                 Priority = 2,
             },
-
             new ItemEntity
             {
                 Id = "C",
@@ -179,6 +178,21 @@ namespace Traki.Infrastructure.Data
                 ChecklistId = 4,
                 Priority = 2,
             },
+
+             new ItemEntity
+            {
+                Id = "X",
+                Name = "Is the weld root welded completely?",
+                ChecklistId = 2,
+                Priority = 1,
+            },
+            new ItemEntity
+            {
+                Id = "Y",
+                Name = "Is the inner weld surface smooth?",
+                ChecklistId = 2,
+                Priority = 2,
+            },
         };
 
         public static IEnumerable<QuestionEntity> NewQuestions => new[]
@@ -206,6 +220,19 @@ namespace Traki.Infrastructure.Data
             {
                 Id = "D",
                 ItemId = "D",
+                Comment = "",
+            },
+
+            new QuestionEntity
+            {
+                 Id = "X",
+                 ItemId = "X",
+                 Comment = "",
+            },
+            new QuestionEntity
+            {
+                Id = "Y",
+                ItemId = "Y",
                 Comment = "",
             },
         };
@@ -292,9 +319,9 @@ namespace Traki.Infrastructure.Data
         {
             new ProjectEntity
             {
-                Name = $"Sample Project",
-                ClientName = $"Sample Client",
-                Address = $"Sample Address",
+                Name = $"Shunt group project",
+                ClientName = $"UAB Ever Green",
+                Address = $"Vydūno alėja 24A, Kaunas",
                 ImageName = "5e6669e4-c033-4ded-93e6-f44dccc6a157.png",
                 CreationDate = DateTime.Now.ToString("s"),
                 CompanyId = 1,
@@ -302,10 +329,10 @@ namespace Traki.Infrastructure.Data
             },
             new ProjectEntity
             {
-                Name = $"Other Project",
-                ClientName = $"Sample Client",
-                Address = $"Sample Address",
-                ImageName = "02653609-3004-4a48-b2d6-bddab03e778c.png",
+                Name = $"Pump kit",
+                ClientName = $"UAB Star platinum",
+                Address = $"Vydūno alėja 24A, Kaunas",
+                ImageName = "test.png",
                 CompanyId = 1,
                 AuthorId = 2,
                 CreationDate = DateTime.Now.ToString("s"),
