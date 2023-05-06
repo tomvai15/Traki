@@ -43,7 +43,7 @@ namespace Traki.Infrastructure.Data
             new DefectEntity
             {
                 Title  = "Bad weld",
-                Description= "There are cracks in the weld, it's a sign that the welding was not done correctly.",
+                Description= "There are cracks in the weld",
                 ImageName = "ce388de4-8c6b-45b0-ab12-85f78cfa900c.png",
                 Status= DefectStatus.NotFixed,
                 X = 50,
