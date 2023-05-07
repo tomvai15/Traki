@@ -16,8 +16,12 @@ export default function SignInScreen() {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const [deviceInfo, setDeviceInfo] = useRecoilState(deviceState);
 
+
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     fetchFullUserInformation();
@@ -34,20 +38,23 @@ export default function SignInScreen() {
     };
     try {
       const response = await authService.login(request);
-      console.log(response);
-      setUserInfo({...userInfo, token: response.token, refreshToken: response.refreshToken});
 
-      const registerDeviceRequest: RegisterDeviceRequest = {
-        deviceToken: deviceInfo.token
-      };
-      await fetchFullUserInformation();
+      if (response.status == 200 ) {
+        setUserInfo({...userInfo, token: response.data.token, refreshToken: response.data.refreshToken});
 
-      console.log( '?? ' + registerDeviceRequest);
-
-      await authService.registerDevice(registerDeviceRequest);
+        setError('');
+  
+        const registerDeviceRequest: RegisterDeviceRequest = {
+          deviceToken: deviceInfo.token
+        };
+        await fetchFullUserInformation(); 
+        await authService.registerDevice(registerDeviceRequest);
+      } else {
+        setError('Email or password is incorrect');
+      }
 
     } catch (err) {
-      console.log(err);
+      setError('Service is currently not available');
     }
     
     return;
@@ -75,6 +82,7 @@ export default function SignInScreen() {
         value={password}
         onChangeText={text => setPassword(text)}
       />
+      <Text style={{color: 'red'}}>{error}</Text>
       <Button disabled={!canLogin()} style={{marginTop: 10}} mode='contained' onPress={login}>
         Login
       </Button>

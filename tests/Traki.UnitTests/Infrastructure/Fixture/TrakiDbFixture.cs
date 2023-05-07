@@ -28,8 +28,6 @@ namespace Traki.UnitTests.Infrastructure.Fixture
             dbContext.AddProducts();
             dbContext.AddTemplates();
             dbContext.AddQuestions();
-            dbContext.AddChecklists();
-            dbContext.AddChecklistQuestions();
 
             dbContext.AddProtocols();
             dbContext.AddSections();

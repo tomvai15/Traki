@@ -25,24 +25,12 @@ namespace Traki.Infrastructure.Data
                 .WithOne(p => p.Project);
 
             modelBuilder.Entity<ProductEntity>()
-                .HasMany(p => p.CheckLists)
-                .WithOne(p => p.Product);
-
-            modelBuilder.Entity<ProductEntity>()
                 .HasMany(p => p.Protocols)
                 .WithOne(p => p.Product);
 
             modelBuilder.Entity<ProductEntity>()
                 .HasMany(p => p.Drawings)
                 .WithOne(p => p.Product);
-
-            modelBuilder.Entity<TemplateEntity>()
-                .HasMany(p => p.Questions)
-                .WithOne(p => p.Template);
-
-            modelBuilder.Entity<OldChecklistEntity>()
-                .HasMany(p => p.ChecklistQuestions)
-                .WithOne(p => p.Checklist);
 
             modelBuilder.Entity<SectionEntity>()
                 .HasOne(p => p.Checklist).WithOne(p => p.Section)
@@ -163,12 +151,9 @@ namespace Traki.Infrastructure.Data
 
 
         public virtual DbSet<CompanyEntity> Companies { get; set; }
-        public virtual DbSet<OldChecklistEntity> OldChecklists { get; set; }
-        public virtual DbSet<ChecklistQuestionEntity> CheckListQuestions { get; set; }
         public virtual DbSet<ProductEntity> Products { get; set; }
         public virtual DbSet<ProjectEntity> Projects { get; set; }
         public virtual DbSet<TemplateEntity> Templates { get; set; }
-        public virtual DbSet<QuestionEntity> OldQuestions { get; set; }
         public virtual DbSet<UserEntity> Users { get; set; }
     }
 }

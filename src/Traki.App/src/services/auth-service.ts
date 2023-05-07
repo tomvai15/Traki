@@ -4,15 +4,16 @@ import { GetUserResponse } from '../contracts/auth/GetUserResponse';
 import { LoginResponse } from '../contracts/auth/LoginResponse';
 import { RegisterDeviceRequest } from '../contracts/auth/RegisterDeviceRequest';
 import { GetUserInfoResponse } from '../contracts/auth/GetUserInfoResponse';
+import { AxiosResponse } from 'axios';
 
 const route = 'auth';
 
 class AuthService {
-  async login(loginRequest: LoginRequest): Promise<LoginResponse> {
+  async login(loginRequest: LoginRequest): Promise<AxiosResponse<LoginResponse, any>> {
     console.log(loginRequest);
     const fullRoute = route + '/jwt-login';
-    const response = await axiosApiInstance.post(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
-    return response.data;
+    const response = await axiosApiInstance.post<LoginResponse>(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
+    return response;
   }
 
   async logout(): Promise<void> {

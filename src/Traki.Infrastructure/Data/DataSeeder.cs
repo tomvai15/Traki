@@ -39,6 +39,7 @@ namespace Traki.Infrastructure.Data
                 dbContext.Database.EnsureDeleted();
             }
 
+
             bool wasCreated = dbContext.Database.EnsureCreated();
 
             dbContext.AddUsers(users);
@@ -48,8 +49,6 @@ namespace Traki.Infrastructure.Data
             dbContext.AddProducts();
             dbContext.AddTemplates();
             dbContext.AddQuestions();
-            dbContext.AddChecklists();
-            dbContext.AddChecklistQuestions();
 
             dbContext.AddProtocols();
             dbContext.AddSections();
@@ -189,7 +188,7 @@ namespace Traki.Infrastructure.Data
             return dbContext;
         }
 
-        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext, List<UserEntity> users)
+        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext)
         {
             dbContext.Users.AddRange(users);
             dbContext.SaveChanges();

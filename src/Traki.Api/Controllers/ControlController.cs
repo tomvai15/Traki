@@ -36,8 +36,6 @@ namespace Traki.Api.Controllers
             _trakiDbContext.AddProducts();
             _trakiDbContext.AddTemplates();
             _trakiDbContext.AddQuestions();
-            _trakiDbContext.AddChecklists();
-            _trakiDbContext.AddChecklistQuestions();
 
             return Ok("Added data");
         }
