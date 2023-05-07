@@ -1,14 +1,37 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DocuSign.eSign.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Traki.Infrastructure.Entities;
 
 namespace Traki.Infrastructure.Data
 {
     public static class DataSeeder
     {
-        public static void AddInitialData(this IServiceProvider serviceProvider, bool isDevelopment)
+        public static async void AddInitialData(this IServiceProvider serviceProvider, bool isDevelopment)
         {
             var dbContext = serviceProvider.GetRequiredService<TrakiDbContext>();
 
             //return;
+            var users = ExampleData.Users.ToList();
+            
+            try
+            {
+                users = await dbContext.Users.ToListAsync();
+
+                foreach (var user in users)
+                {
+                    user.Id = 0;
+                }
+
+                if (users.Count == 0)
+                {
+                    users = ExampleData.Users.ToList();
+                }
+            } catch (Exception ex)
+            {
+
+            }
+            
 
             if (isDevelopment)
             {
@@ -16,17 +39,16 @@ namespace Traki.Infrastructure.Data
                 dbContext.Database.EnsureDeleted();
             }
 
+
             bool wasCreated = dbContext.Database.EnsureCreated();
 
-            dbContext.AddUsers();
+            dbContext.AddUsers(users);
 
             dbContext.AddCompanies();
             dbContext.AddProjects();
             dbContext.AddProducts();
             dbContext.AddTemplates();
             dbContext.AddQuestions();
-            dbContext.AddChecklists();
-            dbContext.AddChecklistQuestions();
 
             dbContext.AddProtocols();
             dbContext.AddSections();
@@ -150,25 +172,9 @@ namespace Traki.Infrastructure.Data
             return dbContext;
         }
 
-        public static TrakiDbContext AddChecklists(this TrakiDbContext dbContext)
+        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext, IEnumerable<UserEntity> users)
         {
-            dbContext.OldChecklists.AddRange(ExampleData.Checklists);
-            dbContext.SaveChanges();
-
-            return dbContext;
-        }
-
-        public static TrakiDbContext AddChecklistQuestions(this TrakiDbContext dbContext)
-        {
-            dbContext.CheckListQuestions.AddRange(ExampleData.CheckListQuestions);
-            dbContext.SaveChanges();
-
-            return dbContext;
-        }
-
-        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext)
-        {
-            dbContext.Users.AddRange(ExampleData.Users);
+            dbContext.Users.AddRange(users);
             dbContext.SaveChanges();
 
             return dbContext;

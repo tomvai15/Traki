@@ -145,6 +145,8 @@ export function ProtocolReport() {
                         <TableCell>
                           <Typography>Document signed by</Typography>
                         </TableCell>
+                      </TableRow>
+                      <TableRow>
                         <TableCell align="right">
                           <AuthorBar user={protocol.signer}></AuthorBar>
                         </TableCell>

@@ -14,6 +14,7 @@ interface UserState {
 
 const initialState: UserState = {
   id: 1,
+  token: '',
   loggedInDocuSign: false,
   refreshToken: 'dsaasdasd'
 };

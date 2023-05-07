@@ -10,7 +10,6 @@ namespace Traki.Infrastructure.Entities
         public string CreationDate { get; set; }
         public int ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
-        public ICollection<OldChecklistEntity> CheckLists { get; set; }
         public ICollection<ProtocolEntity> Protocols { get; set; }
         public ICollection<DrawingEntity> Drawings { get; set; }
         public int AuthorId { get; set; }

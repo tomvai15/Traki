@@ -9,7 +9,7 @@ using Traki.Infrastructure.Data;
 namespace Traki.Api.Controllers
 {
     [Route("api/control")]
-    [Authorize]
+   // [Authorize]
     public class ControlController : ControllerBase
     {
         private readonly TrakiDbContext _trakiDbContext;
@@ -36,8 +36,6 @@ namespace Traki.Api.Controllers
             _trakiDbContext.AddProducts();
             _trakiDbContext.AddTemplates();
             _trakiDbContext.AddQuestions();
-            _trakiDbContext.AddChecklists();
-            _trakiDbContext.AddChecklistQuestions();
 
             return Ok("Added data");
         }

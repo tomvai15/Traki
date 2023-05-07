@@ -36,8 +36,8 @@ export default function DrawerItems() {
           </ListItemIcon>
           <ListItemText primary="Templates" />
         </ListItemButton>
+        <Divider/>
       </ProtectedComponent>
-      <Divider/>
       <ProtectedComponent role={['Administrator']}>
         <ListItemButton onClick={() => navigate('company')}>
           <ListItemIcon>
@@ -51,6 +51,7 @@ export default function DrawerItems() {
           </ListItemIcon>
           <ListItemText primary="Users" />
         </ListItemButton>
+        <Divider/>
       </ProtectedComponent>
     </React.Fragment>
   );

@@ -21,15 +21,13 @@ namespace Traki.UnitTests.Infrastructure.Fixture
 
             using var dbContext = new TrakiDbContext(Options);
 
-            dbContext.AddUsers();
+            dbContext.AddUsers(ExampleData.Users);
 
             dbContext.AddCompanies();
             dbContext.AddProjects();
             dbContext.AddProducts();
             dbContext.AddTemplates();
             dbContext.AddQuestions();
-            dbContext.AddChecklists();
-            dbContext.AddChecklistQuestions();
 
             dbContext.AddProtocols();
             dbContext.AddSections();

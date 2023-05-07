@@ -14,21 +14,27 @@ namespace Traki.Infrastructure.Data
         {
             new DrawingEntity
             {
-                Title= "Drawing 1",
+                Title= "Front view",
                 ImageName = "back.png",
                 ProductId = 1
             },
             new DrawingEntity
             {
-                Title= "Drawing 2",
+                Title= "Side view",
                 ImageName = "front.png",
                 ProductId = 1
             },
             new DrawingEntity
             {
-                Title= "Drawing 1",
-                ImageName = "front.png",
+                Title= "Front view",
+                ImageName = "naujas.png",
                 ProductId = 2
+            },
+            new DrawingEntity
+            {
+                Title= "Front view",
+                ImageName = "kitas.png",
+                ProductId = 3
             }
         };
 
@@ -36,25 +42,25 @@ namespace Traki.Infrastructure.Data
         {
             new DefectEntity
             {
-                Title  = "Defect 1",
-                Description= "Defect 1",
+                Title  = "Bad weld",
+                Description= "There are cracks in the weld",
                 ImageName = "ce388de4-8c6b-45b0-ab12-85f78cfa900c.png",
                 Status= DefectStatus.NotFixed,
                 X = 50,
                 Y = 50,
                 Width = 10,
-                Height = 20,
+                Height = 10,
                 DrawingId = 1,
                 AuthorId = 1,
             },
             new DefectEntity
             {
-                Title  = "Defect 2",
-                Description= "Defect 2",
-                ImageName = "99696138-0e26-4815-9982-40b575269336.png",
+                Title  = "Incorrectly drilled threads",
+                Description= "Thread diameter should be 20mm",
+                ImageName = "hole.png",
                 Status= DefectStatus.NotFixed,
-                X = 10,
-                Y = 10,
+                X = 50,
+                Y = 30,
                 Width = 20,
                 Height = 10,
                 DrawingId = 2,
@@ -143,7 +149,6 @@ namespace Traki.Infrastructure.Data
                 ChecklistId = 1,
                 Priority = 2,
             },
-
             new ItemEntity
             {
                 Id = "C",
@@ -173,6 +178,21 @@ namespace Traki.Infrastructure.Data
                 ChecklistId = 4,
                 Priority = 2,
             },
+
+             new ItemEntity
+            {
+                Id = "X",
+                Name = "Is the weld root welded completely?",
+                ChecklistId = 2,
+                Priority = 1,
+            },
+            new ItemEntity
+            {
+                Id = "Y",
+                Name = "Is the inner weld surface smooth?",
+                ChecklistId = 2,
+                Priority = 2,
+            },
         };
 
         public static IEnumerable<QuestionEntity> NewQuestions => new[]
@@ -200,6 +220,19 @@ namespace Traki.Infrastructure.Data
             {
                 Id = "D",
                 ItemId = "D",
+                Comment = "",
+            },
+
+            new QuestionEntity
+            {
+                 Id = "X",
+                 ItemId = "X",
+                 Comment = "",
+            },
+            new QuestionEntity
+            {
+                Id = "Y",
+                ItemId = "Y",
                 Comment = "",
             },
         };
@@ -273,7 +306,7 @@ namespace Traki.Infrastructure.Data
             },         
             new UserEntity
             {
-                Email = "tipotomas9@gmail.com",
+                Email = "admin@gmail.com",
                 Name = "Romas",
                 Surname = "Fainoris",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
@@ -286,9 +319,9 @@ namespace Traki.Infrastructure.Data
         {
             new ProjectEntity
             {
-                Name = $"Sample Project",
-                ClientName = $"Sample Client",
-                Address = $"Sample Address",
+                Name = $"Shunt group project",
+                ClientName = $"UAB Ever Green",
+                Address = $"Vydūno alėja 24A, Kaunas",
                 ImageName = "5e6669e4-c033-4ded-93e6-f44dccc6a157.png",
                 CreationDate = DateTime.Now.ToString("s"),
                 CompanyId = 1,
@@ -296,10 +329,10 @@ namespace Traki.Infrastructure.Data
             },
             new ProjectEntity
             {
-                Name = $"Other Project",
-                ClientName = $"Sample Client",
-                Address = $"Sample Address",
-                ImageName = "02653609-3004-4a48-b2d6-bddab03e778c.png",
+                Name = $"Pump kit",
+                ClientName = $"UAB Star platinum",
+                Address = $"Vydūno alėja 24A, Kaunas",
+                ImageName = "test.png",
                 CompanyId = 1,
                 AuthorId = 2,
                 CreationDate = DateTime.Now.ToString("s"),
@@ -318,7 +351,7 @@ namespace Traki.Infrastructure.Data
             },
             new ProductEntity
             {
-                Name = $"SH.2 / 01.2.21.1.0016 GT",
+                Name = $"SH.2",
                 ProjectId = 2,
                 AuthorId = 1,
                 Status = ProductStatus.Completed,
@@ -326,7 +359,7 @@ namespace Traki.Infrastructure.Data
             },
             new ProductEntity
             {
-                Name = $"SH.1 / 01.2.21.1.0016",
+                Name = $"TH.1 - 0016",
                 ProjectId = 1,
                 AuthorId = 1,
                 Status = ProductStatus.Active,
@@ -360,95 +393,6 @@ namespace Traki.Infrastructure.Data
                 Standard="ISO 13480-5 standard",
                 ProjectId = 2
             }
-        };
-
-        public static IEnumerable<OldChecklistEntity> Checklists => new[]
-        {
-            new OldChecklistEntity
-            {
-                Name = "Components and Equipment",
-                Standard="General components and equipment requirements",
-                ProductId = 1
-            },
-            new OldChecklistEntity
-            {
-                Name = "Test-Checklist-B",
-                Standard="ISO-BBD",
-                ProductId = 2
-            },
-            new OldChecklistEntity
-            {
-                Name = "Test-Checklist-C",
-                Standard="ISO-BBD",
-                ProductId = 2
-            }
-        };
-
-        public static IEnumerable<OldQuestionEntity> Questions => new[]
-        {
-            new OldQuestionEntity
-            {
-                Title = "Test-Question-A",
-                Description="Test-Description-A",
-                TemplateId = 1
-            },
-            new OldQuestionEntity
-            {
-                Title = "Test-Question-B",
-                Description="Test-Description-B",
-                TemplateId = 1
-            },
-            new OldQuestionEntity
-            {
-                Title = "Test-Question-C",
-                Description="Test-Description-C",
-                TemplateId = 2
-            },            new OldQuestionEntity
-            {
-                Title = "Test-Question-D",
-                Description="Test-Description-D",
-                TemplateId = 1
-            },
-            new OldQuestionEntity
-            {
-                Title = "Test-Question-E",
-                Description="Test-Description-E",
-                TemplateId = 1
-            },
-        };
-
-        public static IEnumerable<ChecklistQuestionEntity> CheckListQuestions => new[]
-        {
-            new ChecklistQuestionEntity
-            {
-                Title = "Test-ChecklistQuestion-A",
-                Description="Test-Description-A",
-                ChecklistId = 1
-            },
-            new ChecklistQuestionEntity
-            {
-                Title = "Test-ChecklistQuestion-B",
-                Description="Test-Description-B",
-                ChecklistId = 1
-            },
-            new ChecklistQuestionEntity
-            {
-                Title = "Test-ChecklistQuestion-C",
-                Description="Test-Description-C",
-                ChecklistId = 2
-            },
-            new ChecklistQuestionEntity
-            {
-                Title = "Test-ChecklistQuestion-D",
-                Description="Test-Description-D",
-                ChecklistId = 1
-            },
-            new ChecklistQuestionEntity
-            {
-                Title = "Test-ChecklistQuestion-E",
-                Description="Test-Description-E",
-                ChecklistId = 1
-            },
         };
     }
 }

@@ -8,11 +8,13 @@ import { v4 as uuid } from 'uuid';
 import { Project } from '../../contracts/projects/Project';
 import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 import { validate, validationRules } from 'utils/textValidation';
+import { useAlert } from 'hooks/useAlert';
 
 export function CreateProject() {
 
   const [previewImage, setPreviewImage] = useState<string>();
   const [file, setFile] = useState<File>();
+  const { displaySuccess  } = useAlert();
 
   const [name, setName] = useState<string>('');
   const [client, setClient] = useState<string>('');
@@ -37,7 +39,7 @@ export function CreateProject() {
       pictureName = `${uuid()}${file.type.replace('image/','.')}`;
       const formData = new FormData();
       formData.append(pictureName, file, pictureName);
-      await pictureService.uploadPicturesFormData('item', formData);
+      await pictureService.uploadPicturesFormData('company', formData);
     }
 
     const project: Project = {
@@ -54,6 +56,7 @@ export function CreateProject() {
     };
 
     await projectService.createProject(request);
+    displaySuccess("Project information was created successfully");
   }
 
   function selectFile (event: React.ChangeEvent<HTMLInputElement>) {
@@ -79,8 +82,8 @@ export function CreateProject() {
             <TextField size='medium'
               inputProps={{ maxLength: 50 }}
               id="project-name"
-              error={validate(name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(name, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(name, [validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(name, [validationRules.noSpecialSymbols]).message}
               label="Project name"
               variant="standard"
               value={name}
@@ -89,8 +92,8 @@ export function CreateProject() {
             <TextField
               inputProps={{ maxLength: 50 }}
               id="project-name"
-              error={validate(address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(address, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(address, [validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(address, [validationRules.noSpecialSymbols]).message}
               label="Address"
               variant="standard"
               value={address}
@@ -99,8 +102,8 @@ export function CreateProject() {
             <TextField
               inputProps={{ maxLength: 50 }}
               id="project-name"
-              error={validate(client, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).invalid}
-              helperText={validate(client, [validationRules.nonEmpty, validationRules.noSpecialSymbols]).message}
+              error={validate(client, [validationRules.noSpecialSymbols]).invalid}
+              helperText={validate(client, [validationRules.noSpecialSymbols]).message}
               label="Client name"
               variant="standard"
               value={client}

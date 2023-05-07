@@ -131,7 +131,7 @@ export default function MainLayout() {
             px: [1],
           }}
         >
-          <Typography sx={{fontSize: 26}}>Traki</Typography>
+          <Typography sx={{fontSize: 26, marginLeft: '10px'}}>Traki</Typography>
         </Toolbar>
         <Divider />
         <List component="nav">

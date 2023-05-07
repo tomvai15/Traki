@@ -11,7 +11,7 @@ export const useUserInformation = () => {
       setUserInfo({...userInfo, ...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign });
       console.log('ok');
     } catch {
-      setUserInfo({ id: -1, token: '', loggedInDocuSign: false });
+      setUserInfo({ id: -1, token: '', refreshToken: '', loggedInDocuSign: false });
       console.log('ne ok');
     }
   }
@@ -21,15 +21,15 @@ export const useUserInformation = () => {
       const getUserResponse = await authService.getUserFullInfo();
       setUserInfo((x) => { return  {...x, user: getUserResponse.user};});
     } catch {
-      setUserInfo({ id: -1, token: '', loggedInDocuSign: false });
+      setUserInfo({ id: -1, token: '', refreshToken: '', loggedInDocuSign: false });
     }
   }
 
   async function clearToken() {
-    console.log('logout');
     try {
-      await authService.logout();
       setUserInfo((x) => { return  {...x, token: '', refreshToken: ''};});
+      await authService.logout();
+      //setUserInfo((x) => { return  {...x, token: '', refreshToken: ''};});
     } catch {
       setUserInfo((x) => { return  {...x, token: '', refreshToken: ''};});
     }

@@ -22,7 +22,6 @@ export function ProtocolsCard({protocols, setSelectedProtocol}: Props) {
             <ListItemButton onClick={() => setSelectedProtocol(item)} alignItems="flex-start" sx={{backgroundColor: theme.palette.grey[100]}}>
               <ListItemText
                 primary={item.name}
-                secondary='Modified in 2023-03-30'
               />
             </ListItemButton>
           </Card>

@@ -29,9 +29,6 @@ namespace Traki.Api.Mapping
             CreateMap<Project, ProjectEntity>().ReverseMap();
             CreateMap<Product, ProductEntity>().ReverseMap();
             CreateMap<Template, TemplateEntity>().ReverseMap();
-            //CreateMap<Question, OldQuestionEntity>().ReverseMap();
-            CreateMap<CheckList, OldChecklistEntity>().ReverseMap();
-            CreateMap<ChecklistQuestion, ChecklistQuestionEntity>().ReverseMap();
 
             CreateMap<ChecklistEntity, Checklist>().ReverseMap();
             CreateMap<SectionEntity, Section>().ReverseMap();

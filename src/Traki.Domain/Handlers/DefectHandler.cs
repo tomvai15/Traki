@@ -159,6 +159,8 @@ namespace Traki.Domain.Handlers
 
             var author = await _usersRepository.GetUserById(defect.AuthorId);
 
+
+
             string deviceToken = author.DeviceToken;
 
             if (deviceToken.IsNullOrEmpty())
