@@ -1,7 +1,6 @@
-﻿using Traki.Api.Contracts.Drawing.Defect;
-using Traki.Domain.Models.Drawing;
+﻿using Traki.Domain.Models.Drawing;
 
-namespace Traki.Infrastructure.Entities.Drawing
+namespace Traki.Api.Contracts.Drawing.Defect
 {
     public class StatusChangeDto
     {

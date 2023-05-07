@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\src\Traki.Api\Traki.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Services\" />
+  </ItemGroup>
+
 </Project>

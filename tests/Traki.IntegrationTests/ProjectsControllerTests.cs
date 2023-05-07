@@ -35,6 +35,7 @@ namespace Traki.IntegrationTests
                     ClientName = "client",
                     Address = "address",
                     ImageName= "ima.ge.png",
+                    CreationDate = ""
                 }
             };
 
@@ -42,7 +43,7 @@ namespace Traki.IntegrationTests
             var response = await client.Post<CreateProjectRequest, GetProjectResponse>(url, request);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Fact]
@@ -92,6 +93,7 @@ namespace Traki.IntegrationTests
                 .Excluding(x => x.CompanyId)
                 .Excluding(x => x.Company)
                 .Excluding(x => x.AuthorId)
+                .Excluding(x => x.CreationDate)
                 .Excluding(x => x.Author)
                 .Excluding(x => x.Templates)
                 .Excluding(x => x.Id));

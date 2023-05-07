@@ -119,41 +119,16 @@ namespace Traki.Infrastructure.Services
 
         private static RecipientViewRequest MakeRecipientViewRequest(string signerEmail, string signerName, string returnUrl, string signerClientId, string state, string pingUrl = null)
         {
-            // Data for this method
-            // signerEmail
-            // signerName
-            // dsPingUrl -- class global
-            // signerClientId -- class global
-            // dsReturnUrl -- class global
             RecipientViewRequest viewRequest = new RecipientViewRequest();
 
-            // Set the url where you want the recipient to go once they are done signing
-            // should typically be a callback route somewhere in your app.
-            // The query parameter is included as an example of how
-            // to save/recover state information during the redirect to
-            // the DocuSign signing ceremony. It's usually better to use
-            // the session mechanism of your web framework. Query parameters
-            // can be changed/spoofed very easily.
             viewRequest.ReturnUrl = returnUrl + "?state=" + state;
 
-            // How has your app authenticated the user? In addition to your app's
-            // authentication, you can include authenticate steps from DocuSign.
-            // Eg, SMS authentication
             viewRequest.AuthenticationMethod = "none";
 
-            // Recipient information must match embedded recipient info
-            // we used to create the envelope.
             viewRequest.Email = signerEmail;
             viewRequest.UserName = signerName;
             viewRequest.ClientUserId = signerClientId;
 
-            // DocuSign recommends that you redirect to DocuSign for the
-            // Signing Ceremony. There are multiple ways to save state.
-            // To maintain your application's session, use the pingUrl
-            // parameter. It causes the DocuSign Signing Ceremony web page
-            // (not the DocuSign server) to send pings via AJAX to your
-            // app,
-            // NOTE: The pings will only be sent if the pingUrl is an https address
             if (pingUrl != null)
             {
                 viewRequest.PingFrequency = "600"; // seconds
@@ -165,28 +140,18 @@ namespace Traki.Infrastructure.Services
 
         private static EnvelopeDefinition MakeEnvelope(string signerEmail, string signerName, string signerClientId, string docPdf)
         {
-            // Data for this method
-            // signerEmail
-            // signerName
-            // signerClientId -- class global
-            // Config.docPdf
-
             EnvelopeDefinition envelopeDefinition = new EnvelopeDefinition();
             envelopeDefinition.EmailSubject = "Please sign this document";
             Document doc1 = new Document();
 
 
             doc1.DocumentBase64 = docPdf;
-            doc1.Name = "Lorem Ipsum"; // can be different from actual file name
+            doc1.Name = "Protocol Report"; 
             doc1.FileExtension = "pdf";
             doc1.DocumentId = "3";
 
-            // The order in the docs array determines the order in the envelope
             envelopeDefinition.Documents = new List<Document> { doc1 };
 
-            // Create a signer recipient to sign the document, identified by name and email
-            // We set the clientUserId to enable embedded signing for the recipient
-            // We're setting the parameters via the object creation
             Signer signer1 = new Signer
             {
                 Email = signerEmail,
@@ -195,11 +160,6 @@ namespace Traki.Infrastructure.Services
                 RecipientId = "1",
             };
 
-            // Create signHere fields (also known as tabs) on the documents,
-            // We're using anchor (autoPlace) positioning
-            //
-            // The DocuSign platform searches throughout your envelope's
-            // documents for matching anchor strings.
             SignHere signHere1 = new SignHere
             {
                 AnchorString = "/sn1/",
@@ -208,22 +168,18 @@ namespace Traki.Infrastructure.Services
                 AnchorYOffset = "20",
             };
 
-            // Tabs are set per recipient / signer
             Tabs signer1Tabs = new Tabs
             {
                 SignHereTabs = new List<SignHere> { signHere1 },
             };
             signer1.Tabs = signer1Tabs;
 
-            // Add the recipient to the envelope object
             Recipients recipients = new Recipients
             {
                 Signers = new List<Signer> { signer1 },
             };
             envelopeDefinition.Recipients = recipients;
 
-            // Request that the envelope be sent by setting |status| to "sent".
-            // To request that the envelope be created as a draft, set to "created"
             envelopeDefinition.Status = "sent";
 
             return envelopeDefinition;

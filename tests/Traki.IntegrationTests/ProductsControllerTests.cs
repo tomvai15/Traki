@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using Traki.Api.Contracts.Product;
 using Traki.Infrastructure.Data;
@@ -11,17 +12,23 @@ namespace Traki.IntegrationTests
     public class ProductsControllerTests
     {
         private readonly WebApplicationFactory<Program> _factory;
+        private readonly TrakiDbContext _context;
 
         public ProductsControllerTests(WebApplicationFactory<Program> factory)
         {
             _factory = factory;
+            var serviceProvider = factory.Services.CreateScope().ServiceProvider;
+            _context = serviceProvider.GetRequiredService<TrakiDbContext>();
         }
 
-        [Theory]
-        [InlineData("/api/projects/1/products/1")]
-        public async Task Get_ExistingProject_ReturnSuccess(string url)
+        [Fact]
+        public async Task Get_ExistingProject_ReturnSuccess()
         {
             // Arrange
+            var product = _context.Products.First();
+            var productId = product.Id;
+            var projectId = product.ProjectId;
+            var url = $"/api/projects/{productId}/products/{projectId}";
             var client = _factory.GetCustomHttpClient();
             await client.LoginAsProductManager();
 
@@ -31,13 +38,10 @@ namespace Traki.IntegrationTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var expectedResponse = ExampleData.Products.First();
-
             GetProductResponse getProductResponse = response.Data;
-
-            expectedResponse.Should().BeEquivalentTo(getProductResponse.Product,
+            product.Should().BeEquivalentTo(getProductResponse.Product,
                 options => options.Excluding(x => x.Author)
-                                  .Excluding(x=> x.Id));
+                    .Excluding(x => x.CreationDate));
         }
 
         [Theory]

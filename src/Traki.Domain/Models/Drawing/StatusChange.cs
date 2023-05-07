@@ -1,7 +1,4 @@
-﻿using Traki.Domain.Models;
-using Traki.Domain.Models.Drawing;
-
-namespace Traki.Infrastructure.Entities.Drawing
+﻿namespace Traki.Domain.Models.Drawing
 {
     public class StatusChange
     {

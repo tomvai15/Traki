@@ -28,7 +28,6 @@ namespace Traki.Infrastructure.Services
                 to: new MailAddress(emailAddress, "THEIR NAME")
                 ))
             {
-
                 message.Subject = subject;
                 message.Body = body;
 
