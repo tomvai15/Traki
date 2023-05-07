@@ -205,7 +205,7 @@ namespace Traki.Api.Controllers
 
         [HttpPost("code")]
         [Authorize]
-        public async Task<ActionResult<string>> GetAuthorisationCode([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
+        public async Task<ActionResult<string>> GetAuthRedirectUrl([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
         {
             var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State);
             return Ok(url);

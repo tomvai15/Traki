@@ -54,7 +54,7 @@ class AuthService {
     await axiosApiInstance.post(fullRoute, loginOAuthRequest, { headers: {} });
   }
 
-  async getAuthorisationCodeUrl(authorisationCodeRequest: AuthorisationCodeRequest): Promise<string> {
+  async getRedirectUrl(authorisationCodeRequest: AuthorisationCodeRequest): Promise<string> {
     const fullRoute = route + '/code';
     const response = await axiosApiInstance.post<string>(fullRoute, authorisationCodeRequest, { headers: {} });
     return response.data;

@@ -1,4 +1,4 @@
-export { ProtocolReport  } from './ProtocolReport';
+export { ProtocolReport  } from './ProtocolReportPage';
 export { ProductPage  } from './ProductPage';
 export { FillProtocolPage  } from './FillProtocolPage';
 export { DefectsPage  } from './DefectsPage';

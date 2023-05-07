@@ -102,7 +102,7 @@ export function ProtocolReport() {
     const request: AuthorisationCodeRequest = {
       state: btoa(location.pathname)
     };
-    const res = await authService.getAuthorisationCodeUrl(request);
+    const res = await authService.getRedirectUrl(request);
     window.location.replace(res);
   }
 

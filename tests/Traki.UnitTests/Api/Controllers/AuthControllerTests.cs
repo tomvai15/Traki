@@ -431,7 +431,7 @@ namespace Traki.UnitTests.Api.Controllers
             _docuSignService.Setup(s => s.GetAuthorisationCodeRequest(state)).ReturnsAsync(url);
 
             // Act
-            var result = await authController.GetAuthorisationCode(request);
+            var result = await authController.GetAuthRedirectUrl(request);
 
             // Assert
             var data = result.ShouldBeOfType<string>();

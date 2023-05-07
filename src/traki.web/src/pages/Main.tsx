@@ -7,7 +7,7 @@ import { ProtectedRoute } from '../components/ProtectedRoute';
 import { CompanyPage } from './company/Company';
 import { EditCheckpoint } from './templates/EditCheckpoint';
 import SignValidation from './authentication/SignValidation';
-import { ProtocolReport } from './projects/products/ProtocolReport';
+import { ProtocolReport } from './projects/products/ProtocolReportPage';
 import { HomePage } from './Home';
 import { CreateProduct } from './projects/products/CreateProduct';
 import MainLayout from 'layout/MainLayout';
