@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LoginIcon from '@mui/icons-material/Login';
@@ -13,10 +12,9 @@ import { Card } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../state/user-state';
-import { Role } from 'contracts/user/Roles';
 
 export default function SignIn() {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [, setUserInfo] = useRecoilState(userState);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('');

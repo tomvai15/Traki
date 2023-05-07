@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, IconButton, TextField, Typography } from '@mui/material';
-import projectService from '../../../services/project-service';
+import React, { useState } from 'react';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, TextField, Typography } from '@mui/material';
 import { Link as BreadLink } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
-import pictureService from '../../../services/picture-service';
-import { v4 as uuid } from 'uuid';
-import { Project } from '../../../contracts/projects/Project';
-import { CreateProjectRequest } from '../../../contracts/projects/CreateProjectRequest';
 import { CreateProductRequest } from 'contracts/product/CreateProductRequest';
 import { useNavigate, useParams } from 'react-router-dom';
 import { productService } from 'services';
@@ -15,8 +9,6 @@ export function CreateProduct() {
 
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const [previewImage, setPreviewImage] = useState<string>();
-  const [file, setFile] = useState<File>();
 
   const [name, setName] = useState<string>('');
 

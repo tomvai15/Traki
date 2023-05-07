@@ -1,6 +1,5 @@
 import React from 'react';
-import { Divider, Stack, TextField, TableRow as MuiTableRow, TableCell } from '@mui/material';
-import Box from '@mui/material/Box';
+import { TextField, TableRow as MuiTableRow, TableCell } from '@mui/material';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { validate, validationRules } from 'utils/textValidation';

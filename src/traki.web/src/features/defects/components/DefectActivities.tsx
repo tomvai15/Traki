@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { CommentWithImage, DefectActivity } from '../types';
 import { StatusChange } from 'contracts/drawing/defect/StatusChange';
 import { Author } from 'contracts/drawing/defect/Author';

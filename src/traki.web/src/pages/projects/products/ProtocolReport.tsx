@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CreateIcon from '@mui/icons-material/Create';
-import { Button, Card, CardActions, CardContent, CardHeader, Checkbox, CircularProgress, Divider, FormControlLabel, IconButton, Stack, Table, TableBody, TableCell, TableRow, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Checkbox, CircularProgress, Divider, FormControlLabel, IconButton, Stack, Table, TableBody, TableCell, TableRow, TextField, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -17,7 +17,6 @@ import reportService from '../../../services/report-service';
 import { userState } from '../../../state/user-state';
 import { saveAs } from 'file-saver';
 import DownloadIcon from '@mui/icons-material/Download';
-import InfoIcon from '@mui/icons-material/Info';
 import InputIcon from '@mui/icons-material/Input';
 import { sectionService } from 'services';
 import { Section } from 'contracts/protocol';
@@ -29,14 +28,14 @@ type SectionWithFlag = {
 }
 
 export function ProtocolReport() {
-  const { projectId, productId, protocolId } = useParams();
+  const { protocolId } = useParams();
   const location = useLocation();
 
   const [reportName, setReportName] = useState<string>('');
   const [useColors, setUseColors] = useState<boolean>(true);
 
   const [pdfBase64, setPdf] = useState<string>('');
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [userInfo] = useRecoilState(userState);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
   const [protocol, setProtocol] = useState<Protocol>();
 

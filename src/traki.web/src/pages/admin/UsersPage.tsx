@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
 import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';

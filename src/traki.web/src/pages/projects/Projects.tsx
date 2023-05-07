@@ -6,12 +6,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { Project } from '../../contracts/projects/Project';
 import { Product } from '../../contracts/product/Product';
-import { useRecoilState } from 'recoil';
-import { pageState } from 'state/page-state';
 import { ProtectedComponent } from 'components/ProtectedComponent';
 import { HideableComponent } from 'components/HideableComponent';
 import { AuthorBar } from 'components/AuthorBar';
-import { CustomAvatar } from 'components/CustomAvatar';
 
 type ProjectWithImage = {
   project: Project,
@@ -21,7 +18,6 @@ type ProjectWithImage = {
 export function Projects() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectWithImage[]>([]);
-  const [page, setPageState] = useRecoilState(pageState);
 
   useEffect(() => {
     fetchProjects();

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';
 import { Role } from 'contracts/user/Roles';
@@ -18,14 +17,12 @@ const initialUser: User = {
 
 export function CreateUserPage() {
   const [user, setUser] = useState<User>(initialUser);
-  const [message, setMessage] = useState<string>();
 
   async function createUser() {
     const request: CreateUserRequest = {
       user: {...user, role: user.role}
     };
     await userService.createUser(request);
-    setMessage('User created');
   }
 
   return (

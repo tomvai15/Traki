@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Stack, Table as MuiTable, TableRow as MuiTableRow, TableCell, TableHead, TextField, TableContainer, Paper, TableBody, Typography, Card, useTheme } from '@mui/material';
+import { Button, Table as MuiTable, TableRow as MuiTableRow, TableCell, TableHead, TableContainer, Paper, TableBody, Typography, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Table } from 'contracts/protocol/section/Table';
 import { FillTableRow } from './FillTableRow';

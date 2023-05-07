@@ -12,16 +12,13 @@ interface Props<T> {
 
 export function PaginatedList<T extends { id: number}>({items, renderItem, height, heightPerItem, selector}: Props<T>) {
 
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const itemsPerPage = 5;
   const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
   const [listHeight, setListHeight] = useState<string>();
 
   useEffect(() => {
-
-
-
     console.log(items.length/itemsPerPage);
     console.log(Math.ceil(items.length/itemsPerPage));
     setPageCount(Math.ceil(items.length/itemsPerPage));

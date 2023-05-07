@@ -33,7 +33,7 @@ export function ProtocolSections({sections, setSections}: Props) {
       <Box sx={{marginLeft: '-5px'}}>
         <DragDropContext onDragEnd={result => onDragEnd(result)}>
           <Droppable droppableId={'asdsda'} >
-            {(provided, snapshot) => {
+            {(provided) => {
               return (
                 <div
                   {...provided.droppableProps}
@@ -46,7 +46,7 @@ export function ProtocolSections({sections, setSections}: Props) {
                         draggableId={item.priority.toString()}
                         index={index}
                       >
-                        {(provided, snapshot) => {
+                        {(provided) => {
                           return (
                             <Box
                               ref={provided.innerRef}

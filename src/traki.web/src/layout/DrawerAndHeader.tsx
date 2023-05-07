@@ -73,7 +73,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export function DrawerAndHeader() {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [, setUserInfo] = useRecoilState(userState);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);

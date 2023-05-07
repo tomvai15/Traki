@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Grid, Link as BreadLink, Card, CardContent, Box, TextField, Button, ToggleButtonGroup, ToggleButton, Breadcrumbs, Typography, } from '@mui/material';
 import { Checklist, Section, UpdateSectionRequest } from 'contracts/protocol';
 import { Item } from 'contracts/protocol/items';
@@ -13,7 +13,6 @@ import { validate, validationRules } from 'utils/textValidation';
 import { useAlert } from 'hooks/useAlert';
 
 export function CreateSectionPage() {
-  const navigate = useNavigate();
   const { displaySuccess  } = useAlert();
   const { protocolId } = useParams();
 

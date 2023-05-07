@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Link as BreadLink, Dialog, DialogContent, DialogTitle, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { Protocol } from '../../../contracts/protocol/Protocol';
 import protocolService from '../../../services/protocol-service';
 import { PaginatedList } from 'components/PaginatedList';
 
 export interface Props {
   open: boolean;
-  selectedValue: string;
   addProtocol: (id: number) => void;
   onclose: () => void;
 }
 
 export default function AddProtocolDialog(props: Props) {
-  const { onclose, addProtocol, selectedValue, open } = props;
+  const { onclose, addProtocol, open } = props;
 
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 

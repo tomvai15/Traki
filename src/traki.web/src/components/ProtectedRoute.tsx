@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import {Navigate, useLocation} from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { userState } from '../state/user-state';
+import {useLocation} from 'react-router-dom';
 import { useUserInformation } from 'hooks/useUserInformation';
 
 type Props = {
@@ -12,8 +10,6 @@ export const ProtectedRoute: React.FC<Props> = ({children}) => {
 
   const location = useLocation();
   const { fetchUser, fetchFullUserInformation } = useUserInformation();
-
-  const [userInfo] = useRecoilState(userState);
 
   useEffect(() => {
     fetchUser();

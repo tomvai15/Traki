@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardContent, Grid, Stack, TextField, useTheme } from '@mui/material';
+import { Button, Card, CardContent, Stack, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Section } from 'contracts/protocol';
 import { Protocol } from 'contracts/protocol/Protocol';
@@ -14,7 +14,7 @@ type Props = {
   deleteProtocol: () => void
 }
 
-export function ProtocolCard({selectedProtocol, updateProtocol, deleteProtocol}: Props) {
+export function ProtocolCard({selectedProtocol, deleteProtocol}: Props) {
   const navigate = useNavigate();
 
   const [protocol, setProtocol] = useState<Protocol>();

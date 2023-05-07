@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Tooltip } from '@mui/material';
-import { Instance } from '@popperjs/core';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({

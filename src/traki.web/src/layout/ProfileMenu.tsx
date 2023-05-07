@@ -1,13 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
-import { Button, Chip, Menu, MenuItem, Stack, useTheme } from '@mui/material';
+import { Chip, Menu, MenuItem, Stack, useTheme } from '@mui/material';
 import { userState } from 'state/user-state';
 import { useRecoilState } from 'recoil';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { userService } from 'services';
 import authService from 'services/auth-service';
 import PersonIcon from '@mui/icons-material/Person';
 

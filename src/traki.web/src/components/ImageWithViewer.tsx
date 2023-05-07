@@ -1,5 +1,5 @@
-import { Box } from '@mui/material';
 import  React, { useState } from 'react';
+import { Box } from '@mui/material';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -10,7 +10,7 @@ type ImageWithViewerProps = {
   source?: string
 }
 
-export default function ImageWithViewer({ width, height, source }: ImageWithViewerProps) {
+export default function ImageWithViewer({ height, source }: ImageWithViewerProps) {
   const [viewerActive, setViewerActive] = useState<boolean>(false);
 
   return (

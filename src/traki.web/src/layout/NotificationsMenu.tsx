@@ -6,13 +6,11 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Link, useNavigate } from 'react-router-dom';
-import { Card, Grid, ListItem, ListItemButton, ListItemSecondaryAction, ListItemText, Menu, Stack, useTheme } from '@mui/material';
-import { userState } from 'state/user-state';
+import { useNavigate } from 'react-router-dom';
+import { Card, Grid, ListItem, ListItemButton, Menu, Stack, useTheme } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DefectNotification } from 'contracts/drawing/defect/DefectNotification';
-import { notificationService } from 'services';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useUpdateNotifications } from 'hooks/useUpdateNotifications';
 import { notificationsState } from 'state/notification-state';
@@ -31,9 +29,8 @@ export default function NotificationsMenu() {
   const theme = useTheme();
   const { updateNotifications } = useUpdateNotifications();
 
-  const [notifications, setNotifications] = useRecoilState(notificationsState);
+  const [notifications] = useRecoilState(notificationsState);
 
-  const [userInfo, setUserInfo] = useRecoilState(userState);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   useEffect(() => {

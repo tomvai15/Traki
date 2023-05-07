@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Breadcrumbs, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 import projectService from '../../services/project-service';
 import { Link as BreadLink } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';

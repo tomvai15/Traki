@@ -5,7 +5,6 @@ function formatDate(date: Date): string {
 }
 
 function formatTimeDifference(pastDate: Date): string {
-  const currentDate = new Date();
   return formatDistanceToNow(pastDate, { addSuffix: true });
 }
 

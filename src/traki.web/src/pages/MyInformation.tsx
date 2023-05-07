@@ -12,7 +12,7 @@ import { avatarImage } from 'features/auth/data/avatarImage';
 const profileWidth = '200px';
 
 export function MyInformation() {
-  const { fetchUser, fetchFullUserInformation } = useUserInformation();
+  const { fetchFullUserInformation } = useUserInformation();
 
   const [editingAvatar, setEditingAvatar] = useState<boolean>(false);
   const [preview, setPreview] = useState<string>('');
