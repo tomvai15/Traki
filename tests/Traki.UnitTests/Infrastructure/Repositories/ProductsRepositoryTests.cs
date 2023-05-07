@@ -139,7 +139,11 @@ namespace Traki.UnitTests.Infrastructure.Repositories
             var products = await repository.GetProductByQuery(query);
 
             // Assert
-            expectedProducts.Should().BeEquivalentTo(products, options => options.Excluding(x => x.Author));
+            expectedProducts.Should().BeEquivalentTo(products, 
+                options => 
+                    options.Excluding(x => x.Author)
+                        .Excluding(x=> x.Protocols)
+                        .Excluding(x=> x.Drawings));
         }
     }
 }

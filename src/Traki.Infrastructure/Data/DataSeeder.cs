@@ -172,23 +172,7 @@ namespace Traki.Infrastructure.Data
             return dbContext;
         }
 
-        public static TrakiDbContext AddChecklists(this TrakiDbContext dbContext)
-        {
-            dbContext.OldChecklists.AddRange(ExampleData.Checklists);
-            dbContext.SaveChanges();
-
-            return dbContext;
-        }
-
-        public static TrakiDbContext AddChecklistQuestions(this TrakiDbContext dbContext)
-        {
-            dbContext.CheckListQuestions.AddRange(ExampleData.CheckListQuestions);
-            dbContext.SaveChanges();
-
-            return dbContext;
-        }
-
-        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext)
+        public static TrakiDbContext AddUsers(this TrakiDbContext dbContext, IEnumerable<UserEntity> users)
         {
             dbContext.Users.AddRange(users);
             dbContext.SaveChanges();
