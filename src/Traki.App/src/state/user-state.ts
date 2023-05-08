@@ -1,6 +1,6 @@
-import { RecoilState, atom } from "recoil";
-import ReactNativeRecoilPersist from "react-native-recoil-persist";
-import { UserInfo } from "../contracts/auth/UserInfo";
+import { RecoilState, atom } from 'recoil';
+import ReactNativeRecoilPersist from 'react-native-recoil-persist';
+import { UserInfo } from '../contracts/auth/UserInfo';
 
 interface UserState {
 	id: number,
@@ -19,9 +19,10 @@ const initialState: UserState = {
   refreshToken: 'dsaasdasd'
 };
 
-
+/* eslint-disable */
 export const userState: RecoilState<UserState> = atom({
   key: 'userState',
   default: initialState,
   effects_UNSTABLE: [ReactNativeRecoilPersist.persistAtom]
 });
+/* eslint-disable */

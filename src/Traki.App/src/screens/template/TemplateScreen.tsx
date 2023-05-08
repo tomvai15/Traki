@@ -1,6 +1,6 @@
 import  React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, Text, ActivityIndicator,TouchableHighlight, Image } from 'react-native';
-import { Button, Card, Checkbox, Divider, IconButton, List, Paragraph, SegmentedButtons, Title, TextInput } from 'react-native-paper';
+import { View, FlatList, Text, ActivityIndicator} from 'react-native';
+import { Card, Checkbox, Divider, Paragraph, SegmentedButtons, Title, TextInput } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
 import protocolService from '../../services/protocol-service';
@@ -9,14 +9,14 @@ import { Checklist } from '../../contracts/protocol/Checklist';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import { Section } from '../../contracts/protocol/Section';
 import { ScreenView } from '../../components/ScreenView';
-import ImageView from "react-native-image-viewing";
+import ImageView from 'react-native-image-viewing';
 import { Item } from '../../contracts/protocol/items/Item';
 import { ProtocolTable } from '../../features/protocol/components/ProtocolTable';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'Template'>;
 
 export default function TemplateScreen({ route, navigation }: Props) {
-  const [isLoading, setLoading] = React.useState(false);
+  const [isLoading] = React.useState(false);
   const {protocolId} = route.params;
   
   const [protocol, setProtocol] = useState<Protocol>(initialProtocol);
@@ -57,16 +57,16 @@ export default function TemplateScreen({ route, navigation }: Props) {
         <Title>{protocol.name}</Title>
       </View>
       { isLoading ?
-      <View>
-        <ActivityIndicator animating={isLoading}/>
-      </View> :
-      <FlatList data={sections} 
-        showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.id.toString()}
-        renderItem={ ({item}) =>   
-          <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
-        }>
-      </FlatList>}
+        <View>
+          <ActivityIndicator animating={isLoading}/>
+        </View> :
+        <FlatList data={sections} 
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.id.toString()}
+          renderItem={ ({item}) =>   
+            <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
+          }>
+        </FlatList>}
     </ScreenView>
   );
 }
@@ -88,13 +88,14 @@ type ItemImage = {
 function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSectionProps) {
 
   const [section, setSection] = useState<Section>(initialSection);
-  const [initialSectionJson, setInitialSectionJson] = useState<string>('');
-  const [itemImages, setItemImages] = useState<ItemImage[]>([]);
-  const [initialItemImagesJson, setInitialItemImagesJson] = useState<string>('');
+  const [, setInitialSectionJson] = useState<string>('');
+  const [itemImages] = useState<ItemImage[]>([]);
 
+  /* eslint-disable */
   useEffect(() => {
     fetchSection();
   }, []);
+  /* eslint-disable */
 
   async function fetchSection() {
     const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
@@ -129,7 +130,7 @@ function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSe
           <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
         }>
       </FlatList> :
-        (section.table && <ProtocolTable buttonVisible={false} table={section.table} updateTable={(t) => {return;}}/>)
+        (section.table && <ProtocolTable buttonVisible={false} table={section.table} updateTable={() => {return;}}/>)
       }
       <Divider bold></Divider>
     </View>
@@ -142,7 +143,7 @@ type ProtocolSectionItemProps = {
   setSelectedImage: (image: string) => void
 };
 
-function ProtocolSectionItem({ item, itemImage, setSelectedImage }: ProtocolSectionItemProps) {
+function ProtocolSectionItem({ item }: ProtocolSectionItemProps) {
 
   function checkType() {
     if (item.question) {
@@ -185,7 +186,7 @@ type ProtocolSectionItemCompProps = {
 function ProtocolSectionItemTextInput({ item }: ProtocolSectionItemCompProps) {
   return (
     <TextInput disabled value={item.textInput?.value} 
-            multiline={true}></TextInput>
+      multiline={true}></TextInput>
   );
 }
 
@@ -214,21 +215,15 @@ function ProtocolSectionItemMultipleChoice({ item }: ProtocolSectionItemCompProp
   return (
     <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
       {item.multipleChoice?.options.map((item, index) => 
-      <View key={index} >
-        <Text>{item.name}</Text>
-        <Checkbox 
-          status={item.selected ? 'checked' : 'unchecked'}/>
-      </View>
+        <View key={index} >
+          <Text>{item.name}</Text>
+          <Checkbox 
+            status={item.selected ? 'checked' : 'unchecked'}/>
+        </View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-});
 
 const initialProtocol: Protocol = {
   id: 1,

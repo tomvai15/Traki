@@ -1,4 +1,4 @@
-import { Section } from "../../../contracts/protocol/Section";
+import { Section } from '../../../contracts/protocol/Section';
 
 export const initialSection: Section = {
   id: 0,

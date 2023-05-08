@@ -1,4 +1,4 @@
-import { DefectNotification } from "./DefectNotification";
+import { DefectNotification } from './DefectNotification';
 
 export type GetDefectNotificationsResponse = {
   defectNotifications: DefectNotification[]

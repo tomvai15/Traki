@@ -1,6 +1,6 @@
 import  React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import { Button, List, Searchbar } from 'react-native-paper';
+import { List, Searchbar } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProductStackParamList } from './ProductStackParamList';
 import { Product } from '../../contracts/product/Product';
@@ -23,7 +23,7 @@ export default function ProductsScreen({route, navigation }: Props) {
   }, [navigation]);
 
   async function fetchProjects() {
-    const getProductsResposne = await productService.getProducts(projectId).catch(err =>console.log(err));
+    const getProductsResposne = await productService.getProducts(projectId).catch(err => console.log(err));
     if (!getProductsResposne) {
       return;
     }

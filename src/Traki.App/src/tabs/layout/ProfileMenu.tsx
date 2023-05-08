@@ -1,12 +1,13 @@
 import React from 'react';
-import { Badge, Divider, IconButton, Menu, Button } from 'react-native-paper';
+import { Divider, IconButton, Menu } from 'react-native-paper';
 import { View, StyleSheet  } from 'react-native';
 import { useUserInformation } from '../../hooks/useUserInformation';
 
-
+/* eslint-disable */
 type Props = {
   navigation: any
 }
+
 export default function ProfileMenu({navigation}: Props) {
 
   const {clearToken} = useUserInformation();
@@ -55,3 +56,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+/* eslint-disable */

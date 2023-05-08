@@ -161,7 +161,7 @@ export function EditProject() {
             />
           </CardContent>}
           <CardContent>    
-            <Button disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
+            <Button id="update-button" disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
               Edit Project
             </Button>
           </CardContent>  

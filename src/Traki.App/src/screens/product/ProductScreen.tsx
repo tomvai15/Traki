@@ -1,13 +1,8 @@
 import  React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Avatar, Button, Card, Dialog, Divider, List, Portal, Searchbar, Text, Title } from 'react-native-paper';
-import { image } from './test';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProductStackParamList } from './ProductStackParamList';
-import checklistService from '../../services/checklist-service';
-import { Checklist } from '../../contracts/checklist/Checklist';
-import { Template } from '../../contracts/template/Template';
-import templateService from '../../services/template-service';
 import { FlatList } from 'react-native-gesture-handler';
 import { Product } from '../../contracts/product/Product';
 import productService from '../../services/product-service';
@@ -28,7 +23,6 @@ export default function ProductScreen({route, navigation}: Props) {
   const { projectId, productId} = route.params;
 
   const [visible, setVisible] = React.useState(false);
-  const [templates, setTemplates] = useState<Template[]>([]);
   const [product, setProduct] = useState<Product>();
   const [templateToAdd, setTemplateToAdd] = useState<number>(-1);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -97,7 +91,7 @@ export default function ProductScreen({route, navigation}: Props) {
   }
 
   async function createChecklist() {
-    addProtocol(templateToAdd);
+    await addProtocol(templateToAdd);
     hideDialog();
   }
 

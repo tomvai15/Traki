@@ -1,4 +1,4 @@
-import { Defect } from "./Defect"
+import { Defect } from './Defect';
 
 export type GetDefectResponse = {
   defect: Defect

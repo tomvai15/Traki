@@ -1,4 +1,4 @@
-import { Defect } from "./defect/Defect";
+import { Defect } from './defect/Defect';
 
 export type Drawing = {
   id: number,

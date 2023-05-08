@@ -1,8 +1,7 @@
 import React from 'react';
 import { StatusChangeItem } from './StatusChangeItem';
 import { View, StyleSheet } from 'react-native';
-import { Card, Chip, Text } from 'react-native-paper';
-import { Avatar } from 'react-native-paper';
+import { Card, Text } from 'react-native-paper';
 import { formatDate } from '../../../utils/dateHelpers';
 import { DefectActivity } from '../types/DefectActivity';
 import { Comment } from './Comment';
@@ -15,10 +14,6 @@ type Props = {
 export function Activity ({defectActivity}: Props) {
   function formatName() {
     return `${defectActivity.author?.name} ${defectActivity.author?.surname}`;
-  }
-
-  function initials() {
-    return `${defectActivity.author?.name.toUpperCase()[0]}${defectActivity.author?.surname.toUpperCase()[0]}`;
   }
 
   function renderActivity() {

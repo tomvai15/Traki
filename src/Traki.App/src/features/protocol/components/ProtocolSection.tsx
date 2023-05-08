@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from 'react';
-import { FlatList, View, Text, ActivityIndicator } from 'react-native';
+import { FlatList, View, ActivityIndicator } from 'react-native';
 import { Button, Title, Divider } from 'react-native-paper';
 import { Section } from '../../../contracts/protocol/Section';
 import sectionService from '../../../services/section-service';
@@ -89,7 +89,7 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
           localImageUri: '',
           imageName: '',
           imageBase64: ''
-        } as ItemImage
+        } as ItemImage;
       }
       const imageBase64 = await pictureService.getPicture('item', item.itemImage);
       return {
@@ -99,7 +99,7 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
         imageName: item.itemImage,
         imageBase64: imageBase64
       } as ItemImage;
-    })
+    });
 
     const fetchedItemImages = await Promise.all(fetchedItemImagesPromises);
 
@@ -129,22 +129,24 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
     setInitialSectionJson(JSON.stringify(section));
     setInitialTableJson(JSON.stringify(table));
 
-    await updateItemImages()
+    await updateItemImages();
   }
 
   async function updateItemImages() {
-    let formData = new FormData();
+    const formData = new FormData();
 
+    /* eslint-disable */
     console.log(itemImages);
     itemImages.forEach((item) => {
       if (item.isLocal) {
         console.log('??');
-        let filename = item.localImageUri.split('/').pop() ?? '';
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
+        const filename = item.localImageUri.split('/').pop() ?? '';
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : 'image';
         formData.append('photo', JSON.parse(JSON.stringify({ uri: item.localImageUri, name: item.imageName, type })));
       }
     });
+    /* eslint-disable */
 
     await pictureService.uploadPicturesFormData('item', formData);
 
@@ -167,14 +169,6 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
            initialTableJson != JSON.stringify(table)) &&
            ((section.checklist == undefined ? true : isValidChecklist()) && isValidTable());
   }
-
-  /*
-  function canUpdate(): boolean {
-    return  ((section.checklist == undefined ? true : isValidChecklist()) && isValidTable()) &&  
-      (initialSectionJson != JSON.stringify(section) ||
-      initialTableJson != JSON.stringify(table));
-  }*/
-
 
   function isValidChecklist(): boolean {
     
@@ -207,25 +201,25 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
 
   return (
     isLoading ? 
-    <View style={{margin: 50}}>
-      <ActivityIndicator animating={isLoading}/>
-    </View> :
-    <View style={{marginBottom: 30}}>
-      <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-        <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
-        <Button disabled={!canUpdate()} onPress={updateSection} mode='contained'>
+      <View style={{margin: 50}}>
+        <ActivityIndicator animating={isLoading}/>
+      </View> :
+      <View style={{marginBottom: 30}}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+          <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
+          <Button disabled={!canUpdate()} onPress={updateSection} mode='contained'>
             Save
           </Button>
-      </View>      
-      { table == undefined ?  
-        <FlatList data={section.checklist?.items} 
-          keyExtractor={item => item.id.toString()}
-          renderItem={ ({item}) =>   
-            <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
-          }>
-        </FlatList> :
-        <ProtocolTable buttonVisible={true} table={table} updateTable={setTable} />}
-      <Divider bold></Divider>
-    </View>
+        </View>      
+        { table == undefined ?  
+          <FlatList data={section.checklist?.items} 
+            keyExtractor={item => item.id.toString()}
+            renderItem={ ({item}) =>   
+              <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} updateItemImage={updateItemImage} updateItem={updateItem} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
+            }>
+          </FlatList> :
+          <ProtocolTable buttonVisible={true} table={table} updateTable={setTable} />}
+        <Divider bold></Divider>
+      </View>
   );
 }

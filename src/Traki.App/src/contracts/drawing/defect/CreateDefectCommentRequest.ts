@@ -1,4 +1,4 @@
-import { DefectComment } from "./DefectComment"
+import { DefectComment } from './DefectComment';
 
 export type CreateDefectCommentRequest = {
   defectComment: DefectComment

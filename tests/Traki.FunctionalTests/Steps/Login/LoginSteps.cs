@@ -30,6 +30,7 @@ namespace Traki.FunctionalTests.Steps.Login
         public void WhenIEnterValidCredentials()
         {
             _loginPage.Login("vainoristomas@gmail.com", "password");
+            Thread.Sleep(1000);
         }
 
         [Then(@"I should be redirected to home page")]

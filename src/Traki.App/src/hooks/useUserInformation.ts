@@ -1,6 +1,6 @@
-import { useRecoilState } from "recoil";
-import { userState } from "../state/user-state";
-import { authService } from "../services";
+import { useRecoilState } from 'recoil';
+import { userState } from '../state/user-state';
+import { authService } from '../services';
 
 export const useUserInformation = () => {
   const [userInfo, setUserInfo] = useRecoilState(userState);

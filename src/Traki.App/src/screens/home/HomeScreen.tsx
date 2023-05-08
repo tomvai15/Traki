@@ -1,10 +1,6 @@
 import  React, { useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
-import { Avatar, Button, Card, Text, TextInput } from 'react-native-paper';
-import { userState } from '../../state/user-state';
-import { useRecoilState } from 'recoil';
+import { Avatar, Card} from 'react-native-paper';
 import { DefectRecomendation } from '../../contracts/recommendation/DefectRecomendation';
-import { Product } from '../../contracts/product/Product';
 import recommendationService from '../../services/recommendation-service';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ProductCard } from '../../features/recommendation/components/ProductCard';
@@ -13,11 +9,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParamList } from './HomeStackParamList';
 import { ProductRecomendation } from '../../contracts/recommendation/ProductRecomendation';
 
-
 const Wrench = () => <Avatar.Icon size={50} style={{backgroundColor:'red'}}  icon="alert" />;
-
 const FileCad = () => <Avatar.Icon size={50} style={{backgroundColor:'orange'}}  icon="file-cad" />;
-
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>;
 

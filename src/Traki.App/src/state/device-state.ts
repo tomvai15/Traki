@@ -1,5 +1,5 @@
-import { RecoilState, atom } from "recoil";
-import ReactNativeRecoilPersist from "react-native-recoil-persist";
+import { RecoilState, atom } from 'recoil';
+import ReactNativeRecoilPersist from 'react-native-recoil-persist';
 
 interface DeviceInfo {
   token: string,
@@ -8,9 +8,10 @@ interface DeviceInfo {
 const initialState: DeviceInfo = {
   token: ''
 };
-
+/* eslint-disable */
 export const deviceState: RecoilState<DeviceInfo> = atom({
   key: 'deviceState',
   default: initialState,
   effects_UNSTABLE: [ReactNativeRecoilPersist.persistAtom],
 });
+ /* eslint-disable */

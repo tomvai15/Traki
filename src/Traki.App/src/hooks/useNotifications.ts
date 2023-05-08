@@ -1,12 +1,12 @@
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-import { Linking, Platform } from "react-native";
-import { useRecoilState } from "recoil";
-import { deviceState } from "../state/device-state";
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import { Linking, Platform } from 'react-native';
+import { useRecoilState } from 'recoil';
+import { deviceState } from '../state/device-state';
 
 export const useNotifications = () => {
 
-  const [deviceInfo, setDeviceInfo] = useRecoilState(deviceState);
+  const [, setDeviceInfo] = useRecoilState(deviceState);
   
   const registerForPushNotificationsAsync = async () => {
     let token;
@@ -23,13 +23,13 @@ export const useNotifications = () => {
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
       setDeviceInfo({token: token});
-      console.log("TOKEN " + token);
+      console.log('TOKEN ' + token);
     } else {
       //alert('Must use physical device for Push Notifications');
     }
   
     if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
+      await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
@@ -38,18 +38,18 @@ export const useNotifications = () => {
     }
   
     return token;
-  }
+  };
 
-
+  /*
   const handleNotification = (notification: Notifications.Notification) => {
 
-  }
+  };*/
 
   const handleNotificationResponse = (response: Notifications.NotificationResponse) => {
     const data: {url?: string} = response.notification.request.content.data;
 
     if (data?.url) Linking.openURL(data.url);
-  }
+  };
 
-  return { registerForPushNotificationsAsync, handleNotification, handleNotificationResponse };
-}
+  return { registerForPushNotificationsAsync, handleNotificationResponse };
+};

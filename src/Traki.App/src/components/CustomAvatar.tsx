@@ -19,9 +19,9 @@ export function CustomAvatar ({user, size}: Props) {
   }
 
   return (
-  <View>
-    { user.userIconBase64 != undefined  && user.userIconBase64 != '' && user.userIconBase64 != null ? 
-    <Avatar.Image size={size} source={{uri: user.userIconBase64}}/> :
-    <Avatar.Text color='black' size={size} label={formatInitials(user.name, user.surname)}/>}
-  </View>);
+    <View>
+      { user.userIconBase64 != undefined  && user.userIconBase64 != '' && user.userIconBase64 != null ? 
+        <Avatar.Image size={size} source={{uri: user.userIconBase64}}/> :
+        <Avatar.Text color='black' size={size} label={formatInitials(user.name, user.surname)}/>}
+    </View>);
 }

@@ -1,6 +1,3 @@
 export type HomeStackParamList = {
-  HomeScreen: HomeScreenParams;
+  HomeScreen: undefined;
 };
-
-export type HomeScreenParams = {
-}

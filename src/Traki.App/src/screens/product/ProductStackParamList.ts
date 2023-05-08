@@ -1,5 +1,5 @@
 export type ProductStackParamList = {
-  ProjectsScreen: ProjectsScreenParams;
+  ProjectsScreen: undefined;
   Products: ProductsScreenParams;
   Product: ProductScreenParams;
   Protocol: ProtocolScreenParams;
@@ -7,9 +7,6 @@ export type ProductStackParamList = {
   DefectsScreen: DefectsScreenParams;
   DefectScreen: DefectScreenParams;
 };
-
-export type ProjectsScreenParams = {
-}
 
 export type ProductsScreenParams = {
   projectId: number,

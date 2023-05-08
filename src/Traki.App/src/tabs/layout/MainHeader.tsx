@@ -1,10 +1,9 @@
 import React from 'react';
-import { Badge, Divider, IconButton, Menu, Button } from 'react-native-paper';
-import { View, StyleSheet  } from 'react-native';
+import { View } from 'react-native';
 import ProfileMenu from './ProfileMenu';
 import NotificationsMenu from './NotificationsMenu';
 
-
+/* eslint-disable */
 type Props = {
   navigation: any
 }
@@ -17,27 +16,4 @@ export default function MainHeader({navigation}: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  item: {
-    margin: 0,
-  },
-  button: {
-    opacity: 0.6,
-  },
-  badge: {
-    position: 'absolute',
-    top: 4,
-    right: 0,
-  },
-  label: {
-    flex: 1,
-  },
-});
+/* eslint-disable */

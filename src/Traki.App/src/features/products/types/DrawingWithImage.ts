@@ -1,4 +1,4 @@
-import { Drawing } from "../../../contracts/drawing/Drawing"
+import { Drawing } from '../../../contracts/drawing/Drawing';
 
 export type DrawingWithImage = {
   drawing: Drawing,

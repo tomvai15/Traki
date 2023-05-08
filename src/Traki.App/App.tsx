@@ -52,13 +52,13 @@ export default function App() {
 }
 
 function Main() {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [userInfo] = useRecoilState(userState);
 
   function loggedIn() {
     return userInfo.token != '';
   }
 
-  const { registerForPushNotificationsAsync, handleNotification, handleNotificationResponse} = useNotifications();
+  const { registerForPushNotificationsAsync, handleNotificationResponse} = useNotifications();
 
   useEffect(() => {
 
@@ -84,7 +84,7 @@ function Main() {
     <NavigationContainer>
       { loggedIn() ?
       <Drawer.Navigator screenOptions={
-        ({navigation, route}) => ({
+        ({navigation}) => ({
           headerRight: () => (<MainHeader navigation={navigation}/>)
         })} initialRouteName="Home">
         <Drawer.Screen options={{ drawerIcon: () => <List.Icon icon='home' />, headerTitle: 'Home' }} name={"Home"} component={HomeTab} />

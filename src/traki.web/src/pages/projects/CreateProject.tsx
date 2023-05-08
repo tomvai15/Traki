@@ -91,7 +91,7 @@ export function CreateProject() {
             />
             <TextField
               inputProps={{ maxLength: 50 }}
-              id="project-name"
+              id="project-address"
               error={validate(address, [validationRules.noSpecialSymbols]).invalid}
               helperText={validate(address, [validationRules.noSpecialSymbols]).message}
               label="Address"
@@ -101,7 +101,7 @@ export function CreateProject() {
             />
             <TextField
               inputProps={{ maxLength: 50 }}
-              id="project-name"
+              id="project-client"
               error={validate(client, [validationRules.noSpecialSymbols]).invalid}
               helperText={validate(client, [validationRules.noSpecialSymbols]).message}
               label="Client name"
@@ -111,7 +111,7 @@ export function CreateProject() {
             />
           </CardContent>  
           <CardContent>    
-            <Button disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
+            <Button id="create-button" disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
               Create Project
             </Button>
           </CardContent>  
@@ -124,10 +124,14 @@ export function CreateProject() {
               src={previewImage ? previewImage : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1'}></img>
           </CardContent>  
           <CardContent>
-            <IconButton color="secondary" aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" onChange={selectFile} />
-              <PhotoCamera />
-            </IconButton>
+            <Button id="upload-image" component="label" variant='contained' size="small" sx={{marginRight: 1}}>
+              Upload Image
+              <input onChange={selectFile}
+                type="file"
+                accept="image/*"
+                hidden
+              />
+            </Button>
           </CardContent>  
         </Card>
       </Grid>

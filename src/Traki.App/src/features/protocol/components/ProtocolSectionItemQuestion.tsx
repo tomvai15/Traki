@@ -1,6 +1,6 @@
-import  React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, View, Image, TouchableHighlight} from 'react-native';
-import { Button, Card, Paragraph, Text, Title, TextInput, Divider, Avatar, SegmentedButtons, ActivityIndicator, Checkbox, List, IconButton, HelperText } from 'react-native-paper';
+import  React from 'react';
+import { View} from 'react-native';
+import { Paragraph, TextInput, SegmentedButtons, HelperText } from 'react-native-paper';
 import { Item } from '../../../contracts/protocol/items/Item';
 import { Question } from '../../../contracts/protocol/items/Question';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';

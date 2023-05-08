@@ -50,7 +50,7 @@ namespace Traki.FunctionalTestsNunit
             driver.FindElement(By.Id("password")).SendKeys("password");
             driver.FindElement(By.Id("submit")).Click();
             driver.Navigate().GoToUrl("https://localhost:3000/home");
-            Assert.AreEqual("React App", driver.Title);
+            Assert.AreEqual("Traki", driver.Title);
         }
         private bool IsElementPresent(By by)
         {

@@ -16,7 +16,6 @@ export default function ProjectsScreen({ navigation }: Props) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [visible, setVisible] = useState(false);
 
-  const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const containerStyle = { backgroundColor: 'white', padding: 20, margin: 20};
 
@@ -38,11 +37,6 @@ export default function ProjectsScreen({ navigation }: Props) {
 
   function updateSelectedProject() {
     hideModal();
-  }
-
-  function openChangeProjectModal(id: number) {
-    setSelectedProject(id);
-    showModal();
   }
 
   const [searchQuery, setSearchQuery] = React.useState('');

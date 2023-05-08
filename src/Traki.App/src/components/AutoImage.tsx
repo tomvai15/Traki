@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 
 type AutoImageProps = {
@@ -16,6 +16,7 @@ type ImageSize = {
 function AutoImage ({width, height, source, sizeCallback}: AutoImageProps) {
   const [imageSize, setImageSize] = useState<ImageSize>();
 
+  /* eslint-disable */
   useEffect(() => {
     Image.getSize(source, (imageWidth, imageHeight) => {
 
@@ -26,19 +27,20 @@ function AutoImage ({width, height, source, sizeCallback}: AutoImageProps) {
         newHeight = height;
       } else if (width != undefined && height == undefined) {
         newWidth = width;
-        newHeight = (imageHeight*width)/imageWidth;;
+        newHeight = (imageHeight*width)/imageWidth;
       }
       
       if (sizeCallback) {
         sizeCallback(newWidth, newHeight);
       }
-      setImageSize({width: newWidth, height: newHeight})}
+      setImageSize({width: newWidth, height: newHeight});}
     );
   }, [width, height, source]);
+  /* eslint-disable */
 
   return (
-     <Image style={{  width: imageSize?.width , height: imageSize?.height}} source={{ uri: source }} />
+    <Image style={{  width: imageSize?.width , height: imageSize?.height}} source={{ uri: source }} />
   );
 }
 
-export default AutoImage
+export default AutoImage;

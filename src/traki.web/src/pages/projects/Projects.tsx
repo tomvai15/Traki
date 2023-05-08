@@ -59,7 +59,7 @@ export function Projects() {
       </Grid>
       <Grid item xs={12} md={12}>
         <ProtectedComponent role={'ProjectManager'}>
-          <Button onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>
+          <Button id='add-project' onClick={() => navigate(`/projects/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>
             Add Project
           </Button>
         </ProtectedComponent>
@@ -98,7 +98,7 @@ function ProjectProducts({project, index}: ProjectProductsProps) {
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '10px'}}>
           <Box>
             <AuthorBar user={project.project.author}></AuthorBar>
-            <Typography variant="h5" component="div">
+            <Typography id="project-name" variant="h5" component="div">
               {project.project.name}
             </Typography>
             <Typography variant="subtitle1" component="div">

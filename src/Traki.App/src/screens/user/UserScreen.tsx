@@ -1,20 +1,12 @@
-import  React, { useState } from 'react';
+import  React from 'react';
 import { View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { userState } from '../../state/user-state';
 import { useRecoilState } from 'recoil';
 import { CustomAvatar } from '../../components/CustomAvatar';
 
 export default function UserScreen() {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
-
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  async function logOut() {
-    setUserInfo({...userInfo, token: ''})
-    return;
-  }
+  const [userInfo] = useRecoilState(userState);
 
   return (
     <View style={{padding: 20}}>
