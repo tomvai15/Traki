@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Traki.Domain.Models;
 using Traki.Domain.Models.Section.Items;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;

@@ -1,6 +1,4 @@
-﻿using DocuSign.eSign.Model;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Email;
 using Traki.Domain.Services.Notifications;

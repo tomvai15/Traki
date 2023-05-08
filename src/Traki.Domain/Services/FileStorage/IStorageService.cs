@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Blobs.Models;
-using Traki.Domain.Services.FileStorage;
+﻿using Traki.Domain.Services.FileStorage;
 
 namespace Traki.Domain.Services.BlobStorage
 {

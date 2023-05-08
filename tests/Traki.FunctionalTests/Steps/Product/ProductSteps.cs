@@ -1,9 +1,5 @@
-﻿using FluentAssertions;
-using Microsoft.VisualBasic;
-using OpenQA.Selenium;
-using System.Text;
+﻿using OpenQA.Selenium;
 using TechTalk.SpecFlow;
-using Traki.FunctionalTests.Data;
 
 namespace Traki.FunctionalTests.Steps.Product
 {

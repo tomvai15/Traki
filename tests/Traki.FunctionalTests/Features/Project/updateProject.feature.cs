@@ -19,7 +19,7 @@ namespace Traki.FunctionalTests.Features.Project
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CreateProjectFeature : object, Xunit.IClassFixture<CreateProjectFeature.FixtureData>, System.IDisposable
+    public partial class UpdateProjectFeature : object, Xunit.IClassFixture<UpdateProjectFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -31,7 +31,7 @@ namespace Traki.FunctionalTests.Features.Project
 #line 1 "updateProject.feature"
 #line hidden
         
-        public CreateProjectFeature(CreateProjectFeature.FixtureData fixtureData, Traki_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public UpdateProjectFeature(UpdateProjectFeature.FixtureData fixtureData, Traki_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Traki.FunctionalTests.Features.Project
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Project", "Create project", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Project", "Update project", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,7 +81,7 @@ namespace Traki.FunctionalTests.Features.Project
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Update project with valid fields")]
-        [Xunit.TraitAttribute("FeatureTitle", "Create project")]
+        [Xunit.TraitAttribute("FeatureTitle", "Update project")]
         [Xunit.TraitAttribute("Description", "Update project with valid fields")]
         public void UpdateProjectWithValidFields()
         {
@@ -118,7 +118,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Update project with invalid fields")]
-        [Xunit.TraitAttribute("FeatureTitle", "Create project")]
+        [Xunit.TraitAttribute("FeatureTitle", "Update project")]
         [Xunit.TraitAttribute("Description", "Update project with invalid fields")]
         public void UpdateProjectWithInvalidFields()
         {
@@ -161,12 +161,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                CreateProjectFeature.FeatureSetup();
+                UpdateProjectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CreateProjectFeature.FeatureTearDown();
+                UpdateProjectFeature.FeatureTearDown();
             }
         }
     }

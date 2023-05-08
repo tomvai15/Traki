@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Providers;
+﻿using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Docusign;

@@ -3,17 +3,13 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Traki.Api.Contracts.Drawing.Defect;
-using Traki.Api.Contracts.User;
 using Traki.Api.Controllers;
-using Traki.Domain.Constants;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
-using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Helpers;
-using User = Traki.Domain.Models.User;
 
 namespace Traki.UnitTests.Api.Controllers
 {

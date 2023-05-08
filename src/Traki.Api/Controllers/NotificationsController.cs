@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Drawing.Defect;
-using Traki.Api.Contracts.User;
-using Traki.Domain.Handlers;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 

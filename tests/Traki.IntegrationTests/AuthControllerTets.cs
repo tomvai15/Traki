@@ -1,5 +1,4 @@
-﻿using Azure;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using Traki.Api.Contracts.Auth;

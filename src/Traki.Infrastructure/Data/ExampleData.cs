@@ -1,6 +1,5 @@
 ﻿using Traki.Domain.Constants;
 using Traki.Domain.Models.Drawing;
-using Traki.Domain.Models.Section.Items;
 using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section;

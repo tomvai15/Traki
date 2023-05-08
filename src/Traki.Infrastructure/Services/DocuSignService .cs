@@ -3,16 +3,13 @@ using DocuSign.eSign.Client;
 using DocuSign.eSign.Model;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Traki.Domain.Constants;
-using Traki.Domain.Models;
 using Traki.Domain.Services;
 using Traki.Domain.Services.DocumentSigning.Models;
 using Traki.Domain.Services.Docusign;
 using Traki.Domain.Services.Docusign.models;
-using static DocuSign.eSign.Client.Auth.OAuth;
 
 namespace Traki.Infrastructure.Services
 {

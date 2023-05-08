@@ -5,8 +5,6 @@ using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
 using Traki.Domain.Models;
 using Traki.Domain.Extensions;
-using System.Linq;
-using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Infrastructure.Repositories
 {

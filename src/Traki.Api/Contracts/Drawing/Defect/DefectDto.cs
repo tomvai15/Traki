@@ -1,5 +1,4 @@
 ﻿using Traki.Domain.Models.Drawing;
-using Traki.Infrastructure.Entities.Drawing;
 
 namespace Traki.Api.Contracts.Drawing.Defect
 {

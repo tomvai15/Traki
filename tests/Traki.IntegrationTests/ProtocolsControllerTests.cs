@@ -1,13 +1,7 @@
-﻿using Azure;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
-using Traki.Api.Contracts.Auth;
-using Traki.Api.Contracts.Drawing.Defect;
 using Traki.Api.Contracts.Protocol;
-using Traki.Api.Contracts.Section;
-using Traki.Api.Contracts.Template;
-using Traki.Domain.Models;
 using Traki.Infrastructure.Data;
 using Traki.IntegrationTests.Extensions;
 

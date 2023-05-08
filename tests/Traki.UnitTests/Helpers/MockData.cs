@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Constants;
+﻿using Traki.Domain.Constants;
 using Traki.Domain.Models.Drawing;
-using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section.Items;
-using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Entities;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;

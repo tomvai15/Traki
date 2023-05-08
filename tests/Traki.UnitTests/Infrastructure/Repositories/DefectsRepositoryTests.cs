@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
-using DocuSign.eSign.Model;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using PuppeteerSharp;
-using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Infrastructure.Data;
-using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Infrastructure.Fixture;
-using Product = Traki.Domain.Models.Product;
 
 namespace Traki.UnitTests.Infrastructure.Repositories
 {

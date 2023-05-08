@@ -1,14 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
-using Traki.Infrastructure.Data;
 using Traki.UnitTests.Helpers;
 
 namespace Traki.UnitTests.Domain.Handlers

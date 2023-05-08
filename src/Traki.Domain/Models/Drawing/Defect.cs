@@ -1,6 +1,4 @@
-﻿using Traki.Domain.Models.Drawing;
-
-namespace Traki.Domain.Models.Drawing
+﻿namespace Traki.Domain.Models.Drawing
 {
     public class Defect
     {

@@ -1,19 +1,9 @@
 ﻿using AutoMapper;
-using DocuSign.eSign.Model;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Infrastructure.Data;
-using Traki.Infrastructure.Entities;
-using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Infrastructure.Fixture;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Traki.UnitTests.Infrastructure.Repositories
 {

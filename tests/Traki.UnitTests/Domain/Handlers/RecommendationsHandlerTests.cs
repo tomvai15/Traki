@@ -4,7 +4,6 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
-using Traki.Infrastructure.Repositories;
 
 namespace Traki.UnitTests.Domain.Handlers
 {

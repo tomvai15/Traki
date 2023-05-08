@@ -2,13 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Traki.Api.Contracts.Product;
-using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Protocol;
 using Traki.Api.Controllers;
 using Traki.Api.Mapping;

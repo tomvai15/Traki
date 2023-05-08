@@ -1,26 +1,21 @@
 ﻿using AutoMapper;
-using DocuSign.eSign.Model;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Security.Claims;
 using Traki.Api.Contracts.Auth;
-using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.User;
 using Traki.Api.Controllers;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Exceptions;
 using Traki.Domain.Handlers;
-using Traki.Domain.Models;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services;
 using Traki.Domain.Services.Docusign;
 using Traki.UnitTests.Helpers;
-using static Traki.UnitTests.Helpers.Dummy;
 using User = Traki.Domain.Models.User;
 
 namespace Traki.UnitTests.Api.Controllers

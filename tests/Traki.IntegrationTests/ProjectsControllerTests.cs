@@ -1,9 +1,6 @@
-﻿using DocuSign.eSign.Model;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
 using System.Net;
-using System.Security.Policy;
 using Traki.Api.Contracts.Project;
 using Traki.Infrastructure.Data;
 using Traki.IntegrationTests.Extensions;
