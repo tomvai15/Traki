@@ -1,4 +1,4 @@
-import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardContent, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -12,7 +12,6 @@ import ImageWithViewer from 'components/ImageWithViewer';
 import { v4 as uuid } from 'uuid';
 import { CreateDrawingRequest } from 'contracts/drawing/CreateDrawingRequest';
 import { useAlert } from 'hooks/useAlert';
-import { alertInitialState } from 'state/alert-state';
 import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 import { AuthorBar } from 'components/AuthorBar';

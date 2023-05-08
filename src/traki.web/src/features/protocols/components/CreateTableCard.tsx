@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
-import { Button, Card, Divider, IconButton, Stack, Table, TableBody, TableCell, TableHead, TextField, Typography, useTheme } from '@mui/material';
+import { Button, Card, Divider, IconButton, Stack, TextField, Typography, useTheme } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { defaultColumn } from '../data';
 import { validate, validationRules } from 'utils/textValidation';

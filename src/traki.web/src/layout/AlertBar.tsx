@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { alertState } from "state/alert-state";
 
 export default function AlertBar () {
-  const [alert, _] = useRecoilState(alertState);
+  const [alert] = useRecoilState(alertState);
   const { clearNotification } = useAlert();
 
   const handleClose = (_: unknown, reason?: SnackbarCloseReason) =>

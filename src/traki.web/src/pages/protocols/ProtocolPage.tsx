@@ -143,7 +143,7 @@ export function ProtocolPage() {
         <Typography variant="overline" >sections</Typography>
         <DragDropContext onDragEnd={result => onDragEnd(result)}>
           <Droppable droppableId={'asdsda'} >
-            {(provided, snapshot) => {
+            {(provided) => {
               return (
                 <div
                   {...provided.droppableProps}
@@ -156,7 +156,7 @@ export function ProtocolPage() {
                         draggableId={item.priority.toString()}
                         index={index}
                       >
-                        {(provided, snapshot) => {
+                        {(provided) => {
                           return (
                             <Box
                               ref={provided.innerRef}

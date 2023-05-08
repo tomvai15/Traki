@@ -40,12 +40,7 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Section> GetSection(int sectionId)
         {
             var sections = await _context.Sections.ToListAsync();
-
             var section = sections.Where(p => p.Id == sectionId).FirstOrDefault();
-            if (section == null)
-            {
-                return null;
-            }
             return _mapper.Map<Section>(section);
         }
 

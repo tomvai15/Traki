@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Traki.Infrastructure.Entities;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
-using Traki.Domain.Models;
-using Traki.Domain.Extensions;
 using Traki.Domain.Models.Section;
 using Traki.Infrastructure.Entities.Section;
-using Traki.Infrastructure.Entities.Section.Items;
 
 namespace Traki.Infrastructure.Repositories
 {
@@ -41,19 +37,6 @@ namespace Traki.Infrastructure.Repositories
             _context.Checklists.Remove(checklist);
             await _context.SaveChangesAsync();
             return true;
-        }
-        public async Task UpdateChecklistAnswers(Checklist checklist)
-        {
-            try
-            {
-                var checklistEntity = _mapper.Map<ChecklistEntity>(checklist);
-                _context.Update(checklistEntity);
-                await _context.SaveChangesAsync();
-            }
-            catch  (Exception e)
-            {
-                return;
-            }
         }
 
         public async Task<Checklist> GetChecklist(int checklistId)

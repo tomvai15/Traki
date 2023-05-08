@@ -1,5 +1,4 @@
 import { useRecoilState } from "recoil";
-import { AlertState, alertInitialState, alertState } from "state/alert-state";
 import { pageState } from "state/page-state";
 
 export const useNotFoundCatcher = () => {

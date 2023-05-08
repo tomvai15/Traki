@@ -1,9 +1,9 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { Checklist, Section } from 'contracts/protocol';
+import { Checklist } from 'contracts/protocol';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { TemplateItem } from './TemplateItem';
-import { Item, Question } from 'contracts/protocol/items';
+import { Item } from 'contracts/protocol/items';
 import { Button } from '@mui/material';
 import { v4 as uuid } from 'uuid';
 import { defaultItem } from '../data';
@@ -69,7 +69,7 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
     <Box>
       <DragDropContext onDragEnd={result => onDragEnd(result)}>
         <Droppable droppableId={'asdsda'} >
-          {(provided, snapshot) => {
+          {(provided) => {
             return (
               <div
                 {...provided.droppableProps}
@@ -82,7 +82,7 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
                       draggableId={item.priority.toString()}
                       index={index}
                     >
-                      {(provided, snapshot) => {
+                      {(provided) => {
                         return (
                           <Box
                             ref={provided.innerRef}

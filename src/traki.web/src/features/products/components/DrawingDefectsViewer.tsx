@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Card, CardContent, IconButton, ImageList, ImageListItem, ImageListItemBar, Tooltip, Typography } from '@mui/material';
+import { IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
@@ -26,8 +26,6 @@ export function DrawingDefectsViewer({productId, defectsCallback}: Props) {
   const {state} = useLocation();
 
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);
-
-  const [selectedDefect, setSelectedDefect] = useState<Defect>();
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
 
   useEffect(() => {
@@ -51,19 +49,16 @@ export function DrawingDefectsViewer({productId, defectsCallback}: Props) {
     }
 
     if (!state) {
-      setSelectedDefect(newDefects[0]);
       setSelectedDrawing(drawingsWithImage[0]);
     } else {
       const foundDefect = newDefects.find(x => x.id == state.defectId);
       if (foundDefect) {
-        setSelectedDefect(foundDefect);
         const foundDrawing = drawingsWithImage.find(x=> x.drawing.id == foundDefect.drawingId);
         if (foundDrawing == null) {
           return;
         }
         setSelectedDrawing(foundDrawing);
       } else {
-        setSelectedDefect(newDefects[0]);
         setSelectedDrawing(drawingsWithImage[0]);
       }
     }

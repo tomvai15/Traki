@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using System.Diagnostics.CodeAnalysis;
-using Traki.Infrastructure.Entities.Drawing;
+using Traki.Api.Contracts.Drawing.Defect;
 
 namespace Traki.Api.Validators.Drawing.Defect
 {

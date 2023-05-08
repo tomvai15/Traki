@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserInfo } from '../contracts/auth/UserInfo';
 import { Author } from '../contracts/drawing/defect/Author';
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { CustomAvatar } from './CustomAvatar';
 
 type Props = {

@@ -1,4 +1,4 @@
-﻿using Traki.Infrastructure.Entities.Drawing;
+﻿using Traki.Domain.Models.Drawing;
 
 namespace Traki.Domain.Models.Drawing
 {

@@ -3,7 +3,7 @@ import authService from "services/auth-service";
 import { userState } from "state/user-state";
 
 export const useUserInformation = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [, setUserInfo] = useRecoilState(userState);
 
   async function fetchUser() {
     try {

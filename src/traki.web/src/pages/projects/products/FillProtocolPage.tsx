@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Breadcrumbs, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, Typography } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Protocol } from '../../../contracts/protocol/Protocol';
 import { Section } from '../../../contracts/protocol/Section';
 import protocolService from '../../../services/protocol-service';
 import sectionService from '../../../services/section-service';
 import { FillSection } from 'features/protocols/components';
-import { validate, validationRules } from 'utils/textValidation';
 import { UpdateProtocolRequest } from 'contracts/protocol/UpdateProtocolRequest';
 import { Link as BreadLink } from '@mui/material';
 
@@ -21,7 +20,6 @@ const initialProtocol: Protocol = {
 };
 
 export function FillProtocolPage() {
-  const navigate = useNavigate();
   const { projectId, productId, protocolId } = useParams();
   const [protocol, setProtocol] = useState<Protocol>(initialProtocol);
   const [sections, setSections] = useState<Section[]>([]);
@@ -58,20 +56,6 @@ export function FillProtocolPage() {
     console.log(sectionsToSort);
     sortedItems.sort((a, b) => a.priority - b.priority);
     setSections(sortedItems);
-  }
-
-  function validateNotEmpty(): boolean {
-    return !sections.map(x=> isValidSection(x)).some(x=> x == false);
-  }
-
-  function isValidSection(section: Section): boolean {
-    return !section.checklist?.items.map(x => { 
-      return (
-        (x.textInput == undefined ? true : !validate(x.textInput.value, [ validationRules.noSpecialSymbols]).invalid) &&
-        (x.textInput == undefined ? true : !validate(x.textInput.value, [validationRules.noSpecialSymbols]).invalid) &&
-        (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
-      );
-    }).some((value) => value == false);
   }
 
   return (

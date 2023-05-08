@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Divider } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Checklist } from '../../../contracts/protocol/Checklist';
 import { Section } from '../../../contracts/protocol/Section';
@@ -9,7 +9,6 @@ import { sectionService } from 'services';
 import { initialSection } from '../data';
 import { FillItem } from '.';
 import { Table } from 'contracts/protocol/section/Table';
-import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { TableRow } from 'contracts/protocol/section/TableRow';
 import { FillTable } from './FillTable';
 import { validate, validationRules } from 'utils/textValidation';

@@ -15,7 +15,7 @@ namespace Traki.IntegrationTests.Extensions
 
         public static async Task LoginAsAdministrator(this CustomHttpClient client)
         {
-            await client.AddJwtToken("tipotomas9@gmail.com", "password");
+            await client.AddJwtToken("admin@gmail.com", "password");
         }
 
         public static async Task LoginAsProjectManager(this CustomHttpClient client)

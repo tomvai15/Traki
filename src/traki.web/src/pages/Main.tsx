@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import SignIn from './authentication/SignIn';
 import CheckOAuth from './authentication/CheckOAuth';

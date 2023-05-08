@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardActions, CardContent, Checkbox, FormControlLabel, Grid, Stack, TextField, Typography, useTheme } from '@mui/material';
+import { Card, CardContent, Checkbox, FormControlLabel, Stack, TextField, Typography, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
 import { Item } from '../../../contracts/protocol/items/Item';
@@ -117,7 +117,7 @@ export function FillItem ({item, updateItem, completed}: Props) {
             { item.multipleChoice.options.map((value, index) => 
               <FormControlLabel 
                 key={index} 
-                control={<Checkbox disabled={completed} checked={value.selected ? value.selected : false} onClick={(e) => updateMultipleChoice(value.name)}/>} 
+                control={<Checkbox disabled={completed} checked={value.selected ? value.selected : false} onClick={() => updateMultipleChoice(value.name)}/>} 
                 label={value.name} 
                 labelPlacement="start"/>
             )}

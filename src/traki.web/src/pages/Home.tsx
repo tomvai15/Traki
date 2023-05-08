@@ -3,7 +3,6 @@ import { Grid, Card, CardContent, Typography, Breadcrumbs, Button, CardActions, 
 import { drawingService, defectService, recommendationService, pictureService } from '../services';
 import { Defect } from 'contracts/drawing/defect/Defect';
 import { DefectWithImage } from 'features/defects/types/DefectWithImage';
-import { Product } from 'contracts/product/Product';
 import { Drawing } from 'contracts/drawing/Drawing';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BuildIcon from '@mui/icons-material/Build';

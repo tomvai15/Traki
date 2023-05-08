@@ -1,5 +1,3 @@
-import { Role } from "./Roles";
-
 export type User = {
   id: number
   name: string,

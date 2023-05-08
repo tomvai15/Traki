@@ -4,7 +4,6 @@ import { Question, TextInput, MultipleChoice, Item, Option } from 'contracts/pro
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import { v4 as uuid } from 'uuid';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { validate, validationRules } from 'utils/textValidation';
 
 const defaultQuestion: Question = {

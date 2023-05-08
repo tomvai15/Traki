@@ -45,7 +45,7 @@ export function Checkpoint ({items, setItems} : Props) {
         </AccordionSummary>
         <AccordionDetails>
           <Droppable droppableId={droppableId} >
-            {(provided, snapshot) => {
+            {(provided) => {
               return (
                 <div
                   {...provided.droppableProps}
@@ -112,7 +112,7 @@ export function TemplatePage() {
           </CardContent>  
           <Divider/>  
           <Box>
-            <DragDropContext onDragEnd={result => console.log('ere')}>
+            <DragDropContext onDragEnd={() => console.log('ere')}>
               <Droppable droppableId={'asdasd'} >
                 {(provided, snapshot) => {
                   return (

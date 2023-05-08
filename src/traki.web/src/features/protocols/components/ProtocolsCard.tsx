@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, Divider, List, ListItemButton, ListItemText, useTheme } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, ListItemButton, ListItemText, useTheme } from '@mui/material';
 import { Protocol } from 'contracts/protocol/Protocol';
 import { PaginatedList } from 'components/PaginatedList';
 

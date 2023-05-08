@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardContent, CardHeader, Divider, Grid, TextField, Typography } from '@mui/material';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';
 import { useParams } from 'react-router-dom';

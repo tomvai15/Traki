@@ -1,4 +1,4 @@
-import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, CardHeader, Chip, Divider, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Link as BreadLink, Breadcrumbs, Button, Card, CardActions, CardContent, CardHeader, Chip, Divider, Grid, Stack, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../../../contracts/product/Product';
@@ -17,16 +17,6 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import WarningIcon from '@mui/icons-material/Warning';
 import { DefectStatus } from 'contracts/drawing/defect/DefectStatus';
 
-const initialProduct: Product = {
-  id: 0,
-  name: '',
-  projectId: 0,
-  status,
-  creationDate: ''
-};
-
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-
 export function ProductPage() {
   const navigate = useNavigate();
   const { projectId, productId } = useParams();
@@ -37,8 +27,6 @@ export function ProductPage() {
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(emails[1]);
-
 
   const [openProductDialog, setOpenProductDialog] = useState(false);
   const [selectedProtocol, setSelectedProtocol] = useState<Protocol>();
@@ -197,7 +185,6 @@ export function ProductPage() {
         </Card>
       </Grid>
       <AddProtocolDialog
-        selectedValue={selectedValue}
         open={open}
         addProtocol={handleClose}
         onclose={closeDialog}

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, TextField, Typography, styled } from '@mui/material';
+import { Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, Grid, TextField, Typography } from '@mui/material';
 import companyService from '../../services/company-service';
 import { Company } from '../../contracts/company/Company';
 import { UpdateCompanyRequest } from '../../contracts/company/UpdateCompanyRequest';
 import pictureService from '../../services/picture-service';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import PeopleIcon from '@mui/icons-material/People';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { useAlert } from 'hooks/useAlert';
 
 // TODO: allow only specific resolution

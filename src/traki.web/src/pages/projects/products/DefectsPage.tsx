@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Avatar, Breadcrumbs, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Breadcrumbs, Card, CardContent, Checkbox, FormControlLabel, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
+import { useLocation, useParams } from 'react-router-dom';
 import { AreaSelector, IArea, IAreaRendererProps } from '@bmunozg/react-image-area';
 import InfoIcon from '@mui/icons-material/Info';
 import { Drawing } from '../../../contracts/drawing/Drawing';
@@ -9,8 +9,6 @@ import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 import { Link as BreadLink } from '@mui/material';
-import DoneIcon from '@mui/icons-material/Done';
-import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { DefectDetails } from 'features/defects/components/DefectDetails';
 import { drawingService, pictureService, defectService } from 'services';
 import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
@@ -25,7 +23,6 @@ export interface SimpleDialogProps {
 }
 
 export function DefectsPage() {
-  const navigate = useNavigate();
   const {state} = useLocation();
   const { displaySuccess  } = useAlert();
   const { projectId, productId } = useParams();
