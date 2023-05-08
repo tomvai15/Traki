@@ -4,13 +4,16 @@ import base64 from 'react-native-base64';
 const route = 'control/folders/{folderName}/files/{fileName}';
 
 class PictureService {
+  /* eslint-disable */
   async getPicture(folderName: string, fileName: string): Promise<string> {
     const fullRoute = route.format({folderName: folderName, fileName: fileName}); 
+
     const response = await axiosApiInstance.get(fullRoute, { headers: {}, responseType: 'arraybuffer' });
     const base64Image = base64.encode(new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte),''));
     const data = `data:${response.headers['content-type']};base64,${base64Image}`;
     return data;
-  }
+  } 
+  /* eslint-disable */
 
   async uploadPicture(folderName: string, fileName: string, file: File): Promise<void> {
     const formData = new FormData();

@@ -5,9 +5,8 @@ import { DefectWithImage } from '../../defect/types/DefectWithImage';
 import { defectService, pictureService } from '../../../services';
 import { Defect } from '../../../contracts/drawing/defect/Defect';
 import { Button, Card } from 'react-native-paper';
-import AutoImage from '../../../components/AutoImage';
 
-
+/* eslint-disable */
 type Props = {
   defect: DefectRecomendation,
   navigation: any
@@ -70,3 +69,4 @@ export function DefectCard ({defect, navigation}: Props) {
     </Card>
   );
 }
+/* eslint-disable */

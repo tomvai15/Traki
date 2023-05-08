@@ -1,6 +1,6 @@
 import  React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, Text, ActivityIndicator,TouchableHighlight, Image } from 'react-native';
-import { Button, Card, Checkbox, Divider, IconButton, List, Paragraph, SegmentedButtons, Title, TextInput } from 'react-native-paper';
+import { View, FlatList, Text, ActivityIndicator} from 'react-native';
+import { Card, Checkbox, Divider, Paragraph, SegmentedButtons, Title, TextInput } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
 import protocolService from '../../services/protocol-service';
@@ -16,7 +16,7 @@ import { ProtocolTable } from '../../features/protocol/components/ProtocolTable'
 type Props = NativeStackScreenProps<TemplateStackParamList, 'Template'>;
 
 export default function TemplateScreen({ route, navigation }: Props) {
-  const [isLoading, setLoading] = React.useState(false);
+  const [isLoading] = React.useState(false);
   const {protocolId} = route.params;
   
   const [protocol, setProtocol] = useState<Protocol>(initialProtocol);
@@ -88,13 +88,14 @@ type ItemImage = {
 function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSectionProps) {
 
   const [section, setSection] = useState<Section>(initialSection);
-  const [initialSectionJson, setInitialSectionJson] = useState<string>('');
-  const [itemImages, setItemImages] = useState<ItemImage[]>([]);
-  const [initialItemImagesJson, setInitialItemImagesJson] = useState<string>('');
+  const [, setInitialSectionJson] = useState<string>('');
+  const [itemImages] = useState<ItemImage[]>([]);
 
+  /* eslint-disable */
   useEffect(() => {
     fetchSection();
   }, []);
+  /* eslint-disable */
 
   async function fetchSection() {
     const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
@@ -129,7 +130,7 @@ function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSe
           <ProtocolSectionItem setSelectedImage={setSelectedImage} item={item} itemImage={itemImages.find(x=> x.id==item.id)}></ProtocolSectionItem>  
         }>
       </FlatList> :
-        (section.table && <ProtocolTable buttonVisible={false} table={section.table} updateTable={(t) => {return;}}/>)
+        (section.table && <ProtocolTable buttonVisible={false} table={section.table} updateTable={() => {return;}}/>)
       }
       <Divider bold></Divider>
     </View>
@@ -142,7 +143,7 @@ type ProtocolSectionItemProps = {
   setSelectedImage: (image: string) => void
 };
 
-function ProtocolSectionItem({ item, itemImage, setSelectedImage }: ProtocolSectionItemProps) {
+function ProtocolSectionItem({ item }: ProtocolSectionItemProps) {
 
   function checkType() {
     if (item.question) {
@@ -223,12 +224,6 @@ function ProtocolSectionItemMultipleChoice({ item }: ProtocolSectionItemCompProp
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-});
 
 const initialProtocol: Protocol = {
   id: 1,

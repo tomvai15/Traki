@@ -4,9 +4,8 @@ import { TemplateStackParamList } from '../screens/template/TemplateStackParamLi
 import TemplatesScreen from '../screens/template/TemplatesScreen';
 import TemplateScreen from '../screens/template/TemplateScreen';
 import EditQuestionScreen from '../screens/template/EditQuestionScreen';
-import CreateQuestionScreen from '../screens/template/CreateQuestionScreen';
-import CreateTemplateScreen from '../screens/template/CreateTemplateScreen';
 
+/* eslint-disable */
 const ProductStack = createNativeStackNavigator<TemplateStackParamList>();
 
 export  default function TemplateTab() {
@@ -15,8 +14,7 @@ export  default function TemplateTab() {
       <ProductStack.Screen name="Templates" options={{title: 'Šablonai',}} component={TemplatesScreen} />
       <ProductStack.Screen name="Template" options={{title: 'Šablonai',}} component={TemplateScreen} />
       <ProductStack.Screen name="EditQuestion" options={{title: 'Šablonai',}} component={EditQuestionScreen} />
-      <ProductStack.Screen name="CreateQuestion" options={{title: 'Šablonai',}} component={CreateQuestionScreen} />
-      <ProductStack.Screen name="CreateTemplate" options={{title: 'Šablonai',}} component={CreateTemplateScreen} />
     </ProductStack.Navigator>
   );
 }
+/* eslint-disable */

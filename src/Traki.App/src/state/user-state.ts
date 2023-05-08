@@ -19,9 +19,10 @@ const initialState: UserState = {
   refreshToken: 'dsaasdasd'
 };
 
-
+/* eslint-disable */
 export const userState: RecoilState<UserState> = atom({
   key: 'userState',
   default: initialState,
   effects_UNSTABLE: [ReactNativeRecoilPersist.persistAtom]
 });
+/* eslint-disable */

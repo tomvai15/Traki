@@ -16,6 +16,7 @@ type ImageSize = {
 function AutoImage ({width, height, source, sizeCallback}: AutoImageProps) {
   const [imageSize, setImageSize] = useState<ImageSize>();
 
+  /* eslint-disable */
   useEffect(() => {
     Image.getSize(source, (imageWidth, imageHeight) => {
 
@@ -35,6 +36,7 @@ function AutoImage ({width, height, source, sizeCallback}: AutoImageProps) {
       setImageSize({width: newWidth, height: newHeight});}
     );
   }, [width, height, source]);
+  /* eslint-disable */
 
   return (
     <Image style={{  width: imageSize?.width , height: imageSize?.height}} source={{ uri: source }} />

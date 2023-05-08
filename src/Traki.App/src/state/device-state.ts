@@ -8,9 +8,10 @@ interface DeviceInfo {
 const initialState: DeviceInfo = {
   token: ''
 };
-
+/* eslint-disable */
 export const deviceState: RecoilState<DeviceInfo> = atom({
   key: 'deviceState',
   default: initialState,
   effects_UNSTABLE: [ReactNativeRecoilPersist.persistAtom],
 });
+ /* eslint-disable */

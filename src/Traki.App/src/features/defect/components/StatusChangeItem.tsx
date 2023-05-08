@@ -2,7 +2,7 @@ import React from 'react';
 import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import { StatusChange } from '../../../contracts/drawing/defect/StatusChange';
 import { View } from 'react-native';
-import { Button, Chip, Text, useTheme } from 'react-native-paper';
+import { Button, Chip, useTheme } from 'react-native-paper';
 
 
 type StatusChangeItemProps = {

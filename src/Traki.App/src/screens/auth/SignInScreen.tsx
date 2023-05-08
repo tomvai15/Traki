@@ -14,7 +14,7 @@ export default function SignInScreen() {
   const { fetchFullUserInformation } = useUserInformation();
 
   const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [deviceInfo, setDeviceInfo] = useRecoilState(deviceState);
+  const [deviceInfo] = useRecoilState(deviceState);
 
 
 

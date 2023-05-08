@@ -1,8 +1,6 @@
-import  React, { useState } from 'react';
-import { View, Image, TouchableHighlight, KeyboardAvoidingView, Platform} from 'react-native';
-import { Card, Text, Title, TextInput, Divider, IconButton, DataTable, Button } from 'react-native-paper';
-import { Item } from '../../../contracts/protocol/items/Item';
-import * as ImagePicker from 'expo-image-picker';
+import  React from 'react';
+import { View, KeyboardAvoidingView, Platform} from 'react-native';
+import { Card, TextInput, Divider, DataTable, Button } from 'react-native-paper';
 import { Table } from '../../../contracts/protocol/section/Table';
 import { ScrollView } from 'react-native-gesture-handler';
 import { TableRow } from '../../../contracts/protocol/section/TableRow';
@@ -14,16 +12,8 @@ type Props = {
   buttonVisible: boolean
 }
 
-const optionsPerPage = [2, 3, 4];
-const cellsPerPage = 3;
-
 export function ProtocolTable({ table, updateTable, buttonVisible }: Props) {
   
-  const [page, setPage] = React.useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
-
-  const [index, setIndex] = useState(0);
-
   function updateTableRow(tableRow: TableRow) {
     const updatedRows = table.tableRows.map( row => row.id == tableRow.id ? tableRow : row);
     updateTable({...table, tableRows: updatedRows});

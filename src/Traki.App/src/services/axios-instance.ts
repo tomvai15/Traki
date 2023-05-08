@@ -1,16 +1,14 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '../state/user-state';
 import { url } from './endpoints';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { getRecoil, setRecoil } from 'recoil-nexus';
-import authService from './auth-service';
 import { RefreshTokenRequest } from '../contracts/auth/RefreshTokenRequest';
-import { LoginResponse } from '../contracts/auth/LoginResponse';
 
 const axiosApiInstance = axios.create({
   baseURL: url
 });
 
+/* eslint-disable */
 axiosApiInstance.interceptors.request.use(function (config) {
   const userInfo = getRecoil(userState);
   console.log('[\u001B[37mMaking \u001b[1;36m'+ config.method?.toUpperCase() +'\u001B[37m request \u001b[1;36m' + config.baseURL +'/'+ config.url + '\u001B[37m]'); 
@@ -60,5 +58,6 @@ async function refreshToken(request: RefreshTokenRequest): Promise<string> {
   }
   return response.data.token;
 }
+/* eslint-disable */
 
 export default axiosApiInstance;

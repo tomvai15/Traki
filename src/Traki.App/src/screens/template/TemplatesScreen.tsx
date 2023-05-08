@@ -1,6 +1,6 @@
 import  React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import { Button, List, Searchbar } from 'react-native-paper';
+import { List, Searchbar } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TemplateStackParamList } from './TemplateStackParamList';
 import protocolService from '../../services/protocol-service';

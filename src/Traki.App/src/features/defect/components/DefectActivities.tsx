@@ -5,7 +5,7 @@ import { CommentWithImage } from '../types/CommentWithImage';
 import { StatusChange } from '../../../contracts/drawing/defect/StatusChange';
 import { DefectActivity } from '../types/DefectActivity';
 import { View } from 'react-native';
-import { Chip, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 const noneAuthor: Author = {
   name: '',

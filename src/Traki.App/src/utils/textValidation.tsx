@@ -1,5 +1,3 @@
-import { error } from 'console';
-
 export const validationRules = {
   nonEmpty: {
     requirement: /\S+/,

@@ -4,7 +4,7 @@ import { notificationService } from '../services';
 
 export const useUpdateNotifications = () => {
 
-  const [notifications, setNotifications] = useRecoilState(notificationsState);
+  const [, setNotifications] = useRecoilState(notificationsState);
   
   const updateNotifications = async () => {
     const response = await notificationService.getNotifications();

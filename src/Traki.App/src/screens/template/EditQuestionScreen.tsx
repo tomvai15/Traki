@@ -1,8 +1,6 @@
 import  React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button, Text  } from 'react-native-paper';
-import projectService from '../../services/project-service';
-import { CreateProjectRequest } from '../../contracts/projects/CreateProjectRequest';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { EditQuestionScreenParams, TemplateStackParamList } from './TemplateStackParamList';
 import { UpdateQuestionRequest } from '../../contracts/question/UpdateQuestionRequest';
@@ -10,17 +8,19 @@ import questionService from '../../services/question-service';
 
 type Props = NativeStackScreenProps<TemplateStackParamList, 'EditQuestion'>;
 
-export default function EditQuestionScreen({ route, navigation }: Props) {
+export default function EditQuestionScreen({ route }: Props) {
 
   const [initialData, setInitialData] = useState<EditQuestionScreenParams>(route.params);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
 
+  /* eslint-disable */
   useEffect(() => {
     setTitle(initialData.title);
     setDescription(initialData.description);
   }, []);
+   /* eslint-disable */
 
   async function updateQuestion() {
     const updateQuestionRequest: UpdateQuestionRequest = {
@@ -58,7 +58,7 @@ export default function EditQuestionScreen({ route, navigation }: Props) {
       <Button disabled={canUpdate()} 
         style={{ width: 200, alignSelf: 'center', marginTop: 10}} 
         mode="contained" 
-        onPress={() => updateQuestion()}>
+        onPress={async () => await updateQuestion()}>
         Atnaujinti informaciją
       </Button>
       <Text>{responseMessage}</Text>

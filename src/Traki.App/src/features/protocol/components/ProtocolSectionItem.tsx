@@ -1,6 +1,6 @@
-import  React, { useState } from 'react';
+import  React from 'react';
 import { View, Image, TouchableHighlight} from 'react-native';
-import { Card, Text, Title, TextInput, Divider, IconButton } from 'react-native-paper';
+import { Card, Text, Title, Divider, IconButton } from 'react-native-paper';
 import { Item } from '../../../contracts/protocol/items/Item';
 import * as ImagePicker from 'expo-image-picker';
 import { ItemImage } from '../types/ItemImage';
@@ -19,15 +19,6 @@ type ProtocolSectionItemProps = {
 export function ProtocolSectionItem({ item, itemImage, updateItem, updateItemImage, setSelectedImage }: ProtocolSectionItemProps) {
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    /*
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });*/
-
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,

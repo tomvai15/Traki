@@ -1,4 +1,4 @@
-import  React, { useEffect, useState } from 'react';
+import  React from 'react';
 import { HelperText, TextInput } from 'react-native-paper';
 import { Item } from '../../../contracts/protocol/items/Item';
 import { TextInput as ItemTextInput } from '../../../contracts/protocol/items/TextInput';

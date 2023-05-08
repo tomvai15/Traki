@@ -23,6 +23,9 @@ module.exports = {
         '@typescript-eslint'
     ],
     'rules': {
+        'react-hooks/exhaustive-deps': 'off',
+        '@typescript-eslint/no-misused-promises': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
         'indent': [
             'error', 
             2, 

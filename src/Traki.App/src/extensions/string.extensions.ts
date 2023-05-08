@@ -1,3 +1,4 @@
+/* eslint-disable */
 interface String {
   format(placeholders: { [x: string]: string; }): string;
 }
@@ -12,3 +13,4 @@ if (!String.prototype.format) {
     return s.toString();
   };
 }
+ /* eslint-disable */

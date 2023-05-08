@@ -1,4 +1,4 @@
-import  React, { useEffect, useState } from 'react';
+import  React, { useState } from 'react';
 import { View, Image, TouchableHighlight} from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import { List } from 'react-native-paper';

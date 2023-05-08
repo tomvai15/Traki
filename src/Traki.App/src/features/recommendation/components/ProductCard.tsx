@@ -1,14 +1,13 @@
 import  React, { useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
-import { Button, Card, Text, TextInput } from 'react-native-paper';
-import { Product } from '../../../contracts/product/Product';
+import { Button, Card, Text } from 'react-native-paper';
 import { DrawingWithImage } from '../../products/types/DrawingWithImage';
 import drawingService from '../../../services/drawing-service';
 import { Drawing } from '../../../contracts/drawing/Drawing';
 import { pictureService } from '../../../services';
-import AutoImage from '../../../components/AutoImage';
 import { ProductRecomendation } from '../../../contracts/recommendation/ProductRecomendation';
 
+/* eslint-disable */
 type Props = {
   product: ProductRecomendation,
   navigation: any
@@ -54,7 +53,6 @@ export function ProductCard ({product, navigation}: Props) {
             </View>
             <View>
               <Button style={{width: 100}} onPress={() => {
-                //navigation.navigate('Project Products', {screen: 'Products'}); 
                 navigation.navigate('Projects', { screen: 'Product', params: {projectId: product.product.projectId, productId: product.product.id}}); 
               }} mode='contained'>Details</Button>
             </View>
@@ -71,3 +69,4 @@ export function ProductCard ({product, navigation}: Props) {
     </Card>
   );
 }
+ /* eslint-disable */
