@@ -10,4 +10,4 @@ type Props = {
 
 export function Loading ({children, loading, marginTop}: Props) {
   return <View>{loading ?  <ActivityIndicator style={{marginTop: marginTop ?? 10}} animating={true}/> : children}</View>;
-};
+}

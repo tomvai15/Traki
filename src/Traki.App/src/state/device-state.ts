@@ -1,5 +1,5 @@
-import { RecoilState, atom } from "recoil";
-import ReactNativeRecoilPersist from "react-native-recoil-persist";
+import { RecoilState, atom } from 'recoil';
+import ReactNativeRecoilPersist from 'react-native-recoil-persist';
 
 interface DeviceInfo {
   token: string,

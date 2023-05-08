@@ -1,6 +1,6 @@
-import { RecoilState, atom } from "recoil";
-import ReactNativeRecoilPersist from "react-native-recoil-persist";
-import { UserInfo } from "../contracts/auth/UserInfo";
+import { RecoilState, atom } from 'recoil';
+import ReactNativeRecoilPersist from 'react-native-recoil-persist';
+import { UserInfo } from '../contracts/auth/UserInfo';
 
 interface UserState {
 	id: number,

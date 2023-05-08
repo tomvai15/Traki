@@ -1,6 +1,6 @@
 
-import { DefectRecomendation } from "./DefectRecomendation";
-import { ProductRecomendation } from "./ProductRecomendation";
+import { DefectRecomendation } from './DefectRecomendation';
+import { ProductRecomendation } from './ProductRecomendation';
 
 export type Recommendation = {
   products: ProductRecomendation[],

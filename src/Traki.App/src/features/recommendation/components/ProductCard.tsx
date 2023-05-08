@@ -55,7 +55,7 @@ export function ProductCard ({product, navigation}: Props) {
             <View>
               <Button style={{width: 100}} onPress={() => {
                 //navigation.navigate('Project Products', {screen: 'Products'}); 
-                navigation.navigate('Projects', { screen: 'Product', params: {projectId: product.product.projectId, productId: product.product.id}}) 
+                navigation.navigate('Projects', { screen: 'Product', params: {projectId: product.product.projectId, productId: product.product.id}}); 
               }} mode='contained'>Details</Button>
             </View>
           </View>

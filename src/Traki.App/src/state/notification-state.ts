@@ -1,6 +1,6 @@
-import { RecoilState, atom } from "recoil";
-import { DefectNotification } from "../contracts/drawing/defect/DefectNotification";
-import ReactNativeRecoilPersist from "react-native-recoil-persist";
+import { RecoilState, atom } from 'recoil';
+import { DefectNotification } from '../contracts/drawing/defect/DefectNotification';
+import ReactNativeRecoilPersist from 'react-native-recoil-persist';
 
 
 export const notificationsState: RecoilState<DefectNotification[]> = atom({

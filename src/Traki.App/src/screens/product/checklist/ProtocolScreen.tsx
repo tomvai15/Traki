@@ -11,7 +11,7 @@ import { Protocol } from '../../../contracts/protocol/Protocol';
 import { Section } from '../../../contracts/protocol/Section';
 import sectionService from '../../../services/section-service';
 import { Checklist } from '../../../contracts/protocol/Checklist';
-import ImageView from "react-native-image-viewing";
+import ImageView from 'react-native-image-viewing';
 import { ScreenView } from '../../../components/ScreenView';
 import { ProtocolSection } from '../../../features/protocol/components';
 
@@ -48,7 +48,7 @@ export default function ProtocolScreen({ route, navigation }: Props) {
   function submitChanges() {
     const updateRequest: UpdateChecklistQuestionsRequest ={
       checklistQuestions: checklistQuestions
-    }
+    };
     try {
       checklistQuestionService.updateChecklists(productId, updateRequest);
       setInitialChecklist(checklistQuestions.map(x=>Object.assign({},x)));

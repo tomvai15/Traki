@@ -1,7 +1,7 @@
-import { Author } from "./Author";
-import { DefectComment } from "./DefectComment";
-import { DefectStatus } from "./DefectStatus";
-import { StatusChange } from "./StatusChange";
+import { Author } from './Author';
+import { DefectComment } from './DefectComment';
+import { DefectStatus } from './DefectStatus';
+import { StatusChange } from './StatusChange';
 
 export type Defect = {
   id: number,

@@ -1,4 +1,4 @@
-import { Drawing } from "./Drawing";
+import { Drawing } from './Drawing';
 
 export type GetDrawingResponse = {
   drawing: Drawing

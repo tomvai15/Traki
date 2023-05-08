@@ -34,6 +34,6 @@ export function ProtocolSectionItemTextInput({ item, updateItem }: Props) {
             {validate(item.textInput.value, [validationRules.noSpecialSymbols]).message}
           </HelperText>
         </View>}
-      </View>
+    </View>
   );
 }

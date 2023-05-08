@@ -27,12 +27,12 @@ export function ProtocolSectionItemMultipleChoice({ item, updateItem }: Props) {
   return (
     <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
       {item.multipleChoice?.options.map((item, index) => 
-      <View key={index} >
-        <Text>{item.name}</Text>
-        <Checkbox 
-          status={item.selected ? 'checked' : 'unchecked'} 
-          onPress={() => updateMultipleChoice(item.name)}/>
-      </View>
+        <View key={index} >
+          <Text>{item.name}</Text>
+          <Checkbox 
+            status={item.selected ? 'checked' : 'unchecked'} 
+            onPress={() => updateMultipleChoice(item.name)}/>
+        </View>
       )}
     </View>
   );

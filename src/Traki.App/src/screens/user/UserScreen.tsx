@@ -12,7 +12,7 @@ export default function UserScreen() {
   const [password, setPassword] = useState<string>('');
 
   async function logOut() {
-    setUserInfo({...userInfo, token: ''})
+    setUserInfo({...userInfo, token: ''});
     return;
   }
 

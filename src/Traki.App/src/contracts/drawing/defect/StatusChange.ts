@@ -1,5 +1,5 @@
-import { Author } from "./Author";
-import { DefectStatus } from "./DefectStatus";
+import { Author } from './Author';
+import { DefectStatus } from './DefectStatus';
 
 export type StatusChange = {
   id: number,

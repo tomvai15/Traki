@@ -1,13 +1,13 @@
-import { error } from "console";
+import { error } from 'console';
 
 export const validationRules = {
   nonEmpty: {
     requirement: /\S+/,
-    message: "Field cannot be empty"
+    message: 'Field cannot be empty'
   },
   noSpecialSymbols: {
     requirement: /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ0-9\s.,:;?!%()_&+={}[\]|\\/~$^+-]*$/,
-    message: "Specials symbols are not allowed"
+    message: 'Specials symbols are not allowed'
   }
 };
 

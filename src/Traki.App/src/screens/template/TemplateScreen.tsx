@@ -9,7 +9,7 @@ import { Checklist } from '../../contracts/protocol/Checklist';
 import { Protocol } from '../../contracts/protocol/Protocol';
 import { Section } from '../../contracts/protocol/Section';
 import { ScreenView } from '../../components/ScreenView';
-import ImageView from "react-native-image-viewing";
+import ImageView from 'react-native-image-viewing';
 import { Item } from '../../contracts/protocol/items/Item';
 import { ProtocolTable } from '../../features/protocol/components/ProtocolTable';
 
@@ -57,16 +57,16 @@ export default function TemplateScreen({ route, navigation }: Props) {
         <Title>{protocol.name}</Title>
       </View>
       { isLoading ?
-      <View>
-        <ActivityIndicator animating={isLoading}/>
-      </View> :
-      <FlatList data={sections} 
-        showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.id.toString()}
-        renderItem={ ({item}) =>   
-          <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
-        }>
-      </FlatList>}
+        <View>
+          <ActivityIndicator animating={isLoading}/>
+        </View> :
+        <FlatList data={sections} 
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.id.toString()}
+          renderItem={ ({item}) =>   
+            <ProtocolSection setSelectedImage={openSelectedImgae} protocolId={protocolId} sectionId={item.id}></ProtocolSection>  
+          }>
+        </FlatList>}
     </ScreenView>
   );
 }
@@ -185,7 +185,7 @@ type ProtocolSectionItemCompProps = {
 function ProtocolSectionItemTextInput({ item }: ProtocolSectionItemCompProps) {
   return (
     <TextInput disabled value={item.textInput?.value} 
-            multiline={true}></TextInput>
+      multiline={true}></TextInput>
   );
 }
 
@@ -214,11 +214,11 @@ function ProtocolSectionItemMultipleChoice({ item }: ProtocolSectionItemCompProp
   return (
     <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
       {item.multipleChoice?.options.map((item, index) => 
-      <View key={index} >
-        <Text>{item.name}</Text>
-        <Checkbox 
-          status={item.selected ? 'checked' : 'unchecked'}/>
-      </View>
+        <View key={index} >
+          <Text>{item.name}</Text>
+          <Checkbox 
+            status={item.selected ? 'checked' : 'unchecked'}/>
+        </View>
       )}
     </View>
   );

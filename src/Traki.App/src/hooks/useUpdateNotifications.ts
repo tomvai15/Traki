@@ -1,6 +1,6 @@
-import { useRecoilState } from "recoil";
-import { notificationsState } from "../state/notification-state";
-import { notificationService } from "../services";
+import { useRecoilState } from 'recoil';
+import { notificationsState } from '../state/notification-state';
+import { notificationService } from '../services';
 
 export const useUpdateNotifications = () => {
 

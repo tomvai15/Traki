@@ -59,19 +59,19 @@ export default function NotificationsMenu({navigation}: Props) {
       {notifications.length == 0 ?
         <Menu.Item onPress={() => {}} title="No notifications" /> :
         notifications.map((item, index) => 
-        <Pressable key={index} onPress={() => handleNotification(item)}
-          style={({pressed}) => [
-            {
-              backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
-            },
-          ]}>
+          <Pressable key={index} onPress={() => handleNotification(item)}
+            style={({pressed}) => [
+              {
+                backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
+              },
+            ]}>
           
-          <View style={{width: 200, paddingHorizontal: 15, marginVertical: 5}}>
-            <Text style={{fontSize: 18}}>{item.title}</Text>
-            <Text style={{fontSize: 15}}>{item.body}</Text>
-          </View>
-          <Divider/>
-        </Pressable>)}
+            <View style={{width: 200, paddingHorizontal: 15, marginVertical: 5}}>
+              <Text style={{fontSize: 18}}>{item.title}</Text>
+              <Text style={{fontSize: 15}}>{item.body}</Text>
+            </View>
+            <Divider/>
+          </Pressable>)}
     </Menu>
   );
 }

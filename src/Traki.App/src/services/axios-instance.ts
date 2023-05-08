@@ -2,7 +2,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '../state/user-state';
 import { url } from './endpoints';
 import axios, { AxiosError } from 'axios';
-import { getRecoil, setRecoil } from 'recoil-nexus'
+import { getRecoil, setRecoil } from 'recoil-nexus';
 import authService from './auth-service';
 import { RefreshTokenRequest } from '../contracts/auth/RefreshTokenRequest';
 import { LoginResponse } from '../contracts/auth/LoginResponse';
@@ -31,7 +31,7 @@ axiosApiInstance.interceptors.response.use((res) => {
       const request: RefreshTokenRequest = {
         token: userInfo.token ?? '',
         refreshToken: userInfo.refreshToken ?? ''
-      }
+      };
       const token = await refreshToken(request);
       
       if (!token) {
@@ -56,7 +56,7 @@ async function refreshToken(request: RefreshTokenRequest): Promise<string> {
     setRecoil(userState, { id: 1, token: '', loggedInDocuSign: false });
     return '';
   } else {
-    setRecoil(userState, (x=> { return {...x, token: response.data.token, refreshToken: response.data.refreshToken} }));
+    setRecoil(userState, (x=> { return {...x, token: response.data.token, refreshToken: response.data.refreshToken}; }));
   }
   return response.data.token;
 }

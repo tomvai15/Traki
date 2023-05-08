@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { View, Image, Text } from 'react-native';
-import { DefectRecomendation } from "../../../contracts/recommendation/DefectRecomendation";
-import { DefectWithImage } from "../../defect/types/DefectWithImage";
-import { defectService, pictureService } from "../../../services";
-import { Defect } from "../../../contracts/drawing/defect/Defect";
-import { Button, Card } from "react-native-paper";
-import AutoImage from "../../../components/AutoImage";
+import { DefectRecomendation } from '../../../contracts/recommendation/DefectRecomendation';
+import { DefectWithImage } from '../../defect/types/DefectWithImage';
+import { defectService, pictureService } from '../../../services';
+import { Defect } from '../../../contracts/drawing/defect/Defect';
+import { Button, Card } from 'react-native-paper';
+import AutoImage from '../../../components/AutoImage';
 
 
 type Props = {
@@ -38,32 +38,32 @@ export function DefectCard ({defect, navigation}: Props) {
   return (
     <Card elevation={5} style={{marginBottom: 10}}>
       <Card.Content>
-      <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-          <View style={{marginRight: 5}}>
-            <Text style={{fontSize: 20}}>
-              {defect.defect.title}
-            </Text>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+            <View style={{marginRight: 5}}>
+              <Text style={{fontSize: 20}}>
+                {defect.defect.title}
+              </Text>
+              <View>
+                <Text style={{fontSize: 17}}>Product: {defect.productName}</Text>
+              </View>
+            </View>
             <View>
-              <Text style={{fontSize: 17}}>Product: {defect.productName}</Text>
+              <Button mode='contained' style={{width: 100}} onPress={() => {
+                navigation.navigate('Projects', { screen: 'DefectScreen', params: { productId: defect.productId, drawingId: defect.defect.drawingId, defectId: defect.defect.id }}); 
+              }}>
+              Details
+              </Button>
             </View>
           </View>
           <View>
-            <Button mode='contained' style={{width: 100}} onPress={() => {
-              navigation.navigate('Projects', { screen: 'DefectScreen', params: { productId: defect.productId, drawingId: defect.defect.drawingId, defectId: defect.defect.id }}) 
-            }}>
-              Details
-            </Button>
-          </View>
-        </View>
-        <View>
-          {defectWithImage?.imageBase64 &&
+            {defectWithImage?.imageBase64 &&
             <Image
               style={{height: 150, width: 150}}
               source={{ uri: defectWithImage?.imageBase64}}
             />}
+          </View>
         </View>
-      </View>
       </Card.Content>
       <Card.Content>
       </Card.Content>

@@ -51,7 +51,7 @@ export function ProtocolSectionItem({ item, itemImage, updateItem, updateItemIma
       localImageUri: localUri,
       imageName: itemImageName,
       imageBase64: itemImage ? itemImage.imageBase64 : ''
-    }
+    };
     updateItemImage(updatedItemImage);
 
     updateItem({...item, itemImage: itemImageName});
@@ -88,10 +88,10 @@ export function ProtocolSectionItem({ item, itemImage, updateItem, updateItemIma
           </TouchableHighlight>
         );
       }
-      return <Text>No image</Text>
+      return <Text>No image</Text>;
     }
     else {
-      return <Text>No image</Text>
+      return <Text>No image</Text>;
     }
   }
 

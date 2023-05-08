@@ -1,4 +1,4 @@
-import { RowColumn } from "./RowColumn";
+import { RowColumn } from './RowColumn';
 
 export type TableRow = {
   id: number,

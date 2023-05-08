@@ -16,7 +16,7 @@ export function Comment ({defectComment}: CommentProps) {
         mode='outlined'
         multiline={true}
         editable={false}
-        theme={{ roundness: 10, colors: { outline: "#7979796C", background: "#B9B9B940"}}}>
+        theme={{ roundness: 10, colors: { outline: '#7979796C', background: '#B9B9B940'}}}>
       </TextInput>
       { defectComment.imageBase64 != '' && <ImageWithViewer source={defectComment.imageBase64} width={100} height={100}></ImageWithViewer>}
     </View>
