@@ -5,7 +5,6 @@ using Traki.Infrastructure.Repositories;
 using Traki.Domain.Handlers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Providers;
-using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Constants;
 
 namespace Traki.Api.Bootstrapping

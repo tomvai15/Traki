@@ -1,6 +1,4 @@
-﻿using Traki.Api.Contracts.Product;
-
-namespace Traki.Api.Contracts.Recommendation
+﻿namespace Traki.Api.Contracts.Recommendation
 {
     public class RecommendationDto
     {

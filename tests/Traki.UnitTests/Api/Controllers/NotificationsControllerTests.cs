@@ -2,14 +2,8 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Traki.Api.Contracts.Company;
-using Traki.Api.Contracts.Drawing;
 using Traki.Api.Contracts.Drawing.Defect;
-using Traki.Api.Contracts.Project;
-using Traki.Api.Contracts.Recommendation;
 using Traki.Api.Controllers;
-using Traki.Domain.Handlers;
-using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;

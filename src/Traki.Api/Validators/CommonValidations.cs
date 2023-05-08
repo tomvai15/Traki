@@ -1,5 +1,4 @@
-﻿using FluentValidation.Validators;
-using FluentValidation;
+﻿using FluentValidation;
 using System.Text.RegularExpressions;
 using System.Diagnostics.CodeAnalysis;
 

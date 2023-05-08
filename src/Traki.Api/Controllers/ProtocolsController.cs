@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Traki.Api.Contracts.Project;
 using Traki.Api.Contracts.Protocol;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;

@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Traki.Domain.Handlers;
-using Traki.Domain.Models;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;

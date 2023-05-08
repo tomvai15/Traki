@@ -2,7 +2,6 @@
 using System.Net.Mail;
 using System.Net;
 using Traki.Domain.Services.Email;
-using System.Diagnostics;
 
 namespace Traki.Infrastructure.Services
 {

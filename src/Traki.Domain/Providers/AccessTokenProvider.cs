@@ -1,10 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services;
 using Traki.Domain.Services.Docusign;

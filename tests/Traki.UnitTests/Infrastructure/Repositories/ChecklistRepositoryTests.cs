@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using Traki.Domain.Models;
 using Traki.Domain.Models.Section;
 using Traki.Infrastructure.Data;
-using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Infrastructure.Fixture;

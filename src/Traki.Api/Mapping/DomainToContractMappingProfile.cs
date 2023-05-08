@@ -14,7 +14,6 @@ using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
-using Traki.Infrastructure.Entities.Drawing;
 using Question = Traki.Domain.Models.Section.Items.Question;
 
 namespace Traki.Api.Mapping

@@ -1,12 +1,6 @@
-﻿using Azure.Storage.Blobs.Models;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Section;

@@ -1,12 +1,6 @@
 ﻿using PuppeteerSharp;
 using RazorLight;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Models;
 
 namespace Traki.Domain.Handlers
 {

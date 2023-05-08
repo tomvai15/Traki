@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Section;

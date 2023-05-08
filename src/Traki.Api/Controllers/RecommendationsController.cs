@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Traki.Api.Contracts.Company;
 using Traki.Api.Contracts.Recommendation;
 using Traki.Domain.Handlers;
 using Traki.Domain.Providers;
-using Traki.Domain.Repositories;
 
 namespace Traki.Api.Controllers
 {

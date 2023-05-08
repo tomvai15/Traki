@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Api.Contracts.Product;
-using Traki.Domain.Models.Drawing;
+﻿using Traki.Api.Contracts.Product;
 
 namespace Traki.Api.Contracts.Recommendation
 {

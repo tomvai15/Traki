@@ -1,10 +1,5 @@
 using System.Text;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using WebDriverManager;
-using WebDriverManager.DriverConfigs.Impl;
-using WebDriverManager.Helpers;
 
 namespace Traki.FunctionalTestsNunit
 {
@@ -50,7 +45,7 @@ namespace Traki.FunctionalTestsNunit
             driver.FindElement(By.Id("password")).SendKeys("password");
             driver.FindElement(By.Id("submit")).Click();
             driver.Navigate().GoToUrl("https://localhost:3000/home");
-            Assert.AreEqual("Traki", driver.Title);
+            Assert.AreEqual("React App", driver.Title);
         }
         private bool IsElementPresent(By by)
         {

@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.User;
-using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Exceptions;
 using Traki.Domain.Handlers;

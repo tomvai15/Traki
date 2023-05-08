@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PuppeteerSharp;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;

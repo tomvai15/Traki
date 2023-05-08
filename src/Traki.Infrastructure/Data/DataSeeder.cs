@@ -1,5 +1,4 @@
-﻿using DocuSign.eSign.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Traki.Infrastructure.Entities;
 

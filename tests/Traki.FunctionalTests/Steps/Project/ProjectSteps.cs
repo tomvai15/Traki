@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualBasic;
 using OpenQA.Selenium;
-using System.Text;
 using TechTalk.SpecFlow;
 using Traki.FunctionalTests.Data;
 

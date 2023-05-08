@@ -1,6 +1,4 @@
-﻿using Traki.Infrastructure.Entities.Drawing;
-
-namespace Traki.Api.Contracts.Drawing.Defect
+﻿namespace Traki.Api.Contracts.Drawing.Defect
 {
     public class CreateStatusChangeRequest
     {

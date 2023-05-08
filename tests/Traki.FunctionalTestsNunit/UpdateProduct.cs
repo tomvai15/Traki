@@ -1,10 +1,5 @@
-﻿using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using OpenQA.Selenium;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Traki.FunctionalTestsNunit
 {
