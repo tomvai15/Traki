@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using Traki.Api.Contracts.Product;
@@ -22,10 +23,10 @@ namespace Traki.IntegrationTests
         }
 
         [Fact]
-        public async Task Get_ExistingProject_ReturnSuccess()
+        public async Task GetProduct_ProductExists_ReturnOkAndProductInfromation()
         {
             // Arrange
-            var product = _context.Products.First();
+            var product = _context.Products.Include(x=> x.Author).First();
             var productId = product.Id;
             var projectId = product.ProjectId;
             var url = $"/api/projects/{productId}/products/{projectId}";
@@ -39,9 +40,7 @@ namespace Traki.IntegrationTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             GetProductResponse getProductResponse = response.Data;
-            product.Should().BeEquivalentTo(getProductResponse.Product,
-                options => options.Excluding(x => x.Author)
-                    .Excluding(x => x.CreationDate));
+            product.Should().BeEquivalentTo(getProductResponse.Product);
         }
 
         [Theory]

@@ -1,6 +1,6 @@
-﻿Feature: View product
+﻿Feature: Create section
 
-Scenario: Open project tab, shows all projects
+Scenario: Create section with all question types
     Given I have logged in as project manager
     When I press on Projects tab
     Then projects should be displayed

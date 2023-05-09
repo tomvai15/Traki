@@ -1,6 +1,6 @@
-﻿Feature: View product
+﻿Feature: Change defect status
 
-Scenario: Open project tab, shows all projects
+Scenario: Change defect status when it is unfixed
     Given I have logged in as project manager
     When I press on Projects tab
     Then projects should be displayed

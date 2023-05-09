@@ -1,6 +1,6 @@
-﻿Feature: View product
+﻿Feature: Create product
 
-Scenario: Open project tab, shows all projects
+Scenario: Create product with valid fields
     Given I have logged in as project manager
     When I press on Projects tab
     Then projects should be displayed

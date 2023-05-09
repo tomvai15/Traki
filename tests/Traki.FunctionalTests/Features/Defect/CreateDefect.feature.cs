@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Traki.FunctionalTests.Features.Login
+namespace Traki.FunctionalTests.Features.Defect
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,19 @@ namespace Traki.FunctionalTests.Features.Login
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Login")]
-    public partial class UserAuthenticationFeature : object, Xunit.IClassFixture<UserAuthenticationFeature.FixtureData>, System.IDisposable
+    public partial class CreateDefectFeature : object, Xunit.IClassFixture<CreateDefectFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "Login"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "login.feature"
+#line 1 "CreateDefect.feature"
 #line hidden
         
-        public UserAuthenticationFeature(UserAuthenticationFeature.FixtureData fixtureData, Traki_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CreateDefectFeature(CreateDefectFeature.FixtureData fixtureData, Traki_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +40,7 @@ namespace Traki.FunctionalTests.Features.Login
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Login", "User authentication", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Defect", "Create defect", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -82,15 +80,15 @@ namespace Traki.FunctionalTests.Features.Login
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log in with invalid credentials")]
-        [Xunit.TraitAttribute("FeatureTitle", "User authentication")]
-        [Xunit.TraitAttribute("Description", "Log in with invalid credentials")]
-        public void LogInWithInvalidCredentials()
+        [Xunit.SkippableFactAttribute(DisplayName="Create defect without without uploading image")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create defect")]
+        [Xunit.TraitAttribute("Description", "Create defect without without uploading image")]
+        public void CreateDefectWithoutWithoutUploadingImage()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log in with invalid credentials", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create defect without without uploading image", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -100,39 +98,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 4
+    testRunner.Given("I have logged in as project manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 5
-    testRunner.When("I enter wrong credentials", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I press on Projects tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 6
-    testRunner.Then("error message should be presented", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Log in as product manager")]
-        [Xunit.TraitAttribute("FeatureTitle", "User authentication")]
-        [Xunit.TraitAttribute("Description", "Log in as product manager")]
-        public void LogInAsProductManager()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log in as product manager", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 8
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 9
-    testRunner.When("I enter valid credentials", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 10
-    testRunner.Then("I should be redirected to home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("projects should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -145,12 +118,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                UserAuthenticationFeature.FeatureSetup();
+                CreateDefectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                UserAuthenticationFeature.FeatureTearDown();
+                CreateDefectFeature.FeatureTearDown();
             }
         }
     }

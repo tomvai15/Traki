@@ -1,11 +1,13 @@
-﻿Feature: Update project
+﻿Feature: Update section
 
-Scenario: Update project with valid fields
+Scenario: Update section with valid fields
     Given I have logged in as project manager
-    When I press on Projects tab
-    Then projects should be displayed
+    And I have navigated to projects page
+    When I open edit project page
+    And I update all project fields
+    Then project information should be updated
 
-Scenario: Update project with invalid fields
+Scenario: Update section with invalid fields
     Given I have logged in as project manager
     And I have navigated to projects page
     When I open edit project page
