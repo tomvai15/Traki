@@ -8,14 +8,14 @@ namespace Traki.Api.Controllers
 {
     [Route("api/control")]
    // [Authorize]
-    public class ControlController : ControllerBase
+    public class FileController : ControllerBase
     {
         private readonly TrakiDbContext _trakiDbContext;
         private readonly IStorageService _storageService;
         private readonly IEmailService _emailService;
         private readonly INotificationService _notificationService;
 
-        public ControlController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService, INotificationService notificationService)
+        public FileController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService, INotificationService notificationService)
         {
             _storageService = storageService;
             _trakiDbContext = trakiDbContext;

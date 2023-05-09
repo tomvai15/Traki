@@ -1,6 +1,6 @@
-﻿Feature: View product
+﻿Feature: View protocol
 
-Scenario: Open project tab, shows all projects
+Scenario: Open protocol tab displays protocols
     Given I have logged in as project manager
     When I press on Projects tab
     Then projects should be displayed

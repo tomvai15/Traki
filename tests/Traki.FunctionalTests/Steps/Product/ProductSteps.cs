@@ -39,11 +39,12 @@ namespace Traki.FunctionalTests.Steps.Product
             }
         }
 
+        /*
         [When(@"I press on Projects tab")]
         public void WhenIEnterValidCredentials()
         {
             driver.FindElement(By.XPath("//div[@id='root']/div/div/div/nav/div[2]/div[2]/span")).Click();
-        }
+        }*/
 
         private IWebElement FindUpdateButton()
         {

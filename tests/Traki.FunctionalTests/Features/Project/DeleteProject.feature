@@ -1,6 +1,6 @@
-﻿Feature: View product
+﻿Feature: Delete project
 
-Scenario: Open project tab, shows all projects
+Scenario: Delete project with products
     Given I have logged in as project manager
     When I press on Projects tab
     Then projects should be displayed
