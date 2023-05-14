@@ -38,7 +38,7 @@ export default function AddProtocolDialog(props: Props) {
       <DialogContent>
         <PaginatedList selector={x=> x.name} heightPerItem={80} items={protocols} renderItem={(item) => (
           <ListItem disableGutters>
-            <ListItemButton onClick={() => handleListItemClick(item.id)}>
+            <ListItemButton id='protocol-item' onClick={() => handleListItemClick(item.id)}>
               <ListItemAvatar>
                 <AssignmentIcon />
               </ListItemAvatar>

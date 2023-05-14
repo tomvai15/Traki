@@ -117,7 +117,6 @@ namespace Traki.FunctionalTests.Steps.Product
             Thread.Sleep(1000);
         }
 
-
         [When(@"press delete button and confirm deletion")]
         public void DeleteProduct()
         {
@@ -127,6 +126,27 @@ namespace Traki.FunctionalTests.Steps.Product
             driver.ElementShouldBePresent(By.Id("confirm"));
             driver.FindElement(By.Id("confirm")).Click();
             Thread.Sleep(1000);
+        }
+
+
+        [When(@"I open protocol import window")]
+        public void IOpenImportProtocolWindow()
+        {
+            driver.ElementShouldBePresent(By.Id("add-protocol"));
+            driver.FindElement(By.Id("add-protocol")).Click();
+        }
+
+        [When(@"select protocol from the list")]
+        public void SelectProtocolFromList()
+        {
+            driver.ElementShouldBePresent(By.Id("protocol-item"));
+            driver.FindElement(By.Id("protocol-item")).Click();
+        }
+
+        [Then(@"protocol should be added for product")]
+        public void ProtocolIsAdded()
+        {
+            driver.ElementShouldBePresent(By.Id("product-protocol"));
         }
 
         [Then(@"product is deleted")]
