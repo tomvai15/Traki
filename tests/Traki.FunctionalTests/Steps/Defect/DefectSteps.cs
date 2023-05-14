@@ -85,6 +85,23 @@ namespace Traki.FunctionalTests.Steps.Defect
                 Thread.Sleep(2000);
             }
 
+            [When(@"I change defect status")]
+            public void WhenIChangeDefectStatus()
+            {
+                driver.ElementShouldBePresent(By.Id("defect-status"));
+                driver.FindElement(By.Id("defect-status")).Click();
+                driver.ElementShouldBePresent(By.Id("fixed"));
+                driver.FindElement(By.Id("fixed")).Click();
+                Thread.Sleep(2000);
+            }
+
+            [Then(@"defect status change activity is displayed")]
+            public void DefectStatusChangeIsDisplayed()
+            {
+                driver.ElementShouldBePresent(By.Id("activity-status-field-to"));
+                driver.FindElement(By.Id("defect-status")).Text.Should().BeEquivalentTo("Fixed");
+            }
+
             [Then(@"defects information is displayed")]
             public void DefectsInformationIsDisplayed()
             {

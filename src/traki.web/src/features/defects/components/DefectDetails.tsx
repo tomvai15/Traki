@@ -223,7 +223,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                   <Typography id="defect-description">
                     {selectedDefect.description}
                   </Typography>
-                  <FormControl sx={{minWidth: 120, marginTop: '10px' }} size="small">
+                  <FormControl id="demo-simple-select-label" sx={{minWidth: 120, marginTop: '10px' }} size="small">
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
                     <DisabledComponent 
                       disabled={defect.defect.status != DefectStatus.NotFixed && defect.defect.author?.id != userInfo.id} 
@@ -231,15 +231,15 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                       <Select
                         disabled={defect.defect.status != DefectStatus.NotFixed && defect.defect.author?.id != userInfo.id}
                         labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        id="defect-status"
                         label="Status"
                         value={defect ? defect.defect.status : 1}
                         onChange={(e) => updateDefectStatus(e.target.value as string)}
                       >
-                        <MenuItem value={1}>Not fixed</MenuItem>
-                        <MenuItem value={0}>Fixed</MenuItem>
-                        <MenuItem value={2}>Not a defect</MenuItem>
-                        <MenuItem value={3}>Unfixable</MenuItem>
+                        <MenuItem id="not-fixed" value={1}>Not fixed</MenuItem>
+                        <MenuItem id="fixed" value={0}>Fixed</MenuItem>
+                        <MenuItem id="not-defect" value={2}>Not a defect</MenuItem>
+                        <MenuItem id="unfixable" value={3}>Unfixable</MenuItem>
                       </Select>
                     </DisabledComponent>
                   </FormControl>

@@ -25,7 +25,7 @@ namespace Traki.FunctionalTests.Utils
             const int maxWaitTime = 5;
             for (int second = 0; ; second++)
             {
-                if (second >= maxWaitTime) Assert.Fail("timeout");
+                if (second >= maxWaitTime) Assert.Fail(by.ToString());
                 try
                 {
                     if (IsElementPresent(driver, by)) break;
