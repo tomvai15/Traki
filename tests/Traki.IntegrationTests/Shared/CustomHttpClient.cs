@@ -28,10 +28,17 @@ namespace Traki.IntegrationTests.Shared
             return await Send<TResponse>(path, HttpMethod.Get);
         }
 
+        public async Task<HttpResponseMessage> SendGetRequest(string path)
+        {
+            Uri uri = new Uri(path.TrimStart('/').TrimStart(), UriKind.Relative);
+            using HttpRequestMessage httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            return await _httpClient.SendAsync(httpRequestMessage);
+        }
+
         public async Task<Response<TResponse>> Send<TRequest, TResponse>(string path, HttpMethod httpMethod, TRequest requestBody)
         {
             Uri uri = new Uri(path.TrimStart('/').TrimStart(), UriKind.Relative);
-            using HttpRequestMessage httpRequestMessage = CreateHttpRequestMessage<TResponse>(httpMethod, uri);
+            using HttpRequestMessage httpRequestMessage = CreateHttpRequestMessage(httpMethod, uri);
 
             if (requestBody != null)
             {
@@ -45,7 +52,7 @@ namespace Traki.IntegrationTests.Shared
         public async Task<Response<TResponse>> Send<TResponse>(string path, HttpMethod httpMethod)
         {
             Uri uri = new Uri(path.TrimStart('/').TrimStart(), UriKind.Relative);
-            using HttpRequestMessage httpRequestMessage = CreateHttpRequestMessage<TResponse>(httpMethod, uri);
+            using HttpRequestMessage httpRequestMessage = CreateHttpRequestMessage(httpMethod, uri);
 
             return await SendRequest<TResponse>(httpRequestMessage);
         }
@@ -55,7 +62,7 @@ namespace Traki.IntegrationTests.Shared
         {
             var response = await _httpClient.SendAsync(httpRequestMessage);
 
-            string consent = await response.Content.ReadAsStringAsync();
+            string content = await response.Content.ReadAsStringAsync();
 
             var responseResult = new Response<TResponse>
             {
@@ -64,18 +71,18 @@ namespace Traki.IntegrationTests.Shared
                 Data = default(TResponse)
             };
 
-            if (consent.IsNullOrEmpty())
+            if (content.IsNullOrEmpty())
             {
                 return responseResult;
             }
-            var responseData = JsonConvert.DeserializeObject<TResponse>(consent);
+            var responseData = JsonConvert.DeserializeObject<TResponse>(content);
 
             responseResult.Data = responseData;
 
             return responseResult;
         }
 
-        private HttpRequestMessage CreateHttpRequestMessage<TBody>(HttpMethod httpMethod, Uri relativePath)
+        private HttpRequestMessage CreateHttpRequestMessage(HttpMethod httpMethod, Uri relativePath)
         {
             HttpRequestMessage request = new HttpRequestMessage();
             request.Method = httpMethod;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Email;
 using Traki.Domain.Services.Notifications;
@@ -7,15 +8,15 @@ using Traki.Infrastructure.Data;
 namespace Traki.Api.Controllers
 {
     [Route("api/control")]
-   // [Authorize]
-    public class FileController : ControllerBase
+    [Authorize]
+    public class ImageController : ControllerBase
     {
         private readonly TrakiDbContext _trakiDbContext;
         private readonly IStorageService _storageService;
         private readonly IEmailService _emailService;
         private readonly INotificationService _notificationService;
 
-        public FileController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService, INotificationService notificationService)
+        public ImageController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService, INotificationService notificationService)
         {
             _storageService = storageService;
             _trakiDbContext = trakiDbContext;
