@@ -21,5 +21,12 @@ namespace Traki.FunctionalTests.Hooks
             var webDriver = BuildDriver();
             objectContainer.RegisterInstanceAs<IWebDriver>(webDriver);
         }
+
+        [AfterScenario]
+        public void CloseBrowser()
+        {
+            var webDriver = objectContainer.Resolve<IWebDriver>();
+            webDriver.Close();
+        }
     }
 }

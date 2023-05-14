@@ -22,9 +22,10 @@ namespace Traki.FunctionalTests.Utils
 
         public static void ElementShouldBePresent(this IWebDriver driver, By by)
         {
+            const int maxWaitTime = 5;
             for (int second = 0; ; second++)
             {
-                if (second >= 60) Assert.Fail("timeout");
+                if (second >= maxWaitTime) Assert.Fail("timeout");
                 try
                 {
                     if (IsElementPresent(driver, by)) break;

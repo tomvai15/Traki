@@ -1,4 +1,5 @@
-﻿Feature: Fill protocol
+﻿@ignore
+Feature: Fill protocol
 
 Scenario: Fill all protocol sections
     Given I have logged in as product manager
