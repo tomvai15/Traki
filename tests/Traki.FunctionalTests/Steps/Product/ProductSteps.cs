@@ -27,7 +27,6 @@ namespace Traki.FunctionalTests.Steps.Product
             driver.FindElement(By.Id("password")).Clear();
             driver.FindElement(By.Id("password")).SendKeys(ExampleData.ProductManagerPassword);
             driver.FindElement(By.Id("submit")).Click();
-            //driver.Navigate().GoToUrl("https://localhost:3000/home");
             for (int second = 0; ; second++)
             {
                 if (second >= 60) Assert.Fail("timeout");
@@ -46,6 +45,14 @@ namespace Traki.FunctionalTests.Steps.Product
         {
             WhenIPresOnProduct();
             ThenProductNameShouldBePresent();
+        }
+
+        [Given(@"I have created product")]
+        public void IHaveCreatedProdtc()
+        {
+            WhenIOpenCreateProductPage();
+            WhenIAddProductName();
+            ProductIsCreated();
         }
 
 
@@ -87,6 +94,55 @@ namespace Traki.FunctionalTests.Steps.Product
             testingData.Add("newProductName", productName);
             driver.WriteNewText(By.Id("product-name"), "!@#$@$%#&*&#*");
             driver.ElementShouldBePresent(By.Id("update-product"));
+        }
+
+
+        [When(@"I open create product page")]
+        public void WhenIOpenCreateProductPage()
+        {
+            driver.ElementShouldBePresent(By.Id("add-product"));
+            driver.FindElement(By.Id("add-product")).Click();
+            driver.ElementShouldBePresent(By.Id("product-name"));
+        }
+
+        [When(@"I add product name")]
+        public void WhenIAddProductName()
+        {
+            string productName = Any<string>();
+            testingData.Add("newProductName", productName);
+
+            driver.ElementShouldBePresent(By.Id("product-name"));
+            driver.WriteNewText(By.Id("product-name"), productName);
+            driver.FindElement(By.Id("create-product")).Click();
+            Thread.Sleep(1000);
+        }
+
+
+        [When(@"press delete button and confirm deletion")]
+        public void DeleteProduct()
+        {
+            driver.ElementShouldBePresent(By.Id("product-name"));
+            driver.FindElement(By.Id("delete-product")).Click();
+            Thread.Sleep(1000);
+            driver.ElementShouldBePresent(By.Id("confirm"));
+            driver.FindElement(By.Id("confirm")).Click();
+            Thread.Sleep(1000);
+        }
+
+        [Then(@"product is deleted")]
+        public void ProductIsDeleted()
+        {
+            var productUrl = testingData["newProductUrl"];
+            driver.Navigate().GoToUrl(productUrl);
+            driver.ElementShouldBePresent(By.Id("not-found"));
+        }
+
+        [Then(@"product is created")]
+        public void ProductIsCreated()
+        {
+            testingData.Add("newProductUrl", driver.Url);
+            driver.ElementShouldBePresent(By.Id("product-name"));
+            testingData["newProductName"].Should().BeEquivalentTo(driver.FindElement(By.Id("product-name")).Text);
         }
 
         [Then(@"product name should be updated")]

@@ -190,7 +190,7 @@ export function EditProduct() {
                   <Grid item xs={12} md={12}>
                     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
                       <Typography>Product Information</Typography>
-                      <Button onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
+                      <Button id="delete-product" onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
@@ -308,7 +308,7 @@ export function EditProduct() {
         </DialogContent>
         <DialogActions>
           <Button color='inherit' onClick={handleProductDialogClose}>Cancel</Button>
-          <Button color='error' onClick={() => deleteProduct()}>Delete</Button>
+          <Button id="confirm" color='error' onClick={() => deleteProduct()}>Delete</Button>
         </DialogActions>
       </Dialog>
     </Grid>

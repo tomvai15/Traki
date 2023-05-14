@@ -107,7 +107,7 @@ function ProjectProducts({project, index}: ProjectProductsProps) {
           </Box>
           <Box>
             <ProtectedComponent role={'ProductManager'}>
-              <Button onClick={() => navigate(`/projects/${project.project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
+              <Button id='add-product' onClick={() => navigate(`/projects/${project.project.id}/products/create`)} color='secondary' variant='contained' startIcon={<AddIcon/>}>Add Product</Button>
             </ProtectedComponent>
             <HideableComponent checkIfRender={(user) => user.id == project.project.author?.id}>
               <Button id={`${index}-edit-project`} onClick={() => navigate(`/projects/${project.project.id}/edit`)}  sx={{marginLeft: '10px'}} variant='contained' startIcon={<EditIcon/>}>
