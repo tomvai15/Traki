@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.Email;
 using Traki.Domain.Services.Notifications;
@@ -7,7 +8,7 @@ using Traki.Infrastructure.Data;
 namespace Traki.Api.Controllers
 {
     [Route("api/control")]
-   // [Authorize]
+    [Authorize]
     public class ImageController : ControllerBase
     {
         private readonly TrakiDbContext _trakiDbContext;

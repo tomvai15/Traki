@@ -60,6 +60,22 @@ namespace Traki.IntegrationTests
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
+        [Fact]
+        public async Task GetImage_UnauthorisedUser_Returns401()
+        {
+            // Arrange
+            string imageName = Any<string>() + ".png";
+            string folderName = "company";
+            var url = $"/api/control/folders/{folderName}/files/{imageName}";
+            var client = _factory.GetCustomHttpClient();
+
+            // Act
+            var response = await client.SendGetRequest(url);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        }
+
         private (string, byte[]) AddReportForProtocol()
         {
             string imageName = Any<string>() + ".png";
