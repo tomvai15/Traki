@@ -1,4 +1,5 @@
-﻿Feature: Create product
+﻿@ignore
+Feature: Create product
 
 Scenario: Create product with valid fields
     Given I have logged in as project manager

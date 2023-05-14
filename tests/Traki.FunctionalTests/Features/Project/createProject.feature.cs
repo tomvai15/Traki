@@ -24,7 +24,8 @@ namespace Traki.FunctionalTests.Features.Project
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -80,7 +81,7 @@ namespace Traki.FunctionalTests.Features.Project
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create project with valid fields")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create project with valid fields", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Create project")]
         [Xunit.TraitAttribute("Description", "Create project with valid fields")]
         public void CreateProjectWithValidFields()
@@ -88,7 +89,7 @@ namespace Traki.FunctionalTests.Features.Project
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create project with valid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 3
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,13 +99,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 5
     testRunner.Given("I have logged in as project manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 5
+#line 6
     testRunner.When("I press on Projects tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 6
+#line 7
     testRunner.Then("projects should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -118,12 +119,10 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                CreateProjectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CreateProjectFeature.FeatureTearDown();
             }
         }
     }

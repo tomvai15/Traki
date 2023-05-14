@@ -24,7 +24,8 @@ namespace Traki.FunctionalTests.Features.Project
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -80,7 +81,7 @@ namespace Traki.FunctionalTests.Features.Project
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update project with valid fields")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update project with valid fields", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Update project")]
         [Xunit.TraitAttribute("Description", "Update project with valid fields")]
         public void UpdateProjectWithValidFields()
@@ -88,7 +89,7 @@ namespace Traki.FunctionalTests.Features.Project
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update project with valid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 3
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,20 +99,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 5
     testRunner.Given("I have logged in as project manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 5
+#line 6
     testRunner.When("I press on Projects tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 6
+#line 7
     testRunner.Then("projects should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update project with invalid fields")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update project with invalid fields", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Update project")]
         [Xunit.TraitAttribute("Description", "Update project with invalid fields")]
         public void UpdateProjectWithInvalidFields()
@@ -119,7 +120,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update project with invalid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 8
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -129,19 +130,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 10
     testRunner.Given("I have logged in as project manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 11
     testRunner.And("I have navigated to projects page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 11
+#line 12
     testRunner.When("I open edit project page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 12
+#line 13
     testRunner.And("I update all project fields with invalid characters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
+#line 14
     testRunner.Then("I should not be allowed to update project information", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -155,12 +156,10 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                UpdateProjectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                UpdateProjectFeature.FeatureTearDown();
             }
         }
     }

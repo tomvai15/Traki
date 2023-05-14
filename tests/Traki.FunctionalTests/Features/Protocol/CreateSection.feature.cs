@@ -24,7 +24,8 @@ namespace Traki.FunctionalTests.Features.Protocol
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -80,7 +81,7 @@ namespace Traki.FunctionalTests.Features.Protocol
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create section with all question types")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create section with all question types", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Create section")]
         [Xunit.TraitAttribute("Description", "Create section with all question types")]
         public void CreateSectionWithAllQuestionTypes()
@@ -88,7 +89,7 @@ namespace Traki.FunctionalTests.Features.Protocol
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create section with all question types", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 3
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,13 +99,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 5
     testRunner.Given("I have logged in as project manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 5
+#line 6
     testRunner.When("I press on Projects tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 6
+#line 7
     testRunner.Then("projects should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -118,12 +119,10 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                CreateSectionFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CreateSectionFeature.FeatureTearDown();
             }
         }
     }

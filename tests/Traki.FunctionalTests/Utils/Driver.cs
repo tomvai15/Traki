@@ -15,7 +15,7 @@ namespace Traki.FunctionalTests.Utils
 
             ChromeOptions options = new ChromeOptions();
             options.AddArguments("--ignore-certificate-errors");
-            options.AddArguments("headless");
+           // options.AddArguments("headless");
 
 
             var driver =  new ChromeDriver(Path.GetDirectoryName(path), options);

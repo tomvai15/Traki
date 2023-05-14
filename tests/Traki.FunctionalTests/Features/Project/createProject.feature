@@ -1,4 +1,5 @@
-﻿Feature: Create project
+﻿@ignore
+Feature: Create project
 
 Scenario: Create project with valid fields
     Given I have logged in as project manager

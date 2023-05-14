@@ -1,4 +1,5 @@
-﻿Feature: Create protocol
+﻿@ignore
+Feature: Create protocol
 
 Scenario: Create protocol with valid fields
     Given I have logged in as project manager

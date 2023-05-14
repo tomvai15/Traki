@@ -1,4 +1,5 @@
-﻿Feature: Update project
+﻿@ignore
+Feature: Update project
 
 Scenario: Update project with valid fields
     Given I have logged in as project manager

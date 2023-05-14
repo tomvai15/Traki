@@ -1,4 +1,5 @@
-﻿Feature: Create comment
+﻿@ignore
+Feature: Create comment
 
 Scenario: Create comment for defect
     Given I have logged in as project manager

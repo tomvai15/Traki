@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
+  <Settings projectName="Traki.FunctionalTests" projectId="{9A19103F-16F7-4668-BE54-9A1E7A4F7556}" />
+  <Execution stopAfterFailures="1" testThreadCount="1" testSchedulingMode="Sequential"  />
+  <Environment testThreadIsolation="SharedAppDomain"/>
+
+  <TestAssemblyPaths>
+    <TestAssemblyPath>Traki.FunctionalTests.dll</TestAssemblyPath>
+  </TestAssemblyPaths>
+  <Report>
+    <Template name="ReportTemplate.cshtml"/>
+  </Report>
+  <DeploymentTransformation>
+    <Steps>
+    </Steps>
+  </DeploymentTransformation>
+  <Targets>
+    <Target name="Integrated">
+      <DeploymentTransformationSteps>
+        <EnvironmentVariable variable="Mode" value="Integrated"/>
+      </DeploymentTransformationSteps>
+    </Target>
+    <!--<Target name="Chrome">
+      <DeploymentTransformationSteps>
+        <EnvironmentVariable variable="Mode" value="Chrome"/>
+      </DeploymentTransformationSteps>
+    </Target>-->
+    <!--<Target name="Chrome-Headless">
+      <DeploymentTransformationSteps>
+        <EnvironmentVariable variable="Mode" value="Chrome-Headless"/>
+      </DeploymentTransformationSteps>
+    </Target>-->
+    <!--<Target name="Firefox">
+      <DeploymentTransformationSteps>
+        <EnvironmentVariable variable="Mode" value="Firefox"/>
+      </DeploymentTransformationSteps>
+    </Target>-->
+  </Targets>
+</TestProfile>

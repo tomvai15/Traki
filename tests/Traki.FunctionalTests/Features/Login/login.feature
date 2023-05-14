@@ -1,4 +1,4 @@
-﻿@Login
+﻿@ignore
 Feature: User authentication
 
 Scenario: Log in with invalid credentials

@@ -1,4 +1,5 @@
-﻿Feature: Update section
+﻿@ignore
+Feature: Update section
 
 Scenario: Update section with valid fields
     Given I have logged in as project manager

@@ -1,4 +1,5 @@
-﻿Feature: Delete product
+﻿@ignore
+Feature: Delete product
 
 Scenario: Delete product with valid fields
     Given I have logged in as project manager

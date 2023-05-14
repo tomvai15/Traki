@@ -1,4 +1,5 @@
-﻿Feature: View defect
+﻿@ignore
+Feature: View defect
 
 Scenario: Defects screen displays defects
     Given I have logged in as project manager

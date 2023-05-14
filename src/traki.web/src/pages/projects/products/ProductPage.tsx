@@ -141,7 +141,7 @@ export function ProductPage() {
                 </Table>
               </CardContent>}
             <CardActions>
-              <Button onClick={() => navigate('edit')} variant='contained' color='primary'>Edit information</Button>
+              <Button id="edit-product" onClick={() => navigate('edit')} variant='contained' color='primary'>Edit information</Button>
             </CardActions>
           </Card>
         </Grid>
