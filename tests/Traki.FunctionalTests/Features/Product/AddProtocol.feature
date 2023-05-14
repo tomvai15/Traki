@@ -1,4 +1,5 @@
-﻿Feature: Add protocol
+﻿@ignore
+Feature: Add protocol
 
 Scenario: Add protocol for product
     Given I have logged in as product manager

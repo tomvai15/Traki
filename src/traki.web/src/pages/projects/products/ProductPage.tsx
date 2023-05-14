@@ -172,7 +172,7 @@ export function ProductPage() {
                     <Stack sx={{marginBottom: '5px'}} key={index} direction={'row'} justifyContent={'space-between'} alignItems={'center'}> 
                       <Typography id="product-protocol" >{item.name}</Typography>
                       <Stack direction={'row'} spacing={1}>
-                        <Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Details</Button>
+                        <Button id="fill-protocol" onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Details</Button>
                         <Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button>
                         <Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button>
                       </Stack>                          

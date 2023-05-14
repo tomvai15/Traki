@@ -143,6 +143,35 @@ namespace Traki.FunctionalTests.Steps.Product
             driver.FindElement(By.Id("protocol-item")).Click();
         }
 
+        [When(@"I open fill protocol page")]
+        public void OpenFillProtocolPage()
+        {
+            driver.ElementShouldBePresent(By.Id("fill-protocol"));
+            driver.FindElement(By.Id("fill-protocol")).Click();
+        }
+
+        [When(@"fill section and save changes")]
+        public void FillSectionAndSave()
+        {
+            string randomText = Any<string>();
+            testingData.Add("randomText", randomText);
+
+            driver.ElementShouldBePresent(By.Id("question-comment"));
+            driver.WriteNewText(By.Id("question-comment"), randomText);
+            driver.ElementShouldBePresent(By.Id("save-section"));
+            driver.FindElement(By.Id("save-section")).Click();
+            Thread.Sleep(1000);
+        }
+
+        [Then(@"section should be updated")]
+        public void SectionShouldBeUpdated()
+        {
+            driver.Navigate().Refresh();
+            driver.ElementShouldBePresent(By.Id("question-comment"));
+            driver.FindElement(By.Id("question-comment")).Text.Should().BeEquivalentTo(testingData["randomText"]);
+        }
+
+
         [Then(@"protocol should be added for product")]
         public void ProtocolIsAdded()
         {
