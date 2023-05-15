@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Traki.FunctionalTests.Features.Product
+namespace Traki.FunctionalTests.Features.Protocol
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace Traki.FunctionalTests.Features.Product
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class DeleteProductFeature : object, Xunit.IClassFixture<DeleteProductFeature.FixtureData>, System.IDisposable
+    public partial class DeleteSectionFeature : object, Xunit.IClassFixture<DeleteSectionFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Traki.FunctionalTests.Features.Product
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "DeleteProduct.feature"
+#line 1 "DeleteSection.feature"
 #line hidden
         
-        public DeleteProductFeature(DeleteProductFeature.FixtureData fixtureData, Traki_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public DeleteSectionFeature(DeleteSectionFeature.FixtureData fixtureData, Traki_FunctionalTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Traki.FunctionalTests.Features.Product
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Product", "Delete product", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Protocol", "Delete section", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,14 +80,14 @@ namespace Traki.FunctionalTests.Features.Product
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Delete product")]
-        [Xunit.TraitAttribute("FeatureTitle", "Delete product")]
-        [Xunit.TraitAttribute("Description", "Delete product")]
-        public void DeleteProduct()
+        [Xunit.SkippableFactAttribute(DisplayName="Delete section")]
+        [Xunit.TraitAttribute("FeatureTitle", "Delete section")]
+        [Xunit.TraitAttribute("Description", "Delete section")]
+        public void DeleteSection()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete product", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete section", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -99,22 +99,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 4
-    testRunner.Given("I have logged in as product manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have logged in as project manager", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 5
-    testRunner.And("I have navigated to projects page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I have navigated to protocol templates page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 6
-    testRunner.And("I have created product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.When("I open edit section page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
-    testRunner.When("I open edit product page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("press delete button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 8
-    testRunner.And("press delete button and confirm deletion", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
-    testRunner.Then("product is deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("section should be deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -127,12 +124,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                DeleteProductFeature.FeatureSetup();
+                DeleteSectionFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                DeleteProductFeature.FeatureTearDown();
+                DeleteSectionFeature.FeatureTearDown();
             }
         }
     }

@@ -118,12 +118,13 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update section with invalid fields")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update section with invalid fields", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "Update section")]
         [Xunit.TraitAttribute("Description", "Update section with invalid fields")]
         public void UpdateSectionWithInvalidFields()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update section with invalid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 13

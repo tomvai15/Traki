@@ -1,5 +1,4 @@
-﻿@ignore
-Feature: Delete product
+﻿Feature: Delete product
 
 Scenario: Delete product
     Given I have logged in as product manager

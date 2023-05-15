@@ -132,6 +132,20 @@ namespace Traki.FunctionalTests.Steps.Protocol
             driver.WriteNewText(By.Id("section-item"), question);
         }
 
+        [When(@"press delete button")]
+        public void WhenIPressSectionDeleteButton()
+        {
+            testingData.Add("currentUrl", driver.Url);
+            driver.FindElement(By.Id("delete-section")).Click();
+        }
+
+        [Then(@"section should be deleted")]
+        public void SectionShouldBeDeleted()
+        {
+            driver.Navigate().GoToUrl(testingData["currentUrl"]);
+            driver.ElementShouldBePresent(By.Id("not-found"));
+        }
+
         [Then(@"I should not be allowed to update section")]
         public void ShouldNotBeAllowedToUpdate()
         {
