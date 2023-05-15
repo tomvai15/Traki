@@ -32,7 +32,6 @@ export function CreateProduct() {
     };
 
     const response = await productService.createProduct(Number(projectId), request);
-    console.log('??????');
 
     navigate(`/projects/${projectId}/products/${response.product.id}`);
   }

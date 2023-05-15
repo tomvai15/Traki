@@ -26,9 +26,7 @@ export default function AddProtocolDialog(props: Props) {
   }
 
   const handleListItemClick = (protocolId: number) => {
-    console.log(protocolId);
     addProtocol(protocolId);
-    console.log('????');
     onclose();
   };
 

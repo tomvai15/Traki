@@ -59,7 +59,6 @@ export function ProtocolReport() {
 
   async function fetchSections() {
     const getSectionsResponse = await sectionService.getSections(Number(protocolId));
-    console.log(getSectionsResponse.sections);
     setSections(getSectionsResponse.sections.map((item): SectionWithFlag => {
       return {section: item, include: true};
     }));
@@ -71,8 +70,6 @@ export function ProtocolReport() {
       useColors: useColors,
       sectionsToNotInclude: sections.filter(x => x.include==false).map(x=> x.section.id)
     };
-
-    console.log(generateReportRequest);
 
     await reportService.generateReport(Number(protocolId), generateReportRequest);
     const response = await reportService.getReport(Number(protocolId));
@@ -109,15 +106,9 @@ export function ProtocolReport() {
   const [numberOfPages, setNumberOfPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
-  /*
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumberOfPages(numPages);
-  }*/
-
   async function  downloadPDF () 
   {
     const { data } = await reportService.getReportPdf(Number(protocolId));
-    console.log(data);
     const blob = new Blob([data], { type: 'application/pdf' });
     saveAs(blob, `${protocol?.name}.pdf`);
   }

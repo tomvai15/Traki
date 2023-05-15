@@ -31,8 +31,6 @@ export default function SignValidation() {
     const path = values[0];
     const protocolId = values[1];
 
-    console.log(path);
-
     if (event == 'signing_complete') {
       setLoading(true);
       await reportService.validateDocumentSign(Number(protocolId));

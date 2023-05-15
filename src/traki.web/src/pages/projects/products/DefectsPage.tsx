@@ -56,7 +56,6 @@ export function DefectsPage() {
       drawingsWithImage.push(newDrawingImage);
     }
 
-    console.log(state);
     if (!state) {
       setSelectedDefect(newDefects[0]);
       setSelectedDrawing(drawingsWithImage[0]);
@@ -244,7 +243,7 @@ export function DefectsPage() {
                             title={item.drawing.title}
                             actionIcon={
                               <IconButton 
-                                onClick={() => {setSelectedDrawing(item); console.log(item);}}
+                                onClick={() => {setSelectedDrawing(item);}}
                                 sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                                 aria-label={`info about ${item.drawing.title}`}
                               >

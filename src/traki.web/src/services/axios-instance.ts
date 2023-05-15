@@ -6,15 +6,13 @@ const axiosApiInstance = axios.create({
   withCredentials: true
 });
 
-axiosApiInstance.interceptors.request.use(function (config) {
-  console.log('[\u001B[37mMaking \u001b[1;36m'+ config.method?.toUpperCase() +'\u001B[37m request \u001b[1;36m' + config.baseURL +'/'+ config.url + '\u001B[37m]'); 
+axiosApiInstance.interceptors.request.use(function (config) { 
   return config;
 }, function (error) {
   return Promise.reject(error);
 });
 
-axiosApiInstance.interceptors.response.use((res) => { 
-  console.log('[\u001b[1;32m' + res.request.responseURL + ' \u001b[1;36mresponded ' + res.request.status + '\u001B[37m]'); 
+axiosApiInstance.interceptors.response.use((res) => {  
   return res; 
 }, function (error) {
   return Promise.reject(error);

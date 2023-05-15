@@ -48,7 +48,6 @@ export function FillItem ({item, updateItem, completed}: Props) {
     if (!item.multipleChoice) {
       return;
     }
-    console.log(option + ' ');
 
     const updatedOptions = [...item.multipleChoice.options];
 
@@ -58,7 +57,6 @@ export function FillItem ({item, updateItem, completed}: Props) {
 
     const multipleChoice = {...item.multipleChoice, options: updatedOptions};
     const updatedItem: Item = {...item, multipleChoice: multipleChoice};
-    console.log(updatedItem);
     updateItem(updatedItem);
   }
 
