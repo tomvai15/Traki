@@ -5,6 +5,12 @@ import { User } from 'contracts/user/User';
 import { Role } from 'contracts/user/Roles';
 import { UserStatus } from 'contracts/user/UserStatus';
 import { CreateUserRequest } from 'contracts/user/CreateUserRequest';
+import { AuthorisationCodeRequest } from 'contracts/auth/AuthorisationCodeRequest';
+import authService from 'services/auth-service';
+import { useLocation } from 'react-router-dom';
+import InputIcon from '@mui/icons-material/Input';
+import { useRecoilState } from 'recoil';
+import { userState } from 'state/user-state';
 
 const initialUser: User = {
   id: 0,
@@ -16,6 +22,8 @@ const initialUser: User = {
 };
 
 export function CreateUserPage() {
+  const [userInfo] = useRecoilState(userState);
+  const location = useLocation();
   const [user, setUser] = useState<User>(initialUser);
 
   async function createUser() {
@@ -23,6 +31,15 @@ export function CreateUserPage() {
       user: {...user, role: user.role}
     };
     await userService.createUser(request);
+  }
+
+  async function getCodeUrl() {
+    const request: AuthorisationCodeRequest = {
+      state: btoa(location.pathname),
+      loginAsAdmin: true
+    };
+    const res = await authService.getAuthorisationCodeUrl(request);
+    window.location.replace(res);
   }
 
   return (
@@ -79,7 +96,12 @@ export function CreateUserPage() {
                 <Divider></Divider>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Button onClick={createUser}>Create User</Button>
+                {!userInfo.loggedInDocuSign ? 
+                  <Button onClick={getCodeUrl} variant="contained" endIcon={<InputIcon />}>
+                    Login to DocuSign
+                  </Button> :
+                  <Button onClick={createUser}>Create User</Button>
+                }
               </Grid>
             </Grid>
           </CardContent>

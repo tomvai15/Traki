@@ -5,11 +5,13 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using Traki.Domain.Constants;
 using Traki.Domain.Services;
 using Traki.Domain.Services.DocumentSigning.Models;
 using Traki.Domain.Services.Docusign;
 using Traki.Domain.Services.Docusign.models;
+using static DocuSign.eSign.Client.Auth.OAuth.UserInfo;
 
 namespace Traki.Infrastructure.Services
 {
@@ -182,10 +184,10 @@ namespace Traki.Infrastructure.Services
             return envelopeDefinition;
         }
 
-        public async Task<string> GetAuthorisationCodeRequest(string state)
+        public async Task<string> GetAuthorisationCodeRequest(string state, string scope)
         {
             string redirectUrl =  _webSettings.Url  + "/checkoauth";
-            return $"https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}&state={state}";
+            return $"{_docuSignSettings.AuthorizationEndpoint}?response_type=code&scope={scope}&client_id={_docuSignSettings.ClientId}&redirect_uri={redirectUrl}&state={state}";
         }
 
         private async Task<OAuthResponse> GetAccessToken(KeyValuePair<string, string>[] requestData)
@@ -209,6 +211,43 @@ namespace Traki.Infrastructure.Services
         {
             string authCode = _docuSignSettings.ClientId + ":" + _docuSignSettings.ClientSecret;
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(authCode));
+        }
+
+        public async Task CreateUser(DocuSignUserInfo docuSignUserInfo, string accessToken, string name, string surname, string email)
+        {
+            try
+            {
+                var apiClient = new ApiClient(_docuSignSettings.AdminApiEndpoint);
+                apiClient.Configuration.DefaultHeader.Add("Authorization", "Bearer " + accessToken);
+                var usersApi = new UsersApi(apiClient);
+                var account = docuSignUserInfo.Accounts.First();
+                var accountId = account.AccountId;
+                var newUser = ConstructNewUserRequest(1, 1, Guid.Parse(accountId), email, name, surname, $"{name}{surname}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private static UserInformation ConstructNewUserRequest(
+            long permissionProfileId,
+            long groupId,
+            Guid accountId,
+            string email,
+            string firstName,
+            string lastName,
+            string userName)
+        {
+            return new UserInformation
+            {
+                // Step 3 start
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = userName,
+                Email = email,
+               // Step 3 end
+            };
         }
     }
 }
