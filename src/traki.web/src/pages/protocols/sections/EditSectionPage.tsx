@@ -177,7 +177,7 @@ export function EditSectionPage() {
               />
               <Box>
                 <ProtectedComponent role={"ProjectManager"}>
-                  <Button sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
+                  <Button id='update-section' sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
                   <Button onClick={() => deleteSection()} color='error' variant='contained'>Delete</Button>
                 </ProtectedComponent>
               </Box>

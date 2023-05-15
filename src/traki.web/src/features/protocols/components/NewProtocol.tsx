@@ -39,14 +39,14 @@ export function NewProtocol({fetchProtocols}: Props) {
         <Stack spacing={1}>
           <TextField
             sx={{marginTop: '-10px'}}
-            id="standard-disabled"
+            id="new-protocol-name"
             label="Protocol Name"
             variant="standard"
             value={protocolName}
             onChange={(e) => setProtocolName(e.target.value)}
           />
           <Box >
-            <Button onClick={createProtocol} disabled={!protocolName.length} variant='contained' >Add New Protocol</Button>
+            <Button id="create-protocol" onClick={createProtocol} disabled={!protocolName.length} variant='contained' >Add New Protocol</Button>
           </Box>
         </Stack>
       </CardContent>  

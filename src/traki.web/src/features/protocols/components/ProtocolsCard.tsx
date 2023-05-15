@@ -20,7 +20,7 @@ export function ProtocolsCard({protocols, setSelectedProtocol}: Props) {
         <PaginatedList selector={x=> x.name} items={protocols} renderItem={(item) => 
           <Card sx={{margin: '5px'}} >
             <ListItemButton onClick={() => setSelectedProtocol(item)} alignItems="flex-start" sx={{backgroundColor: theme.palette.grey[100]}}>
-              <ListItemText
+              <ListItemText id="protocol-name"
                 primary={item.name}
               />
             </ListItemButton>

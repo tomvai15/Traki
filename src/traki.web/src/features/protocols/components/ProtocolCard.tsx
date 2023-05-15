@@ -91,7 +91,7 @@ export function ProtocolCard({selectedProtocol, deleteProtocol}: Props) {
               <Button onClick={() => updateProtocolAndSection()} disabled={!canUpdate()} variant='contained' >
                 Save
               </Button>
-              <Button onClick={() => deleteProtocol()} color='error' variant='contained' >
+              <Button id="delete-protocol" onClick={() => deleteProtocol()} color='error' variant='contained' >
                 Delete
               </Button>
             </Stack>
@@ -99,7 +99,7 @@ export function ProtocolCard({selectedProtocol, deleteProtocol}: Props) {
         </Stack>
         <ProtocolSections sections={sections} setSections={setSections}/>
         <ProtectedComponent role='ProjectManager'>
-          <Button onClick={() => navigate(`/templates/protocols/${protocol.id}/sections/create`)} variant='contained' >Add Section</Button>
+          <Button id='create-section' onClick={() => navigate(`/templates/protocols/${protocol.id}/sections/create`)} variant='contained' >Add Section</Button>
         </ProtectedComponent>
       </CardContent>
     </Card>

@@ -109,7 +109,7 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
             <TextField sx={{width: '100%'}}
               inputProps={{min: 0, style: { textAlign: 'center' }}}
               disabled
-              id="standard-disabled"
+              id="question-field"
               label="Comment"
               variant="standard"
             />
@@ -122,7 +122,7 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
             <TextField sx={{width: '100%'}}
               inputProps={{min: 0, style: { textAlign: 'center' }}}
               disabled
-              id="standard-disabled"
+              id="text-input-field"
               label="Comment"
               variant="standard"
             />
@@ -167,7 +167,7 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
       <Card sx={{backgroundColor: theme.palette.grey[100], display: 'flex', padding: 1, flexDirection:'row', justifyItems: 'space'}}>
         <Box sx={{flex: 1}}>
           <TextField sx={{width: '90%'}}
-            id={'section-item-' + index}
+            id={'section-item'}
             inputProps={{ maxLength: 100 }}
             error={validate(item.name, [validationRules.noSpecialSymbols]).invalid}
             helperText={validate(item.name, [validationRules.noSpecialSymbols]).message}
@@ -180,7 +180,7 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
         </Box>
         {checkType()}
         <Box>
-          <IconButton onClick={handleOpenUserMenu}>
+          <IconButton id="question-menu" onClick={handleOpenUserMenu}>
             <MoreVertIcon/>
           </IconButton> 
           <Menu
@@ -199,13 +199,13 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            <MenuItem onClick={() => {changeToQuestion(item); handleCloseUserMenu();}}>
+            <MenuItem id="question" onClick={() => {changeToQuestion(item); handleCloseUserMenu();}}>
               <Typography textAlign="center">Default Question</Typography>
             </MenuItem>
-            <MenuItem onClick={() => {changeToMultipleChoice(item); handleCloseUserMenu();}}>
+            <MenuItem id="multiple-choice" onClick={() => {changeToMultipleChoice(item); handleCloseUserMenu();}}>
               <Typography textAlign="center">Multiple Choice</Typography>
             </MenuItem>
-            <MenuItem onClick={() => {changeToTextInput(item); handleCloseUserMenu();}}>
+            <MenuItem id="text-input" onClick={() => {changeToTextInput(item); handleCloseUserMenu();}}>
               <Typography textAlign="center">Text Input</Typography>
             </MenuItem>
             <MenuItem onClick={() => {handleCloseUserMenu(); deleteItem(item.id);}}>

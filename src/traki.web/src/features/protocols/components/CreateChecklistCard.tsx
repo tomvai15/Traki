@@ -107,7 +107,7 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
         </Droppable>
       </DragDropContext>
       <ProtectedComponent role={"ProjectManager"}>
-        <Button sx={{marginLeft: '10px'}} onClick={() => addItem()} variant='contained'>Add new question</Button>
+        <Button id="add-question" sx={{marginLeft: '10px'}} onClick={() => addItem()} variant='contained'>Add new question</Button>
       </ProtectedComponent>
     </Box>
   );

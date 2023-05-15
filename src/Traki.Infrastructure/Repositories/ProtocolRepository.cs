@@ -22,7 +22,9 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Protocol> CreateProtocol(Protocol protocol)
         {
             var protocolEntity = _mapper.Map<ProtocolEntity>(protocol);
-            protocolEntity = (_context.Protocols.Add(protocolEntity)).Entity;
+
+            protocolEntity.CreationDate = DateTime.Now.ToString("s");
+            _context.Protocols.Add(protocolEntity);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<Protocol>(protocolEntity);
