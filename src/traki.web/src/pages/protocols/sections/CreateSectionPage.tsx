@@ -93,7 +93,7 @@ export function CreateSectionPage() {
                 value={section?.name}
                 onChange={(e) => updateSectionName(e.target.value)}
               />
-              <Button disabled={!canCreate || !validInputs()} onClick={() => createSection()} variant='contained'>Create</Button>
+              <Button id='create-section' disabled={!canCreate || !validInputs()} onClick={() => createSection()} variant='contained'>Create</Button>
             </Box>
           </CardContent>    
           <CardContent sx={{paddingTop: 0}}>

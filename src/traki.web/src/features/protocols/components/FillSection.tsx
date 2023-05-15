@@ -135,7 +135,7 @@ export function FillSection({protocolId, sectionId, completed}: Props) {
     <Box>
       <Card>
         <CardHeader title={section.name}
-          action={ !completed && <Button disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>}>
+          action={ !completed && <Button id="save-section" disabled={!canUpdate()} onClick={updateSection} variant='contained'>Save Answers</Button>}>
         </CardHeader>
         <Divider/>
         <CardContent>

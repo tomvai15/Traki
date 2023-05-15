@@ -14,6 +14,7 @@ import { RowColumn } from 'contracts/protocol/section/RowColumn';
 import { validate, validationRules } from 'utils/textValidation';
 import { ProtectedComponent } from 'components/ProtectedComponent';
 import { useAlert } from 'hooks/useAlert';
+import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
 
 const initialSection: Section = {
   id: 1,
@@ -25,6 +26,7 @@ const initialSection: Section = {
 };
 
 export function EditSectionPage() {
+  const {catchNotFound} = useNotFoundCatcher();
   const navigate = useNavigate();
   const { displaySuccess  } = useAlert();
 
@@ -40,7 +42,7 @@ export function EditSectionPage() {
   const [initialSectionJson,  setInitialSectionJson] = useState<string>('');
 
   useEffect(() => {
-    fetchSection();
+    catchNotFound(() => fetchSection());
   }, []);
 
   async function fetchSection() {
@@ -144,7 +146,7 @@ export function EditSectionPage() {
 
   async function deleteSection() {
     await sectionService.deleteSection(Number(protocolId), Number(sectionId));
-    navigate('/templates/protocols/' + protocolId);
+    navigate('/templates/protocols');
   }
 
   function updateSectionName(newName: string) {
@@ -177,8 +179,8 @@ export function EditSectionPage() {
               />
               <Box>
                 <ProtectedComponent role={"ProjectManager"}>
-                  <Button sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
-                  <Button onClick={() => deleteSection()} color='error' variant='contained'>Delete</Button>
+                  <Button id='update-section' sx={{marginRight: 1}} disabled={!canUpdate()} onClick={() => updateSection()} variant='contained'>Save</Button>
+                  <Button id='delete-section' onClick={() => deleteSection()} color='error' variant='contained'>Delete</Button>
                 </ProtectedComponent>
               </Box>
             </Box>

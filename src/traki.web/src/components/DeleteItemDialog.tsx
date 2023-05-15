@@ -20,7 +20,7 @@ export function DeleteItemDialog({open, handleClose, title, body, action }: Prop
       </DialogContent>
       <DialogActions>
         <Button color='inherit' onClick={handleClose}>Cancel</Button>
-        <Button color='error' onClick={action}>Delete</Button>
+        <Button id='confirm' color='error' onClick={action}>Delete</Button>
       </DialogActions>
     </Dialog>
   );

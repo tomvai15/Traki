@@ -149,7 +149,7 @@ export default function MainLayout() {
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           { page.notFound ? 
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', height: '80vh', alignItems: 'center'}}>
-              <Typography style={{fontSize: 30}}>404 not found</Typography>
+              <Typography id="not-found" style={{fontSize: 30}}>404 not found</Typography>
             </Box> :
             <Outlet></Outlet>}
           <AlertBar/>

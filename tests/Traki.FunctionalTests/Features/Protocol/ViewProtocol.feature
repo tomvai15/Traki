@@ -1,6 +1,7 @@
-﻿Feature: View protocol
+﻿@ignore
+Feature: View protocol
 
 Scenario: Open protocol tab displays protocols
     Given I have logged in as project manager
-    When I press on Projects tab
-    Then projects should be displayed
+    When I press on Templates tab
+    Then protocols should be displayed

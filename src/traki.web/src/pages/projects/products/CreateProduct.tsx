@@ -54,7 +54,7 @@ export function CreateProduct() {
           <Divider/>
           <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
             <TextField size='medium'
-              id="propduct-name"
+              id="product-name"
               label="Propduct name"
               variant="standard"
               value={name}
@@ -62,7 +62,7 @@ export function CreateProduct() {
             />
           </CardContent>  
           <CardContent>    
-            <Button disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
+            <Button id="create-product" disabled={!canSubmit()} onClick={submitProject}  variant='contained'>
               Create product
             </Button>
           </CardContent>  

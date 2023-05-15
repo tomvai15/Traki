@@ -23,7 +23,7 @@ import DisabledComponent from 'components/DisabledComponent';
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
+    id: `tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
@@ -217,13 +217,13 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                       {selectedDefect.author?.name + ' ' + selectedDefect.author?.surname}
                     </Typography>
                   </Stack>
-                  <Typography variant='h6'>
+                  <Typography id="defect-title" variant='h6'>
                     {selectedDefect.title}
                   </Typography>
-                  <Typography>
+                  <Typography id="defect-description">
                     {selectedDefect.description}
                   </Typography>
-                  <FormControl sx={{minWidth: 120, marginTop: '10px' }} size="small">
+                  <FormControl id="demo-simple-select-label" sx={{minWidth: 120, marginTop: '10px' }} size="small">
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
                     <DisabledComponent 
                       disabled={defect.defect.status != DefectStatus.NotFixed && defect.defect.author?.id != userInfo.id} 
@@ -231,15 +231,15 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                       <Select
                         disabled={defect.defect.status != DefectStatus.NotFixed && defect.defect.author?.id != userInfo.id}
                         labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        id="defect-status"
                         label="Status"
                         value={defect ? defect.defect.status : 1}
                         onChange={(e) => updateDefectStatus(e.target.value as string)}
                       >
-                        <MenuItem value={1}>Not fixed</MenuItem>
-                        <MenuItem value={0}>Fixed</MenuItem>
-                        <MenuItem value={2}>Not a defect</MenuItem>
-                        <MenuItem value={3}>Unfixable</MenuItem>
+                        <MenuItem id="not-fixed" value={1}>Not fixed</MenuItem>
+                        <MenuItem id="fixed" value={0}>Fixed</MenuItem>
+                        <MenuItem id="not-defect" value={2}>Not a defect</MenuItem>
+                        <MenuItem id="unfixable" value={3}>Unfixable</MenuItem>
                       </Select>
                     </DisabledComponent>
                   </FormControl>
@@ -297,6 +297,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
         <CardContent>
           <Typography sx={{marginBottom: '10px'}}>{'Add defect\'s information'}</Typography>
           <TextField 
+            id="new-defect-title"
             inputProps={{ maxLength: 20 }}
             error={validate(title, [validationRules.noSpecialSymbols]).invalid}
             helperText={validate(title, [validationRules.noSpecialSymbols]).message}
@@ -307,6 +308,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
             sx={{width: '90%', marginBottom: '10px'}}/>
           <Box sx={{display: 'flex', width: '100%'}}>
             <TextField 
+              id="new-defect-description"
               inputProps={{ maxLength: 250 }}
               error={validate(description, [ validationRules.noSpecialSymbols]).invalid}
               helperText={validate(description, [ validationRules.noSpecialSymbols]).message}
@@ -325,7 +327,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
               { !canSubmitDefect && <FormHelperText>
                 Select region on drawing
               </FormHelperText>}
-              <Button disabled={!canSubmit()} onClick={onSubmit} sx={{height: 40}} variant='contained'>
+              <Button id="create-defect" disabled={!canSubmit()} onClick={onSubmit} sx={{height: 40}} variant='contained'>
                   Submit
               </Button>
             </Box>

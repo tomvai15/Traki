@@ -141,7 +141,7 @@ export function ProductPage() {
                 </Table>
               </CardContent>}
             <CardActions>
-              <Button onClick={() => navigate('edit')} variant='contained' color='primary'>Edit information</Button>
+              <Button id="edit-product" onClick={() => navigate('edit')} variant='contained' color='primary'>Edit information</Button>
             </CardActions>
           </Card>
         </Grid>
@@ -157,7 +157,7 @@ export function ProductPage() {
       <Grid item xs={12} md={12} >
         <Card>
           <CardHeader title={'Assigned protocols'}
-            action={<Button onClick={handleClickOpen} variant='contained'>Add protocol</Button>}>
+            action={<Button id="add-protocol" onClick={handleClickOpen} variant='contained'>Add protocol</Button>}>
           </CardHeader>
           <Divider></Divider>
           <CardContent>
@@ -170,9 +170,9 @@ export function ProductPage() {
                 {protocols.map((item, index) => (
                   <Box key={index} sx={{marginBottom: '10px'}}>
                     <Stack sx={{marginBottom: '5px'}} key={index} direction={'row'} justifyContent={'space-between'} alignItems={'center'}> 
-                      <Typography>{item.name}</Typography>
+                      <Typography id="product-protocol" >{item.name}</Typography>
                       <Stack direction={'row'} spacing={1}>
-                        <Button onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Details</Button>
+                        <Button id="fill-protocol" onClick={() => navigate('protocols/'+ item.id)} variant='contained'>Details</Button>
                         <Button onClick={() => navigate(`protocols/${item.id}/report`)} variant='contained'>Report</Button>
                         <Button onClick={() => {setSelectedProtocol(item); setOpenProductDialog(true);}} color={'error'} variant='contained'>Delete</Button>
                       </Stack>                          

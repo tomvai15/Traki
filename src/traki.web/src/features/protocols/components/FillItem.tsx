@@ -81,7 +81,7 @@ export function FillItem ({item, updateItem, completed}: Props) {
             <TextField sx={{width: '100%'}}
               multiline={true}
               inputProps={{ maxLength: 250 }}
-              id="standard-disabled"
+              id="question-comment"
               error={validate(item.question.comment, [validationRules.noSpecialSymbols]).invalid}
               helperText={validate(item.question.comment, [validationRules.noSpecialSymbols]).message}
               label="Comment"
@@ -99,7 +99,7 @@ export function FillItem ({item, updateItem, completed}: Props) {
             <TextField sx={{width: '100%'}}
               multiline={true}
               inputProps={{ maxLength: 250 }}
-              id="question-textinput"
+              id="textinput"
               error={validate(item.textInput.value, [validationRules.noSpecialSymbols]).invalid}
               helperText={validate(item.textInput.value, [validationRules.noSpecialSymbols]).message}
               label="Comment"

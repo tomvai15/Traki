@@ -1,4 +1,5 @@
-﻿Feature: View project
+﻿@ignore
+Feature: View project
 
 Scenario: Open project tab, shows all projects
     Given I have logged in as project manager

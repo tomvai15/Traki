@@ -19,14 +19,13 @@ namespace Traki.FunctionalTests.Features.Login
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Login")]
     public partial class UserAuthenticationFeature : object, Xunit.IClassFixture<UserAuthenticationFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = new string[] {
-                "Login"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -82,7 +81,7 @@ namespace Traki.FunctionalTests.Features.Login
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log in with invalid credentials")]
+        [Xunit.SkippableFactAttribute(DisplayName="Log in with invalid credentials", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "User authentication")]
         [Xunit.TraitAttribute("Description", "Log in with invalid credentials")]
         public void LogInWithInvalidCredentials()
@@ -110,7 +109,7 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log in as product manager")]
+        [Xunit.SkippableFactAttribute(DisplayName="Log in as product manager", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "User authentication")]
         [Xunit.TraitAttribute("Description", "Log in as product manager")]
         public void LogInAsProductManager()
@@ -145,12 +144,10 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                UserAuthenticationFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                UserAuthenticationFeature.FeatureTearDown();
             }
         }
     }

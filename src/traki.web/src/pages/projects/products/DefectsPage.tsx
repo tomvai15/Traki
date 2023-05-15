@@ -217,7 +217,7 @@ export function DefectsPage() {
                         wrapperStyle={{ border: '2px solid black' }} 
                         customAreaRenderer={customRenderSelection}
                         onChange={setAreas}>
-                        <img style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
+                        <img id="drawing" style={{objectFit: 'contain'}} height={350} width={'100%'} src={selectedDrawing.imageBase64}/>
                       </AreaSelector>) :
                       (selectedDrawing && <AreaSelector
                         areas={mapDefectToArea(selectedDrawing.drawing.defects.filter(x=> x.status >= Number(!includeFixedDefects)))}

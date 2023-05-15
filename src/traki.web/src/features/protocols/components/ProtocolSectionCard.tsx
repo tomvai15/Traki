@@ -17,14 +17,14 @@ export function ProtocolSectionCard ({section}: SectionItemProps) {
     <Box sx={{padding: '5px'}}>
       <Card>
         <Accordion sx={{backgroundColor: theme.palette.grey[100]}}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary id='section-summary' expandIcon={<ExpandMoreIcon />}>
             <Typography>{section.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             {section.checklist && section.checklist.items.map((item, index) => 
               <Box key={index}>
                 <Stack direction={'column'} spacing={1}>
-                  <Typography>
+                  <Typography id='question-name'>
                     {item.name}
                   </Typography>
                 </Stack>
@@ -43,7 +43,7 @@ export function ProtocolSectionCard ({section}: SectionItemProps) {
                   </Stack>)}
               </Stack>
             }             
-            <Button sx={{marginTop: '10px'}} onClick={() => navigate(`/templates/protocols/${section.protocolId}/sections/${section.id}`)} variant='contained'>Details</Button>
+            <Button id='edit-section' sx={{marginTop: '10px'}} onClick={() => navigate(`/templates/protocols/${section.protocolId}/sections/${section.id}`)} variant='contained'>Details</Button>
           </AccordionDetails>
         </Accordion>
       </Card>

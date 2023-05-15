@@ -11,9 +11,9 @@ namespace Traki.FunctionalTests.Steps.Project
         private IWebDriver driver;
         private static Dictionary<string, string> testingData = new Dictionary<string, string>();
 
-        public ProjectSteps()
+        public ProjectSteps(IWebDriver webDriver)
         {
-            driver = BuildDriver();
+            driver = webDriver;
         }
 
         [Given(@"I have logged in as project manager")]
@@ -22,10 +22,10 @@ namespace Traki.FunctionalTests.Steps.Project
             driver.Navigate().GoToUrl("https://localhost:3000/login");
             driver.FindElement(By.Id("email")).Click();
             driver.FindElement(By.Id("email")).Clear();
-            driver.FindElement(By.Id("email")).SendKeys("vainoristomas9@gmail.com");
+            driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProjectManagerEmail);
             driver.FindElement(By.Id("password")).Click();
             driver.FindElement(By.Id("password")).Clear();
-            driver.FindElement(By.Id("password")).SendKeys("password");
+            driver.FindElement(By.Id("password")).SendKeys(ExampleData.ProjectManagerPassword);
             driver.FindElement(By.Id("submit")).Click();
             //driver.Navigate().GoToUrl("https://localhost:3000/home");
             for (int second = 0; ; second++)

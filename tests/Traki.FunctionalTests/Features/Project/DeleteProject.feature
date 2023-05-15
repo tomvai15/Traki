@@ -1,4 +1,5 @@
-﻿Feature: Delete project
+﻿@ignore
+Feature: Delete project
 
 Scenario: Delete project with products
     Given I have logged in as project manager

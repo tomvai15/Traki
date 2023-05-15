@@ -19,5 +19,34 @@ namespace Traki.FunctionalTests.Utils
             webDriver.ClearText();
             webDriver.FindElement(by).SendKeys(text);
         }
+
+        public static void ElementShouldBePresent(this IWebDriver driver, By by)
+        {
+            const int maxWaitTime = 5;
+            for (int second = 0; ; second++)
+            {
+                if (second >= maxWaitTime) Assert.Fail(by.ToString());
+                try
+                {
+                    if (IsElementPresent(driver, by)) break;
+                }
+                catch (Exception)
+                { }
+                Thread.Sleep(1000);
+            }
+        }
+
+        private static bool IsElementPresent(IWebDriver driver, By by)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
     }
 }

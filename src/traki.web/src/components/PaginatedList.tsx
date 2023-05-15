@@ -42,7 +42,7 @@ export function PaginatedList<T extends { id: number}>({items, renderItem, heigh
       <List component="nav" style={{height: listHeight}}>
         {items.filter((item) => selector == undefined ? true : selector(item).toLowerCase().includes(searchQuery.toLowerCase()) ) .filter((item, index) => currentPage * itemsPerPage <= index && index < (currentPage + 1 ) * itemsPerPage).map((item, index) => <Box key={index}>{renderItem(item)}</Box>)}
       </List>
-      <Pagination onChange={(e, value) => setCurrentPage(value-1)} count={pageCount} />
+      <Pagination id='pagination' onChange={(e, value) => setCurrentPage(value-1)} count={pageCount} />
     </Box>
   );
 }
