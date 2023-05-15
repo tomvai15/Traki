@@ -1,11 +1,8 @@
 ﻿namespace Traki.Domain.Services.BlobStorage
 {
-    public class BlobStorageSettings
+    public class StorageSettings
     {
         public static readonly string SectionName = "BlobStorage";
         public string ConnectionString { get; set; }
-        public string BaseUri { get; set; }
-        public string AccountName { get; set; }
-        public string AccountKey { get; set; }
     }
 }

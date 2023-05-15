@@ -92,14 +92,15 @@ namespace Traki.Api.Bootstrapping
             return services;
         }
 
-        public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+        public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
         {
 
+            string url = configuration.GetSection("WebSettings:Url").Value;
             services.AddCors(options =>
             {
                 options.AddPolicy(Policy.DevelopmentCors, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000/")
+                    builder.WithOrigins(url)
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .AllowCredentials()

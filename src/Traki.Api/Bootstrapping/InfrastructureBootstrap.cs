@@ -19,7 +19,7 @@ namespace Traki.Api.Bootstrapping
 
         public static IServiceCollection AddBlobStorageServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<BlobStorageSettings>(configuration.GetSection(BlobStorageSettings.SectionName));
+            services.Configure<StorageSettings>(configuration.GetSection(StorageSettings.SectionName));
             services.AddSingleton<IStorageService, BlobStorageService>();
 
             return services;
