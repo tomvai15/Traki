@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Delete protocol
 
 Scenario: Delete protocol with sections

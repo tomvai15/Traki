@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Protocol
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Protocol
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Open protocol tab displays protocols", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Open protocol tab displays protocols")]
         [Xunit.TraitAttribute("FeatureTitle", "View protocol")]
         [Xunit.TraitAttribute("Description", "Open protocol tab displays protocols")]
         public void OpenProtocolTabDisplaysProtocols()
@@ -119,10 +118,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                ViewProtocolFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                ViewProtocolFeature.FeatureTearDown();
             }
         }
     }

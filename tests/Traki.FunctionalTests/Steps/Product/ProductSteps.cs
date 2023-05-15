@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 using Traki.FunctionalTests.Data;
+using Traki.FunctionalTests.Hooks;
 
 namespace Traki.FunctionalTests.Steps.Product
 {
@@ -19,7 +20,7 @@ namespace Traki.FunctionalTests.Steps.Product
         [Given(@"I have logged in as product manager")]
         public void GivenNotEnoughProductsInStock()
         {
-            driver.Navigate().GoToUrl("https://localhost:3000/login");
+            driver.Navigate().GoToUrl($"{ConfigurationAccessor.WebUrl}/login");
             driver.FindElement(By.Id("email")).Click();
             driver.FindElement(By.Id("email")).Clear();
             driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProductManagerEmail);

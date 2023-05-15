@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Product
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Product
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create product with valid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create product with valid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Create product")]
         [Xunit.TraitAttribute("Description", "Create product with valid fields")]
         public void CreateProductWithValidFields()
@@ -125,10 +124,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                CreateProductFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                CreateProductFeature.FeatureTearDown();
             }
         }
     }

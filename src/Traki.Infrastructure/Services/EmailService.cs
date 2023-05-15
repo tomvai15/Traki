@@ -16,7 +16,7 @@ namespace Traki.Infrastructure.Services
         {
             using var client = new SmtpClient();
 
-            client.Host = "smtp.gmail.com";
+            client.Host = _emailSettings.Host;
             client.Port = 587;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;

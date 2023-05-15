@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Defect
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Defect
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create defect without without uploading image", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create defect without without uploading image")]
         [Xunit.TraitAttribute("FeatureTitle", "Create defect")]
         [Xunit.TraitAttribute("Description", "Create defect without without uploading image")]
         public void CreateDefectWithoutWithoutUploadingImage()
@@ -134,10 +133,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                CreateDefectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                CreateDefectFeature.FeatureTearDown();
             }
         }
     }

@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Protocol
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Protocol
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create section with all question types", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create section with all question types")]
         [Xunit.TraitAttribute("FeatureTitle", "Create section")]
         [Xunit.TraitAttribute("Description", "Create section with all question types")]
         public void CreateSectionWithAllQuestionTypes()
@@ -131,10 +130,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                CreateSectionFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                CreateSectionFeature.FeatureTearDown();
             }
         }
     }

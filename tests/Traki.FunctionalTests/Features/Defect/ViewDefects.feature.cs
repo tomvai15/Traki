@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Defect
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Defect
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Defects screen displays defects", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Defects screen displays defects")]
         [Xunit.TraitAttribute("FeatureTitle", "View defects")]
         [Xunit.TraitAttribute("Description", "Defects screen displays defects")]
         public void DefectsScreenDisplaysDefects()
@@ -125,10 +124,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                ViewDefectsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                ViewDefectsFeature.FeatureTearDown();
             }
         }
     }

@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Protocol
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Protocol
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create protocol with valid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create protocol with valid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Create protocol")]
         [Xunit.TraitAttribute("Description", "Create protocol with valid fields")]
         public void CreateProtocolWithValidFields()
@@ -122,10 +121,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                CreateProtocolFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                CreateProtocolFeature.FeatureTearDown();
             }
         }
     }

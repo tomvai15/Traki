@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Create protocol
 
 Scenario: Create protocol with valid fields

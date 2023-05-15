@@ -80,13 +80,12 @@ namespace Traki.FunctionalTests.Features.Project
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create project with valid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create project with valid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Create project")]
         [Xunit.TraitAttribute("Description", "Create project with valid fields")]
         public void CreateProjectWithValidFields()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create project with valid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 4

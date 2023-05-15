@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Change defect status
 
 Scenario: Change defect status when it is unfixed

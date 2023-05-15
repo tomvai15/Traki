@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Create product
 
 Scenario: Create product with valid fields

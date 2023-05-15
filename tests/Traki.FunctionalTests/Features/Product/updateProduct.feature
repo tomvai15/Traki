@@ -1,6 +1,6 @@
 ﻿Feature: Update product
 
-@ignore
+ 
 Scenario: Update product with valid fields
     Given I have logged in as product manager
     And I have navigated to projects page
@@ -10,7 +10,7 @@ Scenario: Update product with valid fields
     Then product name should be updated
 
 
-@ignore
+ 
 Scenario: Update product with invalid fields
     Given I have logged in as product manager
     And I have navigated to projects page

@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Project
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Project
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update project with valid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update project with valid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Update project")]
         [Xunit.TraitAttribute("Description", "Update project with valid fields")]
         public void UpdateProjectWithValidFields()
@@ -112,7 +111,7 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update project with invalid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update project with invalid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Update project")]
         [Xunit.TraitAttribute("Description", "Update project with invalid fields")]
         public void UpdateProjectWithInvalidFields()
@@ -156,10 +155,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                UpdateProjectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                UpdateProjectFeature.FeatureTearDown();
             }
         }
     }

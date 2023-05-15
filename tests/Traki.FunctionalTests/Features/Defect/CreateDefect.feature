@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Create defect
 
 Scenario: Create defect without without uploading image

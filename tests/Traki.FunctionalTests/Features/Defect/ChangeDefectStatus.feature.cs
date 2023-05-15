@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Defect
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Defect
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Change defect status when it is unfixed", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Change defect status when it is unfixed")]
         [Xunit.TraitAttribute("FeatureTitle", "Change defect status")]
         [Xunit.TraitAttribute("Description", "Change defect status when it is unfixed")]
         public void ChangeDefectStatusWhenItIsUnfixed()
@@ -128,10 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                ChangeDefectStatusFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                ChangeDefectStatusFeature.FeatureTearDown();
             }
         }
     }

@@ -5,6 +5,7 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.Notifications;
+using Traki.Infrastructure.Repositories;
 using Traki.UnitTests.Helpers;
 
 namespace Traki.UnitTests.Domain.Handlers
@@ -44,7 +45,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _defectHandler.CreateDefect(userId, drawingId, defect);
 
-            Assert.True(true);
+            _defectsRepository.Verify(x => x.CreateDefect(defect), Times.Once);
         }
 
         [Fact]
@@ -63,7 +64,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _defectHandler.CreateDefectComment(userId, defectComment);
 
-            Assert.True(true);
+            _defectCommentRepository.Verify(x => x.CreateDefectComment(defectComment), Times.Once);
         }
 
         [Fact]
@@ -107,7 +108,6 @@ namespace Traki.UnitTests.Domain.Handlers
             func.Should().ThrowAsync<ForbbidenOperationException>();
         }
 
-
         [Fact]
         public async Task CreateDefectStatusChange()
         {
@@ -127,7 +127,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _defectHandler.CreateDefectStatusChange(userId, defect);
 
-            Assert.True(true);
+            _statusChangeRepository.Verify(x => x.CreateStatusChange(It.IsAny<StatusChange>()));
         }
     }
 }

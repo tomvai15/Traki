@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: View project
 
 Scenario: Open project tab, shows all projects

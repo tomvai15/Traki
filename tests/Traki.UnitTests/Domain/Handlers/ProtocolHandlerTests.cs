@@ -1,5 +1,7 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using Traki.Domain.Handlers;
+using Traki.Domain.Models;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;
@@ -42,9 +44,11 @@ namespace Traki.UnitTests.Domain.Handlers
 
             _storageService.Setup(x => x.GetFile(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(getFileResult);
 
-            await _protocolHandler.GetInformationForReport(protocolId);
+            var result = await _protocolHandler.GetInformationForReport(protocolId);
 
-            Assert.True(true);
+            result.Project.Should().BeEquivalentTo(MockData.Projects.First(), options => options.Excluding(x=> x.CreationDate));
+            result.Company.Should().BeEquivalentTo(MockData.Companies.First(), options => options.Excluding(x => x.CreationDate).Excluding(x=> x.ModifiedDate));
+            result.Protocol.Should().BeEquivalentTo(MockData.Protocols.First());
         }
 
         [Fact]
@@ -64,7 +68,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _protocolHandler.SignReport(protocolId, envelopeId);
 
-            Assert.True(true);
+            _protocolRepository.Verify(x => x.UpdateProtocol(It.IsAny<Protocol>()));
         }
     }
 }

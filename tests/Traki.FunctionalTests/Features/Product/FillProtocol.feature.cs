@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Product
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Product
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Fill all protocol sections", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Fill all protocol sections")]
         [Xunit.TraitAttribute("FeatureTitle", "Fill protocol")]
         [Xunit.TraitAttribute("Description", "Fill all protocol sections")]
         public void FillAllProtocolSections()
@@ -128,10 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                FillProtocolFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                FillProtocolFeature.FeatureTearDown();
             }
         }
     }
