@@ -36,6 +36,7 @@ namespace Traki.Api.Bootstrapping
         public static IServiceCollection AddNotificationService(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpClient<INotificationService, NotificationService>();
+            services.Configure<NotificationSettings>(configuration.GetSection(NotificationSettings.SectionName));
 
             return services;
         }
