@@ -31,11 +31,9 @@ export function CreateChecklistCard ({checklist, updateItems}: Props) {
   };
 
   function addItem() {
-    console.log('a');
     if (!checklist) {
       return;
     }
-    console.log('b');
     const newId = uuid();
     const newItem: Item = {...defaultItem, id: newId, priority: checklist.items.length + 1};
     const copiedItems = [...checklist.items, newItem];

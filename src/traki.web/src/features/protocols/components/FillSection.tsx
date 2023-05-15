@@ -47,8 +47,6 @@ export function FillSection({protocolId, sectionId, completed}: Props) {
       return;
     }
 
-    console.log(table);
-
     setSectionType('table');
     setTable(table);
     setInitialTableJson(JSON.stringify(table));
@@ -100,7 +98,6 @@ export function FillSection({protocolId, sectionId, completed}: Props) {
         (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
       );
     }).some((value) => value == false);
-    console.log(a);
     return a;
   }
 
@@ -109,7 +106,6 @@ export function FillSection({protocolId, sectionId, completed}: Props) {
       return true;
     }
     return !table?.tableRows.map(x => { 
-      console.log(isValidTableRow(x));
       return isValidTableRow(x);
     }).some((value) => value == false);
   }

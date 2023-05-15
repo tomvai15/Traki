@@ -9,7 +9,6 @@ export const useNotFoundCatcher = () => {
       await func();
     } catch (err) {
       setPageState({...page, notFound: true});
-      console.log(err);
     }
   };
 

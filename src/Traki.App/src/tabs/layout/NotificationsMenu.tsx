@@ -33,7 +33,6 @@ export default function NotificationsMenu({navigation}: Props) {
 
   function handleNotification(item: DefectNotification) {
     const data: NotificationData = JSON.parse(item.data);
-    console.log(data);
 
     navigation.navigate('Projects', { screen: 'DefectScreen', params: { productId: data.productId, drawingId: data.drawingId, defectId: data.defectId}}); 
     closeMenu();

@@ -19,14 +19,10 @@ export function PaginatedList<T extends { id: number}>({items, renderItem, heigh
   const [listHeight, setListHeight] = useState<string>();
 
   useEffect(() => {
-    console.log(items.length/itemsPerPage);
-    console.log(Math.ceil(items.length/itemsPerPage));
     setPageCount(Math.ceil(items.length/itemsPerPage));
     
     if (heightPerItem) {
-      console.log(heightPerItem * items.length);
       const newHeight = `${items.length >= itemsPerPage ? heightPerItem * itemsPerPage : heightPerItem * items.length}px`;
-      console.log(newHeight);
       setListHeight(newHeight);
     } else if (height) {
       setListHeight(height);

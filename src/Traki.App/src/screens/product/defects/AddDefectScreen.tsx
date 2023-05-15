@@ -67,7 +67,6 @@ export default function AddDefectScreen({route, navigation}: Props) {
   }, [])
 
   function updateSelectedXY(x: number, y: number) {
-    console.log(' ---- ' + x + '  ' + y )
     setSelectedX(x);
     setSelectedY(y);
   }
@@ -78,8 +77,6 @@ export default function AddDefectScreen({route, navigation}: Props) {
   }
 
   async function fetchDrawingPictures(drawings: Drawing[]) {
-    console.log(drawings);
-
     if (drawings.length == 0) {
       return;
     }
@@ -97,7 +94,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
 
   const panResponder = useRef(
     PanResponder.create({
-     // Ask to be the responder:
+
      onStartShouldSetPanResponder: (evt, gestureState) => true,
      onStartShouldSetPanResponderCapture: (evt, gestureState) =>
        true,
@@ -105,12 +102,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
      onMoveShouldSetPanResponderCapture: (evt, gestureState) =>
        true,
 
-     onPanResponderGrant: (evt, gestureState) => {
-       // The gesture has started. Show visual feedback so the user knows
-       // what is happening!
-       // gestureState.d{x,y} will be set to zero now
-       //console.log('start');
-
+     onPanResponderGrant: (evt) => {
        const rect: Rectangle = {
         x: evt.nativeEvent.locationX,
         y: evt.nativeEvent.locationY,
@@ -120,11 +112,7 @@ export default function AddDefectScreen({route, navigation}: Props) {
 
        setRectangle(rect);
      },
-     onPanResponderMove: (evt, gestureState) => {
-       // The most recent move distance is gestureState.move{X,Y}
-       // The accumulated gesture distance since becoming responder is
-       // gestureState.d{x,y}
-
+     onPanResponderMove: (evt) => {
        const a = evt.nativeEvent.locationX;
        const b = evt.nativeEvent.locationY;
 
@@ -138,8 +126,6 @@ export default function AddDefectScreen({route, navigation}: Props) {
           width: dx,
           height: dy
         } 
-
-        //console.log(rect);
         
         return rect;
        }));
@@ -147,17 +133,10 @@ export default function AddDefectScreen({route, navigation}: Props) {
      onPanResponderTerminationRequest: (evt, gestureState) =>
        true,
      onPanResponderRelease: (evt, gestureState) => {
-       // The user has released all touches while this view is the
-       // responder. This typically means a gesture has succeeded
-       //console.log('end');
      },
      onPanResponderTerminate: (evt, gestureState) => {
-       // Another component has become the responder, so this gesture
-       // should be cancelled
      },
      onShouldBlockNativeResponder: (evt, gestureState) => {
-       // Returns whether this component should block native components from becoming the JS
-       // responder. Returns true by default. Is currently only supported on android.
        return true;
      }
     }),
@@ -195,9 +174,6 @@ export default function AddDefectScreen({route, navigation}: Props) {
       height: rectPerc.height,
       drawingId: 0
     };
-
-    console.log(rectPerc);
-    console.log(newDefect);
 
     const request: CreateDefectRequest = {
       defect: newDefect

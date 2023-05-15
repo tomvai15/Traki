@@ -42,7 +42,6 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
 
   async function fetchSection() {
     const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
-    console.log(getSectionResponse);
     orderAndSetSection(getSectionResponse.section);
     orderAndSetTable(getSectionResponse.section.table);
   }
@@ -136,10 +135,8 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
     const formData = new FormData();
 
     /* eslint-disable */
-    console.log(itemImages);
     itemImages.forEach((item) => {
       if (item.isLocal) {
-        console.log('??');
         const filename = item.localImageUri.split('/').pop() ?? '';
         const match = /\.(\w+)$/.exec(filename);
         const type = match ? `image/${match[1]}` : 'image';
@@ -162,7 +159,6 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
 
   function canUpdate(): boolean {
     if (sectionType == 'table') {
-      console.log(JSON.stringify(itemImages));
     }
     return (initialSectionJson != JSON.stringify(section) || 
            initialItemImagesJson != JSON.stringify(itemImages) ||
@@ -178,7 +174,6 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
         (x.question == undefined ? true : !validate(x.question.comment, [validationRules.noSpecialSymbols]).invalid)
       );
     }).some((value) => value == false);
-    console.log(a);
     return a;
   }
 
@@ -187,7 +182,6 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
       return true;
     }
     return !table?.tableRows.map(x => { 
-      console.log(isValidTableRow(x));
       return isValidTableRow(x);
     }).some((value) => value == false);
   }

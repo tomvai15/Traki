@@ -48,7 +48,6 @@ export function MyInformation() {
       user: {...user, userIconBase64: preview}
     };
 
-    console.log(preview);
     await authService.updateUserInfo(request);
     setUser(request.user);
     setEditingAvatar(false);
@@ -81,7 +80,7 @@ export function MyInformation() {
                     <Avatar
                       exportAsSquare
                       width={300}
-                      onCrop={(e) => {setPreview(e); console.log(e);}}
+                      onCrop={(e) => {setPreview(e);}}
                       height={300}
                       src={user.userIconBase64}
                     />

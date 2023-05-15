@@ -32,7 +32,6 @@ export function Projects() {
 
     const projectWithImages: ProjectWithImage[] = [];
 
-    console.log(projects);
     for (let i = 0; i < projects.length; i++) {
       let imageBase64 = '';
       if (projects[i].imageName) {
@@ -89,7 +88,6 @@ function ProjectProducts({project, index}: ProjectProductsProps) {
   async function fetchProducts() {
     const getProductsResponse = await productService.getProducts(project.project.id);
     setProducts(getProductsResponse.products);
-    console.log(getProductsResponse.products);
   }
   
   return (

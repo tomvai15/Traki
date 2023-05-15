@@ -17,7 +17,6 @@ class ProtocolService {
 
   async updateProtocol(protocolId: number, updateProtocolRequest: UpdateProtocolRequest): Promise<void> {
     const fullRoute = `${route}/${protocolId}`;
-    console.log(updateProtocolRequest);
     await axiosApiInstance.put(fullRoute, updateProtocolRequest, { headers: {} });
   }
 

@@ -47,7 +47,7 @@ export default function ProductScreen({route, navigation}: Props) {
   }, [navigation]);
 
   async function fetchProduct() {
-    const getProductResposne = await productService.getProduct(projectId, productId).catch(err =>console.log(err));
+    const getProductResposne = await productService.getProduct(projectId, productId).catch(() => {return;});
     if (!getProductResposne) {
       return;
     }

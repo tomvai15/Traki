@@ -11,10 +11,8 @@ export const useUserInformation = () => {
       setUserInfo((x) => { 
         return  {...x, ...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign };
       });
-      console.log('ok');
     } catch {
       setUserInfo({ id: -1, loggedInDocuSign: false });
-      console.log('ne ok');
     }
   }
 

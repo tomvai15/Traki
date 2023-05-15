@@ -9,10 +9,8 @@ export const useUserInformation = () => {
     try {
       const getUserResponse = await authService.getUserInfo();
       setUserInfo({...userInfo, ...getUserResponse.user, loggedInDocuSign: getUserResponse.loggedInDocuSign });
-      console.log('ok');
     } catch {
       setUserInfo({ id: -1, token: '', refreshToken: '', loggedInDocuSign: false });
-      console.log('ne ok');
     }
   }
 

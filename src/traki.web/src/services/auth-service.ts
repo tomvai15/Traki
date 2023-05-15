@@ -19,7 +19,6 @@ class AuthService {
   }
 
   async login(loginRequest: LoginRequest): Promise<AxiosResponse> {
-    console.log(loginRequest);
     const fullRoute = route + '/login';
     const response = await axiosApiInstance.post(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
     return response;
@@ -49,7 +48,6 @@ class AuthService {
   }
 
   async loginDocusign(loginOAuthRequest: LoginOAuthRequest): Promise<void> {
-    console.log(loginOAuthRequest);
     const fullRoute = route + '/docusign';
     await axiosApiInstance.post(fullRoute, loginOAuthRequest, { headers: {} });
   }

@@ -99,7 +99,6 @@ function ProtocolSection({ protocolId, sectionId, setSelectedImage }: ProtocolSe
 
   async function fetchSection() {
     const getSectionResponse = await sectionService.getSection(Number(protocolId), Number(sectionId));
-    console.log(getSectionResponse);
     orderAndSetSection(getSectionResponse.section);
   }
 

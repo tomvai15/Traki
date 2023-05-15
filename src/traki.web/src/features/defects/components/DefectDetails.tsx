@@ -70,7 +70,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   };
 
   useEffect(() => {
-    console.log(selectedDefect);
     fetchDefect();
   }, [selectedDefect]);
 
@@ -98,7 +97,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   }
 
   async function fetchComments(defectComments: DefectComment[]) {
-    console.log('??');
     const commentsWithImage: CommentWithImage [] = [];
 
     for (let i = 0; i < defectComments.length; i++) {
@@ -113,7 +111,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
 
       commentsWithImage.push(newCommentWithImage);
     }
-    console.log(commentsWithImage);
     setComments(commentsWithImage);
   }
 
@@ -171,7 +168,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
   }
 
   function canSubmit() {
-    console.log(validateDefectFields());
     return canSubmitDefect && title && description && validateDefectFields();
   }
 

@@ -112,7 +112,7 @@ export function TemplatePage() {
           </CardContent>  
           <Divider/>  
           <Box>
-            <DragDropContext onDragEnd={() => console.log('ere')}>
+            <DragDropContext onDragEnd={() => {return;}}>
               <Droppable droppableId={'asdasd'} >
                 {(provided, snapshot) => {
                   return (

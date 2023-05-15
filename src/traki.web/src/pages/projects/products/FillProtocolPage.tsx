@@ -53,7 +53,6 @@ export function FillProtocolPage() {
   function orderAndSetSections(sectionsToSort: Section[]) {
     const sortedItems = [...sectionsToSort];
 
-    console.log(sectionsToSort);
     sortedItems.sort((a, b) => a.priority - b.priority);
     setSections(sortedItems);
   }

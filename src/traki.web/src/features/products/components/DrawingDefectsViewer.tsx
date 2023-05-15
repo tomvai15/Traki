@@ -64,7 +64,6 @@ export function DrawingDefectsViewer({productId, defectsCallback}: Props) {
     }
     const defects = drawingsWithImage.map( x=> x.drawing.defects).flat(1);
     defectsCallback(defects);
-    console.log(defects);
     setDrawings(drawingsWithImage);
   }
 
@@ -123,7 +122,7 @@ export function DrawingDefectsViewer({productId, defectsCallback}: Props) {
                 title={item.drawing.title}
                 actionIcon={
                   <IconButton 
-                    onClick={() => {setSelectedDrawing(item); console.log(item);}}
+                    onClick={() => {setSelectedDrawing(item);}}
                     sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                     aria-label={`info about ${item.drawing.title}`}
                   >

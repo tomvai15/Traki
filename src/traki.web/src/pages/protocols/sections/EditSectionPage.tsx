@@ -69,7 +69,6 @@ export function EditSectionPage() {
   }
 
   function canUpdate() {
-    console.log(checklist == undefined ? true : validChecklist());
     return  (JSON.stringify(section) != initialSectionJson || 
             JSON.stringify(checklist) != initialChecklistJson ||
             JSON.stringify(table) != initialTableJson) && 

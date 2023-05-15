@@ -22,7 +22,6 @@ export default function CheckOAuth() {
   let query = useQuery();
 
   useEffect(() => {
-    console.log(query.get('code'));
     checkAuthCode();
   }, []);
 
@@ -36,7 +35,6 @@ export default function CheckOAuth() {
       state: state ?? ''
     }
     const path = atob(docusignRequest.state);
-    console.log( 'kk ' + path);
 
     setLoading(true);
     await authService.loginDocusign(docusignRequest);

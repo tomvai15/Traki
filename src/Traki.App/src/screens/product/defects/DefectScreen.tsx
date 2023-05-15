@@ -139,8 +139,6 @@ export default function DefectScreen({route, navigation}: Props) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (result.canceled) {
       return;
     }

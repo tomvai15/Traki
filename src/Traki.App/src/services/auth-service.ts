@@ -11,7 +11,6 @@ const route = 'auth';
 class AuthService {
   /* eslint-disable */
   async login(loginRequest: LoginRequest): Promise<AxiosResponse<LoginResponse, any>> {
-    console.log(loginRequest);
     const fullRoute = route + '/jwt-login';
     const response = await axiosApiInstance.post<LoginResponse>(fullRoute, loginRequest, { headers: {} ,  validateStatus: (status) => status < 500 });
     return response;
