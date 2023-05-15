@@ -4,7 +4,10 @@ using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
+using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
+using Traki.Domain.Services.Docusign;
+using Traki.Domain.Services.Docusign.models;
 using Traki.Domain.Services.Email;
 
 namespace Traki.UnitTests.Domain.Handlers
@@ -12,30 +15,31 @@ namespace Traki.UnitTests.Domain.Handlers
     public class UserHandlerTests
     {
         private readonly IUserHandler _userHandler;
-        private readonly Mock<IUsersRepository> _usersRepositoryMock;
-        private readonly Mock<IHasherAdapter> _hasherAdapterMock;
-        private readonly Mock<IEmailService> _emailServiceMock;
+        private readonly Mock<IUsersRepository> _usersRepositoryMock = new Mock<IUsersRepository>();
+        private readonly Mock<IHasherAdapter> _hasherAdapterMock = new Mock<IHasherAdapter>();
+        private readonly Mock<IEmailService> _emailServiceMock = new Mock<IEmailService>();
+        private readonly Mock<IDocuSignService> _docuSignServiceMock = new Mock<IDocuSignService>();
+        private readonly Mock<IAccessTokenProvider> _accessTokenProvider = new Mock<IAccessTokenProvider>();
         private readonly IOptions<WebSettings> _webSettings;
 
         public UserHandlerTests()
         {
-            _usersRepositoryMock = new Mock<IUsersRepository>();
-            _hasherAdapterMock = new Mock<IHasherAdapter>();
-            _emailServiceMock = new Mock<IEmailService>();
             _webSettings = Options.Create(new WebSettings { Url = "https://example.com" });
 
-            _userHandler = new UserHandler(_usersRepositoryMock.Object, _hasherAdapterMock.Object, _emailServiceMock.Object, _webSettings);
+            _userHandler = new UserHandler(_usersRepositoryMock.Object, _hasherAdapterMock.Object, _emailServiceMock.Object, _webSettings, _docuSignServiceMock.Object, _accessTokenProvider.Object);
         }
 
         [Fact]
         public async Task CreateUser_ShouldAddUserToRepository()
         {
             // Arrange
+            string accessToken = Any<string>();
             var user = new User { Email = "test@example.com" };
 
-            _hasherAdapterMock
-                .Setup(x => x.HashText(It.IsAny<string>()))
+            _hasherAdapterMock.Setup(x => x.HashText(It.IsAny<string>()))
                 .Returns("hashed_password");
+            _accessTokenProvider.Setup(x => x.GetAccessToken()).ReturnsAsync(accessToken);
+            _docuSignServiceMock.Setup(x => x.GetUserInformation(accessToken)).ReturnsAsync(Any<DocuSignUserInfo>());
 
             // Act
             await _userHandler.CreateUser(user);

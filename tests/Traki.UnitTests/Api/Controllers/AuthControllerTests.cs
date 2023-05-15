@@ -423,7 +423,7 @@ namespace Traki.UnitTests.Api.Controllers
                 State = state
             };
 
-            _docuSignService.Setup(s => s.GetAuthorisationCodeRequest(state)).ReturnsAsync(url);
+            _docuSignService.Setup(s => s.GetAuthorisationCodeRequest(state, "signature")).ReturnsAsync(url);
 
             // Act
             var result = await authController.GetAuthorisationCode(request);
