@@ -111,7 +111,7 @@ export default function MainLayout() {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+            
           </Typography>
           <NotificationsMenu/>
           <ProfileMenu/>
