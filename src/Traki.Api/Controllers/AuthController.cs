@@ -206,7 +206,8 @@ namespace Traki.Api.Controllers
         [Authorize]
         public async Task<ActionResult<string>> GetAuthorisationCode([FromBody] AuthorisationCodeRequest getAuthorisationCodeRequest)
         {
-            var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State);
+            string scope = getAuthorisationCodeRequest.LoginAsAdmin ? "user_write" : "signature";
+            var url = await _docuSignService.GetAuthorisationCodeRequest(getAuthorisationCodeRequest.State, scope);
             return Ok(url);
         }
 

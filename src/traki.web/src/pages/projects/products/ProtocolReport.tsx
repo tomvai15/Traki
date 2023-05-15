@@ -99,13 +99,12 @@ export function ProtocolReport() {
 
   async function getCodeUrl() {
     const request: AuthorisationCodeRequest = {
-      state: btoa(location.pathname)
+      state: btoa(location.pathname),
+      loginAsAdmin: false
     };
     const res = await authService.getAuthorisationCodeUrl(request);
     window.location.replace(res);
   }
-
-
 
   const [numberOfPages, setNumberOfPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
