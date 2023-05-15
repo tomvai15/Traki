@@ -26,8 +26,6 @@ export function ProtocolSectionItem({ item, itemImage, updateItem, updateItemIma
       quality: 1,
     });
 
-    console.log(result);
-
     if (result.canceled) {
       return;
     }

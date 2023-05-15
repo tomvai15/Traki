@@ -28,7 +28,7 @@ export default function ProjectsScreen({ navigation }: Props) {
   }, [navigation]);
 
   async function fetchProjects() {
-    const getProjectsResposne = await projectService.getProjects().catch(err =>console.log(err));
+    const getProjectsResposne = await projectService.getProjects().catch(() => {return;});
     if (!getProjectsResposne) {
       return;
     }

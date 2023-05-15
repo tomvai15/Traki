@@ -23,7 +23,7 @@ export default function ProductsScreen({route, navigation }: Props) {
   }, [navigation]);
 
   async function fetchProjects() {
-    const getProductsResposne = await productService.getProducts(projectId).catch(err => console.log(err));
+    const getProductsResposne = await productService.getProducts(projectId).catch(() => {return;});
     if (!getProductsResposne) {
       return;
     }

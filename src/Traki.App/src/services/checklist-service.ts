@@ -19,7 +19,6 @@ class ChecklistService {
   }
 
   async createChecklist(productId: number, createChecklistRequest: CreateChecklistRequest): Promise<void> {
-    console.log(createChecklistRequest);
     const fullRoute = 'products/{productId}/checklists/create'.format({productId: productId.toString()}); 
     await axiosApiInstance.post(fullRoute, createChecklistRequest, { headers: {} });
   }
