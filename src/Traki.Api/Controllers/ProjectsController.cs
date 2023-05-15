@@ -65,6 +65,7 @@ namespace Traki.Api.Controllers
 
         [HttpPut("{projectId}")]
         [Authorize(Roles = Role.ProjectManager)]
+        [Authorize(Policy = AuthPolicy.ProjectIdInRouteValidation)]
         public async Task<ActionResult> UpdateProject(int projectId, CreateProjectRequest createProjectRequest)
         {
             var project = _mapper.Map<Project>(createProjectRequest);
@@ -77,6 +78,7 @@ namespace Traki.Api.Controllers
 
         [HttpDelete("{projectId}")]
         [Authorize(Roles = Role.ProjectManager)]
+        [Authorize(Policy = AuthPolicy.ProjectIdInRouteValidation)]
         public async Task<ActionResult> DeleteProject(int projectId)
         {
             await _projectsRepository.DeleteProject(projectId);
