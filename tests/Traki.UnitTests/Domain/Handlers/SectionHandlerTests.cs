@@ -72,9 +72,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _sectionHandler.UpdateSectionAnswers(protocolId, section);
 
-           // _sectionRepository.Verify(x => x.UpdateSection(It.IsAny<Traki.Domain.Models.Section.Section>()), Times.Exactly(count));
-
-            Assert.True(true);
+            _checklistRepository.Verify(x => x.GetSectionChecklist(It.IsAny<int>()));
         }
 
         [Fact]
@@ -90,9 +88,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _sectionHandler.AddOrUpdateSection(protocolId, section);
 
-            // _sectionRepository.Verify(x => x.UpdateSection(It.IsAny<Traki.Domain.Models.Section.Section>()), Times.Exactly(count));
-
-            Assert.True(true);
+            _sectionRepository.Verify(x => x.UpdateSection(It.IsAny<Section>()));
         }
 
 
@@ -109,9 +105,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _sectionHandler.DeleteSection(sectionId);
 
-            // _sectionRepository.Verify(x => x.UpdateSection(It.IsAny<Traki.Domain.Models.Section.Section>()), Times.Exactly(count));
-
-            Assert.True(true);
+            _sectionRepository.Verify(x => x.DeleteSection(It.IsAny<Section>()));
         }
     }
 }
