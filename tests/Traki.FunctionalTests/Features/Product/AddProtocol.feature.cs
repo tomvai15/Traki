@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Product
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Product
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Add protocol for product", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Add protocol for product")]
         [Xunit.TraitAttribute("FeatureTitle", "Add protocol")]
         [Xunit.TraitAttribute("Description", "Add protocol for product")]
         public void AddProtocolForProduct()
@@ -128,10 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                AddProtocolFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                AddProtocolFeature.FeatureTearDown();
             }
         }
     }

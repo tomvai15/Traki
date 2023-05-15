@@ -1,5 +1,5 @@
 ﻿Feature: View product
-@ignore
+ 
 Scenario: Open product page - shows product name
     Given I have logged in as product manager
     And I have navigated to projects page

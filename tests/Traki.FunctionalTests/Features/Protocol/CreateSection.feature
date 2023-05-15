@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Create section
 
 Scenario: Create section with all question types

@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Defect
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Defect
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create comment for defect", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create comment for defect")]
         [Xunit.TraitAttribute("FeatureTitle", "Create comment")]
         [Xunit.TraitAttribute("Description", "Create comment for defect")]
         public void CreateCommentForDefect()
@@ -128,10 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                CreateCommentFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                CreateCommentFeature.FeatureTearDown();
             }
         }
     }

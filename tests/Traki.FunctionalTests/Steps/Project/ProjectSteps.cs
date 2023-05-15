@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 using Traki.FunctionalTests.Data;
+using Traki.FunctionalTests.Hooks;
 
 namespace Traki.FunctionalTests.Steps.Project
 {
@@ -19,7 +20,7 @@ namespace Traki.FunctionalTests.Steps.Project
         [Given(@"I have logged in as project manager")]
         public void GivenNotEnoughProductsInStock()
         {
-            driver.Navigate().GoToUrl("https://localhost:3000/login");
+            driver.Navigate().GoToUrl($"{ConfigurationAccessor.WebUrl}/login");
             driver.FindElement(By.Id("email")).Click();
             driver.FindElement(By.Id("email")).Clear();
             driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProjectManagerEmail);
@@ -27,7 +28,6 @@ namespace Traki.FunctionalTests.Steps.Project
             driver.FindElement(By.Id("password")).Clear();
             driver.FindElement(By.Id("password")).SendKeys(ExampleData.ProjectManagerPassword);
             driver.FindElement(By.Id("submit")).Click();
-            //driver.Navigate().GoToUrl("https://localhost:3000/home");
             for (int second = 0; ; second++)
             {
                 if (second >= 60) Assert.Fail("timeout");
@@ -75,7 +75,7 @@ namespace Traki.FunctionalTests.Steps.Project
         [When(@"I open edit project page")]
         public void Given_IHaveOpenedEditProjectPage()
         {
-            driver.Navigate().GoToUrl("https://localhost:3000/projects");
+            driver.Navigate().GoToUrl($"{ConfigurationAccessor.WebUrl}/projects");
             for (int second = 0; ; second++)
             {
                 if (second >= 60) Assert.Fail("timeout");

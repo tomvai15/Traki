@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Create comment
 
 Scenario: Create comment for defect

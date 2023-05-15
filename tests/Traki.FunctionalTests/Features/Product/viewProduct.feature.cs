@@ -80,13 +80,12 @@ namespace Traki.FunctionalTests.Features.Product
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Open product page - shows product name", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Open product page - shows product name")]
         [Xunit.TraitAttribute("FeatureTitle", "View product")]
         [Xunit.TraitAttribute("Description", "Open product page - shows product name")]
         public void OpenProductPage_ShowsProductName()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open product page - shows product name", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 3

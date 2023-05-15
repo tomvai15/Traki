@@ -24,8 +24,7 @@ namespace Traki.FunctionalTests.Features.Project
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,7 +80,7 @@ namespace Traki.FunctionalTests.Features.Project
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Open project tab, shows all projects", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Open project tab, shows all projects")]
         [Xunit.TraitAttribute("FeatureTitle", "View project")]
         [Xunit.TraitAttribute("Description", "Open project tab, shows all projects")]
         public void OpenProjectTabShowsAllProjects()
@@ -119,10 +118,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
+                ViewProjectFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                ViewProjectFeature.FeatureTearDown();
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿Feature: Delete section
 
-@ignore
+ 
 Scenario: Delete section
     Given I have logged in as project manager
     And I have navigated to protocol templates page

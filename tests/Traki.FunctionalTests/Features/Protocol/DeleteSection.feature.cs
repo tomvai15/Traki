@@ -80,13 +80,12 @@ namespace Traki.FunctionalTests.Features.Protocol
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Delete section", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Delete section")]
         [Xunit.TraitAttribute("FeatureTitle", "Delete section")]
         [Xunit.TraitAttribute("Description", "Delete section")]
         public void DeleteSection()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete section", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 4

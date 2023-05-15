@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Update project
 
 Scenario: Update project with valid fields

@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Fill protocol
 
 Scenario: Fill all protocol sections

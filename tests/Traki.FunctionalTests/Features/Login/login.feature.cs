@@ -111,13 +111,12 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log in as product manager", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Log in as product manager")]
         [Xunit.TraitAttribute("FeatureTitle", "User authentication")]
         [Xunit.TraitAttribute("Description", "Log in as product manager")]
         public void LogInAsProductManager()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log in as product manager", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 9

@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: View protocol
 
 Scenario: Open protocol tab displays protocols

@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: Add protocol
 
 Scenario: Add protocol for product

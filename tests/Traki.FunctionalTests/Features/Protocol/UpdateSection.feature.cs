@@ -80,13 +80,12 @@ namespace Traki.FunctionalTests.Features.Protocol
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update section with valid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update section with valid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Update section")]
         [Xunit.TraitAttribute("Description", "Update section with valid fields")]
         public void UpdateSectionWithValidFields()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update section with valid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
@@ -118,13 +117,12 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update section with invalid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update section with invalid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Update section")]
         [Xunit.TraitAttribute("Description", "Update section with invalid fields")]
         public void UpdateSectionWithInvalidFields()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update section with invalid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 13

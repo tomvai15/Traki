@@ -80,13 +80,12 @@ namespace Traki.FunctionalTests.Features.Product
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update product with valid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update product with valid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Update product")]
         [Xunit.TraitAttribute("Description", "Update product with valid fields")]
         public void UpdateProductWithValidFields()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update product with valid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 4
@@ -121,13 +120,12 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Update product with invalid fields", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Update product with invalid fields")]
         [Xunit.TraitAttribute("FeatureTitle", "Update product")]
         [Xunit.TraitAttribute("Description", "Update product with invalid fields")]
         public void UpdateProductWithInvalidFields()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update product with invalid fields", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 14

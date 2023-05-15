@@ -1,4 +1,4 @@
-﻿@ignore
+﻿ 
 Feature: View defects
 
 Scenario: Defects screen displays defects
