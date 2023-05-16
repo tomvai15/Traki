@@ -60,17 +60,24 @@ namespace Traki.Api.Controllers
         [HttpPost("notification")]
         public async Task<ActionResult> Notification()
         {
-           // await _notificationService.SendNotification();
+            // await _notificationService.SendNotification();
             return Ok();
         }
-
 
         [HttpPost("folders/{folderName}/files")]
         public async Task<ActionResult> UploadFile(string folderName)
         {
             var formCollection = await Request.ReadFormAsync();
 
-            foreach(var file in formCollection.Files)
+            foreach (var file in formCollection.Files)
+            {
+                if (!IsImage(file.ContentType))
+                {
+                    return BadRequest();
+                }
+            }
+
+            foreach (var file in formCollection.Files)
             {
                 await _storageService.AddFile(folderName, file.FileName, file.ContentType, file.OpenReadStream());
             }
@@ -85,6 +92,11 @@ namespace Traki.Api.Controllers
             var file = await _storageService.GetFile(folderName, fileName);
 
             return File(file.Content, file.ContentType);
+        }
+
+        private bool IsImage(string contentType)
+        {
+            return contentType.StartsWith("image");
         }
     }
 }
