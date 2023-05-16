@@ -64,9 +64,10 @@ export default function SignIn() {
     setUserInfo({id: 1, loggedInDocuSign: false});
 
     if (response.user.role == 'Administrator') {
-      navigate('/admin/users');
+      navigate('/company');
+    } else {
+      navigate('/home');
     }
-    navigate('/home');
   }
   return (
     <Box component="main" style={{height: '100vh', width: '100vw', backgroundImage: `url("/img/image.svg")`, paddingTop: 100 }}>
