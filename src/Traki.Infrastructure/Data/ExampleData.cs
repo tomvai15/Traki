@@ -288,7 +288,7 @@ namespace Traki.Infrastructure.Data
                 Email = "vainoristomas@gmail.com",
                 Name = "Tomas",
                 Surname = "Vainoris",
-                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
+                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",// password
                 Role = Role.ProductManager,
                 Status = UserStatus.Active,
             },
@@ -297,7 +297,7 @@ namespace Traki.Infrastructure.Data
                 Email = "vainoristomas9@gmail.com",
                 Name = "Domas",
                 Surname = "Bainoris",
-                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
+                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",// password
                 Role = Role.ProjectManager,
                 Status = UserStatus.Active
             },         
@@ -306,7 +306,7 @@ namespace Traki.Infrastructure.Data
                 Email = "admin@gmail.com",
                 Name = "Romas",
                 Surname = "Fainoris",
-                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
+                HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",// password
                 Role = Role.Administrator,
                 Status = UserStatus.Active
             }
