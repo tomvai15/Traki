@@ -4,9 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, TouchableHighlight } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
-import { image } from '../test';
-import { image2 } from '../test2';
-import { image3 } from '../test3';
 import * as ImagePicker from 'expo-image-picker';
 import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, HelperText } from 'react-native-paper';
 import AutoImage from '../../../components/AutoImage';
@@ -44,8 +41,6 @@ type DrawingWithImage = {
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'AddDefectScreen'>;
 
-const images = [image, image2, image];
-
 export default function AddDefectScreen({route, navigation}: Props) {
 
   const [loading, setLoading] = useState(false);
@@ -53,7 +48,6 @@ export default function AddDefectScreen({route, navigation}: Props) {
   const [selectedDrawing, setSelectedDrawing] = useState<DrawingWithImage>();
   const [rectangle, setRectangle] = useState<Rectangle>(rect1);
 
-  const [selectedImage, setSelectedImage] = useState<string>(image);
   const [visible, setVisible] = React.useState(false);
   const [imageWidth, setImageWidth] = useState<number>(405);
   const [drawings, setDrawings] = useState<DrawingWithImage[]>([]);

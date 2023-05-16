@@ -1,16 +1,17 @@
 import React from 'react';
-import { Card, CardContent, Checkbox, FormControlLabel, Stack, TextField, Typography, useTheme } from '@mui/material';
+import { Card, CardContent, Checkbox, FormControlLabel, IconButton, Stack, TextField, Typography, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { AnswerType } from '../../../contracts/protocol/items/AnswerType';
 import { Item } from '../../../contracts/protocol/items/Item';
 import { Question } from '../../../contracts/protocol/items/Question';
 import { TextInput } from '../../../contracts/protocol/items/TextInput';
 import { validate, validationRules } from 'utils/textValidation';
+import { PhotoCamera } from '@mui/icons-material';
 
 type Props = {
   item: Item,
   updateItem: (item: Item) => void
-  completed: boolean
+  completed: boolean,
 }
 
 export function FillItem ({item, updateItem, completed}: Props) {
@@ -43,6 +44,11 @@ export function FillItem ({item, updateItem, completed}: Props) {
     const updatedItem: Item = {...item, textInput: updatedTextInput};
     updateItem(updatedItem);
   } 
+
+  function selectFile (event: React.ChangeEvent<HTMLInputElement>) {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+  }
 
   function updateMultipleChoice(option: string) {
     if (!item.multipleChoice) {
@@ -135,6 +141,10 @@ export function FillItem ({item, updateItem, completed}: Props) {
           <Box sx={{flex: 3}}>
             {checkType()}
           </Box>
+          <IconButton color="secondary" aria-label="upload picture" component="label">
+            <input hidden accept="image/*" type="file" onChange={selectFile} />
+            <PhotoCamera />
+          </IconButton>
         </Stack>
       </CardContent>
     </Card>

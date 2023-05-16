@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Domain.Services.BlobStorage;
-using Traki.Domain.Services.Email;
-using Traki.Domain.Services.Notifications;
-using Traki.Infrastructure.Data;
 
 namespace Traki.Api.Controllers
 {
@@ -11,32 +8,11 @@ namespace Traki.Api.Controllers
     [Authorize]
     public class ImageController : ControllerBase
     {
-        private readonly TrakiDbContext _trakiDbContext;
         private readonly IStorageService _storageService;
-        private readonly IEmailService _emailService;
-        private readonly INotificationService _notificationService;
 
-        public ImageController(IStorageService storageService, TrakiDbContext trakiDbContext, IEmailService emailService, INotificationService notificationService)
+        public ImageController(IStorageService storageService)
         {
             _storageService = storageService;
-            _trakiDbContext = trakiDbContext;
-            _emailService = emailService;
-            _notificationService = notificationService;
-        }
-
-        [HttpGet("create")]
-        public async Task<ActionResult> Initiliase()
-        {
-            bool wasCreated = _trakiDbContext.Database.EnsureCreated();
-
-            if (!wasCreated) return Ok("No data was added");
-
-            _trakiDbContext.AddProjects();
-            _trakiDbContext.AddProducts();
-            _trakiDbContext.AddTemplates();
-            _trakiDbContext.AddQuestions();
-
-            return Ok("Added data");
         }
 
         [HttpPut("folders/{folderName}/files/{fileName}")]
@@ -50,27 +26,20 @@ namespace Traki.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("email/{emailName}")]
-        public async Task<ActionResult> SendEmail(string emailName)
-        {
-            await _emailService.SendEmail(emailName, "a", "b");
-            return Ok();
-        }
-
-        [HttpPost("notification")]
-        public async Task<ActionResult> Notification()
-        {
-           // await _notificationService.SendNotification();
-            return Ok();
-        }
-
-
         [HttpPost("folders/{folderName}/files")]
         public async Task<ActionResult> UploadFile(string folderName)
         {
             var formCollection = await Request.ReadFormAsync();
 
-            foreach(var file in formCollection.Files)
+            foreach (var file in formCollection.Files)
+            {
+                if (!IsImage(file.ContentType))
+                {
+                    return BadRequest();
+                }
+            }
+
+            foreach (var file in formCollection.Files)
             {
                 await _storageService.AddFile(folderName, file.FileName, file.ContentType, file.OpenReadStream());
             }
@@ -85,6 +54,11 @@ namespace Traki.Api.Controllers
             var file = await _storageService.GetFile(folderName, fileName);
 
             return File(file.Content, file.ContentType);
+        }
+
+        private bool IsImage(string contentType)
+        {
+            return contentType.StartsWith("image");
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Traki.Infrastructure.Services
 {
     public class BlobStorageService : IStorageService
     {
-        private readonly BlobStorageSettings _blobStorageSettings;
+        private readonly StorageSettings _blobStorageSettings;
 
-        public BlobStorageService(IOptions<BlobStorageSettings> blobStorageSettings)
+        public BlobStorageService(IOptions<StorageSettings> blobStorageSettings)
         {
             _blobStorageSettings = blobStorageSettings.Value;
         }

@@ -49,6 +49,7 @@ namespace Traki.Api.Controllers
 
         [HttpPut("{productId}")]
         [Authorize]
+        [Authorize(Policy = AuthPolicy.ProductIdInRouteValidation)]
         public async Task<ActionResult> UpdateProduct(int projectId, int productId, [FromBody]UpdateProductRequest updateProductRequest)
         {
             var product = _mapper.Map<Product>(updateProductRequest.Product);
@@ -64,6 +65,7 @@ namespace Traki.Api.Controllers
 
         [HttpDelete("{productId}")]
         [Authorize]
+        [Authorize(Policy = AuthPolicy.ProductIdInRouteValidation)]
         public async Task<ActionResult> DeleteProduct(int projectId, int productId)
         {
             await _productsRepository.DeleteProduct(productId);

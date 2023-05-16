@@ -21,7 +21,7 @@ namespace Traki.Api
                 .AddEmailServices(configuration)
                 .AddWebConfiguration(configuration)
                 .AddCryptographyServices()
-                .AddCorsPolicy();
+                .AddCorsPolicy(configuration);
 
             return services;
         }

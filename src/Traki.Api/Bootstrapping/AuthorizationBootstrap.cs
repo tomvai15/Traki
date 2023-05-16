@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text;
+using Traki.Api.Validators.Handlers;
+using Traki.Api.Validators.Requirements;
 using Traki.Domain.Constants;
 using Traki.Domain.Settings;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
@@ -63,7 +66,6 @@ namespace Traki.Api.Bootstrapping
                         };
                     });
 
-
             var multiSchemePolicy = new AuthorizationPolicyBuilder("JWT_OR_COOKIE")
               .RequireAuthenticatedUser()
               .Build();
@@ -74,19 +76,31 @@ namespace Traki.Api.Bootstrapping
                 {
                     policy.RequireClaim("Role", "ProjectManager");
                 });
-            
+
+                options.AddPolicy(AuthPolicy.ProjectIdInRouteValidation, policy =>
+                    policy.Requirements.Add(new ProjectIdInRouteValidation()));
+
+                options.AddPolicy(AuthPolicy.ProductIdInRouteValidation, policy =>
+                    policy.Requirements.Add(new ProductIdInRouteValidation()));
+
             });
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddTransient<IAuthorizationHandler, ProjectIdInRouteValidationHandler>();
+            services.AddTransient<IAuthorizationHandler, ProductIdInRouteValidationHandler>();
 
             return services;
         }
 
-        public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+        public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
         {
+
+            string url = configuration.GetSection("WebSettings:Url").Value;
             services.AddCors(options =>
             {
                 options.AddPolicy(Policy.DevelopmentCors, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000/")
+                    builder.WithOrigins(url)
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .AllowCredentials()
