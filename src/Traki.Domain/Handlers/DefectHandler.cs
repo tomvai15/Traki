@@ -67,7 +67,6 @@ namespace Traki.Domain.Handlers
 
             await _defectNotificationRepository.CreateDefectNotification(defectNotification);
 
-            // todo create new component INotificationHandler
             string deviceToken = user.DeviceToken;
             if (deviceToken.IsNullOrEmpty())
             {

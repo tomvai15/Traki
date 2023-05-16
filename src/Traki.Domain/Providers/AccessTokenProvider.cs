@@ -61,7 +61,6 @@ namespace Traki.Domain.Providers
 
             var user = await _usersRepository.GetUserById(userId);
 
-            // Todo: decrypt....
             if (user == null || user.EncryptedRefreshToken == null)
             {
                 throw new ArgumentException();

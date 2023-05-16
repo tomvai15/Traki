@@ -43,13 +43,11 @@ if (app.Environment.IsDevelopment())
     {
         Console.WriteLine(ex);
     }
+    app.UseCors(Policy.DevelopmentCors);
 }
 
-app.UseCors(Policy.DevelopmentCors);
 
-// TODO: temporary fix for emulator. Need to figure out how to make https work on emulator
-//app.UseHttpsRedirection();
-
+app.UseHttpsRedirection();
 
 app.UseProblemDetails();
 app.UseAuthentication();
