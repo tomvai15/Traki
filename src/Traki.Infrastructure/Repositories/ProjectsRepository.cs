@@ -67,12 +67,24 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task DeleteProject(int projectId)
         {
-            var project = await _context.Projects.Include(x => x.Author)
-                                .FirstOrDefaultAsync(p => p.Id == projectId);
+            try
+            {
+                var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+                project.RequiresToBeNotNullEnity();
 
-            project.RequiresToBeNotNullEnity();
-            _context.Remove(project);
-            await _context.SaveChangesAsync();
+                var products = await _context.Products.Where(p => p.ProjectId == project.Id).Include(x => x.Protocols).ToListAsync();
+
+                var protocols = products.SelectMany(x => x.Protocols).ToList();
+
+                _context.RemoveRange(protocols);
+
+                _context.Remove(project);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
