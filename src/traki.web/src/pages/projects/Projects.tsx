@@ -64,6 +64,7 @@ export function Projects() {
         </ProtectedComponent>
       </Grid>
       <Grid item xs={12} md={12}>
+        {projects.length == 0 && <Typography>There are no projects</Typography>}
         { projects.map((item, index) =>
           <ProjectProducts key={index} index={index} project={item}></ProjectProducts>
         )}
@@ -119,6 +120,7 @@ function ProjectProducts({project, index}: ProjectProductsProps) {
           <Box sx={{width: '100%'}}>
             <Typography variant='subtitle1'>Products</Typography>
             <List>
+              {products.length == 0 && <Typography>There are no products</Typography>}
               {products.map((product, index) => 
                 <Box key={index} >
                   <Divider></Divider>
