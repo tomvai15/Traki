@@ -7,6 +7,8 @@ import { UpdateProtocolRequest } from 'contracts/protocol/UpdateProtocolRequest'
 import { protocolService, sectionService } from 'services';
 import { ProtocolSections } from './ProtocolSections';
 import { ProtectedComponent } from 'components/ProtectedComponent';
+import { useRecoilState } from 'recoil';
+import { userState } from 'state/user-state';
 
 type Props = {
   selectedProtocol?: Protocol,
@@ -17,6 +19,7 @@ type Props = {
 export function ProtocolCard({selectedProtocol, deleteProtocol}: Props) {
   const navigate = useNavigate();
 
+  const [userInfo] = useRecoilState(userState);
   const [protocol, setProtocol] = useState<Protocol>();
   const [sections, setSections] = useState<Section[]>([]);
 
@@ -84,6 +87,7 @@ export function ProtocolCard({selectedProtocol, deleteProtocol}: Props) {
             label="Protocol Name"
             variant="standard"
             value={protocol.name}
+            disabled={userInfo.role!='ProjectManager'}
             onChange={(e) => updateName(e.target.value)}
           />
           <ProtectedComponent role='ProjectManager'>

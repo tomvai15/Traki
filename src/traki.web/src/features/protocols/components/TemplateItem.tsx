@@ -5,6 +5,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import { v4 as uuid } from 'uuid';
 import { validate, validationRules } from 'utils/textValidation';
+import { userState } from 'state/user-state';
+import { useRecoilState } from 'recoil';
 
 const defaultQuestion: Question = {
   id: uuid(), 
@@ -32,6 +34,9 @@ type TemplateItemProps = {
 export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateItemProps) {
   const theme = useTheme();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const [userInfo] = useRecoilState(userState);
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -175,6 +180,7 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
             label="Question"
             variant="standard"
             value={item.name}
+            disabled={userInfo.role!='ProjectManager'}
             onChange={(e) => updateName(item, e.target.value)}
           />
         </Box>
