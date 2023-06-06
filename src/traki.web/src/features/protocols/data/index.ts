@@ -17,7 +17,8 @@ export const defaultItem: Item ={
   priority: 1, 
   question: question, 
   multipleChoice: undefined, 
-  textInput: undefined
+  textInput: undefined,
+  itemImage: undefined
 };
 
 export const defaultColumn: RowColumn = {
