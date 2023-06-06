@@ -213,9 +213,6 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                     <Typography variant='h6'>
                       {selectedDefect.author?.name + ' ' + selectedDefect.author?.surname}
                     </Typography>
-                    <Typography variant='h6'>
-                      {formatDate(new Date(selectedDefect.creationDate))}
-                    </Typography>
                   </Stack>
                   <Typography id="defect-title" variant='h6'>
                     {selectedDefect.title}

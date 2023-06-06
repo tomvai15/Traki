@@ -162,7 +162,7 @@ export function DefectsPage() {
       width: rectangle.width,
       height: rectangle.height,
       drawingId: 0,
-      creationDate: ''
+      creationDate: new Date()
     };
 
     const request: CreateDefectRequest = {

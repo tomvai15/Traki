@@ -73,7 +73,6 @@ export function FillProtocolPage() {
       <Grid item xs={12} md={12} >
         <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography variant='h5'>{protocol.name}</Typography>
-          {!protocol.isCompleted && <Button onClick={() => setOpen(true)} variant='contained'>Complete</Button>}
         </Stack>
       </Grid>
       {sections.map((section, index) => 

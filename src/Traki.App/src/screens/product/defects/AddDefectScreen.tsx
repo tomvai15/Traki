@@ -166,7 +166,8 @@ export default function AddDefectScreen({route, navigation}: Props) {
       y: rectPerc.y,
       width: rectPerc.width,
       height: rectPerc.height,
-      drawingId: 0
+      drawingId: 0,
+      creationDate: new Date()
     };
 
     const request: CreateDefectRequest = {
@@ -237,7 +238,7 @@ function AddDefectDialog({visible, onClose, onSubmit}: AddDefectDialogProps) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.2,
     });
 
     if (result.canceled) {
