@@ -51,6 +51,7 @@ namespace Traki.Infrastructure.Data
                 Height = 10,
                 DrawingId = 1,
                 AuthorId = 1,
+                CreationDate = DateTime.Now
             },
             new DefectEntity
             {
@@ -64,6 +65,7 @@ namespace Traki.Infrastructure.Data
                 Height = 10,
                 DrawingId = 2,
                 AuthorId = 1,
+                CreationDate = DateTime.Now
             }
         };
 

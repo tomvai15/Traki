@@ -52,6 +52,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             createdDefect.Should().BeEquivalentTo(defect, options => options.Excluding(x => x.Id)
                         .Excluding(x => x.DefectComments)
+                        .Excluding(x => x.CreationDate)
                         .Excluding(x => x.StatusChanges));
         }
 

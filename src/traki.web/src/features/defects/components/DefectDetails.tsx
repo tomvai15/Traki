@@ -20,6 +20,7 @@ import { userState } from 'state/user-state';
 import { validate, validationRules } from 'utils/textValidation';
 import { DefectStatus } from 'contracts/drawing/defect/DefectStatus';
 import DisabledComponent from 'components/DisabledComponent';
+import { formatDate } from 'utils/dateHelpers';
 
 function a11yProps(index: number) {
   return {
@@ -211,6 +212,9 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
                     </Avatar>
                     <Typography variant='h6'>
                       {selectedDefect.author?.name + ' ' + selectedDefect.author?.surname}
+                    </Typography>
+                    <Typography variant='h6'>
+                      {formatDate(new Date(selectedDefect.creationDate))}
                     </Typography>
                   </Stack>
                   <Typography id="defect-title" variant='h6'>

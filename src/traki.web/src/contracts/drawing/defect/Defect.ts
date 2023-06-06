@@ -5,6 +5,7 @@ import { StatusChange } from "./StatusChange";
 
 export type Defect = {
   id: number,
+  creationDate: string,
   drawingId: number,
   title: string
   description: string

@@ -7,6 +7,7 @@
         public string Description { get; set; }
         public string? ImageName { get; set; }
         public DefectStatus Status { get; set; }
+        public DateTime CreationDate { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
         public float Width { get; set; }

@@ -21,6 +21,7 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Defect> CreateDefect(Defect defect)
         {
             var defectEntity = _mapper.Map<DefectEntity>(defect);
+            defectEntity.CreationDate = DateTime.Now;
             _context.Add(defectEntity);
             await _context.SaveChangesAsync();
 
