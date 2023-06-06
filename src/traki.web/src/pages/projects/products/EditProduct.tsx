@@ -6,7 +6,7 @@ import productService from '../../../services/product-service';
 import { Drawing } from 'contracts/drawing/Drawing';
 import { Defect } from 'contracts/drawing/defect/Defect';
 import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
-import { drawingService, pictureService } from 'services';
+import { drawingService, pictureService, projectService } from 'services';
 import { PhotoCamera } from '@mui/icons-material';
 import ImageWithViewer from 'components/ImageWithViewer';
 import { v4 as uuid } from 'uuid';
@@ -16,6 +16,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 import { AuthorBar } from 'components/AuthorBar';
 import { validate, validationRules } from 'utils/textValidation';
+import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
 
 export function EditProduct() {
   const navigate = useNavigate();
@@ -36,6 +37,8 @@ export function EditProduct() {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openProductDialog, setOpenProductDialog] = React.useState(false);
 
+  const {catchNotFound} = useNotFoundCatcher();
+
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
@@ -49,8 +52,10 @@ export function EditProduct() {
   };
 
   useEffect(() => {
-    fetchProduct();
-    fetchDrawings();
+    catchNotFound(async () => {
+      fetchProduct();
+      fetchDrawings();
+    });
   }, []);
 
   function canUpdateProduct(): boolean {
@@ -66,6 +71,12 @@ export function EditProduct() {
     const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
     setProduct(getProductResponse.product);
     setInitialProductJson(JSON.stringify(getProductResponse.product));
+    await validation();
+  }
+
+  async function validation() {
+    await projectService.getProject(Number(projectId));
+    await productService.getProduct(Number(projectId), Number(productId));
   }
 
   async function fetchDrawings() {

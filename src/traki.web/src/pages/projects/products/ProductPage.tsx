@@ -9,13 +9,14 @@ import AddProtocolDialog from 'features/products/components/AddProtocolDialog';
 import { useRecoilState } from 'recoil';
 import { pageState } from 'state/page-state';
 import { DeleteItemDialog } from 'components/DeleteItemDialog';
-import { protocolService } from 'services';
+import { projectService, protocolService } from 'services';
 import { Defect } from 'contracts/drawing/defect/Defect';
 import { formatDate } from 'utils/dateHelpers';
 import { AuthorBar } from 'components/AuthorBar';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import WarningIcon from '@mui/icons-material/Warning';
 import { DefectStatus } from 'contracts/drawing/defect/DefectStatus';
+import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
 
 export function ProductPage() {
   const navigate = useNavigate();
@@ -43,24 +44,24 @@ export function ProductPage() {
     setOpen(false);
   };
 
+  const {catchNotFound} = useNotFoundCatcher();
+  
   useEffect(() => {
-    notFoundCatcher(fetchProduct);
+    catchNotFound(fetchProduct);
   }, []);
-
-
-  async function notFoundCatcher(func: () => Promise<void>): Promise<void> {
-    try {
-      await func();
-    } catch (err) {
-      setPageState({...page, notFound: true});
-    }
-  }
 
   async function fetchProduct() {
     const getProductResponse = await productService.getProduct(Number(projectId), Number(productId));
     setProduct(getProductResponse.product);
     const getProductProtocolsResponse = await productService.getProtocols(Number(projectId), Number(productId));
     setProtocols(getProductProtocolsResponse.protocols);
+
+    await validation();
+  }
+
+  async function validation() {
+    await projectService.getProject(Number(projectId));
+    await productService.getProduct(Number(projectId), Number(productId));
   }
 
   async function addProtocol(protocolId: number) {

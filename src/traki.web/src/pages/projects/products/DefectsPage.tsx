@@ -10,10 +10,11 @@ import { DefectStatus } from '../../../contracts/drawing/defect/DefectStatus';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
 import { Link as BreadLink } from '@mui/material';
 import { DefectDetails } from 'features/defects/components/DefectDetails';
-import { drawingService, pictureService, defectService } from 'services';
+import { drawingService, pictureService, defectService, productService, projectService } from 'services';
 import { DrawingWithImage } from 'features/products/types/DrawingWithImage';
 import { PaginatedList } from 'components/PaginatedList';
 import { useAlert } from 'hooks/useAlert';
+import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -36,13 +37,21 @@ export function DefectsPage() {
   const [tabIndex, setTabIndex] = useState(0);
   const [includeFixedDefects, setIncludeFixedDefects] = useState(false);
 
+  const {catchNotFound} = useNotFoundCatcher();
+
   useEffect(() => {
-    fetchDrawings();
+    catchNotFound(() => fetchDrawings());
   }, []);
 
   async function fetchDrawings() {
     const response = await drawingService.getDrawings(Number(productId));
     await fetchDrawingPictures(response.drawings);
+    await fetchProduct();
+  }
+
+  async function fetchProduct() {
+    await projectService.getProject(Number(projectId));
+    await productService.getProduct(Number(projectId), Number(productId));
   }
 
   async function fetchDrawingPictures(drawings: Drawing[]) {

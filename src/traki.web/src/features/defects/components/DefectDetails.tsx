@@ -201,6 +201,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       <CustomTab value={tabIndex} index={0}>
         { defect == null || selectedDefect == null ? 
           <CardContent sx={{height: 200}}>
+            <Typography>No defect selected</Typography>
           </CardContent> :
           <Box>
             <CardContent>
