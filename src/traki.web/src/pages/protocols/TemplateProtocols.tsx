@@ -57,7 +57,7 @@ export function TemplateProtocols() {
           </Grid>
           <Grid item xs={12} md={12}>
             <ProtectedComponent role='ProjectManager'>
-              <NewProtocol fetchProtocols={fetchProtocols}/>
+              <NewProtocol protocols={protocols} fetchProtocols={fetchProtocols}/>
             </ProtectedComponent>
           </Grid>
         </Stack>
