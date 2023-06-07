@@ -14,6 +14,10 @@ export const validationRules = {
   onlyLetters: {
     requirement: /^[A-Za-zĄČĘĖĮŠŲŪŽąčęėįšųūž]*$/,
     message: "Field can only contain letters"
+  },
+  password: {
+    requirement: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+    message: "Password must contain at least 8 symbols including letters and numbers"
   }
 };
 

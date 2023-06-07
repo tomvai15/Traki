@@ -11,6 +11,7 @@ import { useQuery } from 'features/auth/hooks/useQuery';
 import { ActivateAccountRequest } from 'contracts/auth/ActivateAccountRequest';
 import { userService } from 'services';
 import { User } from 'contracts/user/User';
+import { validate, validationRules } from 'utils/textValidation';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function RegisterPage() {
   }
 
   function canSubmit(): boolean {
-    return password != '' && password == confirmPassword;
+    return password != '' && password == confirmPassword && !validate(password, [validationRules.password]).invalid;
   }
 
   return (
@@ -76,11 +77,13 @@ export default function RegisterPage() {
         <Box sx={{ mt: 1 }}>
           <TextField onChange={(e) => setPassword(e.target.value)}
             value={password}
+            error={validate(password, [validationRules.password]).invalid}
+            helperText={validate(password, [validationRules.password]).message}
             margin="normal"
             required
             fullWidth
+            type="password"
             label="Password"
-            autoComplete="email"
             autoFocus
           />
           <TextField onChange={(e) => setConfirmPassword(e.target.value)}

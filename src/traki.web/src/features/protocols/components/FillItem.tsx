@@ -186,10 +186,10 @@ export function FillItem ({item, updateItem, completed, itemImage, updateItemIma
             <Box sx={{flex: 3}}>
               {checkType()}
             </Box>
-            <IconButton color="secondary" aria-label="upload picture" component="label">
+            { !completed && <IconButton color="secondary" aria-label="upload picture" component="label">
               <input hidden accept="image/*" type="file" onChange={selectFile} />
               <PhotoCamera />
-            </IconButton>
+            </IconButton>}
           </Stack>
           {displayPhoto()}
         </Stack>
