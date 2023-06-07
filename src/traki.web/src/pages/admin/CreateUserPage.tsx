@@ -11,6 +11,8 @@ import { useLocation } from 'react-router-dom';
 import InputIcon from '@mui/icons-material/Input';
 import { useRecoilState } from 'recoil';
 import { userState } from 'state/user-state';
+import { validate, validationRules } from 'utils/textValidation';
+import { useAlert } from 'hooks/useAlert';
 
 const initialUser: User = {
   id: 0,
@@ -26,11 +28,19 @@ export function CreateUserPage() {
   const location = useLocation();
   const [user, setUser] = useState<User>(initialUser);
 
+  const { displaySuccess,  displayError } = useAlert();
+
   async function createUser() {
     const request: CreateUserRequest = {
       user: {...user, role: user.role}
     };
-    await userService.createUser(request);
+
+    try {
+      await userService.createUser(request);
+      displaySuccess('User was created');
+    } catch {
+      displayError('User with same email already exists');
+    }
   }
 
   async function getCodeUrl() {
@@ -40,6 +50,16 @@ export function CreateUserPage() {
     };
     const res = await authService.getAuthorisationCodeUrl(request);
     window.location.replace(res);
+  }
+
+  function canSubmit () {
+    return user.email.length != 0 && user.name.length != 0 && user.surname.length != 0 && isValid();
+  }
+
+  function isValid () {
+    return !validate(user.email, [validationRules.email]).invalid && 
+          !validate(user.surname, [validationRules.onlyLetters]).invalid && 
+          !validate(user.name, [validationRules.onlyLetters]).invalid;
   }
 
   return (
@@ -60,6 +80,8 @@ export function CreateUserPage() {
                   sx={{width: '100%'}}
                   label='Email'
                   value={user.email}
+                  error={validate(user.email, [validationRules.email]).invalid}
+                  helperText={validate(user.email, [validationRules.email]).message}
                   onChange={(e) => setUser({...user, email: e.target.value})}/>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -67,6 +89,8 @@ export function CreateUserPage() {
                   label='Name'
                   sx={{width: '100%'}}
                   value={user.name}
+                  error={validate(user.name, [validationRules.onlyLetters]).invalid}
+                  helperText={validate(user.name, [validationRules.onlyLetters]).message}
                   onChange={(e) => setUser({...user, name: e.target.value})}/>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -74,6 +98,8 @@ export function CreateUserPage() {
                   label='Surname'
                   sx={{width: '100%'}}
                   value={user.surname}
+                  error={validate(user.surname, [validationRules.onlyLetters]).invalid}
+                  helperText={validate(user.surname, [validationRules.onlyLetters]).message}
                   onChange={(e) => setUser({...user, surname: e.target.value})}/>
               </Grid>
               <Grid item xs={12} md={12}>
@@ -96,12 +122,7 @@ export function CreateUserPage() {
                 <Divider></Divider>
               </Grid>
               <Grid item xs={12} md={12}>
-                {!userInfo.loggedInDocuSign ? 
-                  <Button onClick={getCodeUrl} variant="contained" endIcon={<InputIcon />}>
-                    Login to DocuSign
-                  </Button> :
-                  <Button onClick={createUser}>Create User</Button>
-                }
+                <Button disabled={!canSubmit()} variant='contained' onClick={createUser}>Create User</Button>
               </Grid>
             </Grid>
           </CardContent>

@@ -5,10 +5,13 @@ import { User } from 'contracts/user/User';
 import { useParams } from 'react-router-dom';
 import { UpdateUserStatusRequest } from 'contracts/user/UpdateUserStatusRequest';
 import { UserStatus } from 'contracts/user/UserStatus';
+import { useRecoilState } from 'recoil';
+import { userState } from 'state/user-state';
 
 export function UserPage() {
   const { userId } = useParams();
   const [user, setUser] = useState<User>();
+  const [userInfo, setUserInfo] = useRecoilState(userState);
 
   useEffect(()=> {
     fetchUsers();
@@ -107,12 +110,13 @@ export function UserPage() {
                     readOnly: true
                   }}/>
               </Grid>
+              { userInfo.id != user.id &&
               <Grid item xs={6} md={6}>
                 { user.status == UserStatus.active && 
                   <Button onClick={() => updateStatus(UserStatus.blocked)} color='error'>Block User</Button>}
                 { user.status == UserStatus.blocked && 
                   <Button onClick={() => updateStatus(UserStatus.active)} color='success'>Unblock User</Button>}
-              </Grid>
+              </Grid>}
             </Grid>
           </CardContent>
         </Card>
