@@ -4,9 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Image, StyleSheet, PanResponder, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import { ProductStackParamList } from '../ProductStackParamList';
-import { image } from '../test';
-import { image2 } from '../test2';
-import { image3 } from '../test3';
 import * as ImagePicker from 'expo-image-picker';
 import { DefaultTheme, List, Text, Provider as PaperProvider, Button, TextInput, Title, Portal, Dialog, IconButton, Avatar, Card, HelperText, Divider } from 'react-native-paper';
 import ImageWithViewer from '../../../components/ImageWithViewer';
@@ -31,6 +28,7 @@ import { useUpdateNotifications } from '../../../hooks/useUpdateNotifications';
 import DropDown, { DropDownPropsInterface } from 'react-native-paper-dropdown';
 import { Loading } from '../../../components/Loading';
 import { CreateDefectRequest } from '../../../contracts/drawing/defect/CreateDefectRequest';
+import { formatDate } from '../../../utils/dateHelpers';
 
 interface Rectangle {
   x: number;
@@ -136,7 +134,7 @@ export default function DefectScreen({route, navigation}: Props) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.2,
     });
 
     if (result.canceled) {
@@ -248,30 +246,31 @@ export default function DefectScreen({route, navigation}: Props) {
             <Loading loading={loadingDefect}>
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View>
-                  <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                    <CustomAvatar size={50} user={defect?.defect.author}/>
+                  <View style={{maxWidth: 200, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <CustomAvatar size={40} user={defect?.defect.author}/>
                     <Text style={{fontSize: 20, marginLeft: 5}}>{defect?.defect.author?.name} {defect?.defect.author?.surname}</Text>
+                    <Text style={{fontSize: 15, marginLeft: 30}}>{formatDate(new Date(defect?.defect.creationDate ?? "2023-06-05 23:23:40.1390601"))}</Text>
                   </View>
                   <Divider bold style={{marginTop: 10}}></Divider>
-                  <View>
-                    <Text style={{fontSize: 20, marginLeft: 5}}>{defect?.defect.title}</Text>
-                    <Text style={{fontSize: 15, marginLeft: 5, marginBottom: 10}}>{defect?.defect.description}</Text>
-                    <View style={{borderColor: 'grey', borderWidth: 1, borderRadius: 5}}>
-                      <DropDown
-                        label={'Status'}
-                        mode={'outlined'}
-                        visible={showDropDown}
-                        showDropDown={() => setShowDropDown(true)}
-                        onDismiss={() => setShowDropDown(false)}
-                        value={defect?.defect.status}
-                        setValue={updateDefectStatus}
-                        list={defectStatusList}
-                      />  
+                  <View style={{ width: 370, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
+                    <View style={{flex: 1}}>
+                      <Text style={{fontSize: 20, marginLeft: 5}}>{defect?.defect.title}</Text>
+                      <Text style={{fontSize: 15, marginLeft: 5, marginBottom: 10}}>{defect?.defect.description}</Text>
+                      <View style={{width: 200, borderColor: 'grey', borderWidth: 1, borderRadius: 5}}>
+                        <DropDown
+                          label={'Status'}
+                          mode={'outlined'}
+                          visible={showDropDown}
+                          showDropDown={() => setShowDropDown(true)}
+                          onDismiss={() => setShowDropDown(false)}
+                          value={defect?.defect.status}
+                          setValue={updateDefectStatus}
+                          list={defectStatusList}
+                        />  
+                      </View>
                     </View>
+                    { (defect && defect.imageBase64!= '') && <View style={{marginTop: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View>}
                   </View>
-                </View>
-                <View>
-                  { (defect && defect.imageBase64!= '') ? <View style={{margin: 10}}><ImageWithViewer source={defect?.imageBase64} width={60} height={100} ></ImageWithViewer></View> : <View></View>}
                 </View>
               </View>
             </Loading>

@@ -18,9 +18,10 @@ import { userState } from '../../../state/user-state';
 import { saveAs } from 'file-saver';
 import DownloadIcon from '@mui/icons-material/Download';
 import InputIcon from '@mui/icons-material/Input';
-import { sectionService } from 'services';
+import { productService, projectService, sectionService } from 'services';
 import { Section } from 'contracts/protocol';
 import { AuthorBar } from 'components/AuthorBar';
+import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
 
 type SectionWithFlag = {
   section: Section,
@@ -28,7 +29,7 @@ type SectionWithFlag = {
 }
 
 export function ProtocolReport() {
-  const { protocolId } = useParams();
+  const { projectId, productId, protocolId } = useParams();
   const location = useLocation();
 
   const [reportName, setReportName] = useState<string>('');
@@ -41,11 +42,23 @@ export function ProtocolReport() {
 
   const [sections, setSections] = useState<SectionWithFlag[]>([]);
 
+  const {catchNotFound} = useNotFoundCatcher();
+
   useEffect(() => {
-    fetchReport();
-    fetchProtocol();
-    fetchSections();
+    catchNotFound(async () => {
+      fetchReport();
+      fetchProtocol();
+      fetchSections();
+    });
+
+    catchNotFound(() => validation());
   }, []);
+
+
+  async function validation() {
+    await projectService.getProject(Number(projectId));
+    await productService.getProduct(Number(projectId), Number(productId));
+  }
 
   async function fetchReport() {
     const response = await reportService.getReport(Number(protocolId));

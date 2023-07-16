@@ -35,6 +35,13 @@ namespace Traki.Domain.Handlers
 
         public async Task CreateUser(User user)
         {
+            var userByEmail = await _usersRepository.GetUserByEmail(user.Email);
+
+            if (userByEmail != null)
+            {
+                throw new InvalidOperationException();
+            }
+
             var registerId = Guid.NewGuid().ToString();
             var tempPassword = Guid.NewGuid().ToString();
             var hashedPassword = _hasherAdapter.HashText(tempPassword);
@@ -48,9 +55,9 @@ namespace Traki.Domain.Handlers
             string link = $"{_webSettings.Url}/auth/register?code={tempPassword}&acc={registerId}";
             await _emailService.SendEmail(user.Email, "Activate account", $"Activate account via link: {link}");
 
-            string accessToken = await _accessTokenProvider.GetAccessToken();
-            var userInfo = await _docuSignService.GetUserInformation(accessToken);
-            await _docuSignService.CreateUser(userInfo, accessToken, user.Name, user.Surname, user.Email);
+            //string accessToken = await _accessTokenProvider.GetAccessToken();
+            //var userInfo = await _docuSignService.GetUserInformation(accessToken);
+           // await _docuSignService.CreateUser(userInfo, accessToken, user.Name, user.Surname, user.Email);
         }
     }
 }

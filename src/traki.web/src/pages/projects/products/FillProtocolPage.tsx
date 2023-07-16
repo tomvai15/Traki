@@ -8,6 +8,8 @@ import sectionService from '../../../services/section-service';
 import { FillSection } from 'features/protocols/components';
 import { UpdateProtocolRequest } from 'contracts/protocol/UpdateProtocolRequest';
 import { Link as BreadLink } from '@mui/material';
+import { productService, projectService } from 'services';
+import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
 
 const initialProtocol: Protocol = {
   id: 1,
@@ -38,9 +40,11 @@ export function FillProtocolPage() {
     await protocolService.updateProtocol(Number(protocolId), request);
     return;
   }
+  
+  const {catchNotFound} = useNotFoundCatcher();
 
   useEffect(() => {
-    fetchProtocol();
+    catchNotFound(() => fetchProtocol());
   }, []);
 
   async function fetchProtocol() {
@@ -48,6 +52,12 @@ export function FillProtocolPage() {
     const getSectionsResponse = await sectionService.getSections(Number(protocolId));
     setProtocol(getProtocolsResponse.protocol);
     orderAndSetSections(getSectionsResponse.sections);
+    await validation();
+  }
+
+  async function validation() {
+    await projectService.getProject(Number(projectId));
+    await productService.getProduct(Number(projectId), Number(productId));
   }
 
   function orderAndSetSections(sectionsToSort: Section[]) {
@@ -73,7 +83,6 @@ export function FillProtocolPage() {
       <Grid item xs={12} md={12} >
         <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography variant='h5'>{protocol.name}</Typography>
-          {!protocol.isCompleted && <Button onClick={() => setOpen(true)} variant='contained'>Complete</Button>}
         </Stack>
       </Grid>
       {sections.map((section, index) => 

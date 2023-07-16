@@ -20,7 +20,8 @@ const items: Item[] = [{
   priority: 1, 
   question: undefined, 
   multipleChoice: undefined, 
-  textInput: undefined
+  textInput: undefined,
+  itemImage: undefined
 }];
 
 const checklist: Checklist = {

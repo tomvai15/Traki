@@ -50,7 +50,8 @@ namespace Traki.Domain.Handlers
             string envelopeId = protocol.EnvelopeId;
             var result = await _docuSignService.GetPdfDocument(userInfo, envelopeId, accessToken);
 
-            protocol.IsSigned = true; ;
+            protocol.IsSigned = true;
+            protocol.IsCompleted = true;
             var updateProtocolTask = _protocolRepository.UpdateProtocol(protocol);
             var addFileTask = _storageService.AddFile("company", protocol.ReportName, "application/pdf", result);
 

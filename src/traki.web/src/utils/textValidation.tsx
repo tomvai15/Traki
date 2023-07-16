@@ -6,6 +6,18 @@ export const validationRules = {
   noSpecialSymbols: {
     requirement: /^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ0-9\s.,:;?!%()_&+={}[\]|\\/~$^+-]*$/,
     message: "Specials symbols are not allowed"
+  },
+  email: {
+    requirement: /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/,
+    message: "Field must be valid email"
+  },
+  onlyLetters: {
+    requirement: /^[A-Za-zĄČĘĖĮŠŲŪŽąčęėįšųūž]*$/,
+    message: "Field can only contain letters"
+  },
+  password: {
+    requirement: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+    message: "Password must contain at least 8 symbols including letters and numbers"
   }
 };
 

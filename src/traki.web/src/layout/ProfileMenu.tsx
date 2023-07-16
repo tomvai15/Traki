@@ -23,8 +23,12 @@ export default function ProfileMenu() {
   };
 
   async function logOut() {
-    await authService.logout();
-    setUserInfo({id:-1, loggedInDocuSign: false});
+    try {
+      await authService.logout();
+      setUserInfo({id:-1, loggedInDocuSign: false});
+    } catch {
+      setUserInfo({id:-1, loggedInDocuSign: false});
+    }
     navigate('/login');
   }
 

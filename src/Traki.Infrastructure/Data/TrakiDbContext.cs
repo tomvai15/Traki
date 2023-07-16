@@ -84,17 +84,17 @@ namespace Traki.Infrastructure.Data
             modelBuilder.Entity<DefectEntity>()
                 .HasMany(p => p.DefectComments)
                 .WithOne(p => p.Defect)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DefectEntity>()
                 .HasMany(p => p.StatusChanges)
                 .WithOne(p => p.Defect)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DefectEntity>()
                 .HasMany(p => p.DefectNotifications)
                 .WithOne(p => p.Defect)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserEntity>()
                 .HasMany(p => p.Defects)

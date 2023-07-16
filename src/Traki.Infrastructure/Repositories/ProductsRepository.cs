@@ -37,6 +37,11 @@ namespace Traki.Infrastructure.Repositories
 
             productEntity.RequiresToBeNotNullEnity();
 
+            var products = await _context.Products.Where(p => p.Id == productId).Include(x => x.Protocols).ToListAsync();
+
+            var protocols = products.SelectMany(x => x.Protocols).ToList();
+            _context.RemoveRange(protocols);
+
             _context.Products.Remove(productEntity);
             await _context.SaveChangesAsync();
         }

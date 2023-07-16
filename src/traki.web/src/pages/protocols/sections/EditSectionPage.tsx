@@ -15,6 +15,8 @@ import { validate, validationRules } from 'utils/textValidation';
 import { ProtectedComponent } from 'components/ProtectedComponent';
 import { useAlert } from 'hooks/useAlert';
 import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
+import { useRecoilState } from 'recoil';
+import { userState } from 'state/user-state';
 
 const initialSection: Section = {
   id: 1,
@@ -29,6 +31,8 @@ export function EditSectionPage() {
   const {catchNotFound} = useNotFoundCatcher();
   const navigate = useNavigate();
   const { displaySuccess  } = useAlert();
+
+  const [userInfo] = useRecoilState(userState);
 
   const { protocolId, sectionId } = useParams();
   const [section, setSection] = useState<Section>(initialSection);
@@ -174,6 +178,7 @@ export function EditSectionPage() {
                 label="Section Name"
                 variant="standard"
                 value={section?.name}
+                disabled={userInfo.role!='ProjectManager'}
                 onChange={(e) => updateSectionName(e.target.value)}
               />
               <Box>

@@ -25,6 +25,8 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
 
   const [isLoading, setLoading] = React.useState(false);
 
+  const [isSaving, setIsSaving] = React.useState(false);
+
   const [section, setSection] = useState<Section>(initialSection);
   const [initialSectionJson, setInitialSectionJson] = useState<string>('');
   const [itemImages, setItemImages] = useState<ItemImage[]>([]);
@@ -121,6 +123,8 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
   }
 
   async function updateSection() {
+
+    setIsSaving(true);
     const request: UpdateSectionAnswersRequest = {
       section: {...section, table: table}, 
     };
@@ -129,20 +133,27 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
     setInitialTableJson(JSON.stringify(table));
 
     await updateItemImages();
+    setIsSaving(false);
   }
 
   async function updateItemImages() {
     const formData = new FormData();
 
+    let count = 0;
     /* eslint-disable */
     itemImages.forEach((item) => {
       if (item.isLocal) {
+        count = 1;
         const filename = item.localImageUri.split('/').pop() ?? '';
         const match = /\.(\w+)$/.exec(filename);
         const type = match ? `image/${match[1]}` : 'image';
         formData.append('photo', JSON.parse(JSON.stringify({ uri: item.localImageUri, name: item.imageName, type })));
       }
     });
+
+    if (count == 0) {
+      return;
+    }
     /* eslint-disable */
 
     await pictureService.uploadPicturesFormData('item', formData);
@@ -201,9 +212,12 @@ export function ProtocolSection({ protocolId, sectionId, setSelectedImage }: Pro
       <View style={{marginBottom: 30}}>
         <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Title style={{fontSize: 15, width: '70%'}}>{section.name}</Title>
-          <Button disabled={!canUpdate()} onPress={updateSection} mode='contained'>
-            Save
-          </Button>
+          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Button disabled={!canUpdate()} onPress={updateSection} mode='contained'>
+              Save
+            </Button>
+            <ActivityIndicator animating={isSaving}/>
+          </View>
         </View>      
         { table == undefined ?  
           <FlatList data={section.checklist?.items} 

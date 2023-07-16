@@ -20,6 +20,7 @@ import { userState } from 'state/user-state';
 import { validate, validationRules } from 'utils/textValidation';
 import { DefectStatus } from 'contracts/drawing/defect/DefectStatus';
 import DisabledComponent from 'components/DisabledComponent';
+import { formatDate } from 'utils/dateHelpers';
 
 function a11yProps(index: number) {
   return {
@@ -200,6 +201,7 @@ export function DefectDetails ({selectedDefect, onSelectInformation, onSelectNew
       <CustomTab value={tabIndex} index={0}>
         { defect == null || selectedDefect == null ? 
           <CardContent sx={{height: 200}}>
+            <Typography>No defect selected</Typography>
           </CardContent> :
           <Box>
             <CardContent>
