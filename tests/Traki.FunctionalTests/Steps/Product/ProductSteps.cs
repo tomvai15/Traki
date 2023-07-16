@@ -2,43 +2,34 @@
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 using Traki.FunctionalTests.Data;
-using Traki.FunctionalTests.Hooks;
+using Traki.FunctionalTests.Extensions;
 
 namespace Traki.FunctionalTests.Steps.Product
 {
     [Binding]
     public class ProductSteps
     {
-        private IWebDriver driver;
-        private static Dictionary<string, string> testingData = new Dictionary<string, string>();
+        private readonly ScenarioContext _scenarioContext;
+        private readonly IWebDriver _driver;
 
-        public ProductSteps(IWebDriver webDriver)
+        public ProductSteps(ScenarioContext scenarioContext)
         {
-            driver = webDriver;
+            _scenarioContext = scenarioContext;
+            _driver = _scenarioContext.GetRequiredService<IWebDriver>();
         }
 
         [Given(@"I have logged in as product manager")]
         public void GivenNotEnoughProductsInStock()
         {
-            driver.Navigate().GoToUrl($"{ConfigurationAccessor.WebUrl}/login");
-            driver.FindElement(By.Id("email")).Click();
-            driver.FindElement(By.Id("email")).Clear();
-            driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProductManagerEmail);
-            driver.FindElement(By.Id("password")).Click();
-            driver.FindElement(By.Id("password")).Clear();
-            driver.FindElement(By.Id("password")).SendKeys(ExampleData.ProductManagerPassword);
-            driver.FindElement(By.Id("submit")).Click();
-            for (int second = 0; ; second++)
-            {
-                if (second >= 60) Assert.Fail("timeout");
-                try
-                {
-                    if (IsElementPresent(By.XPath("//div[@id='root']/div/div/div/nav/div[2]"))) break;
-                }
-                catch (Exception)
-                { }
-                Thread.Sleep(1000);
-            }
+            _driver.Navigate().GoToUrl($"{Configuration.WebUrl}/login");
+            _driver.FindElement(By.Id("email")).Click();
+            _driver.FindElement(By.Id("email")).Clear();
+            _driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProductManagerEmail);
+            _driver.FindElement(By.Id("password")).Click();
+            _driver.FindElement(By.Id("password")).Clear();
+            _driver.FindElement(By.Id("password")).SendKeys(ExampleData.ProductManagerPassword);
+            _driver.FindElement(By.Id("submit")).Click();
+            _driver.ElementShouldBePresent(By.XPath("//div[@id='root']/div/div/div/nav/div[2]"));
         }
 
         [Given(@"I have opened product page")]
@@ -60,72 +51,72 @@ namespace Traki.FunctionalTests.Steps.Product
         [When(@"I press on product item")]
         public void WhenIPresOnProduct()
         {
-            driver.ElementShouldBePresent(By.Id("1-products-0"));
-            string productName = driver.FindElement(By.Id("1-products-0")).Text;
-            testingData.Add("productName", productName);
-            driver.FindElement(By.Id("1-products-0")).Click();
-            driver.ElementShouldBePresent(By.Id("product-name"));
+            _driver.ElementShouldBePresent(By.Id("1-products-0"));
+            string productName = _driver.FindElement(By.Id("1-products-0")).Text;
+            _scenarioContext.Add("productName", productName);
+            _driver.FindElement(By.Id("1-products-0")).Click();
+            _driver.ElementShouldBePresent(By.Id("product-name"));
         }
 
         [When(@"I open edit product page")]
         public void WhenIOpenEditProductPage()
         {
-            driver.ElementShouldBePresent(By.Id("edit-product"));
-            driver.FindElement(By.Id("edit-product")).Click();
-            driver.ElementShouldBePresent(By.Id("product-name"));
+            _driver.ElementShouldBePresent(By.Id("edit-product"));
+            _driver.FindElement(By.Id("edit-product")).Click();
+            _driver.ElementShouldBePresent(By.Id("product-name"));
         }
 
         [When(@"update product name")]
         public void WhenIUpdatefields()
         {
             string productName = Any<string>();
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            testingData.Add("newProductName", productName);
-            driver.WriteNewText(By.Id("product-name"), productName);
-            driver.ElementShouldBePresent(By.Id("update-product"));
-            driver.FindElement(By.Id("update-product")).Click();
-            driver.FindElement(By.Id("product-link")).Click();
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _scenarioContext.Add("newProductName", productName);
+            _driver.WriteNewText(By.Id("product-name"), productName);
+            _driver.ElementShouldBePresent(By.Id("update-product"));
+            _driver.FindElement(By.Id("update-product")).Click();
+            _driver.FindElement(By.Id("product-link")).Click();
         }
 
         [When(@"update product name with invalid characters")]
         public void WhenIUpdatefieldsWithInvalidCharacter()
         {
             string productName = Any<string>();
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            testingData.Add("newProductName", productName);
-            driver.WriteNewText(By.Id("product-name"), "!@#$@$%#&*&#*");
-            driver.ElementShouldBePresent(By.Id("update-product"));
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _scenarioContext.Add("newProductName", productName);
+            _driver.WriteNewText(By.Id("product-name"), "!@#$@$%#&*&#*");
+            _driver.ElementShouldBePresent(By.Id("update-product"));
         }
 
 
         [When(@"I open create product page")]
         public void WhenIOpenCreateProductPage()
         {
-            driver.ElementShouldBePresent(By.Id("add-product"));
-            driver.FindElement(By.Id("add-product")).Click();
-            driver.ElementShouldBePresent(By.Id("product-name"));
+            _driver.ElementShouldBePresent(By.Id("add-product"));
+            _driver.FindElement(By.Id("add-product")).Click();
+            _driver.ElementShouldBePresent(By.Id("product-name"));
         }
 
         [When(@"I add product name")]
         public void WhenIAddProductName()
         {
             string productName = Any<string>();
-            testingData.Add("newProductName", productName);
+            _scenarioContext.Add("newProductName", productName);
 
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            driver.WriteNewText(By.Id("product-name"), productName);
-            driver.FindElement(By.Id("create-product")).Click();
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _driver.WriteNewText(By.Id("product-name"), productName);
+            _driver.FindElement(By.Id("create-product")).Click();
             Thread.Sleep(1000);
         }
 
         [When(@"press delete button and confirm deletion")]
         public void DeleteProduct()
         {
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            driver.FindElement(By.Id("delete-product")).Click();
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _driver.FindElement(By.Id("delete-product")).Click();
             Thread.Sleep(1000);
-            driver.ElementShouldBePresent(By.Id("confirm"));
-            driver.FindElement(By.Id("confirm")).Click();
+            _driver.ElementShouldBePresent(By.Id("confirm"));
+            _driver.FindElement(By.Id("confirm")).Click();
             Thread.Sleep(1000);
         }
 
@@ -133,79 +124,79 @@ namespace Traki.FunctionalTests.Steps.Product
         [When(@"I open protocol import window")]
         public void IOpenImportProtocolWindow()
         {
-            driver.ElementShouldBePresent(By.Id("add-protocol"));
-            driver.FindElement(By.Id("add-protocol")).Click();
+            _driver.ElementShouldBePresent(By.Id("add-protocol"));
+            _driver.FindElement(By.Id("add-protocol")).Click();
         }
 
         [When(@"select protocol from the list")]
         public void SelectProtocolFromList()
         {
-            driver.ElementShouldBePresent(By.Id("protocol-item"));
-            driver.FindElement(By.Id("protocol-item")).Click();
+            _driver.ElementShouldBePresent(By.Id("protocol-item"));
+            _driver.FindElement(By.Id("protocol-item")).Click();
         }
 
         [When(@"I open fill protocol page")]
         public void OpenFillProtocolPage()
         {
-            driver.ElementShouldBePresent(By.Id("fill-protocol"));
-            driver.FindElement(By.Id("fill-protocol")).Click();
+            _driver.ElementShouldBePresent(By.Id("fill-protocol"));
+            _driver.FindElement(By.Id("fill-protocol")).Click();
         }
 
         [When(@"fill section and save changes")]
         public void FillSectionAndSave()
         {
             string randomText = Any<string>();
-            testingData.Add("randomText", randomText);
+            _scenarioContext.Add("randomText", randomText);
 
-            driver.ElementShouldBePresent(By.Id("question-comment"));
-            driver.WriteNewText(By.Id("question-comment"), randomText);
-            driver.ElementShouldBePresent(By.Id("save-section"));
-            driver.FindElement(By.Id("save-section")).Click();
+            _driver.ElementShouldBePresent(By.Id("question-comment"));
+            _driver.WriteNewText(By.Id("question-comment"), randomText);
+            _driver.ElementShouldBePresent(By.Id("save-section"));
+            _driver.FindElement(By.Id("save-section")).Click();
             Thread.Sleep(1000);
         }
 
         [Then(@"section should be updated")]
         public void SectionShouldBeUpdated()
         {
-            driver.Navigate().Refresh();
-            driver.ElementShouldBePresent(By.Id("question-comment"));
-            driver.FindElement(By.Id("question-comment")).Text.Should().BeEquivalentTo(testingData["randomText"]);
+            _driver.Navigate().Refresh();
+            _driver.ElementShouldBePresent(By.Id("question-comment"));
+            _driver.FindElement(By.Id("question-comment")).Text.Should().BeEquivalentTo(_scenarioContext.Get<string>("randomText"));
         }
 
 
         [Then(@"protocol should be added for product")]
         public void ProtocolIsAdded()
         {
-            driver.ElementShouldBePresent(By.Id("product-protocol"));
+            _driver.ElementShouldBePresent(By.Id("product-protocol"));
         }
 
         [Then(@"product is deleted")]
         public void ProductIsDeleted()
         {
-            var productUrl = testingData["newProductUrl"];
-            driver.Navigate().GoToUrl(productUrl);
-            driver.ElementShouldBePresent(By.Id("not-found"));
+            var productUrl = _scenarioContext.Get<string>("newProductUrl");
+            _driver.Navigate().GoToUrl(productUrl);
+            _driver.ElementShouldBePresent(By.Id("not-found"));
         }
 
         [Then(@"product is created")]
         public void ProductIsCreated()
         {
-            testingData.Add("newProductUrl", driver.Url);
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            testingData["newProductName"].Should().BeEquivalentTo(driver.FindElement(By.Id("product-name")).Text);
+            _scenarioContext.Add("newProductUrl", _driver.Url);
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _scenarioContext.Get<string>("newProductName").Should().BeEquivalentTo(_driver.FindElement(By.Id("product-name")).Text);
         }
 
         [Then(@"product name should be updated")]
         public void ProductNameShouldBeUpdated()
         {
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            testingData["newProductName"].Should().BeEquivalentTo(driver.FindElement(By.Id("product-name")).Text);
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _scenarioContext.Get<string>("newProductName").Should().BeEquivalentTo(_driver.FindElement(By.Id("product-name")).Text);
         }
 
         [Then(@"I should not be allowed to update product")]
         public void IShouldNotBeAllowedToUpdateField()
         {
-            driver.FindElement(By.Id("product-name-helper-text")).Text.Should().StartWith("Special");
+            _driver.FindElement(By.Id("product-name-helper-text")).Text.Should().StartWith("Special");
             var button = FindUpdateButton();
             button.Enabled.Should().BeFalse();
         }
@@ -213,31 +204,13 @@ namespace Traki.FunctionalTests.Steps.Product
         [Then(@"I should be navigated to product page")]
         public void ThenProductNameShouldBePresent()
         {
-            driver.ElementShouldBePresent(By.Id("product-name"));
-            testingData["productName"].Should().BeEquivalentTo(driver.FindElement(By.Id("product-name")).Text);
+            _driver.ElementShouldBePresent(By.Id("product-name"));
+            _scenarioContext.Get<string>("productName").Should().BeEquivalentTo(_driver.FindElement(By.Id("product-name")).Text);
         }
 
         private IWebElement FindUpdateButton()
         {
-            return driver.FindElement(By.Id("update-product"));
-        }
-
-        private IWebElement FindCreateButton()
-        {
-            return driver.FindElement(By.Id("create-button"));
-        }
-
-        private bool IsElementPresent(By by)
-        {
-            try
-            {
-                driver.FindElement(by);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            return _driver.FindElement(By.Id("update-product"));
         }
     }
 }

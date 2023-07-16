@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using TechTalk.SpecFlow;
+using Traki.FunctionalTests.Extensions;
 
 namespace Traki.FunctionalTests.Steps.Defect
 {
@@ -10,38 +11,41 @@ namespace Traki.FunctionalTests.Steps.Defect
         [Binding]
         public class ProjectSteps
         {
-            private IWebDriver driver;
-            private static Dictionary<string, string> testingData = new Dictionary<string, string>();
+            private const string TitleKey = "Title";
 
-            public ProjectSteps(IWebDriver webDriver)
+            private readonly ScenarioContext _scenarioContext;
+            private readonly IWebDriver _driver;
+
+            public ProjectSteps(ScenarioContext scenarioContext)
             {
-                driver = webDriver;
+                _scenarioContext = scenarioContext;
+                _driver = _scenarioContext.GetRequiredService<IWebDriver>();
             }
 
             [Given(@"I have opened defects page")]
             [When(@"I open defects page")]
             public void WhenIOpenCreateProductPage()
             {
-                driver.ElementShouldBePresent(By.Id("defect-details"));
-                driver.FindElement(By.Id("defect-details")).Click();
-                driver.ElementShouldBePresent(By.Id("defect-title"));
+                _driver.ElementShouldBePresent(By.Id("defect-details"));
+                _driver.FindElement(By.Id("defect-details")).Click();
+                _driver.ElementShouldBePresent(By.Id("defect-title"));
             }
 
             [When(@"I select new defect tab")]
             public void WhenSelectNewDefectTab()
             {
-                driver.ElementShouldBePresent(By.Id("tab-1"));
-                driver.FindElement(By.Id("tab-1")).Click();
+                _driver.ElementShouldBePresent(By.Id("tab-1"));
+                _driver.FindElement(By.Id("tab-1")).Click();
             }
 
             [When(@"I select region")]
             public void WhenSelectRegion()
             {
-                driver.ElementShouldBePresent(By.Id("drawing"));
-                var drawing = driver.FindElement(By.Id("drawing"));
+                _driver.ElementShouldBePresent(By.Id("drawing"));
+                var drawing = _driver.FindElement(By.Id("drawing"));
 
                 // Create an instance of the Actions class
-                Actions actions = new Actions(driver);
+                Actions actions = new Actions(_driver);
 
                 // Click and hold the element
                 actions.ClickAndHold(drawing);
@@ -62,14 +66,14 @@ namespace Traki.FunctionalTests.Steps.Defect
                 string title = Any<string>().Substring(0, 10);
                 string description = Any<string>();
 
-                testingData.Add("title", title);
-                testingData.Add("description", description);
+                _scenarioContext.Add("title", title);
+                _scenarioContext.Add("description", description);
 
-                driver.ElementShouldBePresent(By.Id("new-defect-title"));
-                driver.ElementShouldBePresent(By.Id("new-defect-description"));
-                driver.WriteNewText(By.Id("new-defect-title"), title);
-                driver.WriteNewText(By.Id("new-defect-description"), description);
-                driver.FindElement(By.Id("create-defect")).Click();
+                _driver.ElementShouldBePresent(By.Id("new-defect-title"));
+                _driver.ElementShouldBePresent(By.Id("new-defect-description"));
+                _driver.WriteNewText(By.Id("new-defect-title"), title);
+                _driver.WriteNewText(By.Id("new-defect-description"), description);
+                _driver.FindElement(By.Id("create-defect")).Click();
             }
 
 
@@ -77,44 +81,44 @@ namespace Traki.FunctionalTests.Steps.Defect
             public void WhenIWriteAComment()
             {
                 string comment = Any<string>().Substring(0, 10);
-                testingData.Add("comment", comment);
+                _scenarioContext.Add("comment", comment);
 
-                driver.ElementShouldBePresent(By.Id("comment-field"));
-                driver.WriteNewText(By.Id("comment-field"), comment);
-                driver.FindElement(By.Id("submit-comment")).Click();
+                _driver.ElementShouldBePresent(By.Id("comment-field"));
+                _driver.WriteNewText(By.Id("comment-field"), comment);
+                _driver.FindElement(By.Id("submit-comment")).Click();
                 Thread.Sleep(2000);
             }
 
             [When(@"I change defect status")]
             public void WhenIChangeDefectStatus()
             {
-                driver.ElementShouldBePresent(By.Id("defect-status"));
-                driver.FindElement(By.Id("defect-status")).Click();
-                driver.ElementShouldBePresent(By.Id("fixed"));
-                driver.FindElement(By.Id("fixed")).Click();
+                _driver.ElementShouldBePresent(By.Id("defect-status"));
+                _driver.FindElement(By.Id("defect-status")).Click();
+                _driver.ElementShouldBePresent(By.Id("fixed"));
+                _driver.FindElement(By.Id("fixed")).Click();
                 Thread.Sleep(2000);
             }
 
             [Then(@"defect status change activity is displayed")]
             public void DefectStatusChangeIsDisplayed()
             {
-                driver.ElementShouldBePresent(By.Id("activity-status-field-to"));
-                driver.FindElement(By.Id("defect-status")).Text.Should().BeEquivalentTo("Fixed");
+                _driver.ElementShouldBePresent(By.Id("activity-status-field-to"));
+                _driver.FindElement(By.Id("defect-status")).Text.Should().BeEquivalentTo("Fixed");
             }
 
             [Then(@"defects information is displayed")]
             public void DefectsInformationIsDisplayed()
             {
-                driver.ElementShouldBePresent(By.Id("defect-title"));
-                driver.FindElement(By.Id("defect-title")).Text.Should().BeEquivalentTo(testingData["title"]);
-                driver.FindElement(By.Id("defect-description")).Text.Should().BeEquivalentTo(testingData["description"]);
+                _driver.ElementShouldBePresent(By.Id("defect-title"));
+                _driver.FindElement(By.Id("defect-title")).Text.Should().BeEquivalentTo(_scenarioContext.Get<string>("title"));
+                _driver.FindElement(By.Id("defect-description")).Text.Should().BeEquivalentTo(_scenarioContext.Get<string>("description"));
             }
 
             [Then(@"new comment should be displayed")]
             public void NewCommentShouldBeCreated()
             {
-                var comments = driver.FindElements(By.Id("activity-comment-field")).Select(x=> x.Text);
-                comments.Should().Contain(testingData["comment"]);
+                var comments = _driver.FindElements(By.Id("activity-comment-field")).Select(x=> x.Text);
+                comments.Should().Contain(_scenarioContext.Get<string>("comment"));
             }
         }
     }

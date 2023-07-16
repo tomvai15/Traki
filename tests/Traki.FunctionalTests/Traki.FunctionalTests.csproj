@@ -51,6 +51,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Traki.Api\Traki.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Features\Defect\CreateDefect.feature.cs">
       <DependentUpon>CreateDefect.feature</DependentUpon>
     </Compile>

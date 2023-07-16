@@ -8,14 +8,17 @@ namespace Traki.FunctionalTests.Utils
 {
     public static class CustomDriver
     {
-        public static IWebDriver BuildDriver()
+        public static IWebDriver BuildDriver(bool launchBrowser)
         {
             var path = DownloadDriverMatchingCurrentMachineBrowser();
 
 
             ChromeOptions options = new ChromeOptions();
             options.AddArguments("--ignore-certificate-errors");
-            options.AddArguments("headless");
+            if (launchBrowser)
+            {
+                options.AddArguments("headless");
+            }
 
 
             var driver =  new ChromeDriver(Path.GetDirectoryName(path), options);
