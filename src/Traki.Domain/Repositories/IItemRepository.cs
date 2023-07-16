@@ -1,4 +1,4 @@
-﻿using Traki.Domain.Models.Section.Items;
+﻿using Traki.Domain.Models.Items;
 
 namespace Traki.Domain.Repositories
 {

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
-using Traki.Domain.Models.Section;
-using Traki.Domain.Models.Section.Items;
+using Traki.Domain.Models.Items;
 using Traki.Infrastructure.Entities;
 using Traki.Infrastructure.Entities.Drawing;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Entities.Section.Items;
-using Question = Traki.Domain.Models.Section.Items.Question;
+using Question = Traki.Domain.Models.Items.Question;
 
 namespace Traki.Api.Mapping
 {

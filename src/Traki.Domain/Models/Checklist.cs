@@ -1,6 +1,6 @@
-﻿using Traki.Domain.Models.Section.Items;
+﻿using Traki.Domain.Models.Items;
 
-namespace Traki.Domain.Models.Section
+namespace Traki.Domain.Models
 {
     public class Checklist
     {

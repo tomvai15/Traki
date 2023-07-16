@@ -2,9 +2,9 @@
 using Traki.Domain.Models.Drawing;
 using Traki.Infrastructure.Entities.Section.Items;
 using Traki.Infrastructure.Entities;
-using Traki.Domain.Models.Section;
 using Traki.Domain.Models.Section.Items;
 using Traki.Domain.Models;
+using Traki.Domain.Models.Items;
 
 namespace Traki.UnitTests.Helpers
 {

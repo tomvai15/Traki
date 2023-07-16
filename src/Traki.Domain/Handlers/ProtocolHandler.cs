@@ -1,8 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Traki.Domain.Extensions;
 using Traki.Domain.Models;
-using Traki.Domain.Models.Section;
-using Traki.Domain.Models.Section.Items;
+using Traki.Domain.Models.Items;
 using Traki.Domain.Providers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;

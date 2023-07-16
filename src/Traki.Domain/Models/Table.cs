@@ -1,4 +1,4 @@
-﻿namespace Traki.Domain.Models.Section
+﻿namespace Traki.Domain.Models
 {
     public class Table
     {

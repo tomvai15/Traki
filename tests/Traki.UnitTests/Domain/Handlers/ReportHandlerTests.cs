@@ -3,7 +3,6 @@ using Moq;
 using System.Text;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
-using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services.BlobStorage;
 using Traki.Domain.Services.FileStorage;

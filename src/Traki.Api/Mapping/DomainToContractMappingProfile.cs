@@ -12,9 +12,8 @@ using Traki.Api.Contracts.Template;
 using Traki.Api.Contracts.User;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
-using Traki.Domain.Models.Section;
-using Traki.Domain.Models.Section.Items;
-using Question = Traki.Domain.Models.Section.Items.Question;
+using Traki.Domain.Models.Items;
+using Question = Traki.Domain.Models.Items.Question;
 
 namespace Traki.Api.Mapping
 {

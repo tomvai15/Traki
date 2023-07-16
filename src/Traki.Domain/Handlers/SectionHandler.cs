@@ -1,6 +1,6 @@
 ﻿using Traki.Domain.Extensions;
-using Traki.Domain.Models.Section;
-using Traki.Domain.Models.Section.Items;
+using Traki.Domain.Models;
+using Traki.Domain.Models.Items;
 using Traki.Domain.Repositories;
 
 namespace Traki.Domain.Handlers

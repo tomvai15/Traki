@@ -13,5 +13,7 @@
         public string? EnvelopeId { get; set; }
         public bool IsTemplate { get; set; }
         public int? ProductId { get; set; }
+
+        public List<Section> Sections { get; set; }
     }
 }

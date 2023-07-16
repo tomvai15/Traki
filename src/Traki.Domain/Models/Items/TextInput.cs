@@ -1,4 +1,4 @@
-﻿namespace Traki.Domain.Models.Section.Items
+﻿namespace Traki.Domain.Models.Items
 {
     public class TextInput
     {

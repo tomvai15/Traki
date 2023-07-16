@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using Traki.Domain.Handlers;
-using Traki.Domain.Models.Section;
+using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 using Traki.UnitTests.Helpers;
 
@@ -57,7 +57,7 @@ namespace Traki.UnitTests.Domain.Handlers
 
             await _sectionHandler.UpdateSections(MockData.Sections.ToList());
 
-            _sectionRepository.Verify(x => x.UpdateSection(It.IsAny<Traki.Domain.Models.Section.Section>()), Times.Exactly(count));
+            _sectionRepository.Verify(x => x.UpdateSection(It.IsAny<Traki.Domain.Models.Section>()), Times.Exactly(count));
         }
 
         [Fact]

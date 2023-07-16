@@ -1,4 +1,6 @@
-﻿namespace Traki.Domain.Models.Section
+﻿using Traki.Domain.Models.Section;
+
+namespace Traki.Domain.Models
 {
     public class RowColumn
     {

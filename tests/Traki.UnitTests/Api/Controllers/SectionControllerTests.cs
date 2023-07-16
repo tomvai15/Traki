@@ -6,7 +6,7 @@ using Traki.Api.Contracts.Section;
 using Traki.Api.Controllers;
 using Traki.Api.Mapping;
 using Traki.Domain.Handlers;
-using Traki.Domain.Models.Section;
+using Traki.Domain.Models;
 using Traki.UnitTests.Helpers;
 
 namespace Traki.UnitTests.Api.Controllers

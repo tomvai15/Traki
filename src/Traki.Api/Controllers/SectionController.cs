@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Section;
 using Traki.Domain.Handlers;
-using Traki.Domain.Models.Section;
+using Traki.Domain.Models;
 
 namespace Traki.Api.Controllers
 {

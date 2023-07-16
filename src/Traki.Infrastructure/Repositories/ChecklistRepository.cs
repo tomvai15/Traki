@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
-using Traki.Domain.Models.Section;
 using Traki.Infrastructure.Entities.Section;
+using Traki.Domain.Models;
 
 namespace Traki.Infrastructure.Repositories
 {

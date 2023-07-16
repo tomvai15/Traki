@@ -2,7 +2,6 @@
 using Moq;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
-using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 
 namespace Traki.UnitTests.Domain.Handlers

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Protocol;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
-using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 
 namespace Traki.Api.Controllers
