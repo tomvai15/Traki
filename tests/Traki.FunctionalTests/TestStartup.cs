@@ -13,7 +13,7 @@ namespace Traki.FunctionalTests
     public class TestStartup
     {
         [BeforeTestRun]
-        public void ConfigureServices()
+        public static void ConfigureServices()
         {
             var configuration = Accessor.Configuration;
             var services = Accessor.ServiceCollection;

@@ -21,7 +21,8 @@ namespace Traki.FunctionalTests.Steps.Login
         [Given(@"I have navigated to login page")]
         public void IHaveNavigatedToLoginPage()
         {
-            _driver.Navigate().GoToUrl($"{Configuration.WebUrl}/login");
+            var a = $"{Configuration.WebUrl()}/login";
+            _driver.Navigate().GoToUrl(a);
         }
 
         [When(@"I enter wrong credentials")]

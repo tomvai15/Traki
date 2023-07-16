@@ -21,7 +21,7 @@ namespace Traki.FunctionalTests.Steps.Project
         [Given(@"I have logged in as project manager")]
         public void GivenNotEnoughProductsInStock()
         {
-            _driver.Navigate().GoToUrl($"{Configuration.WebUrl}/login");
+            _driver.Navigate().GoToUrl($"{Configuration.WebUrl()}/login");
             _driver.FindElement(By.Id("email")).Click();
             _driver.FindElement(By.Id("email")).Clear();
             _driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProjectManagerEmail);
@@ -56,7 +56,7 @@ namespace Traki.FunctionalTests.Steps.Project
         [When(@"I open edit project page")]
         public void Given_IHaveOpenedEditProjectPage()
         {
-            _driver.Navigate().GoToUrl($"{Configuration.WebUrl}/projects");
+            _driver.Navigate().GoToUrl($"{Configuration.WebUrl()}/projects");
             _driver.ElementShouldBePresent(By.Id("0-edit-project"));
 
             _driver.FindElement(By.Id("0-edit-project")).Click();

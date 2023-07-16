@@ -10,6 +10,14 @@ namespace Traki.FunctionalTests.Extensions
             return launchBrowser;
         }
 
-        public static string WebUrl(this IConfiguration configuration) => configuration.GetSection("WebSettings:Url").Value;      
+        public static string WebUrl(this IConfiguration configuration) => VerifyUrl(configuration);
+
+        private static string VerifyUrl(IConfiguration configuration)
+        {
+            var url = configuration.GetSection("WebSettings:Url").Value;
+            var uri = new Uri(url);
+
+            return uri.ToString();
+        }
     }
 }

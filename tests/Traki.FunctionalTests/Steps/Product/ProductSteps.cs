@@ -21,7 +21,7 @@ namespace Traki.FunctionalTests.Steps.Product
         [Given(@"I have logged in as product manager")]
         public void GivenNotEnoughProductsInStock()
         {
-            _driver.Navigate().GoToUrl($"{Configuration.WebUrl}/login");
+            _driver.Navigate().GoToUrl($"{Configuration.WebUrl()}/login");
             _driver.FindElement(By.Id("email")).Click();
             _driver.FindElement(By.Id("email")).Clear();
             _driver.FindElement(By.Id("email")).SendKeys(ExampleData.ProductManagerEmail);
