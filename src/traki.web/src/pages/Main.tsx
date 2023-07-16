@@ -42,7 +42,7 @@ export function Main() {
           <Route path='signvalidation' element={<SignValidation/>}/>
           <Route path='projects' element={<Outlet/>}>
             <Route index element={<Protected roles={['ProjectManager', 'ProductManager']}><Projects/></Protected>}/>
-            <Route path='create' element={<Protected roles={['ProjectManager', 'ProductManager']}><CreateProject/></Protected>}/>
+            <Route path='create' element={<Protected roles={['ProjectManager']}><CreateProject/></Protected>}/>
             <Route path=':projectId' element={<Outlet/>}>
               <Route path='edit' element={<Protected roles={['ProjectManager', 'ProductManager']}><EditProject/></Protected>}/>
               <Route path='products' element={<Outlet/>}>

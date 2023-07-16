@@ -106,12 +106,6 @@ namespace Traki.Infrastructure.Data
                 Priority = 1,
                 ProtocolId= 2,
             },
-            new SectionEntity
-            {
-                Name= "Test procedures",
-                Priority = 2,
-                ProtocolId= 2,
-            },
         };
 
         public static IEnumerable<ChecklistEntity> NewChecklists => new[]
@@ -127,10 +121,6 @@ namespace Traki.Infrastructure.Data
             new ChecklistEntity
             {
                 SectionId = 3,
-            },
-            new ChecklistEntity
-            {
-                SectionId = 4,
             },
         };
 
@@ -162,21 +152,6 @@ namespace Traki.Infrastructure.Data
                 Id = "D",
                 Name = "Are safety barries applied and warning signs hung up?",
                 ChecklistId = 3,
-                Priority = 2,
-            },
-
-            new ItemEntity
-            {
-                Id = "E",
-                Name = "Manometer ID, Serial No",
-                ChecklistId = 4,
-                Priority = 1,
-            },
-            new ItemEntity
-            {
-                Id = "F",
-                Name = "Test type",
-                ChecklistId = 4,
                 Priority = 2,
             },
 
@@ -238,37 +213,9 @@ namespace Traki.Infrastructure.Data
             },
         };
 
-        public static IEnumerable<TextInputEntity> TextInputs => new[]
-{
-            new TextInputEntity
-            {
-                 Id = "E",
-                 ItemId = "E",
-                 Value= ""
-            },
-        };
+        public static IEnumerable<TextInputEntity> TextInputs => new TextInputEntity[0];
 
-        public static IEnumerable<MultipleChoiceEntity> MultipleChoices => new[]
-{
-            new MultipleChoiceEntity
-            {
-                 Id = "F",
-                 ItemId = "F",
-                 Options = new OptionEntity[]
-                 {
-                    new OptionEntity
-                    {
-                         Id = "G",
-                         Name = "Pneumatic",
-                    },
-                    new OptionEntity
-                    {
-                        Id = "H",
-                        Name = "Hydrostatic",
-                    },
-                 }
-            },
-        };
+        public static IEnumerable<MultipleChoiceEntity> MultipleChoices => new MultipleChoiceEntity[0];
 
         public static IEnumerable<CompanyEntity> Companies => new[]
         {

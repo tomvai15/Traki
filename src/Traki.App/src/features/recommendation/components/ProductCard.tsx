@@ -48,7 +48,7 @@ export function ProductCard ({product, navigation}: Props) {
                 <Text style={{fontSize: 15}}>{product.defectCount} Defects</Text>
               </View>
               <View>
-                <Text style={{fontSize: 15}}>{product.defectCount} Protocols</Text>
+                <Text style={{fontSize: 15}}>{product.protocolsCount} Protocols</Text>
               </View>
             </View>
             <View>

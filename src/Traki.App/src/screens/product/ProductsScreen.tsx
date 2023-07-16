@@ -44,7 +44,6 @@ export default function ProductsScreen({route, navigation }: Props) {
         renderItem={({item}) => <List.Item
           onPress={() => navigation.navigate('Product', {projectId: projectId, productId: item.id })}
           title={item.name}
-          description='Item description'
           left={props => <List.Icon {...props} icon='folder' />}
         />}
         keyExtractor={item => item.id.toString()}

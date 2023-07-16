@@ -186,9 +186,10 @@ export function TemplateItem ({index, item, deleteItem, updateItem}: TemplateIte
         </Box>
         {checkType()}
         <Box>
+          { userInfo.role=='ProjectManager' &&
           <IconButton id="question-menu" onClick={handleOpenUserMenu}>
             <MoreVertIcon/>
-          </IconButton> 
+          </IconButton> }
           <Menu
             sx={{ mt: '45px' }}
             id="menu-appbar"

@@ -17,6 +17,7 @@ import { UpdateProductRequest } from 'contracts/product/UpdateProductRequest';
 import { AuthorBar } from 'components/AuthorBar';
 import { validate, validationRules } from 'utils/textValidation';
 import { useNotFoundCatcher } from 'hooks/useNotFoundCatcher';
+import { ProtectedComponent } from 'components/ProtectedComponent';
 
 export function EditProduct() {
   const navigate = useNavigate();
@@ -201,7 +202,9 @@ export function EditProduct() {
                   <Grid item xs={12} md={12}>
                     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
                       <Typography>Product Information</Typography>
-                      <Button id="delete-product" onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
+                      <ProtectedComponent role={'ProductManager'}>
+                        <Button id="delete-product" onClick={() => setOpenProductDialog(true)} variant='contained' color='error'>Delete</Button>
+                      </ProtectedComponent>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
@@ -231,7 +234,9 @@ export function EditProduct() {
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={12}>
-                    <Button id="update-product" disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
+                    <ProtectedComponent role={'ProductManager'}>
+                      <Button id="update-product" disabled={!canUpdateProduct()} onClick={updateProduct} variant='contained' color='primary'>Update information</Button>
+                    </ProtectedComponent>
                   </Grid>
                 </Grid>
               </CardContent>}
