@@ -69,6 +69,23 @@ namespace Traki.Infrastructure.Data
             }
         };
 
+        public static IEnumerable<ChecklistEntity> Checklists => new[]
+        {
+            new ChecklistEntity
+            {
+                Name = "Checklist",
+                ProtocolId = 1
+            },
+        };
+
+        public static IEnumerable<TableEntity> Tables => new[]
+        {
+            new TableEntity
+            {
+                Name = "Table",
+                ProtocolId = 1
+            },
+        };
 
         public static IEnumerable<ProtocolEntity> Protocols => new[]
         {
@@ -86,131 +103,15 @@ namespace Traki.Infrastructure.Data
             }
         };
 
-        public static IEnumerable<SectionBase> Sections => new[]
-        {
-            new SectionBase
-            {
-                Name= "General Check-up BEFORE & DURING welding [ISO 13480-5]",
-                Priority = 1,
-                ProtocolId= 1,
-            },
-            new SectionBase
-            {
-                Name= "General Check-up AFTER welding [ISO 13480-5]",
-                Priority = 2,
-                ProtocolId= 1,
-            },
-            new SectionBase
-            {
-                Name= "General check up before Leakage test",
-                Priority = 1,
-                ProtocolId= 2,
-            },
-        };
-
-        public static IEnumerable<ChecklistEntity> NewChecklists => new[]
-        {
-            new ChecklistEntity
-            {
-                SectionId = 1,
-            },
-            new ChecklistEntity
-            {
-                SectionId = 2,
-            },
-            new ChecklistEntity
-            {
-                SectionId = 3,
-            },
-        };
-
-        public static IEnumerable<ItemEntity> Items => new[]
-        {
-            new ItemEntity
-            {
-                Id = "A",
-                Name = "Is the WPS clear for welding procedures?",
-                ChecklistId = 1,
-                Priority = 1,
-            },
-            new ItemEntity
-            {
-                Id = "B",
-                Name = "Do the general prefab dimensions meet the design?",
-                ChecklistId = 1,
-                Priority = 2,
-            },
-            new ItemEntity
-            {
-                Id = "C",
-                Name = "Are all valves and pipes plugged?",
-                ChecklistId = 3,
-                Priority = 1,
-            },
-            new ItemEntity
-            {
-                Id = "D",
-                Name = "Are safety barries applied and warning signs hung up?",
-                ChecklistId = 3,
-                Priority = 2,
-            },
-
-             new ItemEntity
-            {
-                Id = "X",
-                Name = "Is the weld root welded completely?",
-                ChecklistId = 2,
-                Priority = 1,
-            },
-            new ItemEntity
-            {
-                Id = "Y",
-                Name = "Is the inner weld surface smooth?",
-                ChecklistId = 2,
-                Priority = 2,
-            },
-        };
-
         public static IEnumerable<QuestionEntity> NewQuestions => new[]
         {
             new QuestionEntity
             {
-                 Id = "A",
-                 ItemId = "A",
-                 Comment = "",
-            },
-            new QuestionEntity
-            {
-                Id = "B",
-                ItemId = "B",
-                Comment = "",
-            },
-
-            new QuestionEntity
-            {
-                 Id = "C",
-                 ItemId = "C",
-                 Comment = "",
-            },
-            new QuestionEntity
-            {
-                Id = "D",
-                ItemId = "D",
-                Comment = "",
-            },
-
-            new QuestionEntity
-            {
-                 Id = "X",
-                 ItemId = "X",
-                 Comment = "",
-            },
-            new QuestionEntity
-            {
-                Id = "Y",
-                ItemId = "Y",
-                Comment = "",
-            },
+                Name = "Is the WPS clear for welding procedures?",
+                ChecklistId = 1,
+                Index = 1,
+                Comment = "Test Comment",
+            }
         };
 
         public static IEnumerable<TextInputEntity> TextInputs => new TextInputEntity[0];
@@ -249,7 +150,7 @@ namespace Traki.Infrastructure.Data
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",// password
                 Role = Role.ProjectManager,
                 Status = UserStatus.Active
-            },         
+            },
             new UserEntity
             {
                 Email = "admin@gmail.com",
@@ -311,34 +212,6 @@ namespace Traki.Infrastructure.Data
                 Status = ProductStatus.Active,
                 CreationDate = DateTime.Now.ToString("s"),
             },
-        };
-
-        public static IEnumerable<TemplateEntity> Templates => new[]
-        {
-            new TemplateEntity
-            {
-                Name = "General",
-                Standard="General prefab requirements",
-                ProjectId = 1
-            },
-            new TemplateEntity
-            {
-                Name = "Piping",
-                Standard="General piping requirements",
-                ProjectId = 1
-            },
-            new TemplateEntity
-            {
-                Name = "Components and Equipment",
-                Standard="General components and equipment requirements",
-                ProjectId = 1
-            },
-            new TemplateEntity
-            {
-                Name = "General Check-up Before & During Welding",
-                Standard="ISO 13480-5 standard",
-                ProjectId = 2
-            }
         };
     }
 }

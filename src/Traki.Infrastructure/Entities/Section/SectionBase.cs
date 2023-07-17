@@ -1,12 +1,10 @@
 ﻿namespace Traki.Infrastructure.Entities.Section
 {
-    public class SectionEntity
+    public class SectionBase
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Priority { get; set; }
-        public ChecklistEntity? Checklist{ get; set; }
-        public TableEntity? Table { get; set; }
+        public int Index { get; set; }
         public int ProtocolId { get; set; }
         public ProtocolEntity Protocol { get; set; }
     }

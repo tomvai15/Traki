@@ -23,8 +23,6 @@ namespace Traki.Infrastructure.Mapping
 
         public void MapProtocol()
         {
-            CreateMap<ProtocolEntity, Protocol>()
-                .ForMember(x => x.Sections, x => x.MapFrom(a => a.Sections));
 
             CreateMap<SectionBase, Section>();
 

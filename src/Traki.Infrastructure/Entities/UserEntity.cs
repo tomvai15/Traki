@@ -17,11 +17,11 @@ namespace Traki.Infrastructure.Entities
         public string? EncryptedRefreshToken { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
-        public IEnumerable<ProjectEntity> Projects { get; set; }
-        public IEnumerable<ProductEntity> Products { get; set; }
-        public IEnumerable<DefectEntity> Defects { get; set; }
-        public IEnumerable<DefectCommentEntity> DefectComments { get; set; }
-        public IEnumerable<StatusChangeEntity> StatusChanges { get; set; }
-        public IEnumerable<DefectNotificationEntity> DefectNotifications { get; set; }
+        public ICollection<ProjectEntity> Projects { get; set; }
+        public ICollection<ProductEntity> Products { get; set; }
+        public ICollection<DefectEntity> Defects { get; set; }
+        public ICollection<DefectCommentEntity> DefectComments { get; set; }
+        public ICollection<StatusChangeEntity> StatusChanges { get; set; }
+        public ICollection<DefectNotificationEntity> DefectNotifications { get; set; }
     }
 }

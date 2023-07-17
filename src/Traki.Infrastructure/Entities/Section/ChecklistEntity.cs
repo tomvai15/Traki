@@ -2,11 +2,10 @@
 
 namespace Traki.Infrastructure.Entities.Section
 {
-    public class ChecklistEntity
+    public class ChecklistEntity: SectionBase
     {
-        public int Id { get; set; }
-        public ICollection<ItemEntity> Items { get; set; }
-        public int SectionId { get; set; }
-        public SectionEntity Section { get; set; }
+        public ICollection<QuestionEntity> Questions { get; set; }
+        public ICollection<MultipleChoiceEntity> MultipleChoices { get; set; }
+        public ICollection<TextInputEntity> TextInputs { get; set; }
     }
 }

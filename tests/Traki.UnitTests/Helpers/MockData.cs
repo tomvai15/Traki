@@ -263,27 +263,23 @@ namespace Traki.UnitTests.Helpers
         {
             new QuestionEntity
             {
-                 Id = "A",
-                 ItemId = "A",
+                 Id = 1,
                  Comment = "",
             },
             new QuestionEntity
             {
-                Id = "B",
-                ItemId = "B",
+                 Id = 1,
                 Comment = "",
             },
 
             new QuestionEntity
             {
-                 Id = "C",
-                 ItemId = "C",
+                 Id = 1,
                  Comment = "",
             },
             new QuestionEntity
             {
-                Id = "D",
-                ItemId = "D",
+                 Id = 1,
                 Comment = "",
             },
         };
@@ -292,8 +288,7 @@ namespace Traki.UnitTests.Helpers
 {
             new TextInputEntity
             {
-                 Id = "E",
-                 ItemId = "E",
+                 Id = 1,
                  Value= ""
             },
         };
@@ -302,8 +297,7 @@ namespace Traki.UnitTests.Helpers
 {
             new MultipleChoiceEntity
             {
-                 Id = "F",
-                 ItemId = "F",
+                 Id = 1,
                  Options = new OptionEntity[]
                  {
                     new OptionEntity
@@ -418,34 +412,5 @@ namespace Traki.UnitTests.Helpers
                 CreationDate = DateTime.Now.ToString("s"),
             },
         };
-
-        public static IEnumerable<TemplateEntity> Templates => new[]
-        {
-            new TemplateEntity
-            {
-                Name = "General",
-                Standard="General prefab requirements",
-                ProjectId = 1
-            },
-            new TemplateEntity
-            {
-                Name = "Piping",
-                Standard="General piping requirements",
-                ProjectId = 1
-            },
-            new TemplateEntity
-            {
-                Name = "Components and Equipment",
-                Standard="General components and equipment requirements",
-                ProjectId = 1
-            },
-            new TemplateEntity
-            {
-                Name = "General Check-up Before & During Welding",
-                Standard="ISO 13480-5 standard",
-                ProjectId = 2
-            }
-        };
-       
     }
 }

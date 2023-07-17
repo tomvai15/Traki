@@ -92,7 +92,6 @@ namespace Traki.IntegrationTests
                 .Excluding(x => x.AuthorId)
                 .Excluding(x => x.CreationDate)
                 .Excluding(x => x.Author)
-                .Excluding(x => x.Templates)
                 .Excluding(x => x.Id));
         }
 

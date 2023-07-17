@@ -9,55 +9,29 @@ namespace Traki.Infrastructure.Repositories
 {
     public class SectionRepository : ISectionRepository
     {
-        private readonly TrakiDbContext _context;
-        private readonly IMapper _mapper;
-
-        public SectionRepository(TrakiDbContext context, IMapper mapper)
+        public Task<Section> CreateSection(Section section)
         {
-            _context = context;
-            _mapper = mapper;
+            throw new NotImplementedException();
         }
 
-        public async Task<Section> CreateSection(Section section)
+        public Task DeleteSection(Section section)
         {
-            var sectionEntity = _mapper.Map<SectionBase>(section);
-            sectionEntity.Checklist = null;
-            sectionEntity.Table = null;
-            sectionEntity = (await _context.Sections.AddAsync(sectionEntity)).Entity;
-            await _context.SaveChangesAsync();
-            return _mapper.Map<Section>(sectionEntity);
+            throw new NotImplementedException();
         }
 
-        public async Task<Section> UpdateSection(Section section)
+        public Task<Section> GetSection(int sectionId)
         {
-            var sectionEntity = await _context.Sections.FirstOrDefaultAsync(p => p.Id == section.Id);
-            sectionEntity.Name = section.Name;
-            sectionEntity.Priority = section.Priority;
-            await _context.SaveChangesAsync();
-            return _mapper.Map<Section>(sectionEntity);
+            throw new NotImplementedException();
         }
 
-        public async Task<Section> GetSection(int sectionId)
+        public Task<IEnumerable<Section>> GetSections(int protocolId)
         {
-            var sections = await _context.Sections.ToListAsync();
-            var section = sections.Where(p => p.Id == sectionId).FirstOrDefault();
-            return _mapper.Map<Section>(section);
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteSection(Section section)
+        public Task<Section> UpdateSection(Section section)
         {
-            var s = _context.Sections.Where(d => d.Id == section.Id).First();
-            _context.Sections.Remove(s);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<Section>> GetSections(int protocolId)
-        {
-            var sections = await _context.Sections.Where(p => p.ProtocolId == protocolId)
-                .Include(x => x.Checklist).ThenInclude(x => x.Items)
-                .Include(x => x.Table).ThenInclude(x => x.TableRows).ThenInclude(x => x.RowColumns)
-                .ToListAsync();
-            return _mapper.Map<IEnumerable<Section>>(sections);
+            throw new NotImplementedException();
         }
     }
 }

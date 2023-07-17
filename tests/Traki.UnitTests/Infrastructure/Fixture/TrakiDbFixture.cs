@@ -21,13 +21,10 @@ namespace Traki.UnitTests.Infrastructure.Fixture
             dbContext.AddCompanies();
             dbContext.AddProjects();
             dbContext.AddProducts();
-            dbContext.AddTemplates();
             dbContext.AddQuestions();
 
             dbContext.AddProtocols();
-            dbContext.AddSections();
             dbContext.AddCheclists();
-            dbContext.AddItems();
             dbContext.AddNewQuestions();
             dbContext.AddTextInputs();
             dbContext.AddMultipleChoices();

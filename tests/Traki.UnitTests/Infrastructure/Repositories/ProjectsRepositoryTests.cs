@@ -49,7 +49,6 @@ namespace Traki.UnitTests.Infrastructure.Repositories
                 .Excluding(x => x.Company)
                 .Excluding(x => x.AuthorId)
                 .Excluding(x => x.Author)
-                .Excluding(x => x.Templates)
                 .Excluding(x => x.Id));
         }
 

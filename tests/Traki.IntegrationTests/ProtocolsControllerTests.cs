@@ -38,7 +38,6 @@ namespace Traki.IntegrationTests
             var protocols = response.Data.Protocols;
 
             protocols.Should().BeEquivalentTo(expectedProtocols, options => options.Excluding(x => x.Product)
-                .Excluding(x => x.Sections)
                 .Excluding(x => x.Signer)
                 .Excluding(x => x.EnvelopeId)
                 .Excluding(x => x.ProductId)
@@ -66,7 +65,6 @@ namespace Traki.IntegrationTests
             var protocol = response.Data.Protocol;
 
             protocol.Should().BeEquivalentTo(expectedProtocol, options => options.Excluding(x => x.Product)
-                .Excluding(x => x.Sections)
                 .Excluding(x => x.Signer)
                 .Excluding(x => x.EnvelopeId)
                 .Excluding(x => x.ProductId)

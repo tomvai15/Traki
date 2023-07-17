@@ -31,9 +31,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    /*
+    
     var serviceProvider = app.Services.CreateScope().ServiceProvider;
     serviceProvider.AddInitialData(true);
+    /*
 
     var generator = serviceProvider.GetRequiredService<IReportGenerator>();
     const string protocolTemplateName = "Protocol.cshtml";

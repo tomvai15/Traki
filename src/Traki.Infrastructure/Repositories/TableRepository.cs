@@ -9,40 +9,19 @@ namespace Traki.Infrastructure.Repositories
 {
     public class TableRepository : ITableRepository
     {
-        private readonly TrakiDbContext _context;
-        private readonly IMapper _mapper;
-
-        public TableRepository(TrakiDbContext context, IMapper mapper)
+        public Task<Table> CreateTable(Table table)
         {
-            _context = context;
-            _mapper = mapper;
+            throw new NotImplementedException();
         }
 
-        public async Task<Table> CreateTable(Table table)
+        public Task DeleteTable(int tableId)
         {
-            var tableEntity = _mapper.Map<TableEntity>(table);
-            _context.Tables.Add(tableEntity);
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<Table>(tableEntity);
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteTable(int tableId)
+        public Task<Table> GetSectionTable(int sectionId)
         {
-            var table = await _context.Tables.Where(x=> x.Id == tableId).FirstOrDefaultAsync();
-
-            if (table == null) {return;}
-
-            _context.Tables.Remove(table);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<Table> GetSectionTable(int sectionId)
-        {
-            var tableEntity = await _context.Tables.Where(x => x.SectionId == sectionId)
-                .Include(x=> x.TableRows).ThenInclude(x=> x.RowColumns)
-                .FirstOrDefaultAsync();
-            return _mapper.Map<Table>(tableEntity);
+            throw new NotImplementedException();
         }
     }
 }

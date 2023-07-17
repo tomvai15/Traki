@@ -20,10 +20,6 @@ namespace Traki.Infrastructure.Data
                 .HasMany(p => p.Products)
                 .WithOne(p => p.Project);
 
-            modelBuilder.Entity<ProjectEntity>()
-                .HasMany(p => p.Templates)
-                .WithOne(p => p.Project);
-
             modelBuilder.Entity<ProductEntity>()
                 .HasMany(p => p.Protocols)
                 .WithOne(p => p.Product);
@@ -31,14 +27,6 @@ namespace Traki.Infrastructure.Data
             modelBuilder.Entity<ProductEntity>()
                 .HasMany(p => p.Drawings)
                 .WithOne(p => p.Product);
-
-            modelBuilder.Entity<SectionBase>()
-                .HasOne(p => p.Checklist).WithOne(p => p.Section)
-                .HasForeignKey<ChecklistEntity>(e => e.SectionId);
-
-            modelBuilder.Entity<SectionBase>()
-                .HasOne(p => p.Table).WithOne(p => p.Section)
-                .HasForeignKey<TableEntity>(e => e.SectionId);
 
             modelBuilder.Entity<TableEntity>()
                 .HasMany(x => x.TableRows)
@@ -48,29 +36,29 @@ namespace Traki.Infrastructure.Data
                 .HasMany(x => x.RowColumns)
                 .WithOne(x => x.TableRow);
 
-            modelBuilder.Entity<ChecklistEntity>()
-                .HasMany(p => p.Items)
-                .WithOne(p => p.Checklist);
-
             modelBuilder.Entity<MultipleChoiceEntity>()
                 .HasMany(p => p.Options)
                 .WithOne(p => p.MultipleChoice)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ItemEntity>()
-                .HasOne(p => p.TextInput).WithOne(p => p.Item)
-                .HasForeignKey<TextInputEntity>(e => e.ItemId);
+            modelBuilder.Entity<ChecklistEntity>()
+                .HasMany(p => p.TextInputs)
+                .WithOne(p => p.Checklist);
 
-            modelBuilder.Entity<ItemEntity>()
-                .HasOne(p => p.MultipleChoice).WithOne(p => p.Item)
-                .HasForeignKey<MultipleChoiceEntity>(e => e.ItemId);
+            modelBuilder.Entity<ChecklistEntity>()
+                .HasMany(p => p.MultipleChoices)
+                .WithOne(p => p.Checklist);
 
-            modelBuilder.Entity<ItemEntity>()
-                .HasOne(p => p.Question).WithOne(p => p.Item)
-                .HasForeignKey<QuestionEntity>(e => e.ItemId);
+            modelBuilder.Entity<ChecklistEntity>()
+                .HasMany(p => p.Questions)
+                .WithOne(p => p.Checklist);
 
             modelBuilder.Entity<ProtocolEntity>()
-                .HasMany(p => p.Sections)
+                .HasMany(p => p.Checklists)
+                .WithOne(p => p.Protocol);
+
+            modelBuilder.Entity<ProtocolEntity>()
+                .HasMany(p => p.Tables)
                 .WithOne(p => p.Protocol);
 
             modelBuilder.Entity<CompanyEntity>()
@@ -136,14 +124,10 @@ namespace Traki.Infrastructure.Data
         public virtual DbSet<DefectNotificationEntity> DefectNotifications { get; set; }
 
         public virtual DbSet<ProtocolEntity> Protocols { get; set; }
-
-        public virtual DbSet<SectionBase> Sections { get; set; }
         public virtual DbSet<ChecklistEntity> Checklists { get; set; }
         public virtual DbSet<TableEntity> Tables { get; set; }
         public virtual DbSet<TableRowEntity> TableRows { get; set; }
         public virtual DbSet<RowColumnEntity> RowColumns { get; set; }
-
-        public virtual DbSet<ItemEntity> Items { get; set; }
         public virtual DbSet<MultipleChoiceEntity> MultipleChoices { get; set; }
         public virtual DbSet<OptionEntity> Options { get; set; }
         public virtual DbSet<QuestionEntity> Questions { get; set; }
@@ -153,7 +137,6 @@ namespace Traki.Infrastructure.Data
         public virtual DbSet<CompanyEntity> Companies { get; set; }
         public virtual DbSet<ProductEntity> Products { get; set; }
         public virtual DbSet<ProjectEntity> Projects { get; set; }
-        public virtual DbSet<TemplateEntity> Templates { get; set; }
         public virtual DbSet<UserEntity> Users { get; set; }
     }
 }

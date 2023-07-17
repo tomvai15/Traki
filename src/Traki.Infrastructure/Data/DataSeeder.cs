@@ -46,13 +46,11 @@ namespace Traki.Infrastructure.Data
             dbContext.AddCompanies();
             dbContext.AddProjects();
             dbContext.AddProducts();
-            dbContext.AddTemplates();
             dbContext.AddQuestions();
 
             dbContext.AddProtocols();
-            dbContext.AddSections();
             dbContext.AddCheclists();
-            dbContext.AddItems();
+            dbContext.AddTables();
             dbContext.AddNewQuestions();
             dbContext.AddTextInputs();
             dbContext.AddMultipleChoices();
@@ -91,25 +89,17 @@ namespace Traki.Infrastructure.Data
             return dbContext;
         }
 
-        public static TrakiDbContext AddSections(this TrakiDbContext dbContext)
-        {
-            dbContext.Sections.AddRange(ExampleData.Sections);
-            dbContext.SaveChanges();
-
-            return dbContext;
-        }
-
         public static TrakiDbContext AddCheclists(this TrakiDbContext dbContext)
         {
-            dbContext.Checklists.AddRange(ExampleData.NewChecklists);
+            dbContext.Checklists.AddRange(ExampleData.Checklists);
             dbContext.SaveChanges();
 
             return dbContext;
         }
 
-        public static TrakiDbContext AddItems(this TrakiDbContext dbContext)
+        public static TrakiDbContext AddTables(this TrakiDbContext dbContext)
         {
-            dbContext.Items.AddRange(ExampleData.Items);
+            dbContext.Tables.AddRange(ExampleData.Tables);
             dbContext.SaveChanges();
 
             return dbContext;
@@ -150,14 +140,6 @@ namespace Traki.Infrastructure.Data
         public static TrakiDbContext AddProducts(this TrakiDbContext dbContext)
         {
             dbContext.Products.AddRange(ExampleData.Products);
-            dbContext.SaveChanges();
-
-            return dbContext;
-        }
-
-        public static TrakiDbContext AddTemplates(this TrakiDbContext dbContext)
-        {
-            dbContext.Templates.AddRange(ExampleData.Templates);
             dbContext.SaveChanges();
 
             return dbContext;
