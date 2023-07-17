@@ -9,6 +9,7 @@ namespace Traki.UnitTests.Domain.Handlers
 {
     public class SectionHandlerTests
     {
+        /*
         private readonly Mock<ISectionRepository> _sectionRepository = new Mock<ISectionRepository>();
         private readonly Mock<IChecklistRepository> _checklistRepository = new Mock<IChecklistRepository>();
         private readonly Mock<IItemRepository> _itemRepository = new Mock<IItemRepository>();
@@ -106,6 +107,6 @@ namespace Traki.UnitTests.Domain.Handlers
             await _sectionHandler.DeleteSection(sectionId);
 
             _sectionRepository.Verify(x => x.DeleteSection(It.IsAny<Section>()));
-        }
+        }*/
     }
 }

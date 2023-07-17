@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using Traki.Domain.Models.Section;
+using Traki.Domain.Models;
 using Traki.Infrastructure.Data;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Repositories;
@@ -39,7 +39,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         public async Task UpdateSection_ShouldUpdateSection()
         {
             var section = new Section { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
-            var sectionToUpdate = new SectionEntity { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
+            var sectionToUpdate = new SectionBase { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
 
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
             context.Sections.Add(sectionToUpdate);
@@ -59,7 +59,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         public async Task DeleteSection_SectionExists_ShouldDeleteSection()
         {
             var section = new Section { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
-            var sectionToDelete = new SectionEntity { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
+            var sectionToDelete = new SectionBase { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
 
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
             context.Sections.Add(sectionToDelete);
@@ -76,7 +76,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
         [Fact]
         public async Task GetSection_ShouldReturnSection()
         {
-            var section = new SectionEntity { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
+            var section = new SectionBase { Name = Any<string>(), Priority = 1, ProtocolId = 1 };
 
             using var context = new TrakiDbContext(_trakiDbFixture.Options);
             context.Sections.Add(section);
@@ -101,9 +101,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             var result = await repository.GetSections(protocolId);
 
-            expectedSections.Should().BeEquivalentTo(result, options => options.Excluding(x=> x.Checklist)
-                .Excluding(x=> x.Table)
-                .Excluding(x=> x.Id));
+            expectedSections.Should().BeEquivalentTo(result);
         }
     }
 }

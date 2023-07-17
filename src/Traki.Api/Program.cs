@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    /*
     var serviceProvider = app.Services.CreateScope().ServiceProvider;
     serviceProvider.AddInitialData(true);
 
@@ -43,6 +44,7 @@ if (app.Environment.IsDevelopment())
     {
         Console.WriteLine(ex);
     }
+    */
     app.UseCors(Policy.DevelopmentCors);
 }
 

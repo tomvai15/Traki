@@ -30,7 +30,7 @@ namespace Traki.Api.Mapping
             CreateMap<Template, TemplateEntity>().ReverseMap();
 
             CreateMap<ChecklistEntity, Checklist>().ReverseMap();
-            CreateMap<SectionEntity, Section>().ReverseMap();
+            CreateMap<SectionBase, Section>().ReverseMap();
             CreateMap<TableEntity, Table>().ReverseMap();
             CreateMap<TableRowEntity, TableRow>().ReverseMap();
             CreateMap<RowColumnEntity, RowColumn>().ReverseMap();

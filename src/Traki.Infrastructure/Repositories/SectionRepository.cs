@@ -20,7 +20,7 @@ namespace Traki.Infrastructure.Repositories
 
         public async Task<Section> CreateSection(Section section)
         {
-            var sectionEntity = _mapper.Map<SectionEntity>(section);
+            var sectionEntity = _mapper.Map<SectionBase>(section);
             sectionEntity.Checklist = null;
             sectionEntity.Table = null;
             sectionEntity = (await _context.Sections.AddAsync(sectionEntity)).Entity;

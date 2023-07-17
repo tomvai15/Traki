@@ -86,21 +86,21 @@ namespace Traki.Infrastructure.Data
             }
         };
 
-        public static IEnumerable<SectionEntity> Sections => new[]
+        public static IEnumerable<SectionBase> Sections => new[]
         {
-            new SectionEntity
+            new SectionBase
             {
                 Name= "General Check-up BEFORE & DURING welding [ISO 13480-5]",
                 Priority = 1,
                 ProtocolId= 1,
             },
-            new SectionEntity
+            new SectionBase
             {
                 Name= "General Check-up AFTER welding [ISO 13480-5]",
                 Priority = 2,
                 ProtocolId= 1,
             },
-            new SectionEntity
+            new SectionBase
             {
                 Name= "General check up before Leakage test",
                 Priority = 1,

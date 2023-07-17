@@ -44,7 +44,7 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<ITemplatesRepository, TemplatesRepository>()
                 .AddTransient<IChecklistRepository, ChecklistRepository>()
                 .AddTransient<IItemRepository, ItemRepository>()
-                .AddTransient<IProtocolRepository, ProtocolRepository>()
+                .AddTransient<IProtocolRepository, ProtocolRepositoryRefactored>()
                 .AddTransient<IDrawingsRepository, DrawingsRepository>()
                 .AddTransient<IDefectsRepository, DefectsRepository>()
                 .AddTransient<IDefectCommentRepository, DefectCommentRepository>()

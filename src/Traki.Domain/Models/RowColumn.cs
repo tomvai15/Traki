@@ -1,4 +1,4 @@
-﻿using Traki.Domain.Models.Section;
+﻿
 
 namespace Traki.Domain.Models
 {

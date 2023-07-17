@@ -17,6 +17,7 @@ namespace Traki.Domain.Handlers
 
     public class SectionHandler : ISectionHandler
     {
+        /*
         private readonly ISectionRepository _sectionRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly IItemRepository _itemRepository;
@@ -243,6 +244,36 @@ namespace Traki.Domain.Handlers
                     option.Id = Guid.NewGuid().ToString();
                 }
             }
+        }
+        */
+        public Task AddOrUpdateSection(int protocolId, Section section)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteSection(int sectionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Section> GetSection(int sectionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Section>> GetSections(int protocolId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateSectionAnswers(int protocolId, Section section)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateSections(IEnumerable<Section> sections)
+        {
+            throw new NotImplementedException();
         }
     }
 }

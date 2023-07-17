@@ -97,8 +97,8 @@ namespace Traki.Domain.Handlers
 
         private async Task<List<ItemImage>> GetItemImages(List<Section> sections)
         {
-            var itemsWithImages = sections.Where(x => x.Checklist != null)
-                .Select(x => x.Checklist)
+            var itemsWithImages = sections.Where(x => x is Checklist)
+                .Select(x => x.SectionContent as Checklist)
                 .SelectMany(x => x.Items)
                 .Where(x => !x.ItemImage.IsNullOrEmpty())
                 .ToList();

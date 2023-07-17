@@ -1,4 +1,6 @@
-﻿namespace Traki.Domain.Models
+﻿using Traki.Domain.Extensions;
+
+namespace Traki.Domain.Models
 {
     public class Protocol
     {
@@ -13,7 +15,31 @@
         public string? EnvelopeId { get; set; }
         public bool IsTemplate { get; set; }
         public int? ProductId { get; set; }
-
         public List<Section> Sections { get; set; }
+
+        public void AddSection(Section sectionToAdd)
+        {
+            var existingSection = Sections.First(x=> x.Id== sectionToAdd.Id);
+            if (existingSection != null)
+            {
+                throw new InvalidOperationException("Cannot add section with same id");
+            }
+
+            Sections.Add(sectionToAdd);
+        }
+
+        public void DeleteSection(int sectionId)
+        {
+            var existingSection = Sections.First(x => x.Id == sectionId);
+            existingSection.RequiresToBeNotNullEnity();
+            Sections.Remove(existingSection);
+        }
+
+        public void Update(Section sectionToUpdate)
+        {
+            var existingSection = Sections.First(x => x.Id == sectionToUpdate.Id)                           ;
+            Sections.Remove(existingSection);
+            Sections.Add(sectionToUpdate);
+        }
     }
 }

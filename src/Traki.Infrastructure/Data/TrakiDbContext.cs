@@ -32,11 +32,11 @@ namespace Traki.Infrastructure.Data
                 .HasMany(p => p.Drawings)
                 .WithOne(p => p.Product);
 
-            modelBuilder.Entity<SectionEntity>()
+            modelBuilder.Entity<SectionBase>()
                 .HasOne(p => p.Checklist).WithOne(p => p.Section)
                 .HasForeignKey<ChecklistEntity>(e => e.SectionId);
 
-            modelBuilder.Entity<SectionEntity>()
+            modelBuilder.Entity<SectionBase>()
                 .HasOne(p => p.Table).WithOne(p => p.Section)
                 .HasForeignKey<TableEntity>(e => e.SectionId);
 
@@ -137,7 +137,7 @@ namespace Traki.Infrastructure.Data
 
         public virtual DbSet<ProtocolEntity> Protocols { get; set; }
 
-        public virtual DbSet<SectionEntity> Sections { get; set; }
+        public virtual DbSet<SectionBase> Sections { get; set; }
         public virtual DbSet<ChecklistEntity> Checklists { get; set; }
         public virtual DbSet<TableEntity> Tables { get; set; }
         public virtual DbSet<TableRowEntity> TableRows { get; set; }

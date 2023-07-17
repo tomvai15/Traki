@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using Traki.Domain.Models.Section;
+using Traki.Domain.Models;
 using Traki.Infrastructure.Data;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Repositories;

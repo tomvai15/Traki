@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Traki.Domain.Models.Section;
+using Traki.Domain.Models;
 using Traki.Infrastructure.Data;
 using Traki.Infrastructure.Entities.Section;
 using Traki.Infrastructure.Repositories;
@@ -31,9 +31,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             var table = await repository.GetSectionTable(sectionId);
 
-            expectedTable.Should().BeEquivalentTo(table, options => options.Excluding(x => x.Id)
-                .Excluding(x => x.Section)
-                .Excluding(x => x.TableRows));
+            expectedTable.Should().BeEquivalentTo(table, options => options.Excluding(x => x.Id));
         }
 
         [Fact]
@@ -49,9 +47,7 @@ namespace Traki.UnitTests.Infrastructure.Repositories
 
             var createdTable = await repository.CreateTable(table);
 
-            createdTable.Should().BeEquivalentTo(table, options => options.Excluding(x => x.Id)
-            .Excluding(x => x.Section)
-            .Excluding(x => x.TableRows));
+            createdTable.Should().BeEquivalentTo(table, options => options.Excluding(x => x.Id));
         }     
 
         [Fact]

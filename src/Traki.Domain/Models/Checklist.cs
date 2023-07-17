@@ -2,9 +2,8 @@
 
 namespace Traki.Domain.Models
 {
-    public class Checklist
+    public class Checklist: SectionContent
     {
-        public int Id { get; set; }
         public ICollection<Item> Items { get; set; }
         public int SectionId { get; set; }
     }
