@@ -51,6 +51,9 @@ namespace Traki.Infrastructure.Data
             dbContext.AddProtocols();
             dbContext.AddCheclists();
             dbContext.AddTables();
+            dbContext.AddRows();
+            dbContext.AddColumns();
+
             dbContext.AddNewQuestions();
             dbContext.AddTextInputs();
             dbContext.AddMultipleChoices();
@@ -100,6 +103,22 @@ namespace Traki.Infrastructure.Data
         public static TrakiDbContext AddTables(this TrakiDbContext dbContext)
         {
             dbContext.Tables.AddRange(ExampleData.Tables);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddRows(this TrakiDbContext dbContext)
+        {
+            dbContext.TableRows.AddRange(ExampleData.TableRows);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddColumns(this TrakiDbContext dbContext)
+        {
+            dbContext.RowColumns.AddRange(ExampleData.RowColumns);
             dbContext.SaveChanges();
 
             return dbContext;

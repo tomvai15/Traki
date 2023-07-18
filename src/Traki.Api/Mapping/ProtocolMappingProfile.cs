@@ -11,10 +11,14 @@ namespace Traki.Api.Mapping
     {
         public ProtocolMappingProfile()
         {
-            CreateMap<Protocol, ProtocolDto>().ForMember(x => x.Sections,
-                x => x.MapFrom<SectionResolver>());
+            CreateMap<Protocol, ProtocolDto>().ForMember(x => x.Tables,
+                x => x.MapFrom(SectionResolver.Resolve<Table, TableDto>))
+                .ForMember(x => x.Checklists,
+                x => x.MapFrom(SectionResolver.Resolve<Checklist, ChecklistDto>));
 
             CreateMap<Checklist, ChecklistDto>();
+
+
             CreateMap<TextInput, TextInputDto>();
             CreateMap<MultipleChoice, MultipleChoiceDto>();
             CreateMap<Option, OptionDto>();
@@ -25,25 +29,13 @@ namespace Traki.Api.Mapping
             CreateMap<RowColumn, RowColumnDto>();
         }
     }
-    public class SectionResolver : IValueResolver<Protocol, ProtocolDto, ICollection<SectionBaseDto>>
+    public static class SectionResolver
     {
-        public ICollection<SectionBaseDto> Resolve(Protocol source, ProtocolDto destination, ICollection<SectionBaseDto> destMember, ResolutionContext context)
+        public static List<To> Resolve<From, To>(Protocol source, ProtocolDto destination, List<To> destMember, ResolutionContext context)
+            where From : Section
+            where To : SectionBaseDto
         {
-            return source.Sections.Select(x => SectionMap(x, context)).ToList();
-        }
-
-        private SectionBaseDto SectionMap(Section section, ResolutionContext context)
-        {
-            if (section is Table table)
-            {
-                return context.Mapper.Map<TableDto>(table);
-            }
-            else if (section is Checklist checklist)
-            {
-                return context.Mapper.Map<ChecklistDto>(checklist);
-            }
-
-            throw new ArgumentException($"Type {typeof(Section)} is not regisered");
+            return source.Sections.Where(x => x is From).Select(x => x as From).Select(x => context.Mapper.Map<To>(x)).ToList();
         }
     }
 }

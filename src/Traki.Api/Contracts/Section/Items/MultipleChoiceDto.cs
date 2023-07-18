@@ -1,8 +1,7 @@
 ﻿namespace Traki.Api.Contracts.Section.Items
 {
-    public class MultipleChoiceDto
+    public record MultipleChoiceDto: ItemBaseDto
     {
-        public string Id { get; set; }
-        public IEnumerable<OptionDto> Options { get; set; }
+        public List<OptionDto> Options { get; set; }
     }
 }
