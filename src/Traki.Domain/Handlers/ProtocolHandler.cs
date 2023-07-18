@@ -92,13 +92,13 @@ namespace Traki.Domain.Handlers
                 fullSections.Add(fullSection);
             }
 
-            return fullSections.OrderBy(s => s.Priority).ToList();
+            return fullSections.OrderBy(s => s.Index).ToList();
         }
 
         private async Task<List<ItemImage>> GetItemImages(List<Section> sections)
         {
             var itemsWithImages = sections.Where(x => x is Checklist)
-                .Select(x => x.SectionContent as Checklist)
+                .Select(x => x as Checklist)
                 .SelectMany(x => x.Items)
                 .Where(x => !x.ItemImage.IsNullOrEmpty())
                 .ToList();

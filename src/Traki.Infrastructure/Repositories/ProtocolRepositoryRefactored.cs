@@ -44,7 +44,9 @@ namespace Traki.Infrastructure.Repositories
                                     .First(x => x.Id == protocolId);
 
 
-            return _mapper.Map<Protocol>(protocol);
+            var a = _mapper.Map<Protocol>(protocol);
+
+            return a;
         }
 
         public Task<IEnumerable<Protocol>> GetProtocols(int productId)

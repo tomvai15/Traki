@@ -1,8 +1,7 @@
 ﻿namespace Traki.Domain.Models.Items
 {
-    public class TextInput
+    public class TextInput: Item
     {
-        public string Id { get; set; }
         public string Value { get; set; }
     }
 }

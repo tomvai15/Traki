@@ -87,6 +87,24 @@ namespace Traki.Infrastructure.Data
             },
         };
 
+        public static IEnumerable<TableRowEntity> TableRows => new[]
+{
+            new TableRowEntity
+            {
+                RowIndex = 0,
+                TableId = 1
+            },
+        };
+
+        public static IEnumerable<RowColumnEntity> RowColumns => new[]
+{
+            new RowColumnEntity
+            {
+                Value = "Column",
+                TableRowId = 1
+            },
+        };
+
         public static IEnumerable<ProtocolEntity> Protocols => new[]
         {
             new ProtocolEntity

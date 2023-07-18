@@ -1,8 +1,7 @@
 ﻿namespace Traki.Domain.Models
 {
-    public class Table: SectionContent
+    public class Table: Section
     {
-        public int SectionId { get; set; }
         public IEnumerable<TableRow> TableRows { get; set; }
     }
 }

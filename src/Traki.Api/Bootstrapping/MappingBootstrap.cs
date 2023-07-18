@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Traki.Api.Mapping;
+using Traki.Infrastructure.Mapping;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -9,7 +10,7 @@ namespace Traki.Api.Bootstrapping
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new EntityToDomainModelMappingProfile());
+                cfg.AddProfile(new DomainToInfrastructureMap());
                 cfg.AddProfile(new DomainToContractMappingProfile());
             });
 

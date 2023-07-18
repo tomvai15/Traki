@@ -1,8 +1,7 @@
 ﻿namespace Traki.Domain.Models.Items
 {
-    public class MultipleChoice
+    public class MultipleChoice: Item
     {
-        public string Id { get; set; }
         public IEnumerable<Option> Options { get; set; }
     }
 }

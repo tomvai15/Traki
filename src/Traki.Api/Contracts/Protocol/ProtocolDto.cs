@@ -2,7 +2,7 @@
 
 namespace Traki.Api.Contracts.Protocol
 {
-    public class ProtocolDto
+    public record ProtocolDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
