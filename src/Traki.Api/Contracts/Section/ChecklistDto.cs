@@ -2,9 +2,8 @@
 
 namespace Traki.Api.Contracts.Section
 {
-    public class ChecklistDto
+    public record ChecklistDto: SectionBaseDto
     {
-        public int Id { get; set; }
         public ICollection<ItemDto> Items { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Traki.Api.Contracts.Drawing.Defect;
+using Traki.Api.Contracts.Section;
 
 namespace Traki.Api.Contracts.Protocol
 {
@@ -13,5 +14,6 @@ namespace Traki.Api.Contracts.Protocol
         public bool IsSigned { get; set; }
         public string? ReportName { get; set; }
         public bool IsTemplate { get; set; }
+        public ICollection<SectionBaseDto> Sections { get; set; }
     }
 }

@@ -13,6 +13,10 @@ using Traki.Api.Contracts.User;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Models.Items;
+using Traki.Infrastructure.Entities.Section.Items;
+using Traki.Infrastructure.Entities.Section;
+using Traki.Infrastructure.Entities;
+using Traki.Infrastructure.Mapping;
 using Question = Traki.Domain.Models.Items.Question;
 
 namespace Traki.Api.Mapping
@@ -28,7 +32,6 @@ namespace Traki.Api.Mapping
             AddProjectMappings();
             AddUserMappings();
             AddTemplateMappings();
-            AddSectionMapping();
         }
 
         public void AddRecommendationMappings()
@@ -84,24 +87,6 @@ namespace Traki.Api.Mapping
                 .IncludeMembers(p => p.Project);
         }
 
-        public void AddSectionMapping()
-        {
-            CreateMap<Protocol, ProtocolDto>().ReverseMap();
-
-            CreateMap<Item, ItemDto>().ReverseMap();
-            CreateMap<MultipleChoice, MultipleChoiceDto>().ReverseMap();
-            CreateMap<TextInput, TextInputDto>().ReverseMap();
-            CreateMap<Option, OptionDto>().ReverseMap();
-            CreateMap<Question, QuestionDto>().ReverseMap();
-
-            CreateMap<Section, SectionDto>().ReverseMap();
-            CreateMap<Checklist, ChecklistDto>().ReverseMap();
-
-            CreateMap<Table, TableDto>().ReverseMap();
-            CreateMap<TableRow, TableRowDto>().ReverseMap();
-            CreateMap<RowColumn, RowColumnDto>().ReverseMap();
-        }
-
         public void AddUserMappings()
         {
             CreateMap<CreateUserRequest, User>();
@@ -121,22 +106,5 @@ namespace Traki.Api.Mapping
             CreateMap<CreateTemplateRequest, Template>()
                 .IncludeMembers(x => x.Template);
         }
-
-        /*
-        public void AddQuestionMappings()
-        {
-            CreateMap<Question, GetQuestionResponse>()
-                .ForMember(x => x.Question, opt => opt.MapFrom(x => x));
-
-            CreateMap<IEnumerable<Question>, GetQuestionsResponse>()
-                .ForMember(x => x.Questions, memberOptions: opt => opt.MapFrom(x => x));
-
-            CreateMap<Question, OldQuestionDto>().ReverseMap();
-
-            CreateMap<CreateQuestionRequest, Question>()
-                .IncludeMembers(x => x.Question);
-
-            CreateMap<UpdateQuestionRequest, Question>();
-        }*/
     }
 }
