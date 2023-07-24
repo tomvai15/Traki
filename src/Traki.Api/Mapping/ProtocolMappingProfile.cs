@@ -7,24 +7,13 @@ using Traki.Domain.Models;
 
 namespace Traki.Api.Mapping
 {
+
     public class ProtocolMappingProfile : Profile
     {
         public ProtocolMappingProfile()
         {
-            CreateMap<Protocol, ProtocolDto>()
-                .ForMember(x => x.Tables, x => x.MapFrom(SectionResolver.Resolve<Table, TableDto>))
-                .ForMember(x => x.Checklists,x => x.MapFrom(SectionResolver.Resolve<Checklist, ChecklistDto>));
-
-            CreateMap<Checklist, ChecklistDto>()
-                .ForMember(x => x.Questions, x => x.MapFrom(ItemResolver.Resolve<Question, QuestionDto>))
-                .ForMember(x => x.TextInputs, x => x.MapFrom(ItemResolver.Resolve<TextInput, TextInputDto>))
-                .ForMember(x => x.MultipleChoices, x => x.MapFrom(ItemResolver.Resolve<MultipleChoice, MultipleChoiceDto>));
-
-            CreateMap<ProtocolDto, Protocol>()
-                .ForMember(x => x.Sections, x => x.MapFrom(SectionResolver.ResolveFromDto));
-
-            CreateMap<ChecklistDto, Checklist>()
-                .ForMember(x => x.Items, x => x.MapFrom(ItemResolver.ResolveFromDto));
+            CreateMap<Protocol, ProtocolDto>().ReverseMap();
+            CreateMap<Checklist, ChecklistDto>().ReverseMap();
 
             CreateMap<TextInput, TextInputDto>().ReverseMap();
             CreateMap<MultipleChoice, MultipleChoiceDto>().ReverseMap();
@@ -34,53 +23,52 @@ namespace Traki.Api.Mapping
             CreateMap<Table, TableDto>().ReverseMap();
             CreateMap<TableRow, TableRowDto>().ReverseMap();
             CreateMap<RowColumn, RowColumnDto>().ReverseMap();
-        }
-    }
-    public static class SectionResolver
-    {
-        public static List<To> Resolve<From, To>(Protocol source, ProtocolDto destination, List<To> destMember, ResolutionContext context)
-            where From : Section
-            where To : SectionDto
-        {
-            return source.Sections.Where(x => x is From).Select(x => x as From).Select(x => context.Mapper.Map<To>(x)).ToList();
-        }
 
-        public static List<Section> ResolveFromDto(ProtocolDto source, Protocol destination, List<Section> destMember, ResolutionContext context)
-        {
-            var sections = new List<Section>();
+            CreateMap<Item, ItemDto>()
+                .ForMember(x => x.TextInput, x => x.MapFrom(x => x.ItemContent is TextInput ? x.ItemContent as TextInput : null))
+                .ForMember(x => x.MultipleChoice, x => x.MapFrom(x => x.ItemContent is MultipleChoice ? x.ItemContent as MultipleChoice : null))
+                .ForMember(x => x.Question, x => x.MapFrom(x => x.ItemContent is Question ? x.ItemContent as Question : null));
 
-            var checklists = source.Checklists.Select(x => context.Mapper.Map<Checklist>(x)).ToList();
-            var tables = source.Tables.Select(x => context.Mapper.Map<Table>(x)).ToList();
+            CreateMap<Section, SectionDto>()
+                .ForMember(x => x.Checklist, x => x.MapFrom(x => x.SectionContent is Checklist ? x.SectionContent as Checklist : null))
+                .ForMember(x => x.Table, x => x.MapFrom(x => x.SectionContent is Table ? x.SectionContent as Table : null));
 
-            sections.AddRange(checklists);
-            sections.AddRange(tables);
 
-            return sections;
-        }
-    }
+            CreateMap<ItemDto, Item>()
+                .ForMember(x => x.ItemContent, x => x.MapFrom(MapFromItem));
 
-    public static class ItemResolver
-    {
-        public static List<To> Resolve<From, To>(Checklist source, ChecklistDto destination, List<To> destMember, ResolutionContext context)
-            where From : Item
-            where To : ItemBaseDto
-        {
-            return source.Items.Where(x => x is From).Select(x => x as From).Select(x => context.Mapper.Map<To>(x)).ToList();
+            CreateMap<SectionDto, Section>()
+                .ForMember(x => x.SectionContent, x => x.MapFrom(MapFromSection));
         }
 
-        public static List<Item> ResolveFromDto(ChecklistDto source, Checklist destination, List<Item> destMember, ResolutionContext context)
+        private IItemContent MapFromItem(ItemDto source, Item destination, IItemContent destMember, ResolutionContext context)
         {
-            var items = new List<Item>();
+            if (source.Question != null)
+            {
+                return context.Mapper.Map<Question>(source.Question);
+            }
+            if (source.TextInput != null)
+            {
+                return context.Mapper.Map<TextInput>(source.TextInput);
+            }
+            if (source.MultipleChoice != null)
+            {
+                return context.Mapper.Map<MultipleChoice>(source.MultipleChoice);
+            }
+            return null;
+        }
 
-            var questions = source.Questions.Select(x => context.Mapper.Map<Question>(x)).ToList();
-            var multipleChoices = source.MultipleChoices.Select(x => context.Mapper.Map<MultipleChoice>(x)).ToList();
-            var textInputs = source.TextInputs.Select(x => context.Mapper.Map<TextInput>(x)).ToList();
-
-            items.AddRange(questions);
-            items.AddRange(multipleChoices);
-            items.AddRange(textInputs);
-
-            return items;
+        private ISectionContent MapFromSection(SectionDto source, Section destination, ISectionContent destMember, ResolutionContext context)
+        {
+            if (source.Checklist != null)
+            {
+                return context.Mapper.Map<Checklist>(source.Checklist);
+            }
+            if (source.Table != null)
+            {
+                return context.Mapper.Map<Table>(source.Table);
+            }
+            return null;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Traki.Domain.Models
 {
-    public abstract class Section
+    public class Section
     {
         public int Id { get; set; }
         public string Name { get; set; }

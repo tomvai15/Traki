@@ -17,20 +17,40 @@ namespace Traki.Infrastructure.Mapping
 
         public void MapProtocol()
         {
-            CreateMap<ChecklistEntity, Checklist>().ForMember(x => x.Items,
-                x => x.MapFrom<ItemResolver>());
+            /*
+            // domain to entity
+            CreateMap<Checklist, ChecklistEntity>()
+                .ForMember(x => x.MultipleChoices, x => x.MapFrom(x => x.Items.Where(x => x.ItemContent is MultipleChoice)))
+                .ForMember(x => x.TextInputs, x => x.MapFrom(x => x.Items.Where(x => x.ItemContent is TextInput)))
+                .ForMember(x => x.Questions, x => x.MapFrom(x => x.Items.Where(x => x.ItemContent is Question)));
 
-            CreateMap<ProtocolEntity, Protocol>().ForMember(x => x.Sections,
-                x => x.MapFrom<SectionResolver>());
+            CreateMap<Item, TextInputEntity>().IncludeMembers(x => x.ItemContent);
+            CreateMap<Item, MultipleChoiceEntity>().IncludeMembers(x => x.ItemContent);
+            CreateMap<Item, QuestionEntity>().IncludeMembers(x => x.ItemContent);
 
-            CreateMap<TextInputEntity, TextInput>();
-            CreateMap<MultipleChoiceEntity, MultipleChoice>();
-            CreateMap<OptionEntity, Option>();
-            CreateMap<QuestionEntity, Question>();
+            CreateMap<Protocol, ProtocolEntity>()
+                .ForMember(x => x.Checklists, x => x.MapFrom(x => x.Sections.Where(x => x.SectionContent is Checklist)))
+                .ForMember(x => x.Tables, x => x.MapFrom(x => x.Sections.Where(x => x.SectionContent is Table)));
 
-            CreateMap<TableEntity, Table>();
-            CreateMap<TableRowEntity, TableRow>();
-            CreateMap<RowColumnEntity, RowColumn>();
+            CreateMap<Section, ChecklistEntity>().IncludeMembers(x => x.SectionContent);
+            CreateMap<Section, TableEntity>().IncludeMembers(x => x.SectionContent);*/
+
+            // entity to domain
+            CreateMap<ChecklistEntity, Checklist>().ForMember(x => x.Items, x => x.MapFrom<ItemResolver>());
+            CreateMap<ProtocolEntity, Protocol>().ForMember(x => x.Sections, x => x.MapFrom<SectionResolver>());
+
+            // commmon
+            CreateMap<SectionBase, Section>().ReverseMap();
+            CreateMap<ItemBase, Item>().ReverseMap();
+
+            CreateMap<TextInputEntity, TextInput>().ReverseMap();
+            CreateMap<MultipleChoiceEntity, MultipleChoice>().ReverseMap();
+            CreateMap<OptionEntity, Option>().ReverseMap();
+            CreateMap<QuestionEntity, Question>().ReverseMap();
+
+            CreateMap<TableEntity, Table>().ReverseMap();
+            CreateMap<TableRowEntity, TableRow>().ReverseMap();
+            CreateMap<RowColumnEntity, RowColumn>().ReverseMap();
         }
     }
 

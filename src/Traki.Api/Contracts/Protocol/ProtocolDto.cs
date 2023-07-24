@@ -14,7 +14,6 @@ namespace Traki.Api.Contracts.Protocol
         public bool IsSigned { get; set; }
         public string? ReportName { get; set; }
         public bool IsTemplate { get; set; }
-        public List<TableDto> Tables { get; set; }
-        public List<ChecklistDto> Checklists { get; set; }
+        public List<SectionDto> Sections { get; set; }
     }
 }

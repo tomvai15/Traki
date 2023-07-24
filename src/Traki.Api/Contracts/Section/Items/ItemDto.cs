@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Contracts.Section.Items
 {
-    public abstract record ItemDto
+    public record ItemDto
     {
         public string Id { get; set; }
         public string Name { get; set; }
