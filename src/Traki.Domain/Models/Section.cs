@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public int Index { get; set; }
         public int ProtocolId { get; set; }
+        public ISectionContent SectionContent { get; set; }
     }
 }

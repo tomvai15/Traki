@@ -2,6 +2,6 @@
 {
     public class GetSectionsResponse
     {
-        public IEnumerable<SectionBaseDto> Sections { get; set; }
+        public IEnumerable<SectionDto> Sections { get; set; }
     }
 }

@@ -132,9 +132,35 @@ namespace Traki.Infrastructure.Data
             }
         };
 
-        public static IEnumerable<TextInputEntity> TextInputs => new TextInputEntity[0];
+        public static IEnumerable<TextInputEntity> TextInputs => new[]
+        {
+            new TextInputEntity
+            {
+                Name = "TextInputEntity",
+                Value = "Value",
+                ChecklistId = 1,
+                Index = 2,
+            }
+        };
 
-        public static IEnumerable<MultipleChoiceEntity> MultipleChoices => new MultipleChoiceEntity[0];
+        public static IEnumerable<MultipleChoiceEntity> MultipleChoices => new[]
+        {
+            new MultipleChoiceEntity
+            {
+                Name = "MultipleChoiceEntity",
+                ChecklistId = 1,
+                Index = 3,
+            }
+        };
+
+        public static IEnumerable<OptionEntity> Options => new[]
+{
+            new OptionEntity
+            {
+                Name = "MultipleChoiceEntity",
+                MultipleChoiceId = 1,
+            }
+        };
 
         public static IEnumerable<CompanyEntity> Companies => new[]
         {

@@ -57,6 +57,7 @@ namespace Traki.Infrastructure.Data
             dbContext.AddNewQuestions();
             dbContext.AddTextInputs();
             dbContext.AddMultipleChoices();
+            dbContext.AddOptions();
 
             dbContext.AddDrawings();
             dbContext.AddDefects();
@@ -143,6 +144,14 @@ namespace Traki.Infrastructure.Data
         public static TrakiDbContext AddMultipleChoices(this TrakiDbContext dbContext)
         {
             dbContext.MultipleChoices.AddRange(ExampleData.MultipleChoices);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+        public static TrakiDbContext AddOptions(this TrakiDbContext dbContext)
+        {
+            dbContext.Options.AddRange(ExampleData.Options);
             dbContext.SaveChanges();
 
             return dbContext;

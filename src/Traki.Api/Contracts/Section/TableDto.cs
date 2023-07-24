@@ -1,6 +1,6 @@
 ﻿namespace Traki.Api.Contracts.Section
 {
-    public record TableDto: SectionBaseDto
+    public record TableDto
     {
         public IEnumerable<TableRowDto> TableRows { get; set; }
     }

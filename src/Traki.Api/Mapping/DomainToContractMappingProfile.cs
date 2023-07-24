@@ -4,20 +4,11 @@ using Traki.Api.Contracts.Drawing;
 using Traki.Api.Contracts.Drawing.Defect;
 using Traki.Api.Contracts.Product;
 using Traki.Api.Contracts.Project;
-using Traki.Api.Contracts.Protocol;
 using Traki.Api.Contracts.Recommendation;
-using Traki.Api.Contracts.Section;
-using Traki.Api.Contracts.Section.Items;
 using Traki.Api.Contracts.Template;
 using Traki.Api.Contracts.User;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
-using Traki.Domain.Models.Items;
-using Traki.Infrastructure.Entities.Section.Items;
-using Traki.Infrastructure.Entities.Section;
-using Traki.Infrastructure.Entities;
-using Traki.Infrastructure.Mapping;
-using Question = Traki.Domain.Models.Items.Question;
 
 namespace Traki.Api.Mapping
 {

@@ -2,6 +2,6 @@
 {
     public class UpdateSectionAnswersRequest
     {
-        public SectionBaseDto Section { get; set; }
+        public SectionDto Section { get; set; }
     }
 }

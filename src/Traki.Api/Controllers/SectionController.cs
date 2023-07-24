@@ -52,7 +52,7 @@ namespace Traki.Api.Controllers
         {
             var section = await _sectionHandler.GetSection(sectionId);
 
-            var getSectionRequest = new GetSectionResponse { Section = _mapper.Map<SectionBaseDto>(section) };
+            var getSectionRequest = new GetSectionResponse { Section = _mapper.Map<SectionDto>(section) };
 
             return Ok(getSectionRequest);
         }
@@ -69,7 +69,7 @@ namespace Traki.Api.Controllers
         {
             var sections = await _sectionHandler.GetSections(protocolId);
 
-            var getSectionRequest = new GetSectionsResponse { Sections = _mapper.Map<IEnumerable<SectionBaseDto>>(sections) };
+            var getSectionRequest = new GetSectionsResponse { Sections = _mapper.Map<IEnumerable<SectionDto>>(sections) };
 
             return Ok(getSectionRequest);
         }

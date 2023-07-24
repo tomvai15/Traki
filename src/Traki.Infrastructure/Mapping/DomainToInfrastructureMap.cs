@@ -17,14 +17,12 @@ namespace Traki.Infrastructure.Mapping
 
         public void MapProtocol()
         {
+            CreateMap<ChecklistEntity, Checklist>().ForMember(x => x.Items,
+                x => x.MapFrom<ItemResolver>());
 
             CreateMap<ProtocolEntity, Protocol>().ForMember(x => x.Sections,
                 x => x.MapFrom<SectionResolver>());
 
-            CreateMap<ChecklistEntity, Checklist>().ForMember(x => x.Items,
-                x => x.MapFrom<ItemResolver>());
-
-            CreateMap<ChecklistEntity, Checklist>();
             CreateMap<TextInputEntity, TextInput>();
             CreateMap<MultipleChoiceEntity, MultipleChoice>();
             CreateMap<OptionEntity, Option>();
@@ -42,13 +40,22 @@ namespace Traki.Infrastructure.Mapping
         {
             var sections = new List<Section>();
 
-            var checklists =  context.Mapper.Map<IEnumerable<Checklist>>(source.Checklists);
-            var tables = context.Mapper.Map<IEnumerable<Table>>(source.Tables);
+            var checklists = source.Checklists.Select(x => Map<ChecklistEntity, Checklist>(x, context));
+            var tables = source.Tables.Select(x => Map<TableEntity, Table>(x, context));
 
             sections.AddRange(checklists);
             sections.AddRange(tables);
 
             return sections;
+        }
+
+        private Section Map<From, To>(From section, ResolutionContext context)
+            where From : SectionBase
+            where To : ISectionContent
+        {
+            var s = context.Mapper.Map<Section>(section);
+            s.SectionContent = context.Mapper.Map<To>(section);
+            return s;
         }
     }
 
@@ -58,15 +65,24 @@ namespace Traki.Infrastructure.Mapping
         {
             var items = new List<Item>();
 
-            var textInputs = context.Mapper.Map<IEnumerable<TextInput>>(source.TextInputs);
-            var questions = context.Mapper.Map<IEnumerable<Question>>(source.Questions);
-            var multipleChoices = context.Mapper.Map<IEnumerable<MultipleChoice>>(source.MultipleChoices);
+            var textInputs = source.TextInputs.Select(x => Map<TextInputEntity, TextInput>(x, context));
+            var questions = source.Questions.Select(x => Map<QuestionEntity, Question>(x, context));
+            var multipleChoices = source.MultipleChoices.Select(x => Map<MultipleChoiceEntity, MultipleChoice>(x, context));
 
             items.AddRange(textInputs);
             items.AddRange(questions);
             items.AddRange(multipleChoices);
 
             return items;
+        }
+
+        private Item Map<From, To>(From itemEntity, ResolutionContext context)
+            where From : ItemBase
+            where To : IItemContent
+        {
+            var item = context.Mapper.Map<Item>(itemEntity);
+            item.ItemContent = context.Mapper.Map<To>(itemEntity);
+            return item;
         }
     }
 }

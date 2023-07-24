@@ -2,7 +2,7 @@
 
 namespace Traki.Api.Contracts.Section
 {
-    public record ChecklistDto: SectionBaseDto
+    public record ChecklistDto
     {
         public List<MultipleChoiceDto> MultipleChoices { get; set; }
         public List<TextInputDto> TextInputs { get; set; }

@@ -2,9 +2,10 @@
 {
     public class OptionEntity
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool Selected { get; set; }
+        public int MultipleChoiceId { get; set; }
         public MultipleChoiceEntity MultipleChoice { get; set; }
     }
 }

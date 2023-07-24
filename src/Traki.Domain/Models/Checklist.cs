@@ -2,7 +2,7 @@
 
 namespace Traki.Domain.Models
 {
-    public class Checklist: Section
+    public class Checklist: ISectionContent
     {
         public List<Item> Items { get; set; }
     }
