@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
@@ -47,7 +46,7 @@ namespace Traki.Infrastructure.Repositories
 
             var a = _mapper.Map<Protocol>(protocol);
 
-           // var b = _mapper.Map<ProtocolEntity>(a);
+            var b = _mapper.Map<ProtocolEntity>(a);
 
             return a;
         }

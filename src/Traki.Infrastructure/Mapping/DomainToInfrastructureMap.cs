@@ -17,23 +17,23 @@ namespace Traki.Infrastructure.Mapping
 
         public void MapProtocol()
         {
-            /*
+
             // domain to entity
             CreateMap<Checklist, ChecklistEntity>()
                 .ForMember(x => x.MultipleChoices, x => x.MapFrom(x => x.Items.Where(x => x.ItemContent is MultipleChoice)))
                 .ForMember(x => x.TextInputs, x => x.MapFrom(x => x.Items.Where(x => x.ItemContent is TextInput)))
                 .ForMember(x => x.Questions, x => x.MapFrom(x => x.Items.Where(x => x.ItemContent is Question)));
 
-            CreateMap<Item, TextInputEntity>().IncludeMembers(x => x.ItemContent);
-            CreateMap<Item, MultipleChoiceEntity>().IncludeMembers(x => x.ItemContent);
-            CreateMap<Item, QuestionEntity>().IncludeMembers(x => x.ItemContent);
+            CreateMap<Item, TextInputEntity>().IncludeMembers(x => x.ItemContent as TextInput);
+            CreateMap<Item, MultipleChoiceEntity>().IncludeMembers(x => x.ItemContent as MultipleChoice);
+            CreateMap<Item, QuestionEntity>().IncludeMembers(x => x.ItemContent as Question);
 
             CreateMap<Protocol, ProtocolEntity>()
                 .ForMember(x => x.Checklists, x => x.MapFrom(x => x.Sections.Where(x => x.SectionContent is Checklist)))
                 .ForMember(x => x.Tables, x => x.MapFrom(x => x.Sections.Where(x => x.SectionContent is Table)));
 
-            CreateMap<Section, ChecklistEntity>().IncludeMembers(x => x.SectionContent);
-            CreateMap<Section, TableEntity>().IncludeMembers(x => x.SectionContent);*/
+            CreateMap<Section, ChecklistEntity>().IncludeMembers(x => x.SectionContent as Checklist);
+            CreateMap<Section, TableEntity>().IncludeMembers(x => x.SectionContent as Table);
 
             // entity to domain
             CreateMap<ChecklistEntity, Checklist>().ForMember(x => x.Items, x => x.MapFrom<ItemResolver>());

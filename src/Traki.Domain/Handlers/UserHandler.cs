@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Models;
