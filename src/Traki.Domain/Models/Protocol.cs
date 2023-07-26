@@ -1,4 +1,5 @@
-﻿using Traki.Domain.Extensions;
+﻿using Traki.Domain.Exceptions;
+using Traki.Domain.Extensions;
 
 namespace Traki.Domain.Models
 {
@@ -40,6 +41,15 @@ namespace Traki.Domain.Models
             var existingSection = Sections.First(x => x.Id == sectionToUpdate.Id)                           ;
             Sections.Remove(existingSection);
             Sections.Add(sectionToUpdate);
+        }
+
+        public Section? GetSection(int sectionId)
+        {
+            var section = Sections.FirstOrDefault(x => x.Id == sectionId);
+            
+            section.RequiresToBeNotNullEnity();
+
+            return section;
         }
     }
 }

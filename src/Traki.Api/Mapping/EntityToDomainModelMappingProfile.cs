@@ -20,25 +20,10 @@ namespace Traki.Api.Mapping
             CreateMap<StatusChange, StatusChangeEntity>().ReverseMap();
             CreateMap<DefectNotification, DefectNotificationEntity>().ReverseMap();
 
-
-            CreateMap<Protocol, ProtocolEntity>().ReverseMap();
-
             CreateMap<Company, CompanyEntity>().ReverseMap();
             CreateMap<User, UserEntity>().ReverseMap();
             CreateMap<Project, ProjectEntity>().ReverseMap();
             CreateMap<Product, ProductEntity>().ReverseMap();
-
-            CreateMap<ChecklistEntity, Checklist>().ReverseMap();
-            CreateMap<SectionBase, Section>().ReverseMap();
-            CreateMap<TableEntity, Table>().ReverseMap();
-            CreateMap<TableRowEntity, TableRow>().ReverseMap();
-            CreateMap<RowColumnEntity, RowColumn>().ReverseMap();
-
-            CreateMap<ItemBase, Item>().ReverseMap();
-            CreateMap<MultipleChoiceEntity, MultipleChoice>().ReverseMap();
-            CreateMap<OptionEntity, Option>().ReverseMap();
-            CreateMap<QuestionEntity, Question>().ReverseMap();
-            CreateMap<TextInputEntity, TextInput>().ReverseMap();
         }
     }
 }

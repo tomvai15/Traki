@@ -56,9 +56,11 @@ namespace Traki.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Protocol>> GetTemplateProtocols()
+        public async Task<IEnumerable<Protocol>> GetTemplateProtocols()
         {
-            throw new NotImplementedException();
+            var protocols = await _context.Protocols.Where(p => p.IsTemplate == true).ToListAsync();
+
+            return _mapper.Map<IEnumerable<Protocol>>(protocols);
         }
 
         public Task<Protocol> UpdateProtocol(Protocol protocol)

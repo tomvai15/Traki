@@ -5,6 +5,7 @@ using Traki.Api.Contracts.Protocol;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
+using Traki.Domain.Services;
 
 namespace Traki.Api.Controllers
 {
@@ -13,12 +14,14 @@ namespace Traki.Api.Controllers
     public class ProtocolsController : ControllerBase
     {
         private readonly IProtocolRepository _protocolRepository;
+        private readonly IProtocolService _protocolService;
         private readonly ISectionHandler _sectionHandler;
         private readonly IMapper _mapper;
 
-        public ProtocolsController(IProtocolRepository protocolRepository, ISectionHandler sectionHandler, IMapper mapper)
+        public ProtocolsController(IProtocolRepository protocolRepository, IProtocolService protocolService, ISectionHandler sectionHandler, IMapper mapper)
         {
             _protocolRepository = protocolRepository;
+            _protocolService = protocolService;
             _sectionHandler = sectionHandler;
             _mapper = mapper;
         }
@@ -54,7 +57,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> CreateProtocol([FromBody] CreateProtocolRequest createProtocolRequest)
         {
             var protocol = _mapper.Map<Protocol>(createProtocolRequest.Protocol);
-            await _protocolRepository.CreateProtocol(protocol);
+            await _protocolService.CreateProtocol(protocol);
             return Ok();
         }
 

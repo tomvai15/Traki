@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Section;
 using Traki.Domain.Handlers;
 using Traki.Domain.Models;
+using Traki.Domain.Services;
 
 namespace Traki.Api.Controllers
 {
@@ -13,11 +14,13 @@ namespace Traki.Api.Controllers
     public class SectionController : ControllerBase
     {
         private readonly ISectionHandler _sectionHandler;
+        private readonly IProtocolService _protocolService;
         private readonly IMapper _mapper;
 
-        public SectionController(ISectionHandler sectionHandler, IMapper mapper)
+        public SectionController(ISectionHandler sectionHandler, IProtocolService protocolService, IMapper mapper)
         {
             _sectionHandler = sectionHandler;
+            _protocolService = protocolService;
             _mapper = mapper;
         }
 
@@ -67,9 +70,9 @@ namespace Traki.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<GetSectionsResponse>> GetSections(int protocolId)
         {
-            var sections = await _sectionHandler.GetSections(protocolId);
+            var protocol = await _protocolService.FindProtocol(protocolId);
 
-            var getSectionRequest = new GetSectionsResponse { Sections = _mapper.Map<IEnumerable<SectionDto>>(sections) };
+            var getSectionRequest = new GetSectionsResponse { Sections = _mapper.Map<IEnumerable<SectionDto>>(protocol.Sections) };
 
             return Ok(getSectionRequest);
         }

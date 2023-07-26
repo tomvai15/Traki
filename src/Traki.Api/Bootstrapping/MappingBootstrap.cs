@@ -12,6 +12,7 @@ namespace Traki.Api.Bootstrapping
             {
                 cfg.AddProfile(new DomainToInfrastructureMap());
                 cfg.AddProfile(new DomainToContractMappingProfile());
+                cfg.AddProfile(new EntityToDomainModelMappingProfile());
                 cfg.AddProfile(new ProtocolMappingProfile());
             });
 
