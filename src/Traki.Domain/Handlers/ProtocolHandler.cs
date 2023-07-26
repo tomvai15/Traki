@@ -22,23 +22,15 @@ namespace Traki.Domain.Handlers
         private readonly IProjectsRepository _projectsRepository;
         private readonly IProductsRepository _productsRepository;
         private readonly IProtocolRepository _protocolRepository;
-        private readonly ISectionHandler _sectionHandler;
         private readonly IStorageService _storageService;
 
-        public ProtocolHandler(IClaimsProvider claimsProvider,
-            ICompaniesRepository companiesRepository,
-            IProjectsRepository projectsRepository,
-            IProductsRepository productsRepository,
-            IProtocolRepository protocolRepository,
-            ISectionHandler sectionHandler,
-            IStorageService storageService)
+        public ProtocolHandler(IClaimsProvider claimsProvider, ICompaniesRepository companiesRepository, IProjectsRepository projectsRepository, IProductsRepository productsRepository, IProtocolRepository protocolRepository, IStorageService storageService)
         {
             _claimsProvider = claimsProvider;
             _companiesRepository = companiesRepository;
             _projectsRepository = projectsRepository;
             _productsRepository = productsRepository;
             _protocolRepository = protocolRepository;
-            _sectionHandler = sectionHandler;
             _storageService = storageService;
         }
 
@@ -59,7 +51,7 @@ namespace Traki.Domain.Handlers
             var product = await _productsRepository.GetProduct(protocol.ProductId.Value);
             var project = await _projectsRepository.GetProject(product.ProjectId);
             var company = await _companiesRepository.GetCompany(project.CompanyId);
-            var sections = await _sectionHandler.GetSections(protocolId);
+            var sections = protocol.Sections;
 
             var fullSections = await GetSections(sections);
 
