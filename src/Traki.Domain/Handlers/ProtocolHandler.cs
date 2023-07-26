@@ -81,8 +81,8 @@ namespace Traki.Domain.Handlers
 
             foreach (var section in sections)
             {
-                var fullSection = await _sectionHandler.GetSection(section.Id);
-                fullSections.Add(fullSection);
+                //var fullSection = await _sectionHandler.GetSection(section.Id);
+             //   fullSections.Add(fullSection);
             }
 
             return fullSections.OrderBy(s => s.Priority).ToList();

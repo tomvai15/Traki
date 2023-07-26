@@ -20,7 +20,6 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IUserAuthHandler, UserAuthHandler>()
                 .AddTransient<IUsersRepository, UserRepository>()
                 .AddTransient<IReportHandler, ReportHandler>()
-                .AddTransient<ISectionHandler, SectionHandler>()
                 .AddTransient<IProductHandler, ProductHandler>()
                 .AddTransient<IRecommendationsHandler, RecommendationsHandler>()
                 .AddTransient<IReportGenerator, ReportGenerator>()
@@ -41,17 +40,11 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<ICompaniesRepository, CompaniesRepository>()
                 .AddTransient<IProjectsRepository, ProjectsRepository>()
                 .AddTransient<IProductsRepository, ProductsRepository>()
-                .AddTransient<ISectionRepository, SectionRepository>()
-                .AddTransient<ITemplatesRepository, TemplatesRepository>()
-                .AddTransient<IChecklistRepository, ChecklistRepository>()
-                .AddTransient<IItemRepository, ItemRepository>()
                 .AddTransient<IProtocolRepository, ProtocolRepository>()
                 .AddTransient<IDrawingsRepository, DrawingsRepository>()
                 .AddTransient<IDefectsRepository, DefectsRepository>()
                 .AddTransient<IDefectCommentRepository, DefectCommentRepository>()
-                .AddTransient<IStatusChangeRepository, StatusChangeRepository>()
-                .AddTransient<ITableRepository, TableRepository>()
-                .AddTransient<ITableRowRepository, TableRowRepository>();
+                .AddTransient<IStatusChangeRepository, StatusChangeRepository>();
 
             return services;
         }

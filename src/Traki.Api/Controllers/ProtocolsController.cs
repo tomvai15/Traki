@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Traki.Api.Contracts.Protocol;
-using Traki.Domain.Handlers;
 using Traki.Domain.Models;
-using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 using Traki.Domain.Services;
 
@@ -14,14 +11,12 @@ namespace Traki.Api.Controllers
     public class ProtocolsController : ControllerBase
     {
         private readonly IProtocolRepository _protocolRepository;
-        private readonly ISectionHandler _sectionHandler;
         private readonly IProtocolService _protocolService;
         private readonly IMapper _mapper;
 
-        public ProtocolsController(IProtocolRepository protocolRepository, ISectionHandler sectionHandler, IProtocolService protocolService, IMapper mapper)
+        public ProtocolsController(IProtocolRepository protocolRepository, IProtocolService protocolService, IMapper mapper)
         {
             _protocolRepository = protocolRepository;
-            _sectionHandler = sectionHandler;
             _protocolService = protocolService;
             _mapper = mapper;
         }

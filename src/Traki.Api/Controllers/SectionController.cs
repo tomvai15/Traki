@@ -13,13 +13,11 @@ namespace Traki.Api.Controllers
     [Authorize]
     public class SectionController : ControllerBase
     {
-        private readonly ISectionHandler _sectionHandler;
         private readonly IProtocolService _protocolService;
         private readonly IMapper _mapper;
 
-        public SectionController(ISectionHandler sectionHandler, IProtocolService protocolService, IMapper mapper)
+        public SectionController(IProtocolService protocolService, IMapper mapper)
         {
-            _sectionHandler = sectionHandler;
             _protocolService = protocolService;
             _mapper = mapper;
         }
@@ -66,7 +64,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> UpdateSectionAnswers(int protocolId, [FromBody] UpdateSectionAnswersRequest updateSectionRequest)
         {
             var section = _mapper.Map<Section>(updateSectionRequest.Section);
-            await _sectionHandler.UpdateSectionAnswers(protocolId, section);
+            await _protocolService.UpdateSection(section);
             return Ok();
         }
 

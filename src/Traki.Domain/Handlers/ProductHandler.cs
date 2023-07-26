@@ -1,5 +1,6 @@
 ﻿using Traki.Domain.Models;
 using Traki.Domain.Repositories;
+using Traki.Domain.Services;
 
 namespace Traki.Domain.Handlers
 {
@@ -11,39 +12,20 @@ namespace Traki.Domain.Handlers
 
     public class ProductHandler : IProductHandler
     {
-        public IProtocolRepository _protocolRepository { get; set; }
-        public ISectionHandler _sectionHandler { get; set; }
+        private readonly IProtocolService _protocolService;
 
-        public ProductHandler(IProtocolRepository protocolRepository, ISectionHandler sectionHandler)
+        public ProductHandler(IProtocolService protocolService)
         {
-            _protocolRepository = protocolRepository;
-            _sectionHandler = sectionHandler;
+            _protocolService = protocolService;
         }
 
         public async Task AddProtocolToProduct(int productId, int protocolId)
         {
-            var newProtocol = await _protocolRepository.GetProtocol(protocolId);
-
-            newProtocol.IsTemplate = false;
-            newProtocol.ProductId = productId;
-            newProtocol.Id = 0;
-
-            newProtocol = await _protocolRepository.CreateProtocol(newProtocol);
-
-            var sections = await _sectionHandler.GetSections(protocolId);
-
-            foreach (var section in sections)
-            {
-                var newSection = await _sectionHandler.GetSection(section.Id);
-                newSection.Id = 0;
-                newSection.ProtocolId = newProtocol.Id;
-                await _sectionHandler.AddOrUpdateSection(newProtocol.Id, newSection);
-            }
         }
 
         public async Task<IEnumerable<Protocol>> GetProtocols(int productId)
         {
-            return await _protocolRepository.GetProtocols(productId);
+            return null;
         }
     }
 }
