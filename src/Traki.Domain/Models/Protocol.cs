@@ -23,7 +23,7 @@ namespace Traki.Domain.Models
             {
                 Id = Id,
                 Name = Name,
-                CreationDate = CreationDate,
+                CreationDate = DateTime.Now.ToString(),
                 IsTemplate = true,
                 Sections = new List<SectionDomain>()
             };
@@ -43,8 +43,11 @@ namespace Traki.Domain.Models
         {
             var sectionToUpdate = GetSection(section.Id);
 
-            Sections.Remove(sectionToUpdate);
-            Sections.Add(section);
+            sectionToUpdate.Name = section.Name;
+            var checklist = sectionToUpdate.Checklist;
+            checklist.Items = section.Checklist.Items;
+
+            checklist.Items.ForEach(item => item.ChecklistId = checklist.Id);
         }
 
         public void DeleteSection(int sectionId)

@@ -6,6 +6,7 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Repositories;
 using Traki.Domain.Providers;
 using Traki.Domain.Constants;
+using Traki.Domain.Services;
 
 namespace Traki.Api.Bootstrapping
 {
@@ -26,8 +27,8 @@ namespace Traki.Api.Bootstrapping
                 .AddTransient<IProtocolHandler, ProtocolHandler>()
                 .AddTransient<IDocumentSignerHandler, DocumentSignerHandler>()
                 .AddTransient<IAccessTokenProvider, AccessTokenProvider>()
-                .AddTransient<IClaimsProvider, ClaimsProvider>();
-
+                .AddTransient<IClaimsProvider, ClaimsProvider>()
+                .AddTransient<IProtocolService, ProtocolService>();
 
             return services;
         }

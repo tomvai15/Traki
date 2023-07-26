@@ -9,7 +9,11 @@ namespace Traki.Api.Bootstrapping
         {
             const string connectionStringSectionName = "TrakiDbContextCloud";
             services.AddDbContext<TrakiDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString(connectionStringSectionName)));
+                    {
+                        options.UseSqlServer(config.GetConnectionString(connectionStringSectionName));
+                        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    }
+                );
 
             return services;
         }

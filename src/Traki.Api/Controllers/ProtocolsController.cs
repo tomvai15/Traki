@@ -6,6 +6,7 @@ using Traki.Domain.Handlers;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
+using Traki.Domain.Services;
 
 namespace Traki.Api.Controllers
 {
@@ -14,19 +15,21 @@ namespace Traki.Api.Controllers
     {
         private readonly IProtocolRepository _protocolRepository;
         private readonly ISectionHandler _sectionHandler;
+        private readonly IProtocolService _protocolService;
         private readonly IMapper _mapper;
 
-        public ProtocolsController(IProtocolRepository protocolRepository, ISectionHandler sectionHandler, IMapper mapper)
+        public ProtocolsController(IProtocolRepository protocolRepository, ISectionHandler sectionHandler, IProtocolService protocolService, IMapper mapper)
         {
             _protocolRepository = protocolRepository;
             _sectionHandler = sectionHandler;
+            _protocolService = protocolService;
             _mapper = mapper;
         }
 
         [HttpGet("{protocolId}")]
         public async Task<ActionResult<GetProtocolResponse>> GetProtocol(int protocolId)
         {
-            var protocol = await _protocolRepository.GetProtocol(protocolId);
+            var protocol = await _protocolService.FindProtocol(protocolId);
 
             var response = new GetProtocolResponse { Protocol = _mapper.Map<ProtocolDto>(protocol) };
 
@@ -37,9 +40,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> UpdateProtocol(int protocolId, [FromBody]UpdateProtocolRequest updateProtocolRequest)
         {
             var protocol = _mapper.Map<Protocol>(updateProtocolRequest.Protocol);
-            var sections = _mapper.Map<IEnumerable<Section>>(updateProtocolRequest.Sections);
-            await _protocolRepository.UpdateProtocol(protocol);
-            await _sectionHandler.UpdateSections(sections);
+            await _protocolService.UpdateProtocol(protocol);
             return Ok();
         }
 
@@ -54,7 +55,7 @@ namespace Traki.Api.Controllers
         public async Task<ActionResult> CreateProtocol([FromBody] CreateProtocolRequest createProtocolRequest)
         {
             var protocol = _mapper.Map<Protocol>(createProtocolRequest.Protocol);
-            await _protocolRepository.CreateProtocol(protocol);
+            await _protocolService.CreateProtocol(protocol);
             return Ok();
         }
 

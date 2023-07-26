@@ -10,9 +10,9 @@ namespace Traki.Domain.Services
         Task CreateProtocol(Protocol protocol);
         Task UpdateProtocol(Protocol protocol);
         Task<Section> FindSection(int protocolId, int sectionId);
-        Task AddSection(Section section);
+        Task AddSection(int protocolId, Section section);
         Task UpdateSection(Section section);
-        Task DeleteSection(Section section);
+        Task DeleteSection(int protocolId, int sectionId);
     }
 
     public class ProtocolService : IProtocolService
@@ -43,10 +43,11 @@ namespace Traki.Domain.Services
             await _protocolRepository.UpdateProtocol(protocol);
         }
 
-        public async Task AddSection(Section section)
+        public async Task AddSection(int protocolId, Section section)
         {
-            var protocol = await _protocolRepository.GetProtocol(section.ProtocolId);
+            var protocol = await _protocolRepository.GetProtocol(protocolId);
 
+            section.ProtocolId = protocolId;
             protocol.AddSection(section);
 
             await _protocolRepository.UpdateProtocol(protocol);
@@ -68,11 +69,11 @@ namespace Traki.Domain.Services
             return protocol.GetSection(sectionId);
         }
 
-        public async Task DeleteSection(Section section)
+        public async Task DeleteSection(int protocolId, int sectionId)
         {
-            var protocol = await _protocolRepository.GetProtocol(section.ProtocolId);
+            var protocol = await _protocolRepository.GetProtocol(protocolId);
 
-            protocol.DeleteSection(section.Id);
+            protocol.DeleteSection(sectionId);
 
             await _protocolRepository.UpdateProtocol(protocol);
         }

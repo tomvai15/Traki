@@ -9,7 +9,6 @@
         public Question? Question { get; set; }
         public MultipleChoice? MultipleChoice { get; set; }
         public TextInput? TextInput { get; set; }
-
         public int ChecklistId { get; set; }
     }
 }
