@@ -10,7 +10,6 @@ using Traki.Domain.Repositories;
 namespace Traki.Api.Controllers
 {
     [Route("api/protocols")]
-    [Authorize]
     public class ProtocolsController : ControllerBase
     {
         private readonly IProtocolRepository _protocolRepository;

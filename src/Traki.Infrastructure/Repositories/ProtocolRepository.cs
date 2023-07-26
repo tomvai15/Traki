@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Traki.Domain.Extensions;
 using Traki.Domain.Models;
 using Traki.Domain.Repositories;
 using Traki.Infrastructure.Data;
@@ -22,60 +21,61 @@ namespace Traki.Infrastructure.Repositories
         public async Task<Protocol> CreateProtocol(Protocol protocol)
         {
             var protocolEntity = _mapper.Map<ProtocolEntity>(protocol);
-
-            protocolEntity.CreationDate = DateTime.Now.ToString("s");
-            _context.Protocols.Add(protocolEntity);
+            _context.Add(protocolEntity);
             await _context.SaveChangesAsync();
-
             return _mapper.Map<Protocol>(protocolEntity);
         }
 
-        public async Task<Protocol> UpdateProtocol(Protocol protocol)
+        public Task DeleteProtocol(int protocolId)
         {
-            var protocolEntity = await _context.Protocols.FirstOrDefaultAsync(p => p.Id == protocol.Id);
-
-            protocolEntity.Name = protocol.Name;
-            protocolEntity.ReportName = protocol.ReportName;
-            protocolEntity.EnvelopeId = protocol.EnvelopeId;
-            protocolEntity.IsSigned = protocol.IsSigned;
-            protocolEntity.SignerId = protocol.SignerId;
-            protocolEntity.IsCompleted = protocol.IsCompleted;
-            await _context.SaveChangesAsync();
-            return _mapper.Map<Protocol>(protocolEntity);
+            throw new NotImplementedException();
         }
 
         public async Task<Protocol> GetProtocol(int protocolId)
         {
-            var protocol = await _context.Protocols.Include(x=> x.Signer)
-                .FirstOrDefaultAsync(p => p.Id == protocolId);
+            var protocol = _context.Protocols
+                                    .Include(x => x.Sections)
+                                        .ThenInclude(x => x.Checklist)
+                                            .ThenInclude(x => x.Items)
+                                                .ThenInclude(x => x.TextInput)
+                                    .Include(x => x.Sections)
+                                        .ThenInclude(x => x.Checklist)
+                                            .ThenInclude(x => x.Items)
+                                                .ThenInclude(x => x.Question)
+                                    .Include(x => x.Sections)
+                                        .ThenInclude(x => x.Checklist)
+                                            .ThenInclude(x => x.Items)
+                                                .ThenInclude(x => x.MultipleChoice)
+                                                    .ThenInclude(x => x.Options)
+                                    .Include(x => x.Sections)
+                                        .ThenInclude(x => x.Table)
+                                            .ThenInclude(x => x.TableRows)
+                                                .ThenInclude(x => x.RowColumns)
+                                    .First(x => x.Id == protocolId);
+                
+            var a = _mapper.Map<Protocol>(protocol);
 
-            protocol.RequiresToBeNotNullEnity();
-
-            return _mapper.Map<Protocol>(protocol);
+            return a;
         }
 
-        public async Task<IEnumerable<Protocol>> GetProtocols(int productId)
+        public Task<IEnumerable<Protocol>> GetProtocols(int productId)
         {
-            var protocols = await _context.Protocols.Where(p => p.ProductId == productId).ToListAsync();
-
-            return _mapper.Map<IEnumerable<Protocol>>(protocols);
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Protocol>> GetTemplateProtocols()
         {
-            var protocols = await _context.Protocols.Where(p =>p.IsTemplate == true).ToListAsync();
+            var protocols = await _context.Protocols.Where(p => p.IsTemplate == true).ToListAsync();
 
             return _mapper.Map<IEnumerable<Protocol>>(protocols);
         }
 
-        public async Task DeleteProtocol(int protocolId)
+        public async Task<Protocol> UpdateProtocol(Protocol protocol)
         {
-            var protocol = await _context.Protocols.FirstOrDefaultAsync(p => p.Id == protocolId);
-
-            protocol.RequiresToBeNotNullEnity();
-
-            _context.Protocols.Remove(protocol);
+            var protocolEntity = _mapper.Map<ProtocolEntity>(protocol);
+            _context.Protocols.Update(protocolEntity);
             await _context.SaveChangesAsync();
+            return _mapper.Map<Protocol>(protocolEntity);
         }
     }
 }

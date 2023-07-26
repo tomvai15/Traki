@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traki.Domain.Models;
+﻿using Traki.Domain.Models;
 using Traki.Domain.Models.Section;
 using Traki.Domain.Repositories;
 
@@ -12,9 +7,10 @@ namespace Traki.Domain.Services
     public interface IProtocolService
     {
         Task<Protocol> FindProtocol(int protcolId);
+        Task CreateProtocol(Protocol protocol);
+        Task UpdateProtocol(Protocol protocol);
         Task<Section> FindSection(int protocolId, int sectionId);
         Task AddSection(Section section);
-        Task CreateProtocol(Protocol protocol);
         Task UpdateSection(Section section);
         Task DeleteSection(Section section);
     }
@@ -27,6 +23,24 @@ namespace Traki.Domain.Services
         public ProtocolService(IProtocolRepository protocolRepository)
         {
             _protocolRepository = protocolRepository;
+        }
+
+        public async Task<Protocol> FindProtocol(int protcolId)
+        {
+            return await _protocolRepository.GetProtocol(protcolId);
+        }
+
+        public async Task CreateProtocol(Protocol protocol)
+        {
+            var newProtocol = protocol.CreateTemplate();
+            await _protocolRepository.CreateProtocol(newProtocol);
+        }
+
+        public async Task UpdateProtocol(Protocol protocol)
+        {
+            var protocolToUpdate = await _protocolRepository.GetProtocol(protocol.Id);
+            protocolToUpdate.Name = protocol.Name;
+            await _protocolRepository.UpdateProtocol(protocol);
         }
 
         public async Task AddSection(Section section)
@@ -45,17 +59,6 @@ namespace Traki.Domain.Services
             protocol.UpdateSection(section);
 
             await _protocolRepository.UpdateProtocol(protocol);
-        }
-
-        public async Task CreateProtocol(Protocol protocol)
-        {
-            var newProtocol = protocol.CreateTemplate();
-            await _protocolRepository.CreateProtocol(newProtocol);
-        }
-
-        public async Task<Protocol> FindProtocol(int protcolId)
-        {
-            return await _protocolRepository.GetProtocol(protcolId);
         }
 
         public async Task<Section> FindSection(int protocolId, int sectionId)
