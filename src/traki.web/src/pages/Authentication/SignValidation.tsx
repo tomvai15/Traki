@@ -9,7 +9,7 @@ import { userState } from '../../state/user-state';
 import reportService from '../../services/report-service';
 import { useQuery } from 'features/auth/hooks/useQuery';
 
-export default function SignValidation() {
+export function SignValidation() {
 
   const navigate = useNavigate();
   const [loadinig, setLoading] = useState(true);

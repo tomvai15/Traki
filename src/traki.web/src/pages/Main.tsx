@@ -1,12 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import SignIn from './authentication/SignIn';
-import CheckOAuth from './authentication/CheckOAuth';
 import { Projects } from './projects/Projects';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { CompanyPage } from './company/Company';
-import { EditCheckpoint } from './templates/EditCheckpoint';
-import SignValidation from './authentication/SignValidation';
 import { ProtocolReport } from './projects/products/ProtocolReport';
 import { HomePage } from './Home';
 import { CreateProduct } from './projects/products/CreateProduct';
@@ -14,15 +10,14 @@ import MainLayout from 'layout/MainLayout';
 import { ProductPage, DefectsPage, FillProtocolPage } from './projects/products';
 import { TemplateProtocols, ProtocolPage } from './protocols';
 import { EditSectionPage, CreateSectionPage } from './protocols/sections';
-import { TemplatePage } from './templates/TemplatePage';
 import { CreateProject, EditProject } from './projects';
 import { UsersPage } from './admin/UsersPage';
 import { UserPage } from './admin/UserPage';
 import { CreateUserPage } from './admin/CreateUserPage';
-import RegisterPage from './authentication/RegisterPage';
 import { EditProduct } from './projects/products/EditProduct';
 import { MyInformation } from './MyInformation';
 import { Protected } from 'components/Protected';
+import { CheckOAuth, RegisterPage, SignIn, SignValidation } from './Authentication';
 
 export function Main() {
   return (

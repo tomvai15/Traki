@@ -14,7 +14,7 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export default function CheckOAuth() {
+export function CheckOAuth() {
 
   const navigate = useNavigate();
   const [loadinig, setLoading] = useState(true);

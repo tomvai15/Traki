@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../state/user-state';
 
-export default function SignIn() {
+export function SignIn() {
   const [, setUserInfo] = useRecoilState(userState);
   const navigate = useNavigate();
 

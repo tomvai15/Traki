@@ -13,7 +13,7 @@ import { userService } from 'services';
 import { User } from 'contracts/user/User';
 import { validate, validationRules } from 'utils/textValidation';
 
-export default function RegisterPage() {
+export function RegisterPage() {
   const navigate = useNavigate();
   const query = useQuery();
 
