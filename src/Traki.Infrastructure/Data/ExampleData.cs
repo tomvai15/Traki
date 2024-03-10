@@ -221,11 +221,11 @@ namespace Traki.Infrastructure.Data
         {
             new CompanyEntity
             {
-                Name = "Preftek",
+                Name = "ExampleSystem",
                 Address = "Vydūno alėja",
                 CreationDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow,
-                ImageName = "Preftek-full-logo.png"
+                ImageName = "ExampleSystem-full-logo.png"
             }
         };
 

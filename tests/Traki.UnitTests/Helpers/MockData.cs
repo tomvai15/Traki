@@ -10,9 +10,8 @@ namespace Traki.UnitTests.Helpers
 {
     public static class MockData
     {
-
         public static IEnumerable<DefectComment> DefectComments => new[]
-       {
+        {
             new DefectComment
             {
                 Id = 1,
@@ -325,11 +324,11 @@ namespace Traki.UnitTests.Helpers
         {
             new Company
             {
-                Name = "Preftek",
+                Name = "ExampleSystem",
                 Address = "Vydūno alėja",
                 CreationDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow,
-                ImageName = "Preftek-full-logo.png"
+                ImageName = "ExampleSystem-full-logo.png"
             }
         };
 
@@ -339,9 +338,9 @@ namespace Traki.UnitTests.Helpers
             {
                 DeviceToken = "abs",
                 RegisterId = "abc",
-                Email = "vainoristomas@gmail.com",
-                Name = "Tomas",
-                Surname = "Vainoris",
+                Email = "somename@yahoo.com",
+                Name = "Joe",
+                Surname = "Doe",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.ProductManager,
                 Status = UserStatus.Active,
@@ -350,18 +349,18 @@ namespace Traki.UnitTests.Helpers
             },
             new User
             {
-                Email = "vainoristomas9@gmail.com",
-                Name = "Domas",
-                Surname = "Bainoris",
+                Email = "somename1@yahoo.com",
+                Name = "Jhon",
+                Surname = "Dow",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.ProjectManager,
                 Status = UserStatus.Active
             },
             new User
             {
-                Email = "tipotomas9@gmail.com",
-                Name = "Romas",
-                Surname = "Fainoris",
+                Email = "somename2@yahoo.com",
+                Name = "John",
+                Surname = "Dau",
                 HashedPassword="$2a$11$fwHqYCKHBg5nOiswpHmQ5eBn1er5kr6DyDCPa7BOndAJBM6IDjTHa",
                 Role = Role.Administrator,
                 Status = UserStatus.Active
@@ -447,6 +446,6 @@ namespace Traki.UnitTests.Helpers
                 ProjectId = 2
             }
         };
-       
+
     }
 }
