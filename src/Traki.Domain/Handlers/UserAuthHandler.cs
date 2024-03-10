@@ -77,8 +77,6 @@ namespace Traki.Domain.Handlers
                 throw new UnauthorizedException();
             }
 
-            var b = user.Status == UserStatus.Active;
-
             if (!user.Status.Equals(UserStatus.Active))
             {
                 throw new UnauthorizedException();
