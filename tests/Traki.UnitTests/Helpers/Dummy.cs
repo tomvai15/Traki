@@ -3,6 +3,7 @@ using AutoFixture.Kernel;
 using System.Reflection;
 using Traki.Domain.Models;
 using Traki.Domain.Models.Drawing;
+using MethodInvoker = AutoFixture.Kernel.MethodInvoker;
 
 namespace Traki.UnitTests.Helpers
 {

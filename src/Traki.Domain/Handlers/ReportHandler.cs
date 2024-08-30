@@ -44,7 +44,7 @@ namespace Traki.Domain.Handlers
         {
             var protocolInformation = await _protocolHandler.GetInformationForReport(protocolId);
 
-            if (!protocolName.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(protocolName))
             {
                 protocolInformation.ProtocolName = protocolName;
             }

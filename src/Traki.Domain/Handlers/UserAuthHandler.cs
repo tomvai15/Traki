@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Traki.Domain.Constants;
 using Traki.Domain.Cryptography;
 using Traki.Domain.Exceptions;
@@ -19,13 +18,11 @@ namespace Traki.Domain.Handlers
     public class UserAuthHandler : IUserAuthHandler
     {
         private readonly IUsersRepository _usersRepository;
-        private readonly IMapper _mapper;
         private readonly IHasherAdapter _hasherAdapter;
 
-        public UserAuthHandler(IUsersRepository usersRepository, IMapper mapper, IHasherAdapter hasherAdapter)
+        public UserAuthHandler(IUsersRepository usersRepository, IHasherAdapter hasherAdapter)
         {
             _usersRepository = usersRepository;
-            _mapper = mapper;
             _hasherAdapter = hasherAdapter;
         }
 

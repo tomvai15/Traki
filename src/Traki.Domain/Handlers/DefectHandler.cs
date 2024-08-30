@@ -68,7 +68,7 @@ namespace Traki.Domain.Handlers
             await _defectNotificationRepository.CreateDefectNotification(defectNotification);
 
             string deviceToken = user.DeviceToken;
-            if (deviceToken.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceToken))
             {
                 return defect;
             }
@@ -102,7 +102,7 @@ namespace Traki.Domain.Handlers
 
             string deviceToken = author.DeviceToken;
 
-            if (deviceToken.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceToken))
             {
                 return;
             }
@@ -155,7 +155,7 @@ namespace Traki.Domain.Handlers
 
             string deviceToken = author.DeviceToken;
 
-            if (deviceToken.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceToken))
             {
                 return defect;
             }

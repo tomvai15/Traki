@@ -101,7 +101,7 @@ namespace Traki.Domain.Handlers
             var itemsWithImages = sections.Where(x => x.Checklist != null)
                 .Select(x => x.Checklist)
                 .SelectMany(x => x.Items)
-                .Where(x => !x.ItemImage.IsNullOrEmpty())
+                .Where(x => !string.IsNullOrEmpty(x.ItemImage))
                 .ToList();
 
             var getItemImagesTasks = itemsWithImages.Select(x => GetItemImage(x));
