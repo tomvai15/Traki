@@ -71,7 +71,7 @@ namespace Traki.IntegrationTests.Shared
                 Data = default(TResponse)
             };
 
-            if (content.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(content))
             {
                 return responseResult;
             }

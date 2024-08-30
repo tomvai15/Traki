@@ -1,19 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Traki.Domain.Services.Docusign.Models
 {
     public class Account
     {
-        [JsonProperty("account_id")]
+        [JsonPropertyName("account_id")]
         public string AccountId { get; set; }
 
-        [JsonProperty("is_default")]
+        [JsonPropertyName("is_default")]
         public string IsDefault { get; set; }
 
-        [JsonProperty("account_name")]
+        [JsonPropertyName("account_name")]
         public string AccountName { get; set; }
 
-        [JsonProperty("base_uri")]
+        [JsonPropertyName("base_uri")]
         public string BaseUri { get; set; }
     }
 }

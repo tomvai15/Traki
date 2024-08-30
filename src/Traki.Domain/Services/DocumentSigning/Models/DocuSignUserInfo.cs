@@ -1,29 +1,29 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Traki.Domain.Services.Docusign.Models;
 
 namespace Traki.Domain.Services.Docusign.models
 {
     public class DocuSignUserInfo
     {
-        [JsonProperty("sub")]
+        [JsonPropertyName("sub")]
         public string Sub { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("given_name")]
+        [JsonPropertyName("given_name")]
         public string GivenName { get; set; }
 
-        [JsonProperty("family_name")]
+        [JsonPropertyName("family_name")]
         public string FamilName { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
 
-        [JsonProperty("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonProperty("accounts")]
+        [JsonPropertyName("accounts")]
         public IEnumerable<Account> Accounts { get; set; }
     }
 }
