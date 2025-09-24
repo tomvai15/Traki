@@ -31,8 +31,8 @@ namespace Traki.Domain.Handlers
 
         public async Task<MemoryStream> GeneratePDFReportFromHtml(string htmlContent, bool useColors)
         {
-            using var browserFetcher = new BrowserFetcher();
-            await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+            var browserFetcher = new BrowserFetcher();
+            await browserFetcher.DownloadAsync();
             var browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
                 Headless = true

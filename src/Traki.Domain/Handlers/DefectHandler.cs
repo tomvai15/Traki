@@ -1,5 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+﻿using System.Text.Json;
 using Traki.Domain.Exceptions;
 using Traki.Domain.Models.Drawing;
 using Traki.Domain.Repositories;
@@ -13,6 +12,7 @@ namespace Traki.Domain.Handlers
         Task<Defect> CreateDefectStatusChange(int userId, Defect defect);
         Task CreateDefectComment(int userId, DefectComment defectComment);
     }
+
     public class DefectHandler : IDefectHandler
     {
         private readonly IDefectsRepository _defectsRepository;
@@ -48,7 +48,7 @@ namespace Traki.Domain.Handlers
             var product = await _productsRepository.GetProduct(drawing.ProductId);
             var user = await _usersRepository.GetUserById(product.AuthorId);
 
-            string data = JsonConvert.SerializeObject(new
+            string data = JsonSerializer.Serialize(new
             {
                 projectId = product.ProjectId,
                 productId = product.Id,
@@ -68,7 +68,7 @@ namespace Traki.Domain.Handlers
             await _defectNotificationRepository.CreateDefectNotification(defectNotification);
 
             string deviceToken = user.DeviceToken;
-            if (deviceToken.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceToken))
             {
                 return defect;
             }
@@ -102,7 +102,7 @@ namespace Traki.Domain.Handlers
 
             string deviceToken = author.DeviceToken;
 
-            if (deviceToken.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceToken))
             {
                 return;
             }
@@ -155,7 +155,7 @@ namespace Traki.Domain.Handlers
 
             string deviceToken = author.DeviceToken;
 
-            if (deviceToken.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceToken))
             {
                 return defect;
             }
@@ -169,7 +169,7 @@ namespace Traki.Domain.Handlers
             var drawing = await _drawingsRepository.GetDrawing(drawingId);
             var product = await _productsRepository.GetProduct(drawing.ProductId);
 
-            return JsonConvert.SerializeObject(new
+            return JsonSerializer.Serialize(new
             {
                 projectId = product.ProjectId,
                 productId = product.Id,

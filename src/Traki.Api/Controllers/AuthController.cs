@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Traki.Api.Contracts.Auth;
 using Traki.Api.Contracts.User;
@@ -159,7 +158,7 @@ namespace Traki.Api.Controllers
                     Email = user.Email,
                     Role = user.Role,  
                 },
-                LoggedInDocuSign = !accessToken.IsNullOrEmpty()
+                LoggedInDocuSign = !string.IsNullOrEmpty(accessToken)
             };
             return Ok(response);
         }
